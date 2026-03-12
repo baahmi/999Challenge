@@ -1,0 +1,27 @@
+.footer {
+    background: #0f172a; /* slate-950 */
+    border-top: 1px solid #1f2937; /* slate-800 */
+}
+
+.container {
+    max-width: 1200px;
+    margin-inline: auto;
+    padding: 0.875rem 1rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: space-between;
+    color: #94a3b8; /* slate-400 */
+    font-size: 0.9375rem;
+}
+
+.link {
+    color: #cbd5e1; /* slate-300 */
+    text-decoration: none;
+}
+
+.link:hover,
+.link:focus-visible {
+    text-decoration: underline;
+    outline: none;
+}
