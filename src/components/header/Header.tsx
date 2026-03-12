@@ -1,5 +1,7 @@
 import React from 'react';
 import './Header.css';
+import {IconButton} from "@mui/material";
+import {ThemeToggle} from "@/components/theme/ThemeToggle.tsx";
 
 export function Header() {
     return (
@@ -9,7 +11,7 @@ export function Header() {
                 <nav className="nav" aria-label="Primary">
                     <a className="link" href="/">Home</a>
                     <a className="link" href="/about">About</a>
-                    <a className="link" href="/contact">Contact</a>
+                    <ThemeToggle/>
                 </nav>
             </div>
         </header>

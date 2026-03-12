@@ -4,6 +4,4 @@
   min-height: 100svh; /* supports mobile browser UI chrome */
   display: grid;
   grid-template-rows: auto 1fr auto;
-  background: #0b0c10;       /* page background */
-  color: #e5e7eb;            /* default text color */
 }
