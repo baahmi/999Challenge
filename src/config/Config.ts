@@ -1,7 +1,7 @@
 import categoriesData from '../data/categories.json' assert { type: 'json' };
 
 export type Theme = 'light' | 'dark';
-export type TabsPosition = 'top' | 'bottom';
+export type TabsPosition = 'top' | 'bottom' | 'both';
 export type Quality = 'highest' | 'any' | 'normal' | 'silver' | 'gold'| 'iridium' | 'all';
 
 export interface UIConfig {

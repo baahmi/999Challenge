@@ -3,6 +3,7 @@ export interface Item {
   required: number;
   total: number;
   raw: number;
+  rawStacks?: number[]; // [normal, silver, gold, unused, iridium]
 }
 
 export interface ItemWithCalculations extends Item {

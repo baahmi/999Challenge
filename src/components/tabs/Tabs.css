@@ -5,12 +5,16 @@
   min-width: 0;
 }
 
-.tabs-top {
-  flex-direction: column;
+.tabs-sticky-top {
+  position: sticky;
+  top: 0;
+  z-index: 50;
 }
 
-.tabs-bottom {
-  flex-direction: column-reverse;
+.tabs-sticky-bottom {
+  position: sticky;
+  bottom: 0;
+  z-index: 50;
 }
 
 .tabs-wrapper {
@@ -18,12 +22,14 @@
   align-items: stretch;
   gap: 0;
   flex-shrink: 0;
-  background-color: inherit;
+  background-color: var(--mui-palette-background-default, white);
   min-height: 48px;
   width: 100%;
   overflow: hidden;
   min-width: 0;
   max-width: 100%;
+  border-top: 1px solid rgba(0,0,0,0.12);
+  border-bottom: 1px solid rgba(0,0,0,0.12);
 }
 
 .tabs-scroll-container {

@@ -1,6 +1,8 @@
 import itemsData from './items.json';
 import partsData from './parts.json';
 import notesData from './notes.json';
+import { Config } from '../config/Config';
+import type { Quality } from '../config/Config';
 
 const TARGET = 999;
 
@@ -11,6 +13,7 @@ export interface IngredientInfo {
   name: string;
   qty: number;
   available: number;
+  done: boolean;
 }
 
 export interface UsedByInfo {
@@ -32,6 +35,7 @@ export interface ItemRow {
   required: number;
   total: number;
   raw: number;
+  rawStacks?: number[]; // [normal, silver, gold, unused, iridium]
   tooltip: ItemTooltipData;
 }
 
@@ -44,6 +48,11 @@ function isWildcard(id: string, name: string | null): boolean {
 // Static maps built once from partsData (never changes at runtime)
 const recipeMap = new Map<string, Map<string, number>>(); // craftedName -> ingredient -> qty
 const reverseMap = new Map<string, string[]>();           // ingredient -> [craftedNames]
+
+// Cooking items cap at gold quality naturally (Qi Seasoning provides iridium)
+const cookingItems = new Set<string>(
+  (itemsData as [string, string][]).filter(([cat]) => cat === 'Cooking').map(([, name]) => name)
+);
 
 (function buildMaps() {
   for (const [craftedName, ingredients] of partsData as PartsEntry[]) {
@@ -78,7 +87,8 @@ function craftableCount(
 
 function computeTooltipData(
   itemName: string,
-  inventoryMap: Map<string, number>
+  inventoryMap: Map<string, number>,
+  completionMap: Map<string, boolean>
 ): ItemTooltipData {
   const note = (notesData as Record<string, string>)[itemName] ?? null;
 
@@ -95,6 +105,7 @@ function computeTooltipData(
       name,
       qty,
       available: inventoryMap.get(name) ?? 0,
+      done: completionMap.get(name) ?? false,
     }));
   }
 
@@ -106,6 +117,7 @@ function computeTooltipData(
           name,
           qty,
           available: inventoryMap.get(name) ?? 0,
+          done: completionMap.get(name) ?? false,
         }))
       : [];
     return { craftedName, craftableCount: count, recipe };
@@ -114,13 +126,43 @@ function computeTooltipData(
   return { note, recipe, craftableCount: canCraft, limitingIngredient, usedBy };
 }
 
+function getQualityFilteredCount(stacks: number[] | undefined, quality: Quality, maxTierIndex = 4): number {
+  if (!stacks) return 0;
+  switch (quality) {
+    case 'normal':  return stacks[0] ?? 0;
+    case 'silver':  return stacks[1] ?? 0;
+    case 'gold':    return stacks[2] ?? 0;
+    case 'iridium': return stacks[4] ?? 0;
+    case 'highest': {
+      for (const i of [4, 2, 1, 0]) {
+        if (i > maxTierIndex) continue;
+        const v = stacks[i] ?? 0;
+        if (v > 0) return v;
+      }
+      return 0;
+    }
+    default: return stacks.reduce((s, v) => s + v, 0);
+  }
+}
+
 export function computeCategoryItems(
   categoryName: string,
-  compacted: Array<{ name: string; stack: number }>
+  compacted: Array<{ name: string; stack: number; quality?: number[] }>
 ): ItemRow[] {
+  const quality = Config.getQuality();
   const inventoryMap = new Map<string, number>();
+  const stacksMap = new Map<string, number[]>();
   for (const item of compacted) {
-    inventoryMap.set(item.name, (inventoryMap.get(item.name) ?? 0) + item.stack);
+    // Cooking items naturally cap at gold; only iridium via Qi Seasoning
+    const maxTier = (quality === 'highest' && cookingItems.has(item.name)) ? 2 : 4;
+    const count = item.quality
+      ? getQualityFilteredCount(item.quality, quality, maxTier)
+      : item.stack;
+    inventoryMap.set(item.name, (inventoryMap.get(item.name) ?? 0) + count);
+    if (item.quality) {
+      const prev = stacksMap.get(item.name) ?? [0, 0, 0, 0, 0];
+      stacksMap.set(item.name, item.quality.map((v, i) => (prev[i] ?? 0) + v));
+    }
   }
 
   const requiredFromParts = new Map<string, number>();
@@ -137,6 +179,25 @@ export function computeCategoryItems(
     }
   }
 
+  // Qi Seasoning: one per cooked dish when targeting iridium quality
+  if (quality === 'highest' || quality === 'iridium') {
+    const seen = new Set<string>();
+    for (const [cat, itemName] of itemsData as [string, string][]) {
+      if (cat !== 'Cooking' || seen.has(itemName)) continue;
+      seen.add(itemName);
+      requiredFromParts.set('Qi Seasoning', (requiredFromParts.get('Qi Seasoning') ?? 0) + TARGET);
+      totalFromParts.set('Qi Seasoning', (totalFromParts.get('Qi Seasoning') ?? 0) + (inventoryMap.get(itemName) ?? 0));
+    }
+  }
+
+  const completionMap = new Map<string, boolean>();
+  for (const [, itemName] of itemsData as [string, string][]) {
+    const r = inventoryMap.get(itemName) ?? 0;
+    const req = TARGET + (requiredFromParts.get(itemName) ?? 0);
+    const tot = totalFromParts.get(itemName) ?? 0;
+    completionMap.set(itemName, r + tot >= req);
+  }
+
   const source = itemsData as [string, string][];
   const entries = categoryName === 'All' ? source : source.filter(([cat]) => cat === categoryName);
 
@@ -151,7 +212,7 @@ export function computeCategoryItems(
     const required = TARGET + (requiredFromParts.get(itemName) ?? 0);
     const total = totalFromParts.get(itemName) ?? 0;
 
-    rows.push({ name: itemName, required, total, raw, tooltip: computeTooltipData(itemName, inventoryMap) });
+    rows.push({ name: itemName, required, total, raw, rawStacks: stacksMap.get(itemName), tooltip: computeTooltipData(itemName, inventoryMap, completionMap) });
   }
 
   return rows;

@@ -13,6 +13,21 @@ export function Header() {
     const [qiGems, setQiGems] = useState<number | null>(null);
     const [daysPlayed, setDaysPlayed] = useState<number | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const headerRef = useRef<HTMLElement>(null);
+
+    React.useEffect(() => {
+        if (!headerRef.current) return;
+        const updateHeight = () => {
+            document.documentElement.style.setProperty(
+                '--header-height',
+                `${headerRef.current!.offsetHeight}px`
+            );
+        };
+        updateHeight();
+        const observer = new ResizeObserver(updateHeight);
+        observer.observe(headerRef.current);
+        return () => observer.disconnect();
+    }, []);
 
     React.useEffect(() => {
         const handleConfigChange = () => {
@@ -31,10 +46,13 @@ export function Header() {
         return unsubscribe;
     }, []);
 
+    const TABS_CYCLE: import('../../config/Config').TabsPosition[] = ['top', 'bottom', 'both'];
+    const TABS_LABELS: Record<string, string> = { top: 'Top only', bottom: 'Bottom only', both: 'Both' };
+
     const toggleTabsPosition = () => {
-        const currentPosition = Config.getTabsPosition();
-        const newPosition = currentPosition === 'bottom' ? 'top' : 'bottom';
-        Config.getInstance().setTabsPosition(newPosition);
+        const current = Config.getTabsPosition();
+        const next = TABS_CYCLE[(TABS_CYCLE.indexOf(current) + 1) % TABS_CYCLE.length] ?? 'bottom';
+        Config.getInstance().setTabsPosition(next);
     };
 
     const handleUploadClick = () => {
@@ -56,7 +74,7 @@ export function Header() {
     };
 
     return (
-        <header className="header">
+        <header className="header" ref={headerRef}>
             <div className="container">
                 {/* <div className="brand">999 Challenge</div> */}
                 <div style={{ display: 'flex', gap: '24px', alignItems: 'center', flex: 1, paddingLeft: '24px' }}>
@@ -77,7 +95,7 @@ export function Header() {
                             <Upload />
                         </IconButton>
                     </Tooltip>
-                    <Tooltip title="Move tabs to top/bottom">
+                    <Tooltip title={`Tabs: ${TABS_LABELS[tabsPosition]} — click to cycle`}>
                         <IconButton 
                             size="small" 
                             onClick={toggleTabsPosition}

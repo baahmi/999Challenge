@@ -32,11 +32,10 @@ function TooltipPanel({ name, data }: { name: string; data: ItemTooltipData }) {
           </div>
           {data.recipe.map(ing => {
             const isLimit = data.limitingIngredient === ing.name;
-            const ok = ing.available >= ing.qty;
             return (
               <div key={ing.name} style={{ paddingLeft: 10, display: 'flex', gap: 6, alignItems: 'baseline' }}>
                 <span>• {ing.name} ×{ing.qty}</span>
-                <span style={{ color: ok ? '#6f6' : '#f66', marginLeft: 'auto', whiteSpace: 'nowrap' }}>
+                <span style={{ color: ing.done ? '#6f6' : '#f66', marginLeft: 'auto', whiteSpace: 'nowrap' }}>
                   have {ing.available}{isLimit ? ' ⚠' : ''}
                 </span>
               </div>
@@ -56,17 +55,14 @@ function TooltipPanel({ name, data }: { name: string; data: ItemTooltipData }) {
                   can make: {dep.craftableCount}
                 </span>
               </div>
-              {dep.recipe.map(ing => {
-                const ok = ing.available >= ing.qty;
-                return (
-                  <div key={ing.name} style={{ paddingLeft: 14, display: 'flex', gap: 6, fontSize: 12, color: '#aaa' }}>
-                    <span>{ing.name} ×{ing.qty}</span>
-                    <span style={{ color: ok ? '#6d6' : '#d66', marginLeft: 'auto', whiteSpace: 'nowrap' }}>
-                      have {ing.available}
-                    </span>
-                  </div>
-                );
-              })}
+              {dep.recipe.map(ing => (
+                <div key={ing.name} style={{ paddingLeft: 14, display: 'flex', gap: 6, fontSize: 12, color: '#aaa' }}>
+                  <span>{ing.name} ×{ing.qty}</span>
+                  <span style={{ color: ing.done ? '#6d6' : '#d66', marginLeft: 'auto', whiteSpace: 'nowrap' }}>
+                    have {ing.available}
+                  </span>
+                </div>
+              ))}
             </div>
           ))}
         </div>
@@ -79,24 +75,59 @@ function TooltipPanel({ name, data }: { name: string; data: ItemTooltipData }) {
   );
 }
 
+const COLUMNS: Array<{ key: string; label: string; minW: number }> = [
+  { key: 'checkbox',   label: '✓',        minW: 20 },
+  { key: 'percentage', label: '%',         minW: 40 },
+  { key: 'name',       label: 'Name',      minW: 60 },
+  { key: 'required',   label: 'Required',  minW: 40 },
+  { key: 'total',      label: 'Total',     minW: 40 },
+  { key: 'raw',        label: 'Raw',       minW: 40 },
+  { key: 'raw_I',      label: 'Ir',        minW: 36 },
+  { key: 'raw_G',      label: 'G',         minW: 36 },
+  { key: 'raw_S',      label: 'S',         minW: 36 },
+  { key: 'raw_N',      label: 'N',         minW: 36 },
+];
+const QUALITY_KEYS = new Set(['raw_I', 'raw_G', 'raw_S', 'raw_N']);
+
 export function ItemTable({ items }: ItemTableProps) {
-  const [columnWidths, setColumnWidths] = React.useState({
-    percentage: 80,
-    name: 150,
-    required: 100,
-    total: 100,
-    raw: 100,
+  const [columnWidths, setColumnWidths] = React.useState<Record<string, number>>({
+    checkbox: 30,
+    percentage: 56,
+    name: 200,
+    required: 90,
+    total: 90,
+    raw: 80,
+    raw_I: 54,
+    raw_G: 54,
+    raw_S: 54,
+    raw_N: 54,
   });
   const [hover, setHover] = React.useState<{ name: string; data: ItemTooltipData; x: number; y: number } | null>(null);
+  const theadRef = React.useRef<HTMLTableSectionElement>(null);
+  const [theadHeight, setTheadHeight] = React.useState(34);
 
-  const handleResizeStart = (column: keyof typeof columnWidths, startX: number) => {
-    const startWidth = columnWidths[column];
+  React.useEffect(() => {
+    if (!theadRef.current) return;
+    const measure = () => {
+      if (theadRef.current) {
+        setTheadHeight(theadRef.current.offsetHeight);
+      }
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(theadRef.current);
+    return () => ro.disconnect();
+  }, []);
+
+  const handleResizeStart = (column: string, startX: number) => {
+    const startWidth = columnWidths[column] ?? 40;
+    const minW = COLUMNS.find(c => c.key === column)?.minW ?? 20;
 
     const handleMouseMove = (e: MouseEvent) => {
       const diff = e.clientX - startX;
       setColumnWidths((prev) => ({
         ...prev,
-        [column]: Math.max(50, startWidth + diff),
+        [column]: Math.max(minW, startWidth + diff),
       }));
     };
 
@@ -116,76 +147,106 @@ export function ItemTable({ items }: ItemTableProps) {
     const totalRequired = enrichedItems.reduce((sum, item) => sum + item.required, 0);
     const totalRaw = enrichedItems.reduce((sum, item) => sum + item.raw, 0);
     const totalUsed = enrichedItems.reduce((sum, item) => sum + item.total, 0);
+    const cappedHave = enrichedItems.reduce((sum, item) => sum + Math.min(item.raw + item.total, item.required), 0);
     const totalsRow: ItemWithCalculations = {
       name: 'Total',
       required: totalRequired,
       raw: totalRaw,
       total: totalUsed,
-      percentage: (totalRaw + totalUsed) >= totalRequired ? 100 : ((totalRaw + totalUsed) / totalRequired) * 100,
+      percentage: totalRequired > 0 ? (cappedHave / totalRequired) * 100 : 0,
     };
 
     const tableData = [totalsRow, ...enrichedItems, totalsRow];
 
-    const renderCell = (row: ItemWithCalculations, index: number, column: keyof typeof columnWidths): React.ReactNode => {
+    const renderCell = (row: ItemWithCalculations, index: number, column: string): React.ReactNode => {
       const isTotal = index === 0 || index === tableData.length - 1;
       const done = !isTotal && row.percentage >= 100;
-      
       switch (column) {
-        case 'percentage':
-          return `${Math.floor(row.percentage)}%`;
-        case 'name':
-          return isTotal ? 'Total' : (
-            <span style={done ? { color: '#4caf50', fontWeight: 600 } : undefined}>{row.name}</span>
-          );
-        case 'required':
-          return row.required;
-        case 'total':
-          return row.total;
-        case 'raw':
-          return row.raw;
-        default:
-          return '';
+        case 'checkbox':   return isTotal ? '—' : (done ? '☑' : '☐');
+        case 'percentage': return `${Math.floor(row.percentage)}%`;
+        case 'name':       return isTotal ? 'Total' : row.name;
+        case 'required':   return row.required;
+        case 'total':      return row.raw + row.total;
+        case 'raw':        return row.raw;
+        case 'raw_N':      return isTotal ? '' : (row.rawStacks?.[0] ?? 0);
+        case 'raw_S':      return isTotal ? '' : (row.rawStacks?.[1] ?? 0);
+        case 'raw_G':      return isTotal ? '' : (row.rawStacks?.[2] ?? 0);
+        case 'raw_I':      return isTotal ? '' : (row.rawStacks?.[4] ?? 0);
+        default:           return '';
       }
+    };
+
+    // Hide quality columns when every item with stock has exactly one tier, same across all
+    const showQualityCols = (() => {
+      let singleTier: number | undefined;
+      for (const item of enrichedItems) {
+        if (!item.rawStacks) return false;
+        const tiers = [0, 1, 2, 4].filter(i => (item.rawStacks![i] ?? 0) > 0);
+        if (tiers.length === 0) continue;
+        if (tiers.length > 1) return true;
+        const tier = tiers[0]!;
+        if (singleTier === undefined) singleTier = tier;
+        else if (singleTier !== tier) return true;
+      }
+      return false;
+    })();
+
+    const visibleCols = COLUMNS.filter(c => !QUALITY_KEYS.has(c.key) || showQualityCols);
+    const tableWidth = visibleCols.reduce((s, c) => s + (columnWidths[c.key] ?? c.minW), 0);
+
+    const thBase: React.CSSProperties = {
+      border: '1px solid #ccc', padding: '4px 6px', color: 'black', fontSize: '13px',
+      backgroundColor: '#f0f0f0', position: 'sticky', top: 'var(--sticky-top-offset, 0px)',
+      zIndex: 3, whiteSpace: 'nowrap', overflow: 'hidden', userSelect: 'none',
     };
 
     return (
       <div style={{ width: '100%', border: '1px solid #ccc', padding: '10px' }}>
-        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-          <thead>
-            <tr style={{ backgroundColor: '#f0f0f0' }}>
-              <th style={{ border: '1px solid #ccc', padding: '4px', color: 'black', fontSize: '14px' }}>%</th>
-              <th style={{ border: '1px solid #ccc', padding: '4px', color: 'black', fontSize: '14px' }}>Name</th>
-              <th style={{ border: '1px solid #ccc', padding: '4px', color: 'black', fontSize: '14px' }}>Required</th>
-              <th style={{ border: '1px solid #ccc', padding: '4px', color: 'black', fontSize: '14px' }}>Total</th>
-              <th style={{ border: '1px solid #ccc', padding: '4px', color: 'black', fontSize: '14px' }}>Raw</th>
+        <table style={{ borderCollapse: 'collapse', tableLayout: 'fixed', width: tableWidth }}>
+          <thead ref={theadRef}>
+            <tr>
+              {visibleCols.map(col => (
+                <th key={col.key} style={{ ...thBase, width: columnWidths[col.key] }}>
+                  {col.label}
+                  <div
+                    style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: 5, cursor: 'col-resize', zIndex: 1 }}
+                    onMouseDown={(e) => { e.preventDefault(); handleResizeStart(col.key, e.clientX); }}
+                  />
+                </th>
+              ))}
             </tr>
           </thead>
           <tbody>
             {tableData.map((row, index) => {
-              const isTotal = index === 0 || index === tableData.length - 1;
+              const isTopTotal = index === 0;
+              const isBottomTotal = index === tableData.length - 1;
+              const isTotal = isTopTotal || isBottomTotal;
+              const done = !isTotal && row.percentage >= 100;
               const tooltipData = !isTotal ? (row as ItemRow & { percentage: number }).tooltip : undefined;
+              const rowBg = isTotal ? '#d0d0d0' : done ? '#c8e6c9' : 'white';
+              const stickyStyle: React.CSSProperties = isTopTotal
+                ? { position: 'sticky', top: `calc(var(--sticky-top-offset, 0px) + ${theadHeight}px)`, zIndex: 2, backgroundColor: rowBg }
+                : isBottomTotal
+                ? { position: 'sticky', bottom: 'var(--sticky-bottom-offset, 0px)', zIndex: 2, backgroundColor: rowBg }
+                : {};
               return (
                 <tr
                   key={index}
-                  style={{ backgroundColor: isTotal ? '#d0d0d0' : 'white', fontWeight: isTotal ? 'bold' : 'normal', cursor: tooltipData ? 'help' : 'default' }}
+                  style={{ backgroundColor: rowBg, fontWeight: isTotal ? 'bold' : 'normal', cursor: tooltipData ? 'help' : 'default' }}
                   onMouseEnter={tooltipData ? (e) => setHover({ name: row.name, data: tooltipData, x: e.clientX, y: e.clientY }) : undefined}
                   onMouseLeave={tooltipData ? () => setHover(null) : undefined}
                 >
-                  <td style={{ border: '1px solid #ccc', padding: '4px', minWidth: '40px' }}>
-                    {renderCell(row, index, 'percentage')}
-                  </td>
-                  <td style={{ border: '1px solid #ccc', padding: '4px', minWidth: '50px' }}>
-                    {renderCell(row, index, 'name')}
-                  </td>
-                  <td style={{ border: '1px solid #ccc', padding: '4px', minWidth: '10px' }}>
-                    {renderCell(row, index, 'required')}
-                  </td>
-                  <td style={{ border: '1px solid #ccc', padding: '4px', minWidth: '10px' }}>
-                    {renderCell(row, index, 'total')}
-                  </td>
-                  <td style={{ border: '1px solid #ccc', padding: '4px', minWidth: '10px' }}>
-                    {renderCell(row, index, 'raw')}
-                  </td>
+                  {visibleCols.map(col => (
+                    <td key={col.key} style={{
+                      border: '1px solid #ccc', padding: '4px 6px', fontSize: '13px',
+                      width: columnWidths[col.key], maxWidth: columnWidths[col.key],
+                      overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+                      textAlign: col.key === 'checkbox' ? 'center' : undefined,
+                      ...stickyStyle,
+                    }}>
+                      {renderCell(row, index, col.key)}
+                    </td>
+                  ))}
                 </tr>
               );
             })}

@@ -19,8 +19,15 @@ export function Tabs({ onCategoryChange, children }: TabsProps) {
   const [tabsPosition, setTabsPosition] = useState(Config.getTabsPosition());
   const [maxWidth, setMaxWidth] = useState<string>('auto');
   const [categoryNames, setCategoryNames] = useState<string[]>(Config.getCategoryNames());
-  const tabListRef = useRef<HTMLDivElement>(null);
-  const wrapperRef = useRef<HTMLDivElement>(null);
+  const tabListTopRef = useRef<HTMLDivElement>(null);
+  const tabListBottomRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const hasTop = tabsPosition === 'top' || tabsPosition === 'both';
+    const hasBottom = tabsPosition === 'bottom' || tabsPosition === 'both';
+    document.documentElement.style.setProperty('--sticky-top-offset', hasTop ? '48px' : '0px');
+    document.documentElement.style.setProperty('--sticky-bottom-offset', hasBottom ? '48px' : '0px');
+  }, [tabsPosition]);
 
   useEffect(() => {
     const handleConfigChange = () => {
@@ -47,11 +54,11 @@ export function Tabs({ onCategoryChange, children }: TabsProps) {
     return () => window.removeEventListener('resize', updateMaxWidth);
   }, []);
 
-  const scroll = (direction: 'left' | 'right') => {
+  const scrollRef = (ref: React.RefObject<HTMLDivElement | null>, direction: 'left' | 'right') => {
     const scrollAmount = 200;
-    if (tabListRef.current) {
-      const scroller = tabListRef.current.querySelector<HTMLElement>('.MuiTabs-scroller');
-      const target = scroller ?? tabListRef.current;
+    if (ref.current) {
+      const scroller = ref.current.querySelector<HTMLElement>('.MuiTabs-scroller');
+      const target = scroller ?? ref.current;
       target.scrollBy({
         left: direction === 'left' ? -scrollAmount : scrollAmount,
         behavior: 'smooth',
@@ -65,44 +72,44 @@ export function Tabs({ onCategoryChange, children }: TabsProps) {
     onCategoryChange?.(newValue);
   };
 
-  const tabsPositionClass = tabsPosition === 'top' ? 'tabs-top' : 'tabs-bottom';
+  const renderTabBar = (ref: React.RefObject<HTMLDivElement | null>, stickyClass: string) => (
+    <div className={`tabs-wrapper ${stickyClass}`}>
+      <button
+        className="tab-scroll-button tab-scroll-left"
+        onClick={() => scrollRef(ref, 'left')}
+        aria-label="Previous tabs"
+        title="Previous tabs"
+      >
+        ‹
+      </button>
+      <div className="tabs-scroll-container" ref={ref} style={{ maxWidth }}>
+        <TabList onChange={handleChange} aria-label="category tabs">
+          {categoryNames.map((category) => (
+            <Tab key={category} label={formatTabLabel(category)} value={category} />
+          ))}
+        </TabList>
+      </div>
+      <button
+        className="tab-scroll-button tab-scroll-right"
+        onClick={() => scrollRef(ref, 'right')}
+        aria-label="Next tabs"
+        title="Next tabs"
+      >
+        ›
+      </button>
+    </div>
+  );
 
   return (
-    <div className={`tabs-container ${tabsPositionClass}`}>
+    <div className="tabs-container">
       <TabContext value={value}>
-        <div className="tabs-wrapper" ref={wrapperRef}>
-          <button 
-            className="tab-scroll-button tab-scroll-left" 
-            onClick={() => scroll('left')}
-            aria-label="Previous tabs"
-            title="Previous tabs"
-          >
-            ‹
-          </button>
-          <div 
-            className="tabs-scroll-container" 
-            ref={tabListRef}
-            style={{ maxWidth }}
-          >
-            <TabList onChange={handleChange} aria-label="category tabs">
-              {categoryNames.map((category) => (
-                <Tab key={category} label={formatTabLabel(category)} value={category} />
-              ))}
-            </TabList>
-          </div>
-          <button 
-            className="tab-scroll-button tab-scroll-right" 
-            onClick={() => scroll('right')}
-            aria-label="Next tabs"
-            title="Next tabs"
-          >
-            ›
-          </button>
-        </div>
-        
+        {(tabsPosition === 'top' || tabsPosition === 'both') &&
+          renderTabBar(tabListTopRef, 'tabs-sticky-top')}
         <div className="tab-content">
           {children}
         </div>
+        {(tabsPosition === 'bottom' || tabsPosition === 'both') &&
+          renderTabBar(tabListBottomRef, 'tabs-sticky-bottom')}
       </TabContext>
     </div>
   );

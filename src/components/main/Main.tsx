@@ -8,11 +8,13 @@ import './Main.css';
 
 export function Main() {
   const [selectedCategory, setSelectedCategory] = useState(Config.getSelectedTab());
-  const [compacted, setCompacted] = useState<Array<{ name: string; stack: number }>>([]);
+  const [compacted, setCompacted] = useState<Array<{ name: string; stack: number; quality?: number[] }>>([]);
+  const [quality, setQuality] = useState(Config.getQuality());
 
   useEffect(() => {
     const handleConfigChange = () => {
       setSelectedCategory(Config.getSelectedTab());
+      setQuality(Config.getQuality());
     };
     const unsubscribe = Config.getInstance().subscribe(handleConfigChange);
     return unsubscribe;
@@ -40,18 +42,16 @@ export function Main() {
 
   const allCategoryData = useMemo(
     () => new Map(categoryNames.map(cat => [cat, computeCategoryItems(cat, compacted)])),
-    [categoryNames, compacted]
+    [categoryNames, compacted, quality]  // quality triggers recompute when setting changes
   );
 
   return (
-    <div className="container">
-      <Tabs onCategoryChange={handleCategoryChange}>
-        {categoryNames.map(cat => (
-          <div key={cat} style={{ display: cat === selectedCategory ? undefined : 'none' }}>
-            <ItemTable items={allCategoryData.get(cat) ?? []} />
-          </div>
-        ))}
-      </Tabs>
-    </div>
+    <main className="main">
+      <div className="container">
+        <Tabs onCategoryChange={handleCategoryChange}>
+          <ItemTable key={selectedCategory} items={allCategoryData.get(selectedCategory) ?? []} />
+        </Tabs>
+      </div>
+    </main>
   );
 }
