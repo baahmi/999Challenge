@@ -1,22 +1,53 @@
+import categoriesData from '../data/categories.json' assert { type: 'json' };
+
 export type Theme = 'light' | 'dark';
+export type TabsPosition = 'top' | 'bottom';
+export type Quality = 'highest' | 'any' | 'normal' | 'silver' | 'gold'| 'iridium' | 'all';
+
+export interface UIConfig {
+  tabsPosition: TabsPosition;
+  selectedTab: string;
+  theme: Theme;
+}
+
+export interface CategoriesConfig {
+  names: string[];
+  ignored: number[];
+}
 
 export interface AppConfig {
-  theme: Theme;
+  ui: UIConfig;
+  quality: Quality;
 }
 
 export class Config {
   private static readonly STORAGE_KEY = 'app-config';
   private static readonly DEFAULT_CONFIG: AppConfig = {
-    // theme: 'dark'
-    theme: 'light'
+    ui: {
+      theme: 'light',
+      tabsPosition: 'bottom',
+      selectedTab: 'All'
+    },
+    quality: 'highest'
   };
 
   private static instance: Config;
   private config: AppConfig;
+  private categories: CategoriesConfig | null = null;
   private listeners: Set<(config: AppConfig) => void> = new Set();
 
   private constructor() {
     this.config = this.loadConfig();
+    this.categories = this.loadCategoriesSync();
+  }
+
+  private loadCategoriesSync(): CategoriesConfig | null {
+    try {
+      return categoriesData as CategoriesConfig;
+    } catch (error) {
+      console.warn('Failed to load categories:', error);
+      return null;
+    }
   }
 
   public static getInstance(): Config {
@@ -27,9 +58,33 @@ export class Config {
   }
 
   public static getTheme(): Theme {
-    const theme = this.getInstance().getConfig().theme;
-    console.log(theme);
-    return theme;
+    return this.getInstance().getConfig().ui.theme;
+  }
+
+  public static getTabsPosition(): TabsPosition {
+    return this.getInstance().getConfig().ui.tabsPosition;
+  }
+
+  public static getSelectedTab(): string {
+    return this.getInstance().getConfig().ui.selectedTab;
+  }
+
+  public static setSelectedTab(tab: string): void {
+    this.getInstance().setSelectedTab(tab);
+  }
+
+  public static getQuality(): Quality {
+    return this.getInstance().getConfig().quality;
+  }
+
+  public static getCategoryNames(): string[] {
+    const categories = this.getInstance().categories;
+    return categories?.names ?? [];
+  }
+
+  public static getIgnoredCategories(): number[] {
+    const categories = this.getInstance().categories;
+    return categories?.ignored ?? [];
   }
 
   private loadConfig(): AppConfig {
@@ -70,8 +125,29 @@ export class Config {
   }
 
   public setTheme(theme: Theme): void {
-    if (this.config.theme !== theme) {
-      this.config.theme = theme;
+    if (this.config.ui.theme !== theme) {
+      this.config.ui.theme = theme;
+      this.saveConfig();
+    }
+  }
+
+  public setTabsPosition(position: TabsPosition): void {
+    if (this.config.ui.tabsPosition !== position) {
+      this.config.ui.tabsPosition = position;
+      this.saveConfig();
+    }
+  }
+
+  public setSelectedTab(tab: string): void {
+    if (this.config.ui.selectedTab !== tab) {
+      this.config.ui.selectedTab = tab;
+      this.saveConfig();
+    }
+  }
+
+  public setQuality(quality: Quality): void {
+    if (this.config.quality !== quality) {
+      this.config.quality = quality;
       this.saveConfig();
     }
   }

@@ -1,0 +1,82 @@
+.item-table-container {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  border: 1px solid;
+  border-radius: 4px;
+}
+
+.item-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  table-layout: auto;
+}
+
+.item-table thead {
+  background-color: rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.item-table th {
+  padding: 4px;
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 1px solid #ccc;
+  user-select: none;
+  position: relative;
+  overflow: visible;
+}
+
+.header-cell {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem;
+  height: 100%;
+  position: relative;
+}
+
+.item-table td {
+  padding: 0.75rem;
+  border-bottom: 1px solid;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.item-table tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.item-table tbody tr.total-row {
+  background-color: rgba(0, 0, 0, 0.08);
+  font-weight: 600;
+}
+
+.item-table tbody tr.total-row:hover {
+  background-color: rgba(0, 0, 0, 0.12);
+}
+
+.resizer {
+  position: absolute;
+  right: -2px;
+  top: 0;
+  height: 100%;
+  width: 4px;
+  background: transparent;
+  cursor: col-resize;
+  user-select: none;
+  touch-action: none;
+  z-index: 1;
+}
+
+.resizer:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.resizer.isResizing {
+  background: rgba(0, 0, 0, 0.5);
+}

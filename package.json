@@ -9,12 +9,14 @@
     "build": "bun run build.ts"
   },
   "dependencies": {
-    "react": "^19",
-    "react-dom": "^19",
-    "@mui/material": "7.3.9",
     "@emotion/styled": "11.14.1",
     "@fontsource/roboto": "5.2.10",
-    "@mui/icons-material": "7.3.9"
+    "@mui/icons-material": "7.3.9",
+    "@mui/lab": "^7.0.1-beta.23",
+    "@mui/material": "7.3.9",
+    "@tanstack/react-table": "^8.21.3",
+    "react": "^19",
+    "react-dom": "^19"
   },
   "devDependencies": {
     "@types/react": "^19",
