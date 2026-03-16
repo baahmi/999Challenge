@@ -1,21 +1,18 @@
 export interface Item {
   name: string;
   required: number;
+  total: number;
   raw: number;
 }
 
 export interface ItemWithCalculations extends Item {
-  total: number;
   percentage: number;
-}
-
-export function calculateTotal(item: Item): number {
-  return item.raw;
 }
 
 export function calculatePercentage(item: Item): number {
   if (item.required === 0) return 0;
-  return item.raw >= item.required ? 100 : (item.raw / item.required) * 100;
+  const obtained = item.raw + item.total;
+  return obtained >= item.required ? 100 : (obtained / item.required) * 100;
 }
 
 export function calculateCategoryTotal(items: Item[]): number {
@@ -24,11 +21,10 @@ export function calculateCategoryTotal(items: Item[]): number {
 
 export function enrichItemsWithCalculations(
   items: Item[],
-  categoryTotal: number
+  _categoryTotal: number
 ): ItemWithCalculations[] {
   return items.map((item) => ({
     ...item,
-    total: calculateTotal(item),
     percentage: calculatePercentage(item),
   }));
 }

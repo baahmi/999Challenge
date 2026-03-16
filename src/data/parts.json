@@ -1,0 +1,727 @@
+[ [ "Wood Fence", {
+  "388" : [ "Wood", 2 ]
+} ], [ "Stone Fence", {
+  "390" : [ "Stone", 2 ]
+} ], [ "Iron Fence", {
+  "335" : [ "Iron Bar", 1 ]
+} ], [ "Hardwood Fence", {
+  "709" : [ "Hardwood", 1 ]
+} ], [ "Grass Starter", {
+  "771" : [ "Fiber", 10 ]
+} ], [ "Blue Grass Starter", {
+  "771" : [ "Fiber", 25 ],
+  "Moss" : [ "Moss", 10 ],
+  "MysticSyrup" : [ "Mystic Syrup", 1 ]
+} ], [ "Gate", {
+  "388" : [ "Wood", 10 ]
+} ], [ "Chest", {
+  "388" : [ "Wood", 50 ]
+} ], [ "Big Chest", {
+  "388" : [ "Wood", 120 ],
+  "334" : [ "Copper Bar", 2 ]
+} ], [ "Stone Chest", {
+  "390" : [ "Stone", 50 ]
+} ], [ "Big Stone Chest", {
+  "390" : [ "Stone", 250 ]
+} ], [ "Torch", {
+  "388" : [ "Wood", 1 ],
+  "92" : [ "Sap", 2 ]
+} ], [ "Scarecrow", {
+  "388" : [ "Wood", 50 ],
+  "382" : [ "Coal", 1 ],
+  "771" : [ "Fiber", 20 ]
+} ], [ "Deluxe Scarecrow", {
+  "388" : [ "Wood", 50 ],
+  "386" : [ "Iridium Ore", 1 ],
+  "771" : [ "Fiber", 40 ]
+} ], [ "Bee House", {
+  "388" : [ "Wood", 40 ],
+  "382" : [ "Coal", 8 ],
+  "335" : [ "Iron Bar", 1 ],
+  "724" : [ "Maple Syrup", 1 ]
+} ], [ "Keg", {
+  "388" : [ "Wood", 30 ],
+  "334" : [ "Copper Bar", 1 ],
+  "335" : [ "Iron Bar", 1 ],
+  "725" : [ "Oak Resin", 1 ]
+} ], [ "Cask", {
+  "388" : [ "Wood", 20 ],
+  "709" : [ "Hardwood", 1 ]
+} ], [ "Dehydrator", {
+  "388" : [ "Wood", 30 ],
+  "330" : [ "Clay", 2 ],
+  "82" : [ "Fire Quartz", 1 ]
+} ], [ "Furnace", {
+  "378" : [ "Copper Ore", 20 ],
+  "390" : [ "Stone", 25 ]
+} ], [ "Heavy Furnace", {
+  "(BC)13" : [ "Furnace", 2 ],
+  "335" : [ "Iron Bar", 3 ],
+  "390" : [ "Stone", 50 ]
+} ], [ "Anvil", {
+  "335" : [ "Iron Bar", 50 ]
+} ], [ "Mini-Forge", {
+  "335" : [ "Iron Bar", 10 ],
+  "336" : [ "Gold Bar", 10 ],
+  "337" : [ "Iridium Bar", 5 ]
+} ], [ "Garden Pot", {
+  "330" : [ "Clay", 1 ],
+  "390" : [ "Stone", 10 ],
+  "338" : [ "Refined Quartz", 1 ]
+} ], [ "Wood Sign", {
+  "388" : [ "Wood", 25 ]
+} ], [ "Stone Sign", {
+  "390" : [ "Stone", 25 ]
+} ], [ "Dark Sign", {
+  "767" : [ "Bat Wing", 5 ],
+  "881" : [ "Bone Fragment", 5 ]
+} ], [ "Text Sign", {
+  "388" : [ "Wood", 25 ]
+} ], [ "Cheese Press", {
+  "388" : [ "Wood", 45 ],
+  "390" : [ "Stone", 45 ],
+  "709" : [ "Hardwood", 10 ],
+  "334" : [ "Copper Bar", 1 ]
+} ], [ "Mayonnaise Machine", {
+  "388" : [ "Wood", 15 ],
+  "390" : [ "Stone", 15 ],
+  "86" : [ "Earth Crystal", 1 ],
+  "334" : [ "Copper Bar", 1 ]
+} ], [ "Seed Maker", {
+  "388" : [ "Wood", 25 ],
+  "382" : [ "Coal", 10 ],
+  "336" : [ "Gold Bar", 1 ]
+} ], [ "Loom", {
+  "388" : [ "Wood", 60 ],
+  "771" : [ "Fiber", 30 ],
+  "726" : [ "Pine Tar", 1 ]
+} ], [ "Oil Maker", {
+  "766" : [ "Slime", 50 ],
+  "709" : [ "Hardwood", 20 ],
+  "336" : [ "Gold Bar", 1 ]
+} ], [ "Recycling Machine", {
+  "388" : [ "Wood", 25 ],
+  "390" : [ "Stone", 25 ],
+  "335" : [ "Iron Bar", 1 ]
+} ], [ "Worm Bin", {
+  "709" : [ "Hardwood", 15 ],
+  "336" : [ "Gold Bar", 1 ],
+  "335" : [ "Iron Bar", 1 ],
+  "771" : [ "Fiber", 50 ]
+} ], [ "Deluxe Worm Bin", {
+  "(BC)154" : [ "Worm Bin", 1 ],
+  "Moss" : [ "Moss", 30 ]
+} ], [ "Bait Maker", {
+  "335" : [ "Iron Bar", 3 ],
+  "393" : [ "Coral", 3 ],
+  "397" : [ "Sea Urchin", 1 ]
+} ], [ "Fish Smoker", {
+  "709" : [ "Hardwood", 10 ],
+  "SeaJelly" : [ "Sea Jelly", 1 ],
+  "RiverJelly" : [ "River Jelly", 1 ],
+  "CaveJelly" : [ "Cave Jelly", 1 ]
+} ], [ "Preserves Jar", {
+  "388" : [ "Wood", 50 ],
+  "390" : [ "Stone", 40 ],
+  "382" : [ "Coal", 8 ]
+} ], [ "Charcoal Kiln", {
+  "388" : [ "Wood", 20 ],
+  "334" : [ "Copper Bar", 2 ]
+} ], [ "Tapper", {
+  "388" : [ "Wood", 40 ],
+  "334" : [ "Copper Bar", 2 ]
+} ], [ "Mushroom Log", {
+  "709" : [ "Hardwood", 10 ],
+  "Moss" : [ "Moss", 10 ]
+} ], [ "Lightning Rod", {
+  "335" : [ "Iron Bar", 1 ],
+  "338" : [ "Refined Quartz", 1 ],
+  "767" : [ "Bat Wing", 5 ]
+} ], [ "Slime Incubator", {
+  "337" : [ "Iridium Bar", 2 ],
+  "766" : [ "Slime", 100 ]
+} ], [ "Slime Egg-Press", {
+  "382" : [ "Coal", 25 ],
+  "82" : [ "Fire Quartz", 1 ],
+  "787" : [ "Battery Pack", 1 ]
+} ], [ "Crystalarium", {
+  "390" : [ "Stone", 99 ],
+  "336" : [ "Gold Bar", 5 ],
+  "337" : [ "Iridium Bar", 2 ],
+  "787" : [ "Battery Pack", 1 ]
+} ], [ "Mini-Jukebox", {
+  "335" : [ "Iron Bar", 2 ],
+  "787" : [ "Battery Pack", 1 ]
+} ], [ "Sprinkler", {
+  "334" : [ "Copper Bar", 1 ],
+  "335" : [ "Iron Bar", 1 ]
+} ], [ "Quality Sprinkler", {
+  "335" : [ "Iron Bar", 1 ],
+  "336" : [ "Gold Bar", 1 ],
+  "338" : [ "Refined Quartz", 1 ]
+} ], [ "Iridium Sprinkler", {
+  "336" : [ "Gold Bar", 1 ],
+  "337" : [ "Iridium Bar", 1 ],
+  "787" : [ "Battery Pack", 1 ]
+} ], [ "Staircase", {
+  "390" : [ "Stone", 99 ]
+} ], [ "Flute Block", {
+  "388" : [ "Wood", 10 ],
+  "378" : [ "Copper Ore", 2 ],
+  "771" : [ "Fiber", 20 ]
+} ], [ "Drum Block", {
+  "390" : [ "Stone", 10 ],
+  "378" : [ "Copper Ore", 2 ],
+  "771" : [ "Fiber", 20 ]
+} ], [ "Basic Fertilizer", {
+  "92" : [ "Sap", 2 ]
+} ], [ "Tree Fertilizer", {
+  "771" : [ "Fiber", 5 ],
+  "390" : [ "Stone", 5 ]
+} ], [ "Mystic Tree Seed", {
+  "309" : [ "Acorn", 5 ],
+  "310" : [ "Maple Seed", 5 ],
+  "311" : [ "Pine Cone", 5 ],
+  "292" : [ "Mahogany Seed", 5 ]
+} ], [ "Quality Fertilizer", {
+  "92" : [ "Sap", 4 ],
+  "-4" : [ null, 1 ]
+} ], [ "Basic Retaining Soil", {
+  "390" : [ "Stone", 2 ]
+} ], [ "Quality Retaining Soil", {
+  "390" : [ "Stone", 3 ],
+  "330" : [ "Clay", 1 ]
+} ], [ "Speed-Gro", {
+  "726" : [ "Pine Tar", 1 ],
+  "Moss" : [ "Moss", 5 ]
+} ], [ "Deluxe Speed-Gro", {
+  "725" : [ "Oak Resin", 1 ],
+  "881" : [ "Bone Fragment", 5 ]
+} ], [ "Hyper Speed-Gro", {
+  "909" : [ "Radioactive Ore", 1 ],
+  "881" : [ "Bone Fragment", 3 ],
+  "768" : [ "Solar Essence", 1 ]
+} ], [ "Deluxe Fertilizer", {
+  "337" : [ "Iridium Bar", 1 ],
+  "92" : [ "Sap", 40 ]
+} ], [ "Deluxe Retaining Soil", {
+  "390" : [ "Stone", 5 ],
+  "771" : [ "Fiber", 3 ],
+  "330" : [ "Clay", 1 ]
+} ], [ "Cherry Bomb", {
+  "378" : [ "Copper Ore", 4 ],
+  "382" : [ "Coal", 1 ]
+} ], [ "Bomb", {
+  "380" : [ "Iron Ore", 4 ],
+  "382" : [ "Coal", 1 ]
+} ], [ "Mega Bomb", {
+  "384" : [ "Gold Ore", 4 ],
+  "768" : [ "Solar Essence", 1 ],
+  "769" : [ "Void Essence", 1 ]
+} ], [ "Explosive Ammo", {
+  "335" : [ "Iron Bar", 1 ],
+  "382" : [ "Coal", 2 ]
+} ], [ "Ancient Seeds", {
+  "114" : [ "Ancient Seed", 1 ]
+} ], [ "Wild Seeds (Sp)", {
+  "16" : [ "Wild Horseradish", 1 ],
+  "18" : [ "Daffodil", 1 ],
+  "20" : [ "Leek", 1 ],
+  "22" : [ "Dandelion", 1 ]
+} ], [ "Wild Seeds (Su)", {
+  "396" : [ "Spice Berry", 1 ],
+  "398" : [ "Grape", 1 ],
+  "402" : [ "Sweet Pea", 1 ]
+} ], [ "Wild Seeds (Fa)", {
+  "404" : [ "Common Mushroom", 1 ],
+  "406" : [ "Wild Plum", 1 ],
+  "408" : [ "Hazelnut", 1 ],
+  "410" : [ "Blackberry", 1 ]
+} ], [ "Wild Seeds (Wi)", {
+  "412" : [ "Winter Root", 1 ],
+  "414" : [ "Crystal Fruit", 1 ],
+  "416" : [ "Snow Yam", 1 ],
+  "418" : [ "Crocus", 1 ]
+} ], [ "Fiber Seeds", {
+  "770" : [ "Mixed Seeds", 1 ],
+  "92" : [ "Sap", 5 ],
+  "330" : [ "Clay", 1 ]
+} ], [ "Tea Sapling", {
+  "-777" : [ null, 2 ],
+  "771" : [ "Fiber", 5 ],
+  "388" : [ "Wood", 5 ]
+} ], [ "Warp Totem: Farm", {
+  "709" : [ "Hardwood", 1 ],
+  "340" : [ "Honey", 1 ],
+  "771" : [ "Fiber", 20 ]
+} ], [ "Warp Totem: Mountains", {
+  "709" : [ "Hardwood", 1 ],
+  "335" : [ "Iron Bar", 1 ],
+  "390" : [ "Stone", 25 ]
+} ], [ "Warp Totem: Beach", {
+  "709" : [ "Hardwood", 1 ],
+  "393" : [ "Coral", 2 ],
+  "771" : [ "Fiber", 10 ]
+} ], [ "Warp Totem: Desert", {
+  "709" : [ "Hardwood", 2 ],
+  "88" : [ "Coconut", 1 ],
+  "386" : [ "Iridium Ore", 4 ]
+} ], [ "Warp Totem: Island", {
+  "709" : [ "Hardwood", 5 ],
+  "829" : [ "Ginger", 1 ]
+} ], [ "Rain Totem", {
+  "709" : [ "Hardwood", 1 ],
+  "432" : [ "Truffle Oil", 1 ],
+  "726" : [ "Pine Tar", 5 ]
+} ], [ "Treasure Totem", {
+  "709" : [ "Hardwood", 5 ],
+  "MysticSyrup" : [ "Mystic Syrup", 1 ],
+  "Moss" : [ "Moss", 10 ]
+} ], [ "Cookout Kit", {
+  "388" : [ "Wood", 15 ],
+  "771" : [ "Fiber", 10 ],
+  "382" : [ "Coal", 3 ]
+} ], [ "Tent Kit", {
+  "709" : [ "Hardwood", 10 ],
+  "771" : [ "Fiber", 25 ],
+  "428" : [ "Cloth", 1 ]
+} ], [ "Field Snack", {
+  "309" : [ "Acorn", 1 ],
+  "310" : [ "Maple Seed", 1 ],
+  "311" : [ "Pine Cone", 1 ]
+} ], [ "Statue Of Blessings", {
+  "390" : [ "Stone", 999 ],
+  "771" : [ "Fiber", 999 ],
+  "92" : [ "Sap", 999 ],
+  "Moss" : [ "Moss", 333 ]
+} ], [ "Statue Of The Dwarf King", {
+  "337" : [ "Iridium Bar", 20 ]
+} ], [ "Jack-O-Lantern", {
+  "276" : [ "Pumpkin", 1 ],
+  "93" : [ "Torch", 1 ]
+} ], [ "Wood Floor", {
+  "388" : [ "Wood", 1 ]
+} ], [ "Straw Floor", {
+  "388" : [ "Wood", 1 ],
+  "771" : [ "Fiber", 1 ]
+} ], [ "Weathered Floor", {
+  "388" : [ "Wood", 1 ]
+} ], [ "Rustic Plank Floor", {
+  "388" : [ "Wood", 1 ]
+} ], [ "Crystal Floor", {
+  "338" : [ "Refined Quartz", 1 ]
+} ], [ "Stone Floor", {
+  "390" : [ "Stone", 1 ]
+} ], [ "Stone Walkway Floor", {
+  "390" : [ "Stone", 1 ]
+} ], [ "Brick Floor", {
+  "330" : [ "Clay", 2 ],
+  "390" : [ "Stone", 5 ]
+} ], [ "Wood Path", {
+  "388" : [ "Wood", 1 ]
+} ], [ "Gravel Path", {
+  "390" : [ "Stone", 1 ]
+} ], [ "Cobblestone Path", {
+  "390" : [ "Stone", 1 ]
+} ], [ "Stepping Stone Path", {
+  "390" : [ "Stone", 1 ]
+} ], [ "Crystal Path", {
+  "338" : [ "Refined Quartz", 1 ]
+} ], [ "Bait", {
+  "684" : [ "Bug Meat", 1 ]
+} ], [ "Deluxe Bait", {
+  "685" : [ "Bait", 5 ],
+  "Moss" : [ "Moss", 2 ]
+} ], [ "Wild Bait", {
+  "771" : [ "Fiber", 10 ],
+  "684" : [ "Bug Meat", 5 ],
+  "766" : [ "Slime", 5 ]
+} ], [ "Challenge Bait", {
+  "881" : [ "Bone Fragment", 5 ],
+  "Moss" : [ "Moss", 2 ]
+} ], [ "Magnet", {
+  "335" : [ "Iron Bar", 1 ]
+} ], [ "Oil Of Garlic", {
+  "248" : [ "Garlic", 10 ],
+  "247" : [ "Oil", 1 ]
+} ], [ "Life Elixir", {
+  "420" : [ "Red Mushroom", 1 ],
+  "422" : [ "Purple Mushroom", 1 ],
+  "257" : [ "Morel", 1 ],
+  "281" : [ "Chanterelle", 1 ]
+} ], [ "Crab Pot", {
+  "388" : [ "Wood", 40 ],
+  "335" : [ "Iron Bar", 3 ]
+} ], [ "Tub o' Flowers", {
+  "388" : [ "Wood", 15 ],
+  "427" : [ "Tulip Bulb", 1 ],
+  "429" : [ "Jazz Seeds", 1 ],
+  "453" : [ "Poppy Seeds", 1 ],
+  "455" : [ "Spangle Seeds", 1 ]
+} ], [ "Wooden Brazier", {
+  "388" : [ "Wood", 10 ],
+  "382" : [ "Coal", 1 ],
+  "771" : [ "Fiber", 5 ]
+} ], [ "Wicked Statue", {
+  "382" : [ "Coal", 5 ],
+  "390" : [ "Stone", 25 ]
+} ], [ "Stone Brazier", {
+  "390" : [ "Stone", 10 ],
+  "382" : [ "Coal", 1 ],
+  "771" : [ "Fiber", 5 ]
+} ], [ "Gold Brazier", {
+  "336" : [ "Gold Bar", 1 ],
+  "382" : [ "Coal", 1 ],
+  "771" : [ "Fiber", 5 ]
+} ], [ "Campfire", {
+  "390" : [ "Stone", 10 ],
+  "388" : [ "Wood", 10 ],
+  "771" : [ "Fiber", 10 ]
+} ], [ "Stump Brazier", {
+  "709" : [ "Hardwood", 5 ],
+  "382" : [ "Coal", 1 ]
+} ], [ "Carved Brazier", {
+  "709" : [ "Hardwood", 10 ],
+  "382" : [ "Coal", 1 ]
+} ], [ "Skull Brazier", {
+  "881" : [ "Bone Fragment", 10 ]
+} ], [ "Barrel Brazier", {
+  "388" : [ "Wood", 50 ],
+  "768" : [ "Solar Essence", 1 ],
+  "382" : [ "Coal", 1 ]
+} ], [ "Marble Brazier", {
+  "567" : [ "Marble", 1 ],
+  "62" : [ "Aquamarine", 1 ],
+  "390" : [ "Stone", 100 ]
+} ], [ "Wood Lamp-post", {
+  "388" : [ "Wood", 50 ],
+  "787" : [ "Battery Pack", 1 ]
+} ], [ "Iron Lamp-post", {
+  "335" : [ "Iron Bar", 1 ],
+  "787" : [ "Battery Pack", 1 ]
+} ], [ "Fairy Dust", {
+  "72" : [ "Diamond", 1 ],
+  "595" : [ "Fairy Rose", 1 ]
+} ], [ "Bug Steak", {
+  "684" : [ "Bug Meat", 10 ]
+} ], [ "Monster Musk", {
+  "767" : [ "Bat Wing", 30 ],
+  "766" : [ "Slime", 30 ]
+} ], [ "Mini-Obelisk", {
+  "709" : [ "Hardwood", 30 ],
+  "768" : [ "Solar Essence", 20 ],
+  "336" : [ "Gold Bar", 3 ]
+} ], [ "Farm Computer", {
+  "122" : [ "Dwarf Gadget", 1 ],
+  "787" : [ "Battery Pack", 1 ],
+  "338" : [ "Refined Quartz", 10 ]
+} ], [ "Ostrich Incubator", {
+  "881" : [ "Bone Fragment", 50 ],
+  "709" : [ "Hardwood", 50 ],
+  "848" : [ "Cinder Shard", 20 ]
+} ], [ "Geode Crusher", {
+  "336" : [ "Gold Bar", 2 ],
+  "390" : [ "Stone", 50 ],
+  "72" : [ "Diamond", 1 ]
+} ], [ "Solar Panel", {
+  "338" : [ "Refined Quartz", 10 ],
+  "335" : [ "Iron Bar", 5 ],
+  "336" : [ "Gold Bar", 5 ]
+} ], [ "Bone Mill", {
+  "881" : [ "Bone Fragment", 10 ],
+  "330" : [ "Clay", 3 ],
+  "390" : [ "Stone", 20 ]
+} ], [ "Heavy Tapper", {
+  "709" : [ "Hardwood", 30 ],
+  "910" : [ "Radioactive Bar", 1 ]
+} ], [ "Hopper", {
+  "709" : [ "Hardwood", 10 ],
+  "337" : [ "Iridium Bar", 1 ],
+  "910" : [ "Radioactive Bar", 1 ]
+} ], [ "Magic Bait", {
+  "909" : [ "Radioactive Ore", 1 ],
+  "684" : [ "Bug Meat", 3 ]
+} ], [ "Fried Egg", {
+  "-5" : [ null, 1 ]
+} ], [ "Omelet", {
+  "-5" : [ null, 1 ],
+  "-6" : [ null, 1 ]
+} ], [ "Salad", {
+  "20" : [ "Leek", 1 ],
+  "22" : [ "Dandelion", 1 ],
+  "419" : [ "Vinegar", 1 ]
+} ], [ "Cheese Cauli.", {
+  "190" : [ "Cauliflower", 1 ],
+  "424" : [ "Cheese", 1 ]
+} ], [ "Baked Fish", {
+  "145" : [ "Sunfish", 1 ],
+  "132" : [ "Bream", 1 ],
+  "246" : [ "Wheat Flour", 1 ]
+} ], [ "Parsnip Soup", {
+  "24" : [ "Parsnip", 1 ],
+  "-6" : [ null, 1 ],
+  "419" : [ "Vinegar", 1 ]
+} ], [ "Vegetable Stew", {
+  "256" : [ "Tomato", 1 ],
+  "284" : [ "Beet", 1 ]
+} ], [ "Complete Breakfast", {
+  "194" : [ "Fried Egg", 1 ],
+  "-6" : [ null, 1 ],
+  "210" : [ "Hashbrowns", 1 ],
+  "211" : [ "Pancakes", 1 ]
+} ], [ "Fried Calamari", {
+  "151" : [ "Squid", 1 ],
+  "246" : [ "Wheat Flour", 1 ],
+  "247" : [ "Oil", 1 ]
+} ], [ "Strange Bun", {
+  "246" : [ "Wheat Flour", 1 ],
+  "722" : [ "Periwinkle", 1 ],
+  "308" : [ "Void Mayonnaise", 1 ]
+} ], [ "Lucky Lunch", {
+  "154" : [ "Sea Cucumber", 1 ],
+  "229" : [ "Tortilla", 1 ],
+  "597" : [ "Blue Jazz", 1 ]
+} ], [ "Fried Mushroom", {
+  "404" : [ "Common Mushroom", 1 ],
+  "257" : [ "Morel", 1 ],
+  "247" : [ "Oil", 1 ]
+} ], [ "Pizza", {
+  "246" : [ "Wheat Flour", 1 ],
+  "256" : [ "Tomato", 1 ],
+  "424" : [ "Cheese", 1 ]
+} ], [ "Bean Hotpot", {
+  "188" : [ "Green Bean", 2 ]
+} ], [ "Glazed Yams", {
+  "280" : [ "Yam", 1 ],
+  "245" : [ "Sugar", 1 ]
+} ], [ "Carp Surprise", {
+  "142" : [ "Carp", 4 ]
+} ], [ "Hashbrowns", {
+  "192" : [ "Potato", 1 ],
+  "247" : [ "Oil", 1 ]
+} ], [ "Pancakes", {
+  "246" : [ "Wheat Flour", 1 ],
+  "-5" : [ null, 1 ]
+} ], [ "Salmon Dinner", {
+  "139" : [ "Salmon", 1 ],
+  "300" : [ "Amaranth", 1 ],
+  "250" : [ "Kale", 1 ]
+} ], [ "Fish Taco", {
+  "130" : [ "Tuna", 1 ],
+  "229" : [ "Tortilla", 1 ],
+  "266" : [ "Red Cabbage", 1 ],
+  "306" : [ "Mayonnaise", 1 ]
+} ], [ "Crispy Bass", {
+  "136" : [ "Largemouth Bass", 1 ],
+  "246" : [ "Wheat Flour", 1 ],
+  "247" : [ "Oil", 1 ]
+} ], [ "Pepper Poppers", {
+  "260" : [ "Hot Pepper", 1 ],
+  "424" : [ "Cheese", 1 ]
+} ], [ "Bread", {
+  "246" : [ "Wheat Flour", 1 ]
+} ], [ "Tom Kha Soup", {
+  "88" : [ "Coconut", 1 ],
+  "720" : [ "Shrimp", 1 ],
+  "404" : [ "Common Mushroom", 1 ]
+} ], [ "Trout Soup", {
+  "138" : [ "Rainbow Trout", 1 ],
+  "153" : [ "Green Algae", 1 ]
+} ], [ "Chocolate Cake", {
+  "246" : [ "Wheat Flour", 1 ],
+  "245" : [ "Sugar", 1 ],
+  "-5" : [ null, 1 ]
+} ], [ "Pink Cake", {
+  "254" : [ "Melon", 1 ],
+  "246" : [ "Wheat Flour", 1 ],
+  "245" : [ "Sugar", 1 ],
+  "-5" : [ null, 1 ]
+} ], [ "Rhubarb Pie", {
+  "252" : [ "Rhubarb", 1 ],
+  "246" : [ "Wheat Flour", 1 ],
+  "245" : [ "Sugar", 1 ]
+} ], [ "Cookies", {
+  "246" : [ "Wheat Flour", 1 ],
+  "245" : [ "Sugar", 1 ],
+  "-5" : [ null, 1 ]
+} ], [ "Spaghetti", {
+  "246" : [ "Wheat Flour", 1 ],
+  "256" : [ "Tomato", 1 ]
+} ], [ "Fried Eel", {
+  "148" : [ "Eel", 1 ],
+  "247" : [ "Oil", 1 ]
+} ], [ "Spicy Eel", {
+  "148" : [ "Eel", 1 ],
+  "260" : [ "Hot Pepper", 1 ]
+} ], [ "Sashimi", {
+  "-4" : [ null, 1 ]
+} ], [ "Maki Roll", {
+  "-4" : [ null, 1 ],
+  "152" : [ "Seaweed", 1 ],
+  "423" : [ "Rice", 1 ]
+} ], [ "Tortilla", {
+  "270" : [ "Corn", 1 ]
+} ], [ "Red Plate", {
+  "266" : [ "Red Cabbage", 1 ],
+  "264" : [ "Radish", 1 ]
+} ], [ "Eggplant Parm.", {
+  "272" : [ "Eggplant", 1 ],
+  "256" : [ "Tomato", 1 ]
+} ], [ "Rice Pudding", {
+  "-6" : [ null, 1 ],
+  "245" : [ "Sugar", 1 ],
+  "423" : [ "Rice", 1 ]
+} ], [ "Ice Cream", {
+  "-6" : [ null, 1 ],
+  "245" : [ "Sugar", 1 ]
+} ], [ "Blueberry Tart", {
+  "258" : [ "Blueberry", 1 ],
+  "246" : [ "Wheat Flour", 1 ],
+  "245" : [ "Sugar", 1 ],
+  "-5" : [ null, 1 ]
+} ], [ "Autumn's Bounty", {
+  "280" : [ "Yam", 1 ],
+  "276" : [ "Pumpkin", 1 ]
+} ], [ "Pumpkin Soup", {
+  "276" : [ "Pumpkin", 1 ],
+  "-6" : [ null, 1 ]
+} ], [ "Super Meal", {
+  "278" : [ "Bok Choy", 1 ],
+  "282" : [ "Cranberries", 1 ],
+  "274" : [ "Artichoke", 1 ]
+} ], [ "Cran. Sauce", {
+  "282" : [ "Cranberries", 1 ],
+  "245" : [ "Sugar", 1 ]
+} ], [ "Stuffing", {
+  "216" : [ "Bread", 1 ],
+  "282" : [ "Cranberries", 1 ],
+  "408" : [ "Hazelnut", 1 ]
+} ], [ "Farmer's Lunch", {
+  "195" : [ "Omelet", 1 ],
+  "24" : [ "Parsnip", 1 ]
+} ], [ "Survival Burger", {
+  "216" : [ "Bread", 1 ],
+  "78" : [ "Cave Carrot", 1 ],
+  "272" : [ "Eggplant", 1 ]
+} ], [ "Dish o' The Sea", {
+  "131" : [ "Sardine", 2 ],
+  "210" : [ "Hashbrowns", 1 ]
+} ], [ "Miner's Treat", {
+  "78" : [ "Cave Carrot", 2 ],
+  "245" : [ "Sugar", 1 ],
+  "-6" : [ null, 1 ]
+} ], [ "Roots Platter", {
+  "78" : [ "Cave Carrot", 1 ],
+  "412" : [ "Winter Root", 1 ]
+} ], [ "Algae Soup", {
+  "153" : [ "Green Algae", 4 ]
+} ], [ "Pale Broth", {
+  "157" : [ "White Algae", 2 ]
+} ], [ "Plum Pudding", {
+  "406" : [ "Wild Plum", 2 ],
+  "246" : [ "Wheat Flour", 1 ],
+  "245" : [ "Sugar", 1 ]
+} ], [ "Artichoke Dip", {
+  "274" : [ "Artichoke", 1 ],
+  "-6" : [ null, 1 ]
+} ], [ "Stir Fry", {
+  "78" : [ "Cave Carrot", 1 ],
+  "404" : [ "Common Mushroom", 1 ],
+  "250" : [ "Kale", 1 ],
+  "247" : [ "Oil", 1 ]
+} ], [ "Roasted Hazelnuts", {
+  "408" : [ "Hazelnut", 3 ]
+} ], [ "Pumpkin Pie", {
+  "276" : [ "Pumpkin", 1 ],
+  "246" : [ "Wheat Flour", 1 ],
+  "-6" : [ null, 1 ],
+  "245" : [ "Sugar", 1 ]
+} ], [ "Radish Salad", {
+  "247" : [ "Oil", 1 ],
+  "419" : [ "Vinegar", 1 ],
+  "264" : [ "Radish", 1 ]
+} ], [ "Fruit Salad", {
+  "258" : [ "Blueberry", 1 ],
+  "254" : [ "Melon", 1 ],
+  "634" : [ "Apricot", 1 ]
+} ], [ "Blackberry Cobbler", {
+  "410" : [ "Blackberry", 2 ],
+  "245" : [ "Sugar", 1 ],
+  "246" : [ "Wheat Flour", 1 ]
+} ], [ "Cranberry Candy", {
+  "282" : [ "Cranberries", 1 ],
+  "613" : [ "Apple", 1 ],
+  "245" : [ "Sugar", 1 ]
+} ], [ "Bruschetta", {
+  "216" : [ "Bread", 1 ],
+  "247" : [ "Oil", 1 ],
+  "256" : [ "Tomato", 1 ]
+} ], [ "Coleslaw", {
+  "266" : [ "Red Cabbage", 1 ],
+  "419" : [ "Vinegar", 1 ],
+  "306" : [ "Mayonnaise", 1 ]
+} ], [ "Fiddlehead Risotto", {
+  "247" : [ "Oil", 1 ],
+  "259" : [ "Fiddlehead Fern", 1 ],
+  "248" : [ "Garlic", 1 ]
+} ], [ "Poppyseed Muffin", {
+  "376" : [ "Poppy", 1 ],
+  "246" : [ "Wheat Flour", 1 ],
+  "245" : [ "Sugar", 1 ]
+} ], [ "Chowder", {
+  "372" : [ "Clam", 1 ],
+  "-6" : [ null, 1 ]
+} ], [ "Lobster Bisque", {
+  "715" : [ "Lobster", 1 ],
+  "-6" : [ null, 1 ]
+} ], [ "Fish Stew", {
+  "716" : [ "Crayfish", 1 ],
+  "719" : [ "Mussel", 1 ],
+  "722" : [ "Periwinkle", 1 ],
+  "256" : [ "Tomato", 1 ]
+} ], [ "Escargot", {
+  "721" : [ "Snail", 1 ],
+  "248" : [ "Garlic", 1 ]
+} ], [ "Maple Bar", {
+  "724" : [ "Maple Syrup", 1 ],
+  "245" : [ "Sugar", 1 ],
+  "246" : [ "Wheat Flour", 1 ]
+} ], [ "Crab Cakes", {
+  "717" : [ "Crab", 1 ],
+  "246" : [ "Wheat Flour", 1 ],
+  "-5" : [ null, 1 ],
+  "247" : [ "Oil", 1 ]
+} ], [ "Triple Shot Espresso", {
+  "395" : [ "Coffee", 3 ]
+} ], [ "Shrimp Cocktail", {
+  "720" : [ "Shrimp", 1 ],
+  "256" : [ "Tomato", 1 ],
+  "16" : [ "Wild Horseradish", 1 ]
+} ], [ "Seafoam Pudding", {
+  "267" : [ "Flounder", 1 ],
+  "269" : [ "Midnight Carp", 1 ],
+  "814" : [ "Squid Ink", 1 ]
+} ], [ "Ginger Ale", {
+  "829" : [ "Ginger", 3 ],
+  "245" : [ "Sugar", 1 ]
+} ], [ "Banana Pudding", {
+  "91" : [ "Banana", 1 ],
+  "-6" : [ null, 1 ],
+  "245" : [ "Sugar", 1 ]
+} ], [ "Mango Sticky Rice", {
+  "834" : [ "Mango", 1 ],
+  "88" : [ "Coconut", 1 ],
+  "423" : [ "Rice", 1 ]
+} ], [ "Poi", {
+  "830" : [ "Taro Root", 4 ]
+} ], [ "Tropical Curry", {
+  "88" : [ "Coconut", 1 ],
+  "832" : [ "Pineapple", 1 ],
+  "260" : [ "Hot Pepper", 1 ]
+} ], [ "Squid Ink Ravioli", {
+  "814" : [ "Squid Ink", 1 ],
+  "246" : [ "Wheat Flour", 1 ],
+  "256" : [ "Tomato", 1 ]
+} ], [ "Moss Soup", {
+  "Moss" : [ "Moss", 20 ]
+} ] ]

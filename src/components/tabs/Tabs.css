@@ -1,10 +1,8 @@
 .tabs-container {
   display: flex;
   flex-direction: column;
-  height: 100%;
   width: 100%;
   min-width: 0;
-  overflow: hidden;
 }
 
 .tabs-top {
@@ -61,8 +59,6 @@
 }
 
 .tab-content {
-  flex: 1;
-  overflow: auto;
   width: 100%;
 }
 
