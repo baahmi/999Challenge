@@ -1,4 +1,5 @@
 import { Config } from "@/config/Config";
+import { JournalStore, type Journal, type ImportDiff } from './Journal';
 
 type Listener = () => void;
 
@@ -7,10 +8,13 @@ export interface AppDataState {
   isLoading: boolean;
   error: string | null;
   daysPlayed: number | null;
+  qiGems: number | null;
   mysteryBoxesOpened: number | null;
   ticketPrizesClaimed: number | null;
+  childrenTurnedToDoves: number | null;
   items: extractedItem[],
   compacted: Record<string, extractedItem>,
+  lastDiff: ImportDiff | null,
 }
 
 export type extractedItem = {
@@ -28,14 +32,20 @@ class AppDataManager {
     isLoading: false,
     error: null,
     daysPlayed: null,
+    qiGems: null,
     mysteryBoxesOpened: null,
     ticketPrizesClaimed: null,
+    childrenTurnedToDoves: null,
     items: [],
     compacted: {} as Record<string, extractedItem>,
+    lastDiff: null,
   };
   private listeners: Set<Listener> = new Set();
+  private journal: Journal | null = null;
 
-  private constructor() {}
+  private constructor() {
+    this.loadFromJournal();
+  }
 
   static getInstance(): AppDataManager {
     if (!AppDataManager.instance) {
@@ -46,6 +56,7 @@ class AppDataManager {
 
   subscribe(listener: Listener): () => void {
     this.listeners.add(listener);
+    listener();
     return () => {
       this.listeners.delete(listener);
     };
@@ -64,13 +75,15 @@ class AppDataManager {
   }
 
   getQiGems(): number | null {
-    if (!this.state.xmlData) return null;
-    const qiGems = this.findValue(this.state.xmlData, 'qiGems');
-    return qiGems ? parseInt(qiGems, 10) : null;
+    return this.state.qiGems;
   }
 
   getDaysPlayed(): number | null {
     return this.state.daysPlayed;
+  }
+
+  getChildrenTurnedToDoves(): number | null {
+    return this.state.childrenTurnedToDoves;
   }
 
   private findValue(obj: Record<string, any>, key: string): string | null {
@@ -116,7 +129,6 @@ class AppDataManager {
     this.notifyListeners();
 
     try {
-      this.clearData
       const text = await file.text();
       const parser = new DOMParser();
       const xmlDoc = parser.parseFromString(text, 'application/xml');
@@ -137,6 +149,7 @@ class AppDataManager {
   }
 
   private processData(root: Element) {
+    this.state.items = [];
     const items = root.querySelectorAll('SaveGame > player > stats > Values > item');
     for (const item of Array.from(items)) {
       let key = item.querySelector('key > string')?.textContent || '';
@@ -147,12 +160,116 @@ class AppDataManager {
         this.state.mysteryBoxesOpened = parseInt(value);
       } else if(key === 'ticketPrizesClaimed') {
         this.state.ticketPrizesClaimed = parseInt(value);
+      } else if(key === 'childrenTurnedToDoves') {
+        this.state.childrenTurnedToDoves = parseInt(value);
       }
     }
+    const qiGemsEl = root.querySelector('SaveGame > player > qiGems') ??
+      root.getElementsByTagName('qiGems')[0];
+    if (qiGemsEl) {
+      this.state.qiGems = parseInt(qiGemsEl.textContent || '0', 10);
+    }
     this.extractItems(root, this.state.items);
-    console.log(this.state.items);
     this.compactItems();
-    console.log(this.state.compacted);
+    this.saveToJournal();
+  }
+
+  private loadFromJournal(): void {
+    this.journal = JournalStore.load();
+    if (!this.journal) return;
+    const { main, days } = this.journal;
+    this.state.daysPlayed = main.day;
+    this.state.qiGems = main.qiGems;
+    this.state.mysteryBoxesOpened = main.mysteryBoxesOpened;
+    this.state.ticketPrizesClaimed = main.ticketPrizesClaimed;
+    this.state.childrenTurnedToDoves = main.childrenTurnedToDoves ?? null;
+    this.state.compacted = JournalStore.toCompactedItems(main.items) as unknown as Record<string, extractedItem>;
+
+    const sortedDays = Object.keys(days).map(Number).sort((a, b) => a - b);
+    const latestDay = sortedDays[sortedDays.length - 1];
+    if (latestDay !== undefined) {
+      const dayEntry = days[latestDay]!;
+      const prevDayNum = sortedDays[sortedDays.length - 2];
+      const prevDay = prevDayNum ?? null;
+      const prevQiGems = prevDay !== null ? (days[prevDay]?.qiGems ?? null) : null;
+      this.state.lastDiff = {
+        previousDay: prevDay,
+        currentDay: latestDay,
+        previousQiGems: prevQiGems,
+        currentQiGems: dayEntry.qiGems,
+        changes: dayEntry.changes,
+        currentItems: main.items,
+      };
+    }
+  }
+
+  private saveToJournal(): void {
+    const prevMain = this.journal?.main ?? null;
+    const compacted = this.state.compacted as unknown as Array<{ name: string; itemId: number; category: number; stack: number; quality: number[] }>;
+    const currentDay = this.state.daysPlayed ?? 0;
+    const currentQiGems = this.state.qiGems ?? 0;
+    this.journal = JournalStore.upsertJournal(
+      this.journal,
+      currentDay,
+      currentQiGems,
+      this.state.mysteryBoxesOpened ?? 0,
+      this.state.ticketPrizesClaimed ?? 0,
+      this.state.childrenTurnedToDoves ?? 0,
+      compacted,
+    );
+    JournalStore.save(this.journal);
+    this.state.lastDiff = {
+      previousDay: prevMain?.day ?? null,
+      currentDay,
+      previousQiGems: prevMain?.qiGems ?? null,
+      currentQiGems,
+      changes: this.journal.days[currentDay]?.changes ?? {},
+      currentItems: this.journal.main.items,
+    };
+  }
+
+  downloadJournal(): void {
+    if (this.journal) JournalStore.download(this.journal);
+  }
+
+  clearJournal(): void {
+    this.journal = null;
+    JournalStore.clear();
+    this.state.compacted = {} as Record<string, extractedItem>;
+    this.state.daysPlayed = null;
+    this.state.qiGems = null;
+    this.state.mysteryBoxesOpened = null;
+    this.state.ticketPrizesClaimed = null;
+    this.state.childrenTurnedToDoves = null;
+    this.state.lastDiff = null;
+    this.notifyListeners();
+  }
+
+  getLastDiff(): ImportDiff | null {
+    return this.state.lastDiff;
+  }
+
+  hasJournal(): boolean {
+    return this.journal !== null;
+  }
+
+  getJournalDayCount(): number {
+    return this.journal ? Object.keys(this.journal.days).length : 0;
+  }
+
+  loadJournalFromData(data: unknown): boolean {
+    const journal = JournalStore.importFrom(data);
+    if (!journal) return false;
+    this.journal = journal;
+    JournalStore.save(journal);
+    const { main } = journal;
+    this.state.daysPlayed = main.day;
+    this.state.qiGems = main.qiGems;
+    this.state.mysteryBoxesOpened = main.mysteryBoxesOpened;
+    this.state.ticketPrizesClaimed = main.ticketPrizesClaimed;
+    this.state.compacted = JournalStore.toCompactedItems(main.items) as unknown as Record<string, extractedItem>;
+    this.notifyListeners();
+    return true;
   }
 
   private compactItems() {
@@ -218,6 +335,7 @@ private extractItems(node: Element, out: extractedItem[]): void {
     this.state.isLoading = false;
     this.state.items = [];
     this.state.daysPlayed = 0;
+    this.state.qiGems = 0;
     this.state.mysteryBoxesOpened = 0;
     this.state.ticketPrizesClaimed = 0;
     this.notifyListeners();

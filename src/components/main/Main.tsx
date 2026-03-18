@@ -4,6 +4,7 @@ import { AppData } from '../../app/AppData';
 import { computeCategoryItems, logDataIssues } from '../../data/itemCalculations';
 import { Tabs } from '../tabs/Tabs';
 import { ItemTable } from '../table/ItemTable';
+import { Overview, OVERVIEW_TAB } from '../overview/Overview';
 import './Main.css';
 
 export function Main() {
@@ -24,7 +25,7 @@ export function Main() {
     const handleDataChange = () => {
       const state = AppData.getState();
       const raw = state.compacted as unknown as Array<{ name: string; stack: number }>;
-      const list = Array.isArray(raw) ? raw : [];
+      const list = Array.isArray(raw) ? [...raw] : [];
       setCompacted(list);
       if (list.length > 0) {
         logDataIssues(list);
@@ -49,7 +50,10 @@ export function Main() {
     <main className="main">
       <div className="container">
         <Tabs onCategoryChange={handleCategoryChange}>
-          <ItemTable key={selectedCategory} items={allCategoryData.get(selectedCategory) ?? []} />
+          {selectedCategory === OVERVIEW_TAB
+            ? <Overview compacted={compacted} categoryNames={categoryNames} />
+            : <ItemTable key={selectedCategory} items={allCategoryData.get(selectedCategory) ?? []} />
+          }
         </Tabs>
       </div>
     </main>

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { TabContext, TabList } from '@mui/lab';
 import { Tab } from '@mui/material';
 import { Config } from '../../config/Config';
+import { OVERVIEW_TAB } from '../overview/Overview';
 import './Tabs.css';
 
 interface TabsProps {
@@ -18,7 +19,9 @@ export function Tabs({ onCategoryChange, children }: TabsProps) {
   const [value, setValue] = useState(Config.getSelectedTab());
   const [tabsPosition, setTabsPosition] = useState(Config.getTabsPosition());
   const [maxWidth, setMaxWidth] = useState<string>('auto');
-  const [categoryNames, setCategoryNames] = useState<string[]>(Config.getCategoryNames());
+  const [categoryNames, setCategoryNames] = useState<string[]>(
+    [...Config.getCategoryNames()].sort((a, b) => a.localeCompare(b))
+  );
   const tabListTopRef = useRef<HTMLDivElement>(null);
   const tabListBottomRef = useRef<HTMLDivElement>(null);
 
@@ -84,6 +87,7 @@ export function Tabs({ onCategoryChange, children }: TabsProps) {
       </button>
       <div className="tabs-scroll-container" ref={ref} style={{ maxWidth }}>
         <TabList onChange={handleChange} aria-label="category tabs">
+          <Tab key={OVERVIEW_TAB} label={OVERVIEW_TAB} value={OVERVIEW_TAB} />
           {categoryNames.map((category) => (
             <Tab key={category} label={formatTabLabel(category)} value={category} />
           ))}

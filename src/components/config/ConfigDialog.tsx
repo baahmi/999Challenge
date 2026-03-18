@@ -8,9 +8,12 @@ import {
   Select,
   MenuItem,
   Box,
+  Divider,
+  Typography,
 } from '@mui/material';
 import { Config } from '../../config/Config';
 import type { Quality } from '../../config/Config';
+import { AppData } from '../../app/AppData';
 
 interface ConfigDialogProps {
   open: boolean;
@@ -19,9 +22,16 @@ interface ConfigDialogProps {
 
 export function ConfigDialog({ open, onClose }: ConfigDialogProps) {
   const [quality, setQuality] = useState<Quality>(Config.getQuality());
+  const [confirmClear, setConfirmClear] = useState(false);
 
   const handleSave = () => {
     Config.getInstance().setQuality(quality);
+    onClose();
+  };
+
+  const handleClearJournal = () => {
+    AppData.clearJournal();
+    setConfirmClear(false);
     onClose();
   };
 
@@ -44,6 +54,31 @@ export function ConfigDialog({ open, onClose }: ConfigDialogProps) {
               </MenuItem>
             ))}
           </Select>
+        </Box>
+        <Divider sx={{ my: 2 }} />
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexWrap: 'wrap' }}>
+          <label style={{ fontSize: '1rem', fontWeight: 500, minWidth: '80px' }}>Journal:</label>
+          {confirmClear ? (
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Typography variant="body2" color="error.main">Delete all journal data?</Typography>
+              <Button size="small" onClick={handleClearJournal} color="error" variant="contained">
+                Confirm
+              </Button>
+              <Button size="small" onClick={() => setConfirmClear(false)}>
+                Cancel
+              </Button>
+            </Box>
+          ) : (
+            <Button
+              size="small"
+              onClick={() => setConfirmClear(true)}
+              color="error"
+              variant="outlined"
+              disabled={!AppData.hasJournal()}
+            >
+              Clear Journal
+            </Button>
+          )}
         </Box>
       </DialogContent>
       <DialogActions>

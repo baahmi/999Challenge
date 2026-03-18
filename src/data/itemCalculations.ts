@@ -1,10 +1,61 @@
 import itemsData from './items.json';
 import partsData from './parts.json';
 import notesData from './notes.json';
+import pricesData from './prices.json';
 import { Config } from '../config/Config';
 import type { Quality } from '../config/Config';
 
 const TARGET = 999;
+
+export interface BuyPrice {
+  gold?: number;
+  qiGem?: number;
+}
+
+export interface ShopEntry {
+  shop: string;
+  price: number;
+  currency?: string;
+}
+
+const priceMap = new Map<string, BuyPrice>();
+const shopEntriesMap = new Map<string, ShopEntry[]>();
+
+(function buildPriceMap() {
+  type RawEntry = [string, number, string, (string | boolean | undefined)?];
+  const data = pricesData as unknown as Record<string, RawEntry[]>;
+  for (const [key, entries] of Object.entries(data)) {
+    if (key.startsWith('FLAVORED_ITEM')) continue;
+    const firstEntry = entries[0];
+    if (!firstEntry) continue;
+    const itemName: string = key.startsWith('(O)') ? firstEntry[2] : key;
+    const bp: BuyPrice = priceMap.get(itemName) ?? {};
+    const shopList: ShopEntry[] = shopEntriesMap.get(itemName) ?? [];
+    const seen = new Set(shopList.map(e => `${e.shop}|${e.price}|${e.currency ?? ''}`));
+    for (const entry of entries) {
+      const shop = entry[0];
+      const price = entry[1];
+      const currency = entry[3];
+      if (price < 0) continue;
+      const dedupeKey = `${shop}|${price}|${typeof currency === 'string' ? currency : ''}`;
+      if (!seen.has(dedupeKey)) {
+        seen.add(dedupeKey);
+        shopList.push({ shop, price, currency: typeof currency === 'string' ? currency : undefined });
+      }
+      if (currency === 'Qi Gem') {
+        if (bp.qiGem === undefined || price < bp.qiGem) bp.qiGem = price;
+      } else if (!currency || currency === true) {
+        if (!shop.startsWith('Festival ') && shop !== 'Casino') {
+          if (bp.gold === undefined || price < bp.gold) bp.gold = price;
+        }
+      }
+    }
+    if (shopList.length > 0) shopEntriesMap.set(itemName, shopList);
+    if (bp.gold !== undefined || bp.qiGem !== undefined) {
+      priceMap.set(itemName, bp);
+    }
+  }
+})();
 
 type IngredientMap = Record<string, [string | null, number]>;
 type PartsEntry = [string, IngredientMap];
@@ -19,6 +70,8 @@ export interface IngredientInfo {
 export interface UsedByInfo {
   craftedName: string;
   craftableCount: number;
+  alreadyHave: number;
+  done: boolean;
   recipe: IngredientInfo[];
 }
 
@@ -27,7 +80,9 @@ export interface ItemTooltipData {
   recipe: IngredientInfo[] | null;
   craftableCount: number;
   limitingIngredient: string | null;
+  done: boolean;
   usedBy: UsedByInfo[];
+  shops: ShopEntry[];
 }
 
 export interface ItemRow {
@@ -36,6 +91,7 @@ export interface ItemRow {
   total: number;
   raw: number;
   rawStacks?: number[]; // [normal, silver, gold, unused, iridium]
+  buyPrice?: BuyPrice;
   tooltip: ItemTooltipData;
 }
 
@@ -111,6 +167,8 @@ function computeTooltipData(
 
   const usedBy: UsedByInfo[] = (reverseMap.get(itemName) ?? []).map(craftedName => {
     const { count } = craftableCount(craftedName, inventoryMap);
+    const alreadyHave = inventoryMap.get(craftedName) ?? 0;
+    const done = completionMap.get(craftedName) ?? false;
     const depRecipe = recipeMap.get(craftedName);
     const recipe: IngredientInfo[] = depRecipe
       ? Array.from(depRecipe.entries()).map(([name, qty]) => ({
@@ -120,10 +178,12 @@ function computeTooltipData(
           done: completionMap.get(name) ?? false,
         }))
       : [];
-    return { craftedName, craftableCount: count, recipe };
+    return { craftedName, craftableCount: count, alreadyHave, done, recipe };
   });
 
-  return { note, recipe, craftableCount: canCraft, limitingIngredient, usedBy };
+  const done = completionMap.get(itemName) ?? false;
+  const shops = shopEntriesMap.get(itemName) ?? [];
+  return { note, recipe, craftableCount: canCraft, limitingIngredient, done, usedBy, shops };
 }
 
 function getQualityFilteredCount(stacks: number[] | undefined, quality: Quality, maxTierIndex = 4): number {
@@ -212,7 +272,7 @@ export function computeCategoryItems(
     const required = TARGET + (requiredFromParts.get(itemName) ?? 0);
     const total = totalFromParts.get(itemName) ?? 0;
 
-    rows.push({ name: itemName, required, total, raw, rawStacks: stacksMap.get(itemName), tooltip: computeTooltipData(itemName, inventoryMap, completionMap) });
+    rows.push({ name: itemName, required, total, raw, rawStacks: stacksMap.get(itemName), buyPrice: priceMap.get(itemName), tooltip: computeTooltipData(itemName, inventoryMap, completionMap) });
   }
 
   return rows;

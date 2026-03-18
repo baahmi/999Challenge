@@ -9,7 +9,7 @@ interface ItemTableProps {
 }
 
 function TooltipPanel({ name, data }: { name: string; data: ItemTooltipData }) {
-  const canCraftColor = data.craftableCount > 0 ? '#6f6' : '#f66';
+  const canCraftColor = data.done ? '#6f6' : data.craftableCount > 0 ? '#6f6' : '#f66';
   return (
     <div style={{
       maxWidth: 340,
@@ -51,8 +51,11 @@ function TooltipPanel({ name, data }: { name: string; data: ItemTooltipData }) {
             <div key={dep.craftedName} style={{ paddingLeft: 10, marginBottom: 4 }}>
               <div style={{ display: 'flex', gap: 6, alignItems: 'baseline' }}>
                 <span>• {dep.craftedName}</span>
-                <span style={{ color: dep.craftableCount > 0 ? '#6f6' : '#f66', marginLeft: 'auto', whiteSpace: 'nowrap' }}>
-                  can make: {dep.craftableCount}
+                <span style={{ marginLeft: 'auto', whiteSpace: 'nowrap', display: 'flex', gap: 8 }}>
+                  <span style={{ color: '#aaa' }}>have {dep.alreadyHave}</span>
+                  <span style={{ color: dep.done ? '#6f6' : dep.craftableCount > 0 ? '#6f6' : '#f66' }}>
+                    +{dep.craftableCount}
+                  </span>
                 </span>
               </div>
               {dep.recipe.map(ing => (
@@ -68,26 +71,58 @@ function TooltipPanel({ name, data }: { name: string; data: ItemTooltipData }) {
         </div>
       )}
 
-      {!data.recipe && data.usedBy.length === 0 && !data.note && (
+      {data.shops.length > 0 && (
+        <div style={{ marginTop: data.recipe || data.usedBy.length > 0 || data.note ? 8 : 0 }}>
+          <div style={{ fontWeight: 600, marginBottom: 2 }}>Available at:</div>
+          {data.shops.map((s, i) => {
+            const priceStr = s.currency === 'Qi Gem'
+              ? `${s.price.toLocaleString()} ✦`
+              : s.currency
+              ? `${s.price.toLocaleString()} ${s.currency}`
+              : `${s.price.toLocaleString()}g`;
+            const shopLabel = s.shop.startsWith('Festival ')
+              ? `🎪 ${s.shop.replace('Festival ', '').replace(/_/g, ' ')}`
+              : s.shop;
+            return (
+              <div key={i} style={{ paddingLeft: 10, display: 'flex', gap: 6, alignItems: 'baseline', fontSize: 12 }}>
+                <span style={{ color: '#ccc' }}>• {shopLabel}</span>
+                <span style={{ marginLeft: 'auto', whiteSpace: 'nowrap', color: s.currency === 'Qi Gem' ? '#c084fc' : s.currency ? '#f9a825' : '#86efac' }}>
+                  {priceStr}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {!data.recipe && data.usedBy.length === 0 && !data.note && data.shops.length === 0 && (
         <div style={{ color: '#888' }}>No recipe or dependency info.</div>
       )}
     </div>
   );
 }
 
+function fmtCost(n: number): string {
+  if (n === 0) return '';
+  return n.toLocaleString();
+}
+
 const COLUMNS: Array<{ key: string; label: string; minW: number }> = [
-  { key: 'checkbox',   label: '✓',        minW: 20 },
-  { key: 'percentage', label: '%',         minW: 40 },
-  { key: 'name',       label: 'Name',      minW: 60 },
-  { key: 'required',   label: 'Required',  minW: 40 },
-  { key: 'total',      label: 'Total',     minW: 40 },
-  { key: 'raw',        label: 'Raw',       minW: 40 },
-  { key: 'raw_I',      label: 'Ir',        minW: 36 },
-  { key: 'raw_G',      label: 'G',         minW: 36 },
-  { key: 'raw_S',      label: 'S',         minW: 36 },
-  { key: 'raw_N',      label: 'N',         minW: 36 },
+  { key: 'checkbox',    label: '✓',        minW: 20 },
+  { key: 'percentage',  label: '%',         minW: 40 },
+  { key: 'name',        label: 'Name',      minW: 60 },
+  { key: 'required',    label: 'Required',  minW: 40 },
+  { key: 'total',       label: 'Total',     minW: 40 },
+  { key: 'raw',         label: 'Raw',       minW: 40 },
+  { key: 'gold_needed', label: '💰 Gold',   minW: 54 },
+  { key: 'qi_needed',   label: '✦ Qi',      minW: 44 },
+  { key: 'raw_I',       label: 'Ir',        minW: 36 },
+  { key: 'raw_G',       label: 'G',         minW: 36 },
+  { key: 'raw_S',       label: 'S',         minW: 36 },
+  { key: 'raw_N',       label: 'N',         minW: 36 },
 ];
 const QUALITY_KEYS = new Set(['raw_I', 'raw_G', 'raw_S', 'raw_N']);
+const COST_KEYS = new Set(['gold_needed', 'qi_needed']);
 
 export function ItemTable({ items }: ItemTableProps) {
   const [columnWidths, setColumnWidths] = React.useState<Record<string, number>>({
@@ -97,6 +132,8 @@ export function ItemTable({ items }: ItemTableProps) {
     required: 90,
     total: 90,
     raw: 80,
+    gold_needed: 80,
+    qi_needed: 64,
     raw_I: 54,
     raw_G: 54,
     raw_S: 54,
@@ -148,6 +185,16 @@ export function ItemTable({ items }: ItemTableProps) {
     const totalRaw = enrichedItems.reduce((sum, item) => sum + item.raw, 0);
     const totalUsed = enrichedItems.reduce((sum, item) => sum + item.total, 0);
     const cappedHave = enrichedItems.reduce((sum, item) => sum + Math.min(item.raw + item.total, item.required), 0);
+    const totalGoldNeeded = enrichedItems.reduce((sum, item) => {
+      const needed = Math.max(0, item.required - (item.raw + item.total));
+      const bp = (item as unknown as ItemRow).buyPrice;
+      return sum + (bp?.gold ? needed * bp.gold : 0);
+    }, 0);
+    const totalQiNeeded = enrichedItems.reduce((sum, item) => {
+      const needed = Math.max(0, item.required - (item.raw + item.total));
+      const bp = (item as unknown as ItemRow).buyPrice;
+      return sum + (bp?.qiGem ? needed * bp.qiGem : 0);
+    }, 0);
     const totalsRow: ItemWithCalculations = {
       name: 'Total',
       required: totalRequired,
@@ -172,6 +219,20 @@ export function ItemTable({ items }: ItemTableProps) {
         case 'raw_S':      return isTotal ? '' : (row.rawStacks?.[1] ?? 0);
         case 'raw_G':      return isTotal ? '' : (row.rawStacks?.[2] ?? 0);
         case 'raw_I':      return isTotal ? '' : (row.rawStacks?.[4] ?? 0);
+        case 'gold_needed': {
+          if (isTotal) return fmtCost(totalGoldNeeded);
+          const needed = Math.max(0, row.required - (row.raw + row.total));
+          const bp = (row as unknown as ItemRow).buyPrice;
+          if (!bp?.gold || needed === 0) return '';
+          return fmtCost(needed * bp.gold);
+        }
+        case 'qi_needed': {
+          if (isTotal) return fmtCost(totalQiNeeded);
+          const needed = Math.max(0, row.required - (row.raw + row.total));
+          const bp = (row as unknown as ItemRow).buyPrice;
+          if (!bp?.qiGem || needed === 0) return '';
+          return fmtCost(needed * bp.qiGem);
+        }
         default:           return '';
       }
     };
@@ -191,7 +252,15 @@ export function ItemTable({ items }: ItemTableProps) {
       return false;
     })();
 
-    const visibleCols = COLUMNS.filter(c => !QUALITY_KEYS.has(c.key) || showQualityCols);
+    const showGoldCol = enrichedItems.some(item => (item as unknown as ItemRow).buyPrice?.gold !== undefined);
+    const showQiCol = enrichedItems.some(item => (item as unknown as ItemRow).buyPrice?.qiGem !== undefined);
+
+    const visibleCols = COLUMNS.filter(c => {
+      if (QUALITY_KEYS.has(c.key)) return showQualityCols;
+      if (c.key === 'gold_needed') return showGoldCol;
+      if (c.key === 'qi_needed') return showQiCol;
+      return true;
+    });
     const tableWidth = visibleCols.reduce((s, c) => s + (columnWidths[c.key] ?? c.minW), 0);
 
     const thBase: React.CSSProperties = {
@@ -241,7 +310,8 @@ export function ItemTable({ items }: ItemTableProps) {
                       border: '1px solid #ccc', padding: '4px 6px', fontSize: '13px',
                       width: columnWidths[col.key], maxWidth: columnWidths[col.key],
                       overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
-                      textAlign: col.key === 'checkbox' ? 'center' : undefined,
+                      textAlign: col.key === 'checkbox' ? 'center' : COST_KEYS.has(col.key) ? 'right' : undefined,
+                      color: col.key === 'gold_needed' ? '#9a7000' : col.key === 'qi_needed' ? '#8b44ac' : undefined,
                       ...stickyStyle,
                     }}>
                       {renderCell(row, index, col.key)}

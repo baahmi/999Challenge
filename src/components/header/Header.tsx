@@ -1,9 +1,10 @@
 import React, { useState, useRef } from 'react';
 import './Header.css';
 import {IconButton, Tooltip} from "@mui/material";
-import {Upload, ViewWeekOutlined, Settings} from "@mui/icons-material";
+import {Upload, ViewWeekOutlined, Settings, FileDownload, CompareArrows} from "@mui/icons-material";
 import {ThemeToggle} from "@/components/theme/ThemeToggle.tsx";
 import {ConfigDialog} from "@/components/config/ConfigDialog.tsx";
+import {DiffDialog} from "@/components/diff/DiffDialog.tsx";
 import {Config} from "../../config/Config.ts";
 import {AppData} from "../../app/AppData.ts";
 
@@ -12,6 +13,9 @@ export function Header() {
     const [tabsPosition, setTabsPosition] = useState(Config.getTabsPosition());
     const [qiGems, setQiGems] = useState<number | null>(null);
     const [daysPlayed, setDaysPlayed] = useState<number | null>(null);
+    const [pastKids, setPastKids] = useState<number | null>(null);
+    const [journalDays, setJournalDays] = useState(0);
+    const [diffOpen, setDiffOpen] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const headerRef = useRef<HTMLElement>(null);
 
@@ -41,6 +45,8 @@ export function Header() {
         const handleAppDataChange = () => {
             setQiGems(AppData.getQiGems());
             setDaysPlayed(AppData.getDaysPlayed());
+            setPastKids(AppData.getChildrenTurnedToDoves());
+            setJournalDays(AppData.getJournalDayCount());
         };
         const unsubscribe = AppData.subscribe(handleAppDataChange);
         return unsubscribe;
@@ -62,10 +68,22 @@ export function Header() {
     const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
-            try {
-                await AppData.loadXmlFile(file);
-            } catch (err) {
-                console.error('Failed to load XML file:', err);
+            if (file.name.endsWith('.json')) {
+                try {
+                    const text = await file.text();
+                    const data = JSON.parse(text) as unknown;
+                    const ok = AppData.loadJournalFromData(data);
+                    if (!ok) console.error('Not a valid journal file');
+                } catch (err) {
+                    console.error('Failed to load journal file:', err);
+                }
+            } else {
+                try {
+                    await AppData.loadXmlFile(file);
+                    setDiffOpen(true);
+                } catch (err) {
+                    console.error('Failed to load XML file:', err);
+                }
             }
         }
         if (fileInputRef.current) {
@@ -84,10 +102,35 @@ export function Header() {
                     <div style={{ fontSize: '14px', color: 'rgba(0, 0, 0, 0.7)' }}>
                         Days Played: <strong>{daysPlayed !== null ? daysPlayed : 'Unknown'}</strong>
                     </div>
+                    {daysPlayed !== null && (
+                        <div style={{ fontSize: '14px', color: 'rgba(0, 0, 0, 0.7)' }}>
+                            Past Kids: <strong>{pastKids ?? 0}</strong>
+                        </div>
+                    )}
+                    {journalDays > 0 && (
+                        <div style={{ fontSize: '14px', color: 'rgba(0, 0, 0, 0.7)' }}>
+                            Journal: <strong>{journalDays} {journalDays === 1 ? 'session' : 'sessions'}</strong>
+                        </div>
+                    )}
                 </div>
                 <nav className="nav" aria-label="Primary" style={{ marginLeft: 'auto', display: 'flex', gap: '8px' }}>
                     <ThemeToggle/>
-                    <Tooltip title="Upload XML file">
+                    {journalDays > 0 && (
+                        <Tooltip title="Show last import changes">
+                            <IconButton size="small" onClick={() => setDiffOpen(true)}>
+                                <CompareArrows />
+                            </IconButton>
+                        </Tooltip>
+                    )}
+                    <Tooltip title={journalDays > 0 ? `Download journal (${journalDays} sessions)` : 'No journal data yet'}>
+                        <IconButton
+                            size="small"
+                            onClick={() => AppData.downloadJournal()}
+                        >
+                            <FileDownload />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Upload save file (.xml) or restore journal (.json)">
                         <IconButton 
                             size="small" 
                             onClick={handleUploadClick}
@@ -121,6 +164,7 @@ export function Header() {
                 </nav>
             </div>
             <ConfigDialog open={configOpen} onClose={() => setConfigOpen(false)} />
+            <DiffDialog open={diffOpen} onClose={() => setDiffOpen(false)} diff={AppData.getLastDiff()} />
         </header>
     );
 }
