@@ -61,7 +61,7 @@ export function Tabs({ onCategoryChange, children }: TabsProps) {
     const updateMaxWidth = () => {
       // Use viewport width instead of wrapper width to avoid measuring expanded wrapper
       const viewportWidth = window.innerWidth;
-      const newMaxWidth = viewportWidth - 80; // 40px for each button
+      const newMaxWidth = viewportWidth - 160; // 40px for each of the 4 buttons
       setMaxWidth(`${newMaxWidth}px`);
     };
 
@@ -82,6 +82,14 @@ export function Tabs({ onCategoryChange, children }: TabsProps) {
     }
   };
 
+  const scrollToEdge = (ref: React.RefObject<HTMLDivElement | null>, edge: 'start' | 'end') => {
+    if (ref.current) {
+      const scroller = ref.current.querySelector<HTMLElement>('.MuiTabs-scroller');
+      const target = scroller ?? ref.current;
+      target.scrollTo({ left: edge === 'start' ? 0 : target.scrollWidth, behavior: 'smooth' });
+    }
+  };
+
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
     Config.setSelectedTab(newValue);
@@ -90,6 +98,15 @@ export function Tabs({ onCategoryChange, children }: TabsProps) {
 
   const renderTabBar = (ref: React.RefObject<HTMLDivElement | null>, stickyClass: string) => (
     <div className={`tabs-wrapper ${stickyClass}`} style={{ backgroundColor: isDark ? '#1e1e1e' : '#fff' }}>
+      <button
+        className="tab-scroll-button"
+        onClick={() => scrollToEdge(ref, 'start')}
+        aria-label="Jump to first tab"
+        title="Jump to first tab"
+        style={{ color: isDark ? 'rgba(255,255,255,0.6)' : undefined }}
+      >
+        «
+      </button>
       <button
         className="tab-scroll-button tab-scroll-left"
         onClick={() => scrollRef(ref, 'left')}
@@ -117,6 +134,15 @@ export function Tabs({ onCategoryChange, children }: TabsProps) {
         style={{ color: isDark ? 'rgba(255,255,255,0.6)' : undefined }}
       >
         ›
+      </button>
+      <button
+        className="tab-scroll-button"
+        onClick={() => scrollToEdge(ref, 'end')}
+        aria-label="Jump to last tab"
+        title="Jump to last tab"
+        style={{ color: isDark ? 'rgba(255,255,255,0.6)' : undefined }}
+      >
+        »
       </button>
     </div>
   );
