@@ -1,4 +1,5 @@
 import React from 'react';
+import { Tooltip, useColorScheme } from '@mui/material';
 import { enrichItemsWithCalculations } from '../../types/Item';
 import type { ItemWithCalculations } from '../../types/Item';
 import type { ItemRow, ItemTooltipData } from '../../data/itemCalculations';
@@ -75,11 +76,12 @@ function TooltipPanel({ name, data }: { name: string; data: ItemTooltipData }) {
         <div style={{ marginTop: data.recipe || data.usedBy.length > 0 || data.note ? 8 : 0 }}>
           <div style={{ fontWeight: 600, marginBottom: 2 }}>Available at:</div>
           {data.shops.map((s, i) => {
+            const packSuffix = s.qty > 1 ? ` ×${s.qty}` : '';
             const priceStr = s.currency === 'Qi Gem'
-              ? `${s.price.toLocaleString()} ✦`
+              ? `${s.price.toLocaleString()} ✦${packSuffix}`
               : s.currency
-              ? `${s.price.toLocaleString()} ${s.currency}`
-              : `${s.price.toLocaleString()}g`;
+              ? `${s.price.toLocaleString()} ${s.currency}${packSuffix}`
+              : `${s.price.toLocaleString()}g${packSuffix}`;
             const shopLabel = s.shop.startsWith('Festival ')
               ? `🎪 ${s.shop.replace('Festival ', '').replace(/_/g, ' ')}`
               : s.shop;
@@ -125,6 +127,8 @@ const QUALITY_KEYS = new Set(['raw_I', 'raw_G', 'raw_S', 'raw_N']);
 const COST_KEYS = new Set(['gold_needed', 'qi_needed']);
 
 export function ItemTable({ items }: ItemTableProps) {
+  const { mode } = useColorScheme();
+  const isDark = mode === 'dark';
   const [columnWidths, setColumnWidths] = React.useState<Record<string, number>>({
     checkbox: 30,
     percentage: 56,
@@ -264,13 +268,15 @@ export function ItemTable({ items }: ItemTableProps) {
     const tableWidth = visibleCols.reduce((s, c) => s + (columnWidths[c.key] ?? c.minW), 0);
 
     const thBase: React.CSSProperties = {
-      border: '1px solid #ccc', padding: '4px 6px', color: 'black', fontSize: '13px',
-      backgroundColor: '#f0f0f0', position: 'sticky', top: 'var(--sticky-top-offset, 0px)',
+      border: `1px solid ${isDark ? '#555' : '#ccc'}`, padding: '4px 6px',
+      color: isDark ? '#e0e0e0' : 'black', fontSize: '13px',
+      backgroundColor: isDark ? '#2a2a2a' : '#f0f0f0', position: 'sticky',
+      top: 'var(--sticky-top-offset, 0px)',
       zIndex: 3, whiteSpace: 'nowrap', overflow: 'hidden', userSelect: 'none',
     };
 
     return (
-      <div style={{ width: '100%', border: '1px solid #ccc', padding: '10px' }}>
+      <div style={{ width: '100%', border: `1px solid ${isDark ? '#555' : '#ccc'}`, padding: '10px' }}>
         <table style={{ borderCollapse: 'collapse', tableLayout: 'fixed', width: tableWidth }}>
           <thead ref={theadRef}>
             <tr>
@@ -292,7 +298,11 @@ export function ItemTable({ items }: ItemTableProps) {
               const isTotal = isTopTotal || isBottomTotal;
               const done = !isTotal && row.percentage >= 100;
               const tooltipData = !isTotal ? (row as ItemRow & { percentage: number }).tooltip : undefined;
-              const rowBg = isTotal ? '#d0d0d0' : done ? '#c8e6c9' : 'white';
+              const rowBg = isTotal
+                ? (isDark ? '#3a3a3a' : '#d0d0d0')
+                : done
+                  ? (isDark ? '#1b4a1e' : '#c8e6c9')
+                  : (isDark ? 'transparent' : 'white');
               const stickyStyle: React.CSSProperties = isTopTotal
                 ? { position: 'sticky', top: `calc(var(--sticky-top-offset, 0px) + ${theadHeight}px)`, zIndex: 2, backgroundColor: rowBg }
                 : isBottomTotal
@@ -307,11 +317,11 @@ export function ItemTable({ items }: ItemTableProps) {
                 >
                   {visibleCols.map(col => (
                     <td key={col.key} style={{
-                      border: '1px solid #ccc', padding: '4px 6px', fontSize: '13px',
+                      border: `1px solid ${isDark ? '#555' : '#ccc'}`, padding: '4px 6px', fontSize: '13px',
                       width: columnWidths[col.key], maxWidth: columnWidths[col.key],
                       overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
                       textAlign: col.key === 'checkbox' ? 'center' : COST_KEYS.has(col.key) ? 'right' : undefined,
-                      color: col.key === 'gold_needed' ? '#9a7000' : col.key === 'qi_needed' ? '#8b44ac' : undefined,
+                      color: col.key === 'gold_needed' ? (isDark ? '#ffd54f' : '#9a7000') : col.key === 'qi_needed' ? (isDark ? '#ce93d8' : '#8b44ac') : undefined,
                       ...stickyStyle,
                     }}>
                       {renderCell(row, index, col.key)}

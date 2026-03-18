@@ -83,3 +83,30 @@
   white-space: nowrap;
   min-width: auto;
 }
+
+[data-mui-color-scheme='dark'] .tabs-wrapper {
+  background-color: var(--mui-palette-background-default);
+  border-top-color: rgba(255, 255, 255, 0.12);
+  border-bottom-color: rgba(255, 255, 255, 0.12);
+}
+
+[data-mui-color-scheme='dark'] .MuiTab-root {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+[data-mui-color-scheme='dark'] .MuiTab-root.Mui-selected {
+  color: #fff;
+}
+
+[data-mui-color-scheme='dark'] .tab-scroll-button {
+  color: rgba(255, 255, 255, 0.6);
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+[data-mui-color-scheme='dark'] .tab-scroll-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-mui-color-scheme='dark'] .tab-scroll-button:active {
+  background-color: rgba(255, 255, 255, 0.15);
+}

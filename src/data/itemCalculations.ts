@@ -1,5 +1,5 @@
-import itemsData from './items.json';
 import partsData from './parts.json';
+import { CustomDataStore } from './CustomDataStore';
 import notesData from './notes.json';
 import pricesData from './prices.json';
 import { Config } from '../config/Config';
@@ -15,6 +15,7 @@ export interface BuyPrice {
 export interface ShopEntry {
   shop: string;
   price: number;
+  qty: number;
   currency?: string;
 }
 
@@ -22,31 +23,33 @@ const priceMap = new Map<string, BuyPrice>();
 const shopEntriesMap = new Map<string, ShopEntry[]>();
 
 (function buildPriceMap() {
-  type RawEntry = [string, number, string, (string | boolean | undefined)?];
+  type RawEntry = [string, number, number, string, (string | undefined)?];
   const data = pricesData as unknown as Record<string, RawEntry[]>;
   for (const [key, entries] of Object.entries(data)) {
     if (key.startsWith('FLAVORED_ITEM')) continue;
     const firstEntry = entries[0];
     if (!firstEntry) continue;
-    const itemName: string = key.startsWith('(O)') ? firstEntry[2] : key;
+    const itemName: string = key.startsWith('(O)') ? firstEntry[3] : key;
     const bp: BuyPrice = priceMap.get(itemName) ?? {};
     const shopList: ShopEntry[] = shopEntriesMap.get(itemName) ?? [];
-    const seen = new Set(shopList.map(e => `${e.shop}|${e.price}|${e.currency ?? ''}`));
+    const seen = new Set(shopList.map(e => `${e.shop}|${e.price}|${e.qty}|${e.currency ?? ''}`));
     for (const entry of entries) {
       const shop = entry[0];
       const price = entry[1];
-      const currency = entry[3];
+      const qty = entry[2];
+      const currency = entry[4];
       if (price < 0) continue;
-      const dedupeKey = `${shop}|${price}|${typeof currency === 'string' ? currency : ''}`;
+      const unitPrice = qty > 1 ? price / qty : price;
+      const dedupeKey = `${shop}|${price}|${qty}|${currency ?? ''}`;
       if (!seen.has(dedupeKey)) {
         seen.add(dedupeKey);
-        shopList.push({ shop, price, currency: typeof currency === 'string' ? currency : undefined });
+        shopList.push({ shop, price, qty, currency });
       }
       if (currency === 'Qi Gem') {
-        if (bp.qiGem === undefined || price < bp.qiGem) bp.qiGem = price;
-      } else if (!currency || currency === true) {
+        if (bp.qiGem === undefined || unitPrice < bp.qiGem) bp.qiGem = unitPrice;
+      } else if (!currency) {
         if (!shop.startsWith('Festival ') && shop !== 'Casino') {
-          if (bp.gold === undefined || price < bp.gold) bp.gold = price;
+          if (bp.gold === undefined || unitPrice < bp.gold) bp.gold = unitPrice;
         }
       }
     }
@@ -58,7 +61,22 @@ const shopEntriesMap = new Map<string, ShopEntry[]>();
 })();
 
 type IngredientMap = Record<string, [string | null, number]>;
-type PartsEntry = [string, IngredientMap];
+type YieldSpec = number | [number, number];
+type PartsEntry = [string, IngredientMap, YieldSpec?];
+
+function avgYieldOf(spec: YieldSpec | undefined): number {
+  if (spec === undefined) return 1;
+  if (Array.isArray(spec)) return (spec[0] + spec[1]) / 2;
+  return spec;
+}
+
+const yieldMap = new Map<string, number>();
+(function buildYieldMap() {
+  for (const entry of partsData as PartsEntry[]) {
+    const spec = entry[2];
+    if (spec !== undefined) yieldMap.set(entry[0], avgYieldOf(spec));
+  }
+})();
 
 export interface IngredientInfo {
   name: string;
@@ -106,9 +124,11 @@ const recipeMap = new Map<string, Map<string, number>>(); // craftedName -> ingr
 const reverseMap = new Map<string, string[]>();           // ingredient -> [craftedNames]
 
 // Cooking items cap at gold quality naturally (Qi Seasoning provides iridium)
-const cookingItems = new Set<string>(
-  (itemsData as [string, string][]).filter(([cat]) => cat === 'Cooking').map(([, name]) => name)
-);
+function getCookingItems(): Set<string> {
+  return new Set<string>(
+    CustomDataStore.getItemsData().filter(([cat]) => cat === 'Cooking').map(([, name]) => name)
+  );
+}
 
 (function buildMaps() {
   for (const [craftedName, ingredients] of partsData as PartsEntry[]) {
@@ -214,7 +234,7 @@ export function computeCategoryItems(
   const stacksMap = new Map<string, number[]>();
   for (const item of compacted) {
     // Cooking items naturally cap at gold; only iridium via Qi Seasoning
-    const maxTier = (quality === 'highest' && cookingItems.has(item.name)) ? 2 : 4;
+    const maxTier = (quality === 'highest' && getCookingItems().has(item.name)) ? 2 : 4;
     const count = item.quality
       ? getQualityFilteredCount(item.quality, quality, maxTier)
       : item.stack;
@@ -230,19 +250,21 @@ export function computeCategoryItems(
 
   for (const [craftedItemName, ingredients] of partsData as PartsEntry[]) {
     const craftedCount = inventoryMap.get(craftedItemName) ?? 0;
+    const avgYield = yieldMap.get(craftedItemName) ?? 1;
+    const craftsNeeded = Math.ceil(TARGET / avgYield);
     for (const [ingredientId, ingredientEntry] of Object.entries(ingredients)) {
       const [ingredientName, qty] = ingredientEntry as [string | null, number];
       if (isWildcard(ingredientId, ingredientName)) continue;
       const name = ingredientName!;
-      requiredFromParts.set(name, (requiredFromParts.get(name) ?? 0) + qty * TARGET);
-      totalFromParts.set(name, (totalFromParts.get(name) ?? 0) + craftedCount * qty);
+      requiredFromParts.set(name, (requiredFromParts.get(name) ?? 0) + qty * craftsNeeded);
+      totalFromParts.set(name, (totalFromParts.get(name) ?? 0) + Math.round(craftedCount / avgYield) * qty);
     }
   }
 
   // Qi Seasoning: one per cooked dish when targeting iridium quality
   if (quality === 'highest' || quality === 'iridium') {
     const seen = new Set<string>();
-    for (const [cat, itemName] of itemsData as [string, string][]) {
+    for (const [cat, itemName] of CustomDataStore.getItemsData()) {
       if (cat !== 'Cooking' || seen.has(itemName)) continue;
       seen.add(itemName);
       requiredFromParts.set('Qi Seasoning', (requiredFromParts.get('Qi Seasoning') ?? 0) + TARGET);
@@ -251,14 +273,14 @@ export function computeCategoryItems(
   }
 
   const completionMap = new Map<string, boolean>();
-  for (const [, itemName] of itemsData as [string, string][]) {
+  for (const [, itemName] of CustomDataStore.getItemsData()) {
     const r = inventoryMap.get(itemName) ?? 0;
     const req = TARGET + (requiredFromParts.get(itemName) ?? 0);
     const tot = totalFromParts.get(itemName) ?? 0;
     completionMap.set(itemName, r + tot >= req);
   }
 
-  const source = itemsData as [string, string][];
+  const source = CustomDataStore.getItemsData();
   const entries = categoryName === 'All' ? source : source.filter(([cat]) => cat === categoryName);
 
   const seen = new Set<string>();
@@ -281,7 +303,7 @@ export function computeCategoryItems(
 export function logDataIssues(
   compacted: Array<{ name: string; stack: number }>
 ): void {
-  const itemsList = itemsData as [string, string][];
+  const itemsList = CustomDataStore.getItemsData();
   const partsList = partsData as PartsEntry[];
 
   const knownItemNames = new Set(itemsList.map(([, name]) => name));

@@ -1,4 +1,5 @@
 import categoriesData from '../data/categories.json' assert { type: 'json' };
+import { CustomDataStore } from '../data/CustomDataStore';
 
 export type Theme = 'light' | 'dark';
 export type TabsPosition = 'top' | 'bottom' | 'both';
@@ -78,8 +79,7 @@ export class Config {
   }
 
   public static getCategoryNames(): string[] {
-    const categories = this.getInstance().categories;
-    return categories?.names ?? [];
+    return CustomDataStore.getCategoryNames();
   }
 
   public static getIgnoredCategories(): number[] {

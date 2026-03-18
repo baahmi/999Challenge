@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Config } from '../../config/Config';
 import { AppData } from '../../app/AppData';
+import { CustomDataStore } from '../../data/CustomDataStore';
 import { computeCategoryItems, logDataIssues } from '../../data/itemCalculations';
 import { Tabs } from '../tabs/Tabs';
 import { ItemTable } from '../table/ItemTable';
@@ -39,7 +40,12 @@ export function Main() {
     setSelectedCategory(category);
   };
 
-  const categoryNames = useMemo(() => Config.getCategoryNames(), []);
+  const [categoryNames, setCategoryNames] = useState<string[]>(() => Config.getCategoryNames());
+
+  useEffect(() => {
+    const unsub = CustomDataStore.subscribe(() => setCategoryNames(Config.getCategoryNames()));
+    return unsub;
+  }, []);
 
   const allCategoryData = useMemo(
     () => new Map(categoryNames.map(cat => [cat, computeCategoryItems(cat, compacted)])),

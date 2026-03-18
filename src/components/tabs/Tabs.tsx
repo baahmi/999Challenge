@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { TabContext, TabList } from '@mui/lab';
-import { Tab } from '@mui/material';
+import { Tab, useColorScheme } from '@mui/material';
 import { Config } from '../../config/Config';
+import { CustomDataStore } from '../../data/CustomDataStore';
 import { OVERVIEW_TAB } from '../overview/Overview';
 import './Tabs.css';
 
@@ -16,12 +17,24 @@ const formatTabLabel = (category: string): string => {
 };
 
 export function Tabs({ onCategoryChange, children }: TabsProps) {
+  const { mode } = useColorScheme();
+  const isDark = mode === 'dark';
   const [value, setValue] = useState(Config.getSelectedTab());
   const [tabsPosition, setTabsPosition] = useState(Config.getTabsPosition());
   const [maxWidth, setMaxWidth] = useState<string>('auto');
   const [categoryNames, setCategoryNames] = useState<string[]>(
-    [...Config.getCategoryNames()].sort((a, b) => a.localeCompare(b))
+    () => [...Config.getCategoryNames()].sort((a, b) => a.localeCompare(b))
   );
+
+  useEffect(() => {
+    const unsub = CustomDataStore.subscribe(() => {
+      const next = [...Config.getCategoryNames()].sort((a, b) => a.localeCompare(b));
+      setCategoryNames(next);
+      // If selected tab no longer exists, fall back to Overview
+      setValue(v => next.includes(v) || v === Config.getSelectedTab() ? v : OVERVIEW_TAB);
+    });
+    return unsub;
+  }, []);
   const tabListTopRef = useRef<HTMLDivElement>(null);
   const tabListBottomRef = useRef<HTMLDivElement>(null);
 
@@ -76,20 +89,23 @@ export function Tabs({ onCategoryChange, children }: TabsProps) {
   };
 
   const renderTabBar = (ref: React.RefObject<HTMLDivElement | null>, stickyClass: string) => (
-    <div className={`tabs-wrapper ${stickyClass}`}>
+    <div className={`tabs-wrapper ${stickyClass}`} style={{ backgroundColor: isDark ? '#1e1e1e' : '#fff' }}>
       <button
         className="tab-scroll-button tab-scroll-left"
         onClick={() => scrollRef(ref, 'left')}
         aria-label="Previous tabs"
         title="Previous tabs"
+        style={{ color: isDark ? 'rgba(255,255,255,0.6)' : undefined }}
       >
         ‹
       </button>
       <div className="tabs-scroll-container" ref={ref} style={{ maxWidth }}>
         <TabList onChange={handleChange} aria-label="category tabs">
-          <Tab key={OVERVIEW_TAB} label={OVERVIEW_TAB} value={OVERVIEW_TAB} />
+          <Tab key={OVERVIEW_TAB} label={OVERVIEW_TAB} value={OVERVIEW_TAB}
+            style={isDark && value !== OVERVIEW_TAB ? { color: 'rgba(255,255,255,0.6)' } : undefined} />
           {categoryNames.map((category) => (
-            <Tab key={category} label={formatTabLabel(category)} value={category} />
+            <Tab key={category} label={formatTabLabel(category)} value={category}
+              style={isDark && value !== category ? { color: 'rgba(255,255,255,0.6)' } : undefined} />
           ))}
         </TabList>
       </div>
@@ -98,6 +114,7 @@ export function Tabs({ onCategoryChange, children }: TabsProps) {
         onClick={() => scrollRef(ref, 'right')}
         aria-label="Next tabs"
         title="Next tabs"
+        style={{ color: isDark ? 'rgba(255,255,255,0.6)' : undefined }}
       >
         ›
       </button>

@@ -1,15 +1,17 @@
 import React, { useState, useRef } from 'react';
 import './Header.css';
 import {IconButton, Tooltip} from "@mui/material";
-import {Upload, ViewWeekOutlined, Settings, FileDownload, CompareArrows} from "@mui/icons-material";
+import {Upload, ViewWeekOutlined, Settings, FileDownload, CompareArrows, Category} from "@mui/icons-material";
 import {ThemeToggle} from "@/components/theme/ThemeToggle.tsx";
 import {ConfigDialog} from "@/components/config/ConfigDialog.tsx";
 import {DiffDialog} from "@/components/diff/DiffDialog.tsx";
+import {CategoryDialog} from "../config/CategoryDialog.tsx";
 import {Config} from "../../config/Config.ts";
 import {AppData} from "../../app/AppData.ts";
 
 export function Header() {
     const [configOpen, setConfigOpen] = useState(false);
+    const [categoryOpen, setCategoryOpen] = useState(false);
     const [tabsPosition, setTabsPosition] = useState(Config.getTabsPosition());
     const [qiGems, setQiGems] = useState<number | null>(null);
     const [daysPlayed, setDaysPlayed] = useState<number | null>(null);
@@ -96,25 +98,30 @@ export function Header() {
             <div className="container">
                 {/* <div className="brand">999 Challenge</div> */}
                 <div style={{ display: 'flex', gap: '24px', alignItems: 'center', flex: 1, paddingLeft: '24px' }}>
-                    <div style={{ fontSize: '14px', color: 'rgba(0, 0, 0, 0.7)' }}>
+                    <div style={{ fontSize: '14px' }}>
                         Qi Gems: <strong>{qiGems !== null ? qiGems : 'Unknown'}</strong>
                     </div>
-                    <div style={{ fontSize: '14px', color: 'rgba(0, 0, 0, 0.7)' }}>
+                    <div style={{ fontSize: '14px' }}>
                         Days Played: <strong>{daysPlayed !== null ? daysPlayed : 'Unknown'}</strong>
                     </div>
                     {daysPlayed !== null && (
-                        <div style={{ fontSize: '14px', color: 'rgba(0, 0, 0, 0.7)' }}>
+                        <div style={{ fontSize: '14px' }}>
                             Past Kids: <strong>{pastKids ?? 0}</strong>
                         </div>
                     )}
                     {journalDays > 0 && (
-                        <div style={{ fontSize: '14px', color: 'rgba(0, 0, 0, 0.7)' }}>
+                        <div style={{ fontSize: '14px' }}>
                             Journal: <strong>{journalDays} {journalDays === 1 ? 'session' : 'sessions'}</strong>
                         </div>
                     )}
                 </div>
                 <nav className="nav" aria-label="Primary" style={{ marginLeft: 'auto', display: 'flex', gap: '8px' }}>
                     <ThemeToggle/>
+                    <Tooltip title="Manage categories & items">
+                        <IconButton size="small" onClick={() => setCategoryOpen(true)}>
+                            <Category />
+                        </IconButton>
+                    </Tooltip>
                     {journalDays > 0 && (
                         <Tooltip title="Show last import changes">
                             <IconButton size="small" onClick={() => setDiffOpen(true)}>
@@ -164,6 +171,7 @@ export function Header() {
                 </nav>
             </div>
             <ConfigDialog open={configOpen} onClose={() => setConfigOpen(false)} />
+            <CategoryDialog open={categoryOpen} onClose={() => setCategoryOpen(false)} />
             <DiffDialog open={diffOpen} onClose={() => setDiffOpen(false)} diff={AppData.getLastDiff()} />
         </header>
     );
