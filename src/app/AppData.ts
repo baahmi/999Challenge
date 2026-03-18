@@ -183,7 +183,7 @@ class AppDataManager {
     this.state.mysteryBoxesOpened = main.mysteryBoxesOpened;
     this.state.ticketPrizesClaimed = main.ticketPrizesClaimed;
     this.state.childrenTurnedToDoves = main.childrenTurnedToDoves ?? null;
-    this.state.compacted = JournalStore.toCompactedItems(main.items) as unknown as Record<string, extractedItem>;
+    this.state.compacted = JournalStore.toCompactedItems(main.items, Config.getIgnoredCategories()) as unknown as Record<string, extractedItem>;
 
     const sortedDays = Object.keys(days).map(Number).sort((a, b) => a - b);
     const latestDay = sortedDays[sortedDays.length - 1];
@@ -267,7 +267,7 @@ class AppDataManager {
     this.state.qiGems = main.qiGems;
     this.state.mysteryBoxesOpened = main.mysteryBoxesOpened;
     this.state.ticketPrizesClaimed = main.ticketPrizesClaimed;
-    this.state.compacted = JournalStore.toCompactedItems(main.items) as unknown as Record<string, extractedItem>;
+    this.state.compacted = JournalStore.toCompactedItems(main.items, Config.getIgnoredCategories()) as unknown as Record<string, extractedItem>;
     this.notifyListeners();
     return true;
   }

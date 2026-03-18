@@ -119,14 +119,16 @@ export class JournalStore {
     return result;
   }
 
-  static toCompactedItems(items: Record<string, JournalItem>): CompactedItem[] {
-    return Object.entries(items).map(([name, item]) => ({
-      name,
-      itemId: item.id,
-      category: item.cat,
-      stack: item.q.reduce((s, v) => s + v, 0),
-      quality: [...item.q],
-    }));
+  static toCompactedItems(items: Record<string, JournalItem>, ignoredCategories: number[] = []): CompactedItem[] {
+    return Object.entries(items)
+      .filter(([, item]) => !ignoredCategories.includes(item.cat))
+      .map(([name, item]) => ({
+        name,
+        itemId: item.id,
+        category: item.cat,
+        stack: item.q.reduce((s, v) => s + v, 0),
+        quality: [...item.q],
+      }));
   }
 
   static computeDelta(
