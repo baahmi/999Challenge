@@ -3,6 +3,7 @@ import { Tooltip, useColorScheme } from '@mui/material';
 import { enrichItemsWithCalculations } from '../../types/Item';
 import type { ItemWithCalculations } from '../../types/Item';
 import type { ItemRow, ItemTooltipData } from '../../data/itemCalculations';
+import { hasTooltipContent } from '../../data/itemCalculations';
 import './ItemTable.css';
 
 interface ItemTableProps {
@@ -309,7 +310,8 @@ export function ItemTable({ items }: ItemTableProps) {
               const isBottomTotal = index === tableData.length - 1;
               const isTotal = isTopTotal || isBottomTotal;
               const done = !isTotal && row.percentage >= 100;
-              const tooltipData = !isTotal ? (row as ItemRow & { percentage: number }).tooltip : undefined;
+              const rawTooltip = !isTotal ? (row as ItemRow & { percentage: number }).tooltip : undefined;
+              const tooltipData = rawTooltip && hasTooltipContent(rawTooltip) ? rawTooltip : undefined;
               const rowBg = isTotal
                 ? (isDark ? '#3a3a3a' : '#d0d0d0')
                 : done

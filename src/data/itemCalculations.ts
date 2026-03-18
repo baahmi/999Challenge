@@ -185,6 +185,17 @@ function computeTooltipData(
     }));
   }
 
+  if (Config.getQuality() === 'highest' && getCookingItems().has(itemName)) {
+    if (recipe === null) recipe = [];
+    recipe.push({
+      name: 'Qi Seasoning',
+      qty: 1,
+      available: inventoryMap.get('Qi Seasoning') ?? 0,
+      done: completionMap.get('Qi Seasoning') ?? false,
+    });
+  }
+
+  const cookingItems = Config.getQuality() === 'highest' ? getCookingItems() : null;
   const usedBy: UsedByInfo[] = (reverseMap.get(itemName) ?? []).map(craftedName => {
     const { count } = craftableCount(craftedName, inventoryMap);
     const alreadyHave = inventoryMap.get(craftedName) ?? 0;
@@ -198,12 +209,24 @@ function computeTooltipData(
           done: completionMap.get(name) ?? false,
         }))
       : [];
+    if (cookingItems?.has(craftedName)) {
+      recipe.push({
+        name: 'Qi Seasoning',
+        qty: 1,
+        available: inventoryMap.get('Qi Seasoning') ?? 0,
+        done: completionMap.get('Qi Seasoning') ?? false,
+      });
+    }
     return { craftedName, craftableCount: count, alreadyHave, done, recipe };
   });
 
   const done = completionMap.get(itemName) ?? false;
   const shops = shopEntriesMap.get(itemName) ?? [];
   return { note, recipe, craftableCount: canCraft, limitingIngredient, done, usedBy, shops };
+}
+
+export function hasTooltipContent(t: ItemTooltipData): boolean {
+  return !!t.note || !!t.recipe || t.usedBy.length > 0 || t.shops.length > 0;
 }
 
 function getQualityFilteredCount(stacks: number[] | undefined, quality: Quality, maxTierIndex = 4): number {
@@ -261,8 +284,8 @@ export function computeCategoryItems(
     }
   }
 
-  // Qi Seasoning: one per cooked dish when targeting iridium quality
-  if (quality === 'highest' || quality === 'iridium') {
+  // Qi Seasoning: one per cooked dish when targeting highest quality
+  if (quality === 'highest') {
     const seen = new Set<string>();
     for (const [cat, itemName] of CustomDataStore.getItemsData()) {
       if (cat !== 'Cooking' || seen.has(itemName)) continue;
