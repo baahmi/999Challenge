@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -14,13 +14,18 @@ import {
   Box,
   Typography,
   Chip,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
 } from '@mui/material';
-import type { ImportDiff } from '../../app/Journal';
+import { JournalStore } from '../../app/Journal';
+import type { Journal, ImportDiff } from '../../app/Journal';
 
 interface DiffDialogProps {
   open: boolean;
   onClose: () => void;
-  diff: ImportDiff | null;
+  journal: Journal | null;
 }
 
 interface ItemChange {
@@ -84,7 +89,26 @@ function ItemChangeTable({ rows }: { rows: ItemChange[] }) {
   );
 }
 
-export function DiffDialog({ open, onClose, diff }: DiffDialogProps) {
+export function DiffDialog({ open, onClose, journal }: DiffDialogProps) {
+  const availableDays = useMemo(() => {
+    if (!journal) return [];
+    return Object.keys(journal.days).map(Number).sort((a, b) => a - b);
+  }, [journal]);
+
+  const [fromDay, setFromDay] = useState<number>(0);
+  const [toDay, setToDay] = useState<number>(0);
+
+  useEffect(() => {
+    if (!open || availableDays.length === 0) return;
+    setToDay(availableDays[availableDays.length - 1]!);
+    setFromDay(availableDays.length >= 2 ? availableDays[availableDays.length - 2]! : 0);
+  }, [open, availableDays]);
+
+  const diff: ImportDiff | null = useMemo(() => {
+    if (!journal || toDay === 0) return null;
+    return JournalStore.getDiffBetween(journal, fromDay, toDay);
+  }, [journal, fromDay, toDay]);
+
   const { gained, lost } = useMemo(() => {
     if (!diff) return { gained: [], lost: [] };
     const all: ItemChange[] = Object.entries(diff.changes).map(([name, delta]) => {
@@ -103,7 +127,7 @@ export function DiffDialog({ open, onClose, diff }: DiffDialogProps) {
     };
   }, [diff]);
 
-  if (!diff) return null;
+  if (!journal || availableDays.length === 0 || !diff) return null;
 
   const isFirstImport = diff.previousDay === null;
   const qiChange = diff.currentQiGems - (diff.previousQiGems ?? diff.currentQiGems);
@@ -117,6 +141,43 @@ export function DiffDialog({ open, onClose, diff }: DiffDialogProps) {
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle sx={{ pb: 1 }}>{titleText}</DialogTitle>
       <DialogContent>
+        {availableDays.length > 1 && (
+          <Box sx={{ display: 'flex', gap: 2, mb: 2, mt: 1 }}>
+            <FormControl size="small" sx={{ minWidth: 130 }}>
+              <InputLabel>From day</InputLabel>
+              <Select
+                label="From day"
+                value={fromDay}
+                onChange={e => {
+                  const val = Number(e.target.value);
+                  setFromDay(val);
+                  if (toDay <= val) setToDay(availableDays.find(d => d > val) ?? toDay);
+                }}
+              >
+                <MenuItem value={0}><em>Before first</em></MenuItem>
+                {availableDays.filter(d => d < toDay).map(d => (
+                  <MenuItem key={d} value={d}>Day {d}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl size="small" sx={{ minWidth: 130 }}>
+              <InputLabel>To day</InputLabel>
+              <Select
+                label="To day"
+                value={toDay}
+                onChange={e => {
+                  const val = Number(e.target.value);
+                  setToDay(val);
+                  if (fromDay >= val) setFromDay(availableDays.filter(d => d < val).slice(-1)[0] ?? 0);
+                }}
+              >
+                {availableDays.map(d => (
+                  <MenuItem key={d} value={d} disabled={d <= fromDay}>Day {d}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
+        )}
         <Box sx={{ display: 'flex', gap: 3, mb: 2, flexWrap: 'wrap', alignItems: 'flex-start' }}>
           <Box>
             <Typography variant="caption" color="text.secondary" display="block">Qi Gems</Typography>

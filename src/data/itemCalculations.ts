@@ -297,6 +297,7 @@ export function computeCategoryItems(
     rows.push({ name: itemName, required, total, raw, rawStacks: stacksMap.get(itemName), buyPrice: priceMap.get(itemName), tooltip: computeTooltipData(itemName, inventoryMap, completionMap) });
   }
 
+  rows.sort((a, b) => a.name.localeCompare(b.name));
   return rows;
 }
 

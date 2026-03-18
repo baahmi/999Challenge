@@ -265,7 +265,19 @@ export function ItemTable({ items }: ItemTableProps) {
       if (c.key === 'qi_needed') return showQiCol;
       return true;
     });
-    const tableWidth = visibleCols.reduce((s, c) => s + (columnWidths[c.key] ?? c.minW), 0);
+    const colW = (key: string): number => {
+      const stored = columnWidths[key] ?? COLUMNS.find(c => c.key === key)?.minW ?? 40;
+      if (key === 'gold_needed' && showGoldCol) {
+        const needed = Math.ceil(fmtCost(totalGoldNeeded).length * 8.5) + 16;
+        return Math.max(stored, needed);
+      }
+      if (key === 'qi_needed' && showQiCol) {
+        const needed = Math.ceil(fmtCost(totalQiNeeded).length * 8.5) + 16;
+        return Math.max(stored, needed);
+      }
+      return stored;
+    };
+    const tableWidth = visibleCols.reduce((s, c) => s + colW(c.key), 0);
 
     const thBase: React.CSSProperties = {
       border: `1px solid ${isDark ? '#555' : '#ccc'}`, padding: '4px 6px',
@@ -281,7 +293,7 @@ export function ItemTable({ items }: ItemTableProps) {
           <thead ref={theadRef}>
             <tr>
               {visibleCols.map(col => (
-                <th key={col.key} style={{ ...thBase, width: columnWidths[col.key] }}>
+                <th key={col.key} style={{ ...thBase, width: colW(col.key) }}>
                   {col.label}
                   <div
                     style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: 5, cursor: 'col-resize', zIndex: 1 }}
@@ -318,7 +330,7 @@ export function ItemTable({ items }: ItemTableProps) {
                   {visibleCols.map(col => (
                     <td key={col.key} style={{
                       border: `1px solid ${isDark ? '#555' : '#ccc'}`, padding: '4px 6px', fontSize: '13px',
-                      width: columnWidths[col.key], maxWidth: columnWidths[col.key],
+                      width: colW(col.key), maxWidth: colW(col.key),
                       overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
                       textAlign: col.key === 'checkbox' ? 'center' : COST_KEYS.has(col.key) ? 'right' : undefined,
                       color: col.key === 'gold_needed' ? (isDark ? '#ffd54f' : '#9a7000') : col.key === 'qi_needed' ? (isDark ? '#ce93d8' : '#8b44ac') : undefined,

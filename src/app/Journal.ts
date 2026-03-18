@@ -19,6 +19,7 @@ export interface DayEntry {
   mysteryBoxesOpened: number;
   ticketPrizesClaimed: number;
   changes: Record<string, JournalDelta>;
+  stats?: Record<string, string>;
 }
 
 export interface JournalMain {
@@ -158,6 +159,56 @@ export class JournalStore {
     return delta;
   }
 
+  static reconstructItemsAtDay(
+    journal: Journal,
+    targetDay: number,
+  ): Record<string, JournalItem> {
+    const sortedDays = Object.keys(journal.days).map(Number).sort((a, b) => b - a);
+    const items: Record<string, JournalItem> = {};
+    for (const [name, item] of Object.entries(journal.main.items)) {
+      items[name] = { ...item, q: [...item.q] as QualityStacks };
+    }
+    for (const day of sortedDays) {
+      if (day <= targetDay) break;
+      const changes = journal.days[String(day)]?.changes ?? {};
+      for (const [name, delta] of Object.entries(changes)) {
+        const cur = items[name];
+        const prevQ = (delta.q as number[]).map((dv, i) => (cur?.q[i] ?? 0) - dv) as QualityStacks;
+        const total = prevQ.reduce((s, v) => s + v, 0);
+        if (total <= 0) {
+          delete items[name];
+        } else {
+          items[name] = {
+            id: cur?.id ?? delta.id ?? 0,
+            cat: cur?.cat ?? delta.cat ?? 0,
+            q: prevQ,
+          };
+        }
+      }
+    }
+    return items;
+  }
+
+  static getDiffBetween(
+    journal: Journal,
+    fromDay: number,
+    toDay: number,
+  ): ImportDiff {
+    const toItems = JournalStore.reconstructItemsAtDay(journal, toDay);
+    const fromItems = fromDay === 0 ? {} : JournalStore.reconstructItemsAtDay(journal, fromDay);
+    const changes = JournalStore.computeDelta(fromItems as Record<string, JournalItem>, toItems);
+    const fromEntry = fromDay > 0 ? journal.days[String(fromDay)] : undefined;
+    const toEntry = journal.days[String(toDay)];
+    return {
+      previousDay: fromDay === 0 ? null : fromDay,
+      currentDay: toDay,
+      previousQiGems: fromEntry?.qiGems ?? null,
+      currentQiGems: toEntry?.qiGems ?? journal.main.qiGems,
+      changes,
+      currentItems: toItems,
+    };
+  }
+
   static upsertJournal(
     existing: Journal | null,
     day: number,
@@ -166,6 +217,7 @@ export class JournalStore {
     ticketPrizesClaimed: number,
     childrenTurnedToDoves: number,
     compacted: CompactedItem[],
+    stats?: Record<string, string>,
   ): Journal {
     const currentItems = JournalStore.toJournalItems(compacted);
     const prevItems = existing?.main.items ?? {};
@@ -176,7 +228,7 @@ export class JournalStore {
       main: { day, qiGems, mysteryBoxesOpened, ticketPrizesClaimed, childrenTurnedToDoves, items: currentItems },
       days: {
         ...(existing?.days ?? {}),
-        [day]: { qiGems, mysteryBoxesOpened, ticketPrizesClaimed, changes },
+        [day]: { qiGems, mysteryBoxesOpened, ticketPrizesClaimed, changes, stats },
       },
     };
   }

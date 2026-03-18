@@ -15,6 +15,7 @@ export interface AppDataState {
   items: extractedItem[],
   compacted: Record<string, extractedItem>,
   lastDiff: ImportDiff | null,
+  rawStats: Record<string, string>;
 }
 
 export type extractedItem = {
@@ -39,6 +40,7 @@ class AppDataManager {
     items: [],
     compacted: {} as Record<string, extractedItem>,
     lastDiff: null,
+    rawStats: {},
   };
   private listeners: Set<Listener> = new Set();
   private journal: Journal | null = null;
@@ -150,10 +152,13 @@ class AppDataManager {
 
   private processData(root: Element) {
     this.state.items = [];
+    this.state.rawStats = {};
     const items = root.querySelectorAll('SaveGame > player > stats > Values > item');
     for (const item of Array.from(items)) {
-      let key = item.querySelector('key > string')?.textContent || '';
-      let value = item.querySelector('value > *')?.textContent || '';
+      const key = item.querySelector('key > string')?.textContent || '';
+      const value = item.querySelector('value > *')?.textContent || '';
+      if (!key) continue;
+      this.state.rawStats[key] = value;
       if(key === 'daysPlayed') {
         this.state.daysPlayed = parseInt(value);
       } else if(key === 'MysteryBoxesOpened') {
@@ -216,6 +221,7 @@ class AppDataManager {
       this.state.ticketPrizesClaimed ?? 0,
       this.state.childrenTurnedToDoves ?? 0,
       compacted,
+      Object.keys(this.state.rawStats).length > 0 ? this.state.rawStats : undefined,
     );
     JournalStore.save(this.journal);
     this.state.lastDiff = {
@@ -247,6 +253,14 @@ class AppDataManager {
 
   getLastDiff(): ImportDiff | null {
     return this.state.lastDiff;
+  }
+
+  getJournal(): Journal | null {
+    return this.journal;
+  }
+
+  getStats(): Record<string, string> {
+    return this.state.rawStats;
   }
 
   hasJournal(): boolean {
