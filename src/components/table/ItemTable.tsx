@@ -111,10 +111,11 @@ function fmtCost(n: number): string {
 }
 
 const COLUMNS: Array<{ key: string; label: string; minW: number }> = [
-  { key: 'checkbox',    label: '✓',        minW: 20 },
+  { key: 'checkbox',    label: '✓',         minW: 20 },
   { key: 'percentage',  label: '%',         minW: 40 },
   { key: 'name',        label: 'Name',      minW: 60 },
   { key: 'required',    label: 'Required',  minW: 40 },
+  { key: 'needed',      label: 'Needed',    minW: 40 },
   { key: 'total',       label: 'Total',     minW: 40 },
   { key: 'raw',         label: 'Raw',       minW: 40 },
   { key: 'gold_needed', label: '💰 Gold',   minW: 54 },
@@ -136,6 +137,7 @@ export function ItemTable({ items }: ItemTableProps) {
     name: 200,
     required: 90,
     total: 90,
+    needed: 90,
     raw: 80,
     gold_needed: 80,
     qi_needed: 64,
@@ -218,6 +220,7 @@ export function ItemTable({ items }: ItemTableProps) {
         case 'percentage': return `${Math.floor(row.percentage)}%`;
         case 'name':       return isTotal ? 'Total' : row.name;
         case 'required':   return row.required;
+        case 'needed':     return Math.max(0, row.required - row.raw + row.total);
         case 'total':      return row.raw + row.total;
         case 'raw':        return row.raw;
         case 'raw_N':      return isTotal ? '' : (row.rawStacks?.[0] ?? 0);
