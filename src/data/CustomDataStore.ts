@@ -3,7 +3,8 @@ import defaultCategoriesData from './categories.json';
 
 const STORAGE_KEY = 'stardew-custom-data';
 
-export type ItemEntry = [string, string]; // [category, name]
+// [category, name, displayName]
+export type ItemEntry = [string, string, string];
 
 export interface CustomData {
   categoryNames: string[];

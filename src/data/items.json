@@ -1,4762 +1,5993 @@
 [
-    [
-        "Forage",
-        "Wild Horseradish"
-    ],
-    [
-        "Forage",
-        "Daffodil"
-    ],
-    [
-        "Forage",
-        "Leek"
-    ],
-    [
-        "Forage",
-        "Dandelion"
-    ],
-    [
-        "Vegetables",
-        "Parsnip"
-    ],
-    [
-        "Basic",
-        "Lumber"
-    ],
-    [
-        "Gem",
-        "Emerald"
-    ],
-    [
-        "Gem",
-        "Aquamarine"
-    ],
-    [
-        "Gem",
-        "Ruby"
-    ],
-    [
-        "Gem",
-        "Amethyst"
-    ],
-    [
-        "Gem",
-        "Topaz"
-    ],
-    [
-        "Gem",
-        "Jade"
-    ],
-    [
-        "Gem",
-        "Diamond"
-    ],
-    [
-        "Gem",
-        "Prismatic Shard"
-    ],
-    [
-        "Forage",
-        "Cave Carrot"
-    ],
-    [
-        "Gem",
-        "Quartz"
-    ],
-    [
-        "Gem",
-        "Fire Quartz"
-    ],
-    [
-        "Gem",
-        "Frozen Tear"
-    ],
-    [
-        "Gem",
-        "Earth Crystal"
-    ],
-    [
-        "Fruits",
-        "Coconut"
-    ],
-    [
-        "Fruits",
-        "Cactus Fruit"
-    ],
-    [
-        "Forage",
-        "Sap"
-    ],
-    [
-        "Crafting",
-        "Torch"
-    ],
-    [
-        "Crafting",
-        "Spirit Torch"
-    ],
-    [
-        "Artifacts",
-        "Dwarf Scroll I"
-    ],
-    [
-        "Artifacts",
-        "Dwarf Scroll II"
-    ],
-    [
-        "Artifacts",
-        "Dwarf Scroll III"
-    ],
-    [
-        "Artifacts",
-        "Dwarf Scroll IV"
-    ],
-    [
-        "Artifacts",
-        "Chipped Amphora"
-    ],
-    [
-        "Artifacts",
-        "Arrowhead"
-    ],
-    [
-        "Artifacts",
-        "Ancient Doll"
-    ],
-    [
-        "Artifacts",
-        "Elvish Jewelry"
-    ],
-    [
-        "Artifacts",
-        "Chewing Stick"
-    ],
-    [
-        "Artifacts",
-        "Ornamental Fan"
-    ],
-    [
-        "Artifacts",
-        "Dinosaur Egg"
-    ],
-    [
-        "Artifacts",
-        "Rare Disc"
-    ],
-    [
-        "Artifacts",
-        "Ancient Sword"
-    ],
-    [
-        "Artifacts",
-        "Rusty Spoon"
-    ],
-    [
-        "Artifacts",
-        "Rusty Spur"
-    ],
-    [
-        "Artifacts",
-        "Rusty Cog"
-    ],
-    [
-        "Artifacts",
-        "Chicken Statue"
-    ],
-    [
-        "Artifacts",
-        "Ancient Seed"
-    ],
-    [
-        "Artifacts",
-        "Prehistoric Tool"
-    ],
-    [
-        "Artifacts",
-        "Dried Starfish"
-    ],
-    [
-        "Artifacts",
-        "Anchor"
-    ],
-    [
-        "Artifacts",
-        "Glass Shards"
-    ],
-    [
-        "Artifacts",
-        "Bone Flute"
-    ],
-    [
-        "Artifacts",
-        "Prehistoric Handaxe"
-    ],
-    [
-        "Artifacts",
-        "Dwarvish Helm"
-    ],
-    [
-        "Artifacts",
-        "Dwarf Gadget"
-    ],
-    [
-        "Artifacts",
-        "Ancient Drum"
-    ],
-    [
-        "Artifacts",
-        "Golden Mask"
-    ],
-    [
-        "Artifacts",
-        "Golden Relic"
-    ],
-    [
-        "Artifacts",
-        "Strange Doll"
-    ],
-    [
-        "Artifacts",
-        "Strange Doll"
-    ],
-    [
-        "Fish",
-        "Pufferfish"
-    ],
-    [
-        "Fish",
-        "Anchovy"
-    ],
-    [
-        "Fish",
-        "Tuna"
-    ],
-    [
-        "Fish",
-        "Sardine"
-    ],
-    [
-        "Fish",
-        "Bream"
-    ],
-    [
-        "Fish",
-        "Largemouth Bass"
-    ],
-    [
-        "Fish",
-        "Smallmouth Bass"
-    ],
-    [
-        "Fish",
-        "Rainbow Trout"
-    ],
-    [
-        "Fish",
-        "Salmon"
-    ],
-    [
-        "Fish",
-        "Walleye"
-    ],
-    [
-        "Fish",
-        "Perch"
-    ],
-    [
-        "Fish",
-        "Carp"
-    ],
-    [
-        "Fish",
-        "Catfish"
-    ],
-    [
-        "Fish",
-        "Pike"
-    ],
-    [
-        "Fish",
-        "Sunfish"
-    ],
-    [
-        "Fish",
-        "Red Mullet"
-    ],
-    [
-        "Fish",
-        "Herring"
-    ],
-    [
-        "Fish",
-        "Eel"
-    ],
-    [
-        "Fish",
-        "Octopus"
-    ],
-    [
-        "Fish",
-        "Red Snapper"
-    ],
-    [
-        "Fish",
-        "Squid"
-    ],
-    [
-        "Fish",
-        "Seaweed"
-    ],
-    [
-        "Fish",
-        "Green Algae"
-    ],
-    [
-        "Fish",
-        "Sea Cucumber"
-    ],
-    [
-        "Fish",
-        "Super Cucumber"
-    ],
-    [
-        "Fish",
-        "Ghostfish"
-    ],
-    [
-        "Fish",
-        "White Algae"
-    ],
-    [
-        "Fish",
-        "Stonefish"
-    ],
-    [
-        "Fish",
-        "Crimsonfish"
-    ],
-    [
-        "Fish",
-        "Angler"
-    ],
-    [
-        "Fish",
-        "Ice Pip"
-    ],
-    [
-        "Fish",
-        "Lava Eel"
-    ],
-    [
-        "Fish",
-        "Legend"
-    ],
-    [
-        "Fish",
-        "Sandfish"
-    ],
-    [
-        "Fish",
-        "Scorpion Carp"
-    ],
-    [
-        "Basic",
-        "Treasure Chest"
-    ],
-    [
-        "Trash",
-        "Joja Cola"
-    ],
-    [
-        "Trash",
-        "Trash"
-    ],
-    [
-        "Trash",
-        "Driftwood"
-    ],
-    [
-        "Trash",
-        "Broken Glasses"
-    ],
-    [
-        "Trash",
-        "Broken CD"
-    ],
-    [
-        "Trash",
-        "Soggy Newspaper"
-    ],
-    [
-        "Animal Products",
-        "Egg"
-    ],
-    [
-        "Animal Products",
-        "Large Egg"
-    ],
-    [
-        "Basic",
-        "Hay"
-    ],
-    [
-        "Animal Products",
-        "Egg"
-    ],
-    [
-        "Animal Products",
-        "Large Egg"
-    ],
-    [
-        "Animal Products",
-        "Milk"
-    ],
-    [
-        "Animal Products",
-        "Large Milk"
-    ],
-    [
-        "Vegetables",
-        "Green Bean"
-    ],
-    [
-        "Vegetables",
-        "Cauliflower"
-    ],
-    [
-        "Vegetables",
-        "Potato"
-    ],
-    [
-        "Cooking",
-        "Fried Egg"
-    ],
-    [
-        "Cooking",
-        "Omelet"
-    ],
-    [
-        "Cooking",
-        "Salad"
-    ],
-    [
-        "Cooking",
-        "Cheese Cauliflower"
-    ],
-    [
-        "Cooking",
-        "Baked Fish"
-    ],
-    [
-        "Cooking",
-        "Parsnip Soup"
-    ],
-    [
-        "Cooking",
-        "Vegetable Medley"
-    ],
-    [
-        "Cooking",
-        "Complete Breakfast"
-    ],
-    [
-        "Cooking",
-        "Fried Calamari"
-    ],
-    [
-        "Cooking",
-        "Strange Bun"
-    ],
-    [
-        "Cooking",
-        "Lucky Lunch"
-    ],
-    [
-        "Cooking",
-        "Fried Mushroom"
-    ],
-    [
-        "Cooking",
-        "Pizza"
-    ],
-    [
-        "Cooking",
-        "Bean Hotpot"
-    ],
-    [
-        "Cooking",
-        "Glazed Yams"
-    ],
-    [
-        "Cooking",
-        "Carp Surprise"
-    ],
-    [
-        "Cooking",
-        "Hashbrowns"
-    ],
-    [
-        "Cooking",
-        "Pancakes"
-    ],
-    [
-        "Cooking",
-        "Salmon Dinner"
-    ],
-    [
-        "Cooking",
-        "Fish Taco"
-    ],
-    [
-        "Cooking",
-        "Crispy Bass"
-    ],
-    [
-        "Cooking",
-        "Pepper Poppers"
-    ],
-    [
-        "Cooking",
-        "Bread"
-    ],
-    [
-        "Cooking",
-        "Tom Kha Soup"
-    ],
-    [
-        "Cooking",
-        "Trout Soup"
-    ],
-    [
-        "Cooking",
-        "Chocolate Cake"
-    ],
-    [
-        "Cooking",
-        "Pink Cake"
-    ],
-    [
-        "Cooking",
-        "Rhubarb Pie"
-    ],
-    [
-        "Cooking",
-        "Cookie"
-    ],
-    [
-        "Cooking",
-        "Spaghetti"
-    ],
-    [
-        "Cooking",
-        "Fried Eel"
-    ],
-    [
-        "Cooking",
-        "Spicy Eel"
-    ],
-    [
-        "Cooking",
-        "Sashimi"
-    ],
-    [
-        "Cooking",
-        "Maki Roll"
-    ],
-    [
-        "Cooking",
-        "Tortilla"
-    ],
-    [
-        "Cooking",
-        "Red Plate"
-    ],
-    [
-        "Cooking",
-        "Eggplant Parmesan"
-    ],
-    [
-        "Cooking",
-        "Rice Pudding"
-    ],
-    [
-        "Cooking",
-        "Ice Cream"
-    ],
-    [
-        "Cooking",
-        "Blueberry Tart"
-    ],
-    [
-        "Cooking",
-        "Autumn's Bounty"
-    ],
-    [
-        "Cooking",
-        "Pumpkin Soup"
-    ],
-    [
-        "Cooking",
-        "Super Meal"
-    ],
-    [
-        "Cooking",
-        "Cranberry Sauce"
-    ],
-    [
-        "Cooking",
-        "Stuffing"
-    ],
-    [
-        "Cooking",
-        "Farmer's Lunch"
-    ],
-    [
-        "Cooking",
-        "Survival Burger"
-    ],
-    [
-        "Cooking",
-        "Dish O' The Sea"
-    ],
-    [
-        "Cooking",
-        "Miner's Treat"
-    ],
-    [
-        "Cooking",
-        "Roots Platter"
-    ],
-    [
-        "Basic",
-        "Sugar"
-    ],
-    [
-        "Basic",
-        "Wheat Flour"
-    ],
-    [
-        "Basic",
-        "Oil"
-    ],
-    [
-        "Vegetables",
-        "Garlic"
-    ],
-    [
-        "Vegetables",
-        "Kale"
-    ],
-    [
-        "Seeds",
-        "Tea Sapling"
-    ],
-    [
-        "Fruits",
-        "Rhubarb"
-    ],
-    [
-        "Cooking",
-        "Triple Shot Espresso"
-    ],
-    [
-        "Fruits",
-        "Melon"
-    ],
-    [
-        "Vegetables",
-        "Tomato"
-    ],
-    [
-        "Forage",
-        "Morel"
-    ],
-    [
-        "Fruits",
-        "Blueberry"
-    ],
-    [
-        "Vegetables",
-        "Fiddlehead Fern"
-    ],
-    [
-        "Fruits",
-        "Hot Pepper"
-    ],
-    [
-        "Crafting",
-        "Warp Totem: Desert"
-    ],
-    [
-        "Vegetables",
-        "Wheat"
-    ],
-    [
-        "Vegetables",
-        "Radish"
-    ],
-    [
-        "Vegetables",
-        "Red Cabbage"
-    ],
-    [
-        "Fruits",
-        "Starfruit"
-    ],
-    [
-        "Vegetables",
-        "Corn"
-    ],
-    [
-        "Vegetables",
-        "Unmilled Rice"
-    ],
-    [
-        "Vegetables",
-        "Eggplant"
-    ],
-    [
-        "Seeds",
-        "Rice Shoot"
-    ],
-    [
-        "Vegetables",
-        "Artichoke"
-    ],
-    [
-        "Basic",
-        "Artifact Trove"
-    ],
-    [
-        "Vegetables",
-        "Pumpkin"
-    ],
-    [
-        "Basic",
-        "Wilted Bouquet"
-    ],
-    [
-        "Vegetables",
-        "Bok Choy"
-    ],
-    [
-        "Cooking",
-        "Magic Rock Candy"
-    ],
-    [
-        "Vegetables",
-        "Yam"
-    ],
-    [
-        "Forage",
-        "Chanterelle"
-    ],
-    [
-        "Fruits",
-        "Cranberries"
-    ],
-    [
-        "Forage",
-        "Holly"
-    ],
-    [
-        "Vegetables",
-        "Beet"
-    ],
-    [
-        "Crafting",
-        "Cherry Bomb"
-    ],
-    [
-        "Crafting",
-        "Bomb"
-    ],
-    [
-        "Crafting",
-        "Mega Bomb"
-    ],
-    [
-        "Furniture",
-        "Brick Floor"
-    ],
-    [
-        "Fruits",
-        "Salmonberry"
-    ],
-    [
-        "Crafting",
-        "Grass Starter"
-    ],
-    [
-        "Crafting",
-        "Hardwood Fence"
-    ],
-    [
-        "Seeds",
-        "Amaranth Seeds"
-    ],
-    [
-        "Vegetables",
-        "Amaranth"
-    ],
-    [
-        "Seeds",
-        "Grape Starter"
-    ],
-    [
-        "Seeds",
-        "Hops Starter"
-    ],
-    [
-        "Artisan",
-        "Pale Ale"
-    ],
-    [
-        "Vegetables",
-        "Hops"
-    ],
-    [
-        "Animal Products",
-        "Void Egg"
-    ],
-    [
-        "Artisan",
-        "Mayonnaise"
-    ],
-    [
-        "Artisan",
-        "Duck Mayonnaise"
-    ],
-    [
-        "Artisan",
-        "Void Mayonnaise"
-    ],
-    [
-        "Seeds",
-        "Acorn"
-    ],
-    [
-        "Seeds",
-        "Maple Seed"
-    ],
-    [
-        "Seeds",
-        "Pine Cone"
-    ],
-    [
-        "Crafting",
-        "Wood Fence"
-    ],
-    [
-        "Crafting",
-        "Stone Fence"
-    ],
-    [
-        "Crafting",
-        "Iron Fence"
-    ],
-    [
-        "Crafting",
-        "Gate"
-    ],
-    [
-        "Crafting",
-        "Dwarvish Translation Guide"
-    ],
-    [
-        "Furniture",
-        "Wood Floor"
-    ],
-    [
-        "Furniture",
-        "Stone Floor"
-    ],
-    [
-        "Resources",
-        "Clay"
-    ],
-    [
-        "Furniture",
-        "Weathered Floor"
-    ],
-    [
-        "Furniture",
-        "Crystal Floor"
-    ],
-    [
-        "Resources",
-        "Copper Bar"
-    ],
-    [
-        "Resources",
-        "Iron Bar"
-    ],
-    [
-        "Resources",
-        "Gold Bar"
-    ],
-    [
-        "Resources",
-        "Iridium Bar"
-    ],
-    [
-        "Resources",
-        "Refined Quartz"
-    ],
-    [
-        "Artisan",
-        "Honey"
-    ],
-    [
-        "Furniture",
-        "Tea Set"
-    ],
-    [
-        "Artisan",
-        "Pickles"
-    ],
-    [
-        "Artisan",
-        "Jelly"
-    ],
-    [
-        "Artisan",
-        "Beer"
-    ],
-    [
-        "Seeds",
-        "Rare Seed"
-    ],
-    [
-        "Artisan",
-        "Wine"
-    ],
-    [
-        "Crafting",
-        "Energy Tonic"
-    ],
-    [
-        "Artisan",
-        "Juice"
-    ],
-    [
-        "Crafting",
-        "Muscle Remedy"
-    ],
-    [
-        "Fertilizers",
-        "Basic Fertilizer"
-    ],
-    [
-        "Fertilizers",
-        "Quality Fertilizer"
-    ],
-    [
-        "Fertilizers",
-        "Basic Retaining Soil"
-    ],
-    [
-        "Fertilizers",
-        "Quality Retaining Soil"
-    ],
-    [
-        "Fish",
-        "Clam"
-    ],
-    [
-        "Basic",
-        "Golden Pumpkin"
-    ],
-    [
-        "Resources",
-        "Copper Ore"
-    ],
-    [
-        "Resources",
-        "Iron Ore"
-    ],
-    [
-        "Resources",
-        "Coal"
-    ],
-    [
-        "Resources",
-        "Gold Ore"
-    ],
-    [
-        "Resources",
-        "Iridium Ore"
-    ],
-    [
-        "Resources",
-        "Wood"
-    ],
-    [
-        "Resources",
-        "Stone"
-    ],
-    [
-        "Roe",
-        "Nautilus Shell"
-    ],
-    [
-        "Roe",
-        "Coral"
-    ],
-    [
-        "Roe",
-        "Rainbow Shell"
-    ],
-    [
-        "Crafting",
-        "Coffee"
-    ],
-    [
-        "Fruits",
-        "Spice Berry"
-    ],
-    [
-        "Roe",
-        "Sea Urchin"
-    ],
-    [
-        "Fruits",
-        "Grape"
-    ],
-    [
-        "Forage",
-        "Spring Onion"
-    ],
-    [
-        "Fruits",
-        "Strawberry"
-    ],
-    [
-        "Furniture",
-        "Straw Floor"
-    ],
-    [
-        "Flowers",
-        "Sweet Pea"
-    ],
-    [
-        "Crafting",
-        "Field Snack"
-    ],
-    [
-        "Forage",
-        "Common Mushroom"
-    ],
-    [
-        "Furniture",
-        "Wood Path"
-    ],
-    [
-        "Fruits",
-        "Wild Plum"
-    ],
-    [
-        "Furniture",
-        "Gravel Path"
-    ],
-    [
-        "Forage",
-        "Hazelnut"
-    ],
-    [
-        "Furniture",
-        "Crystal Path"
-    ],
-    [
-        "Fruits",
-        "Blackberry"
-    ],
-    [
-        "Furniture",
-        "Cobblestone Path"
-    ],
-    [
-        "Forage",
-        "Winter Root"
-    ],
-    [
-        "Basic",
-        "Blue Slime Egg"
-    ],
-    [
-        "Fruits",
-        "Crystal Fruit"
-    ],
-    [
-        "Furniture",
-        "Stepping Stone Path"
-    ],
-    [
-        "Forage",
-        "Snow Yam"
-    ],
-    [
-        "Fruit",
-        "Sweet Gem Berry"
-    ],
-    [
-        "Flowers",
-        "Crocus"
-    ],
-    [
-        "Basic",
-        "Vinegar"
-    ],
-    [
-        "Forage",
-        "Red Mushroom"
-    ],
-    [
-        "Flowers",
-        "Sunflower"
-    ],
-    [
-        "Forage",
-        "Purple Mushroom"
-    ],
-    [
-        "Basic",
-        "Rice"
-    ],
-    [
-        "Artisan",
-        "Cheese"
-    ],
-    [
-        "Artisan",
-        "Goat Cheese"
-    ],
-    [
-        "Artisan",
-        "Cloth"
-    ],
-    [
-        "Fruit",
-        "Truffle"
-    ],
-    [
-        "Artisan",
-        "Truffle Oil"
-    ],
-    [
-        "Seeds",
-        "Coffee Bean"
-    ],
-    [
-        "Crafting",
-        "Stardrop"
-    ],
-    [
-        "Animal Products",
-        "Goat Milk"
-    ],
-    [
-        "Basic",
-        "Red Slime Egg"
-    ],
-    [
-        "Animal Products",
-        "L. Goat Milk"
-    ],
-    [
-        "Basic",
-        "Purple Slime Egg"
-    ],
-    [
-        "Animal Products",
-        "Wool"
-    ],
-    [
-        "Basic",
-        "Explosive Ammo"
-    ],
-    [
-        "Animal Products",
-        "Duck Egg"
-    ],
-    [
-        "Animal Products",
-        "Duck Feather"
-    ],
-    [
-        "Animal Products",
-        "Rabbit's Foot"
-    ],
-    [
-        "asdf",
-        "Stone Base"
-    ],
-    [
-        "Fruits",
-        "Ancient Fruit"
-    ],
-    [
-        "Cooking",
-        "Algae Soup"
-    ],
-    [
-        "Cooking",
-        "Pale Broth"
-    ],
-    [
-        "Basic",
-        "Bouquet"
-    ],
-    [
-        "Artisan",
-        "Mead"
-    ],
-    [
-        "Basic",
-        "Mermaid's Pendant"
-    ],
-    [
-        "Crafting",
-        "Decorative Pot"
-    ],
-    [
-        "Crafting",
-        "Drum Block"
-    ],
-    [
-        "Crafting",
-        "Flute Block"
-    ],
-    [
-        "Fertilizers",
-        "Speed-Gro"
-    ],
-    [
-        "Fertilizers",
-        "Deluxe Speed-Gro"
-    ],
-    [
-        "Seeds",
-        "Parsnip Seeds"
-    ],
-    [
-        "Seeds",
-        "Bean Starter"
-    ],
-    [
-        "Seeds",
-        "Cauliflower Seeds"
-    ],
-    [
-        "Seeds",
-        "Potato Seeds"
-    ],
-    [
-        "Seeds",
-        "Garlic Seeds"
-    ],
-    [
-        "Seeds",
-        "Kale Seeds"
-    ],
-    [
-        "Seeds",
-        "Rhubarb Seeds"
-    ],
-    [
-        "Seeds",
-        "Melon Seeds"
-    ],
-    [
-        "Seeds",
-        "Tomato Seeds"
-    ],
-    [
-        "Seeds",
-        "Blueberry Seeds"
-    ],
-    [
-        "Seeds",
-        "Pepper Seeds"
-    ],
-    [
-        "Seeds",
-        "Wheat Seeds"
-    ],
-    [
-        "Seeds",
-        "Radish Seeds"
-    ],
-    [
-        "Seeds",
-        "Red Cabbage Seeds"
-    ],
-    [
-        "Seeds",
-        "Starfruit Seeds"
-    ],
-    [
-        "Seeds",
-        "Corn Seeds"
-    ],
-    [
-        "Seeds",
-        "Eggplant Seeds"
-    ],
-    [
-        "Seeds",
-        "Artichoke Seeds"
-    ],
-    [
-        "Seeds",
-        "Pumpkin Seeds"
-    ],
-    [
-        "Seeds",
-        "Bok Choy Seeds"
-    ],
-    [
-        "Seeds",
-        "Yam Seeds"
-    ],
-    [
-        "Seeds",
-        "Cranberry Seeds"
-    ],
-    [
-        "Seeds",
-        "Beet Seeds"
-    ],
-    [
-        "Seeds",
-        "Spring Seeds"
-    ],
-    [
-        "Seeds",
-        "Summer Seeds"
-    ],
-    [
-        "Seeds",
-        "Fall Seeds"
-    ],
-    [
-        "Seeds",
-        "Winter Seeds"
-    ],
-    [
-        "Seeds",
-        "Ancient Seeds"
-    ],
-    [
-        "Seeds",
-        "Tulip Bulb"
-    ],
-    [
-        "Seeds",
-        "Jazz Seeds"
-    ],
-    [
-        "Seeds",
-        "Poppy Seeds"
-    ],
-    [
-        "Seeds",
-        "Spangle Seeds"
-    ],
-    [
-        "Seeds",
-        "Sunflower Seeds"
-    ],
-    [
-        "Seeds",
-        "Fairy Seeds"
-    ],
-    [
-        "Basic",
-        "Geode"
-    ],
-    [
-        "Basic",
-        "Frozen Geode"
-    ],
-    [
-        "Basic",
-        "Magma Geode"
-    ],
-    [
-        "Minerals",
-        "Alamite"
-    ],
-    [
-        "Minerals",
-        "Bixite"
-    ],
-    [
-        "Minerals",
-        "Baryte"
-    ],
-    [
-        "Minerals",
-        "Aerinite"
-    ],
-    [
-        "Minerals",
-        "Calcite"
-    ],
-    [
-        "Minerals",
-        "Dolomite"
-    ],
-    [
-        "Minerals",
-        "Esperite"
-    ],
-    [
-        "Minerals",
-        "Fluorapatite"
-    ],
-    [
-        "Minerals",
-        "Geminite"
-    ],
-    [
-        "Minerals",
-        "Helvite"
-    ],
-    [
-        "Minerals",
-        "Jamborite"
-    ],
-    [
-        "Minerals",
-        "Jagoite"
-    ],
-    [
-        "Minerals",
-        "Kyanite"
-    ],
-    [
-        "Minerals",
-        "Lunarite"
-    ],
-    [
-        "Minerals",
-        "Malachite"
-    ],
-    [
-        "Minerals",
-        "Neptunite"
-    ],
-    [
-        "Minerals",
-        "Lemon Stone"
-    ],
-    [
-        "Minerals",
-        "Nekoite"
-    ],
-    [
-        "Minerals",
-        "Orpiment"
-    ],
-    [
-        "Minerals",
-        "Petrified Slime"
-    ],
-    [
-        "Minerals",
-        "Thunder Egg"
-    ],
-    [
-        "Minerals",
-        "Pyrite"
-    ],
-    [
-        "Minerals",
-        "Ocean Stone"
-    ],
-    [
-        "Minerals",
-        "Ghost Crystal"
-    ],
-    [
-        "Minerals",
-        "Tigerseye"
-    ],
-    [
-        "Minerals",
-        "Jasper"
-    ],
-    [
-        "Minerals",
-        "Opal"
-    ],
-    [
-        "Minerals",
-        "Fire Opal"
-    ],
-    [
-        "Minerals",
-        "Celestine"
-    ],
-    [
-        "Minerals",
-        "Marble"
-    ],
-    [
-        "Minerals",
-        "Sandstone"
-    ],
-    [
-        "Minerals",
-        "Granite"
-    ],
-    [
-        "Minerals",
-        "Basalt"
-    ],
-    [
-        "Minerals",
-        "Limestone"
-    ],
-    [
-        "Minerals",
-        "Soapstone"
-    ],
-    [
-        "Minerals",
-        "Hematite"
-    ],
-    [
-        "Minerals",
-        "Mudstone"
-    ],
-    [
-        "Minerals",
-        "Obsidian"
-    ],
-    [
-        "Minerals",
-        "Slate"
-    ],
-    [
-        "Minerals",
-        "Fairy Stone"
-    ],
-    [
-        "Minerals",
-        "Star Shards"
-    ],
-    [
-        "Artifacts",
-        "Prehistoric Scapula"
-    ],
-    [
-        "Artifacts",
-        "Prehistoric Tibia"
-    ],
-    [
-        "Artifacts",
-        "Prehistoric Skull"
-    ],
-    [
-        "Artifacts",
-        "Skeletal Hand"
-    ],
-    [
-        "Artifacts",
-        "Prehistoric Rib"
-    ],
-    [
-        "Artifacts",
-        "Prehistoric Vertebra"
-    ],
-    [
-        "Artifacts",
-        "Skeletal Tail"
-    ],
-    [
-        "Artifacts",
-        "Nautilus Fossil"
-    ],
-    [
-        "Artifacts",
-        "Amphibian Fossil"
-    ],
-    [
-        "Artifacts",
-        "Palm Fossil"
-    ],
-    [
-        "Artifacts",
-        "Trilobite"
-    ],
-    [
-        "asdf",
-        "Artifact Spot"
-    ],
-    [
-        "Flowers",
-        "Tulip"
-    ],
-    [
-        "Flowers",
-        "Summer Spangle"
-    ],
-    [
-        "Flowers",
-        "Fairy Rose"
-    ],
-    [
-        "Flowers",
-        "Blue Jazz"
-    ],
-    [
-        "Crafting",
-        "Sprinkler"
-    ],
-    [
-        "Flowers",
-        "Poppy"
-    ],
-    [
-        "Cooking",
-        "Plum Pudding"
-    ],
-    [
-        "Cooking",
-        "Artichoke Dip"
-    ],
-    [
-        "Cooking",
-        "Stir Fry"
-    ],
-    [
-        "Cooking",
-        "Roasted Hazelnuts"
-    ],
-    [
-        "Cooking",
-        "Pumpkin Pie"
-    ],
-    [
-        "Cooking",
-        "Radish Salad"
-    ],
-    [
-        "Cooking",
-        "Fruit Salad"
-    ],
-    [
-        "Cooking",
-        "Blackberry Cobbler"
-    ],
-    [
-        "Cooking",
-        "Cranberry Candy"
-    ],
-    [
-        "Fruits",
-        "Apple"
-    ],
-    [
-        "Artisan",
-        "Green Tea"
-    ],
-    [
-        "Cooking",
-        "Bruschetta"
-    ],
-    [
-        "Crafting",
-        "Quality Sprinkler"
-    ],
-    [
-        "Crafting",
-        "Iridium Sprinkler"
-    ],
-    [
-        "Cooking",
-        "Coleslaw"
-    ],
-    [
-        "Cooking",
-        "Fiddlehead Risotto"
-    ],
-    [
-        "Cooking",
-        "Poppyseed Muffin"
-    ],
-    [
-        "Seeds",
-        "Cherry Sapling"
-    ],
-    [
-        "Seeds",
-        "Apricot Sapling"
-    ],
-    [
-        "Seeds",
-        "Orange Sapling"
-    ],
-    [
-        "Seeds",
-        "Peach Sapling"
-    ],
-    [
-        "Seeds",
-        "Pomegranate Sapling"
-    ],
-    [
-        "Seeds",
-        "Apple Sapling"
-    ],
-    [
-        "Fruits",
-        "Apricot"
-    ],
-    [
-        "Fruits",
-        "Orange"
-    ],
-    [
-        "Fruits",
-        "Peach"
-    ],
-    [
-        "Fruits",
-        "Pomegranate"
-    ],
-    [
-        "Fruits",
-        "Cherry"
-    ],
-    [
-        "Basic",
-        "Green Slime Egg"
-    ],
-    [
-        "Crafting",
-        "Rain Totem"
-    ],
-    [
-        "Fish",
-        "Mutant Carp"
-    ],
-    [
-        "Monster Drops",
-        "Bug Meat"
-    ],
-    [
-        "Bait",
-        "Bait"
-    ],
-    [
-        "Crafting",
-        "Warp Totem: Farm"
-    ],
-    [
-        "Crafting",
-        "Warp Totem: Mountains"
-    ],
-    [
-        "Crafting",
-        "Warp Totem: Beach"
-    ],
-    [
-        "Fish",
-        "Sturgeon"
-    ],
-    [
-        "Fish",
-        "Tiger Trout"
-    ],
-    [
-        "Fish",
-        "Bullhead"
-    ],
-    [
-        "Fish",
-        "Tilapia"
-    ],
-    [
-        "Fish",
-        "Chub"
-    ],
-    [
-        "Bait",
-        "Magnet"
-    ],
-    [
-        "Fish",
-        "Dorado"
-    ],
-    [
-        "Fish",
-        "Albacore"
-    ],
-    [
-        "Fish",
-        "Shad"
-    ],
-    [
-        "Fish",
-        "Lingcod"
-    ],
-    [
-        "Fish",
-        "Halibut"
-    ],
-    [
-        "Resources",
-        "Hardwood"
-    ],
-    [
-        "Crafting",
-        "Crab Pot"
-    ],
-    [
-        "Fish",
-        "Lobster"
-    ],
-    [
-        "Fish",
-        "Crayfish"
-    ],
-    [
-        "Fish",
-        "Crab"
-    ],
-    [
-        "Fish",
-        "Cockle"
-    ],
-    [
-        "Fish",
-        "Mussel"
-    ],
-    [
-        "Fish",
-        "Shrimp"
-    ],
-    [
-        "Fish",
-        "Snail"
-    ],
-    [
-        "Fish",
-        "Periwinkle"
-    ],
-    [
-        "Fish",
-        "Oyster"
-    ],
-    [
-        "Resources",
-        "Maple Syrup"
-    ],
-    [
-        "Resources",
-        "Oak Resin"
-    ],
-    [
-        "Resources",
-        "Pine Tar"
-    ],
-    [
-        "Cooking",
-        "Chowder"
-    ],
-    [
-        "Cooking",
-        "Lobster Bisque"
-    ],
-    [
-        "Cooking",
-        "Fish Stew"
-    ],
-    [
-        "Cooking",
-        "Escargot"
-    ],
-    [
-        "Cooking",
-        "Maple Bar"
-    ],
-    [
-        "Cooking",
-        "Crab Cakes"
-    ],
-    [
-        "Cooking",
-        "Shrimp Cocktail"
-    ],
-    [
-        "Fish",
-        "Woodskip"
-    ],
-    [
-        "Seeds",
-        "Strawberry Seeds"
-    ],
-    [
-        "Crafting",
-        "Jack-O-Lantern"
-    ],
-    [
-        "Trash",
-        "Rotten Plant"
-    ],
-    [
-        "Trash",
-        "Rotten Plant"
-    ],
-    [
-        "Basic",
-        "Omni Geode"
-    ],
-    [
-        "Monster Drops",
-        "Slime"
-    ],
-    [
-        "Monster Drops",
-        "Bat Wing"
-    ],
-    [
-        "Monster Drops",
-        "Solar Essence"
-    ],
-    [
-        "Monster Drops",
-        "Void Essence"
-    ],
-    [
-        "Seeds",
-        "Mixed Seeds"
-    ],
-    [
-        "Resources",
-        "Fiber"
-    ],
-    [
-        "Cooking",
-        "Oil of Garlic"
-    ],
-    [
-        "Cooking",
-        "Life Elixir"
-    ],
-    [
-        "Bait",
-        "Wild Bait"
-    ],
-    [
-        "Fish",
-        "Glacierfish"
-    ],
-    [
-        "Resources",
-        "Battery Pack"
-    ],
-    [
-        "Fish",
-        "Void Salmon"
-    ],
-    [
-        "Fish",
-        "Slimejack"
-    ],
-    [
-        "Basic",
-        "Pearl"
-    ],
-    [
-        "Fish",
-        "Midnight Squid"
-    ],
-    [
-        "Fish",
-        "Spook Fish"
-    ],
-    [
-        "Fish",
-        "Blobfish"
-    ],
-    [
-        "Seeds",
-        "Cactus Seeds"
-    ],
-    [
-        "Fertilizers",
-        "Tree Fertilizer"
-    ],
-    [
-        "Artisan",
-        "Dinosaur Mayonnaise"
-    ],
-    [
-        "Basic",
-        "Void Ghost Pendant"
-    ],
-    [
-        "Basic",
-        "Movie Ticket"
-    ],
-    [
-        "Roe",
-        "Roe"
-    ],
-    [
-        "Artisan",
-        "Caviar"
-    ],
-    [
-        "Roe",
-        "Squid Ink"
-    ],
-    [
-        "Vegetables",
-        "Tea Leaves"
-    ],
-    [
-        "Fish",
-        "Flounder"
-    ],
-    [
-        "Cooking",
-        "Seafoam Pudding"
-    ],
-    [
-        "Fish",
-        "Midnight Carp"
-    ],
-    [
-        "Seeds",
-        "Mahogany Seed"
-    ],
-    [
-        "Animal Products",
-        "Ostrich Egg"
-    ],
-    [
-        "Seeds",
-        "Banana Sapling"
-    ],
-    [
-        "Fruits",
-        "Banana"
-    ],
-    [
-        "Basic",
-        "Fossilized Skull"
-    ],
-    [
-        "Basic",
-        "Fossilized Spine"
-    ],
-    [
-        "Basic",
-        "Fossilized Tail"
-    ],
-    [
-        "Basic",
-        "Fossilized Leg"
-    ],
-    [
-        "Basic",
-        "Fossilized Ribs"
-    ],
-    [
-        "Basic",
-        "Snake Skull"
-    ],
-    [
-        "Basic",
-        "Snake Vertebrae"
-    ],
-    [
-        "Basic",
-        "Mummified Bat"
-    ],
-    [
-        "Basic",
-        "Mummified Frog"
-    ],
-    [
-        "Forage",
-        "Ginger"
-    ],
-    [
-        "Vegetables",
-        "Taro Root"
-    ],
-    [
-        "Seeds",
-        "Taro Tuber"
-    ],
-    [
-        "Fruits",
-        "Pineapple"
-    ],
-    [
-        "Seeds",
-        "Pineapple Seeds"
-    ],
-    [
-        "Fruits",
-        "Mango"
-    ],
-    [
-        "Seeds",
-        "Mango Sapling"
-    ],
-    [
-        "Fish",
-        "Stingray"
-    ],
-    [
-        "Fish",
-        "Lionfish"
-    ],
-    [
-        "Fish",
-        "Blue Discus"
-    ],
-    [
-        "Furniture",
-        "Rustic Plank Floor"
-    ],
-    [
-        "Furniture",
-        "Stone Walkway Floor"
-    ],
-    [
-        "Resources",
-        "Cinder Shard"
-    ],
-    [
-        "Forage",
-        "Magma Cap"
-    ],
-    [
-        "Basic",
-        "Tiger Slime Egg"
-    ],
-    [
-        "Basic",
-        "Fairy Dust"
-    ],
-    [
-        "Cooking",
-        "Piña Colada"
-    ],
-    [
-        "Crafting",
-        "Bug Steak"
-    ],
-    [
-        "Crafting",
-        "Monster Musk"
-    ],
-    [
-        "Resources",
-        "Bone Fragment"
-    ],
-    [
-        "Seeds",
-        "Fiber Seeds"
-    ],
-    [
-        "Crafting",
-        "Warp Totem: Island"
-    ],
-    [
-        "Fruits",
-        "Qi Fruit"
-    ],
-    [
-        "Seeds",
-        "Qi Bean"
-    ],
-    [
-        "Seeds",
-        "Mushroom Tree Seed"
-    ],
-    [
-        "Crafting",
-        "Warp Totem: Qi's Arena"
-    ],
-    [
-        "Crafting",
-        "Fireworks (Red)"
-    ],
-    [
-        "Crafting",
-        "Fireworks (Purple)"
-    ],
-    [
-        "Crafting",
-        "Fireworks (Green)"
-    ],
-    [
-        "Crafting",
-        "Galaxy Soul"
-    ],
-    [
-        "Fish",
-        "Son of Crimsonfish"
-    ],
-    [
-        "Fish",
-        "Ms. Angler"
-    ],
-    [
-        "Fish",
-        "Legend II"
-    ],
-    [
-        "Fish",
-        "Radioactive Carp"
-    ],
-    [
-        "Fish",
-        "Glacierfish Jr."
-    ],
-    [
-        "Cooking",
-        "Ginger Ale"
-    ],
-    [
-        "Cooking",
-        "Banana Pudding"
-    ],
-    [
-        "Cooking",
-        "Mango Sticky Rice"
-    ],
-    [
-        "Cooking",
-        "Poi"
-    ],
-    [
-        "Cooking",
-        "Tropical Curry"
-    ],
-    [
-        "Bait",
-        "Magic Bait"
-    ],
-    [
-        "Resources",
-        "Radioactive Ore"
-    ],
-    [
-        "Resources",
-        "Radioactive Bar"
-    ],
-    [
-        "Basic",
-        "Enricher"
-    ],
-    [
-        "Basic",
-        "Pressure Nozzle"
-    ],
-    [
-        "Basic",
-        "Qi Seasoning"
-    ],
-    [
-        "Fertilizers",
-        "Hyper Speed-Gro"
-    ],
-    [
-        "Fertilizers",
-        "Deluxe Fertilizer"
-    ],
-    [
-        "Fertilizers",
-        "Deluxe Retaining Soil"
-    ],
-    [
-        "Cooking",
-        "Squid Ink Ravioli"
-    ],
-    [
-        "Crafting",
-        "SupplyCrate"
-    ],
-    [
-        "Crafting",
-        "SupplyCrate"
-    ],
-    [
-        "Crafting",
-        "SupplyCrate"
-    ],
-    [
-        "Crafting",
-        "Slime Crate"
-    ],
-    [
-        "Crafting",
-        "Cookout Kit"
-    ],
-    [
-        "Crafting",
-        "Camping Stove"
-    ],
-    [
-        "Animal Products",
-        "Golden Egg"
-    ],
-    [
-        "Crafting",
-        "Hedge"
-    ],
-    [
-        "Basic",
-        "Far Away Stone"
-    ],
-    [
-        "Seeds",
-        "Mixed Flower Seeds"
-    ],
-    [
-        "Basic",
-        "Mystery Box"
-    ],
-    [
-        "Basic",
-        "Golden Tag"
-    ],
-    [
-        "Bait",
-        "Deluxe Bait"
-    ],
-    [
-        "Resources",
-        "Moss"
-    ],
-    [
-        "Seeds",
-        "Mossy Seed"
-    ],
-    [
-        "Crafting",
-        "Tent Kit"
-    ],
-    [
-        "Seeds",
-        "Mystic Tree Seed"
-    ],
-    [
-        "Resources",
-        "Mystic Syrup"
-    ],
-    [
-        "Artisan",
-        "Raisins"
-    ],
-    [
-        "Basic",
-        "Stardrop Tea"
-    ],
-    [
-        "Basic",
-        "Prize Ticket"
-    ],
-    [
-        "Basic",
-        "Gold Coin"
-    ],
-    [
-        "Crafting",
-        "Treasure Totem"
-    ],
-    [
-        "Bait",
-        "Challenge Bait"
-    ],
-    [
-        "Seeds",
-        "Carrot Seeds"
-    ],
-    [
-        "Vegetables",
-        "Carrot"
-    ],
-    [
-        "Seeds",
-        "Summer Squash Seeds"
-    ],
-    [
-        "Vegetables",
-        "Summer Squash"
-    ],
-    [
-        "Seeds",
-        "Broccoli Seeds"
-    ],
-    [
-        "Vegetables",
-        "Broccoli"
-    ],
-    [
-        "Seeds",
-        "Powdermelon Seeds"
-    ],
-    [
-        "Fruits",
-        "Powdermelon"
-    ],
-    [
-        "asdf",
-        "Seed Spot"
-    ],
-    [
-        "Artisan",
-        "Smoked"
-    ],
-    [
-        "Books",
-        "Book Of Stars"
-    ],
-    [
-        "Books",
-        "Stardew Valley Almanac"
-    ],
-    [
-        "Books",
-        "Woodcutter's Weekly"
-    ],
-    [
-        "Books",
-        "Bait And Bobber"
-    ],
-    [
-        "Books",
-        "Mining Monthly"
-    ],
-    [
-        "Books",
-        "Combat Quarterly"
-    ],
-    [
-        "Books",
-        "The Alleyway Buffet"
-    ],
-    [
-        "Books",
-        "The Art O' Crabbing"
-    ],
-    [
-        "Books",
-        "Dwarvish Safety Manual"
-    ],
-    [
-        "Books",
-        "Jewels Of The Sea"
-    ],
-    [
-        "Books",
-        "Ways Of The Wild"
-    ],
-    [
-        "Books",
-        "Woody's Secret"
-    ],
-    [
-        "Books",
-        "Jack Be Nimble, Jack Be Thick"
-    ],
-    [
-        "Books",
-        "Friendship 101"
-    ],
-    [
-        "Books",
-        "Monster Compendium"
-    ],
-    [
-        "Books",
-        "Way Of The Wind pt. 1"
-    ],
-    [
-        "Books",
-        "Mapping Cave Systems"
-    ],
-    [
-        "Books",
-        "Price Catalogue"
-    ],
-    [
-        "Books",
-        "Queen Of Sauce Cookbook"
-    ],
-    [
-        "Books",
-        "The Diamond Hunter"
-    ],
-    [
-        "Books",
-        "Book of Mysteries"
-    ],
-    [
-        "Books",
-        "Animal Catalogue"
-    ],
-    [
-        "Books",
-        "Way Of The Wind pt. 2"
-    ],
-    [
-        "asdf",
-        "Golden Animal Cracker"
-    ],
-    [
-        "Basic",
-        "Golden Mystery Box"
-    ],
-    [
-        "Fish",
-        "Sea Jelly"
-    ],
-    [
-        "Fish",
-        "Cave Jelly"
-    ],
-    [
-        "Fish",
-        "River Jelly"
-    ],
-    [
-        "Fish",
-        "Goby"
-    ],
-    [
-        "Books",
-        "Book_Artifact"
-    ],
-    [
-        "Books",
-        "Book_Horse"
-    ],
-    [
-        "Basic",
-        "Butterfly Powder"
-    ],
-    [
-        "Crafting",
-        "Blue Grass Starter"
-    ],
-    [
-        "Cooking",
-        "Moss Soup"
-    ],
-    [
-        "Books",
-        "Book_Grass"
-    ],
-    [
-        "Machines",
-        "House Plant"
-    ],
-    [
-        "Machines",
-        "Scarecrow"
-    ],
-    [
-        "Machines",
-        "Lightning Rod"
-    ],
-    [
-        "Machines",
-        "Bee House"
-    ],
-    [
-        "Machines",
-        "Keg"
-    ],
-    [
-        "Machines",
-        "Furnace"
-    ],
-    [
-        "Machines",
-        "Preserves Jar"
-    ],
-    [
-        "Machines",
-        "Cheese Press"
-    ],
-    [
-        "Machines",
-        "Loom"
-    ],
-    [
-        "Machines",
-        "Oil Maker"
-    ],
-    [
-        "Machines",
-        "Recycling Machine"
-    ],
-    [
-        "Machines",
-        "Crystalarium"
-    ],
-    [
-        "Machines",
-        "Table Piece L"
-    ],
-    [
-        "Machines",
-        "Table Piece R"
-    ],
-    [
-        "Machines",
-        "Mayonnaise Machine"
-    ],
-    [
-        "Machines",
-        "Seed Maker"
-    ],
-    [
-        "Machines",
-        "Wood Chair"
-    ],
-    [
-        "Machines",
-        "Wood Chair"
-    ],
-    [
-        "Machines",
-        "Skeleton Model"
-    ],
-    [
-        "Machines",
-        "Obelisk"
-    ],
-    [
-        "Machines",
-        "Chicken Statue"
-    ],
-    [
-        "Machines",
-        "Stone Cairn"
-    ],
-    [
-        "Machines",
-        "Suit Of Armor"
-    ],
-    [
-        "Machines",
-        "Sign Of The Vessel"
-    ],
-    [
-        "Machines",
-        "Basic Log"
-    ],
-    [
-        "Machines",
-        "Lawn Flamingo"
-    ],
-    [
-        "Machines",
-        "Wood Sign"
-    ],
-    [
-        "Machines",
-        "Stone Sign"
-    ],
-    [
-        "Machines",
-        "Dark Sign"
-    ],
-    [
-        "Machines",
-        "Big Green Cane"
-    ],
-    [
-        "Machines",
-        "Green Canes"
-    ],
-    [
-        "Machines",
-        "Mixed Cane"
-    ],
-    [
-        "Machines",
-        "Red Canes"
-    ],
-    [
-        "Machines",
-        "Big Red Cane"
-    ],
-    [
-        "Machines",
-        "Ornamental Hay Bale"
-    ],
-    [
-        "Machines",
-        "Log Section"
-    ],
-    [
-        "Machines",
-        "Grave Stone"
-    ],
-    [
-        "Machines",
-        "Seasonal Decor"
-    ],
-    [
-        "Machines",
-        "Stone Frog"
-    ],
-    [
-        "Machines",
-        "Stone Parrot"
-    ],
-    [
-        "Machines",
-        "Stone Owl"
-    ],
-    [
-        "Machines",
-        "Stone Junimo"
-    ],
-    [
-        "Machines",
-        "Slime Ball"
-    ],
-    [
-        "Machines",
-        "Garden Pot"
-    ],
-    [
-        "Machines",
-        "Bookcase"
-    ],
-    [
-        "Machines",
-        "Fancy Table"
-    ],
-    [
-        "Machines",
-        "Ancient Table"
-    ],
-    [
-        "Machines",
-        "Ancient Stool"
-    ],
-    [
-        "Machines",
-        "Grandfather Clock"
-    ],
-    [
-        "Machines",
-        "Teddy Timer"
-    ],
-    [
-        "Machines",
-        "Dead Tree"
-    ],
-    [
-        "Machines",
-        "Staircase"
-    ],
-    [
-        "Machines",
-        "Tall Torch"
-    ],
-    [
-        "Machines",
-        "Ritual Mask"
-    ],
-    [
-        "Machines",
-        "Bonfire"
-    ],
-    [
-        "Machines",
-        "Bongo"
-    ],
-    [
-        "Machines",
-        "Decorative Spears"
-    ],
-    [
-        "Machines",
-        "Boulder"
-    ],
-    [
-        "Machines",
-        "Door"
-    ],
-    [
-        "Machines",
-        "Door"
-    ],
-    [
-        "Machines",
-        "Locked Door"
-    ],
-    [
-        "Machines",
-        "Locked Door"
-    ],
-    [
-        "Machines",
-        "Wicked Statue"
-    ],
-    [
-        "Machines",
-        "Wicked Statue"
-    ],
-    [
-        "Machines",
-        "Sloth Skeleton L"
-    ],
-    [
-        "Machines",
-        "Sloth Skeleton M"
-    ],
-    [
-        "Machines",
-        "Sloth Skeleton R"
-    ],
-    [
-        "Machines",
-        "Standing Geode"
-    ],
-    [
-        "Machines",
-        "Obsidian Vase"
-    ],
-    [
-        "Machines",
-        "Singing Stone"
-    ],
-    [
-        "Machines",
-        "Stone Owl"
-    ],
-    [
-        "Machines",
-        "Strange Capsule"
-    ],
-    [
-        "Machines",
-        "Empty Capsule"
-    ],
-    [
-        "Machines",
-        "Feed Hopper"
-    ],
-    [
-        "Machines",
-        "Incubator"
-    ],
-    [
-        "Machines",
-        "Heater"
-    ],
-    [
-        "Machines",
-        "Tapper"
-    ],
-    [
-        "Machines",
-        "Camera"
-    ],
-    [
-        "Machines",
-        "Plush Bunny"
-    ],
-    [
-        "Machines",
-        "Tub o' Flowers"
-    ],
-    [
-        "Machines",
-        "Rarecrow"
-    ],
-    [
-        "Machines",
-        "Decorative Pitcher"
-    ],
-    [
-        "Machines",
-        "Dried Sunflowers"
-    ],
-    [
-        "Machines",
-        "Rarecrow"
-    ],
-    [
-        "Machines",
-        "Charcoal Kiln"
-    ],
-    [
-        "Machines",
-        "Soda Machine"
-    ],
-    [
-        "Machines",
-        "Barrel"
-    ],
-    [
-        "Machines",
-        "Crate"
-    ],
-    [
-        "Machines",
-        "Barrel"
-    ],
-    [
-        "Machines",
-        "Crate"
-    ],
-    [
-        "Machines",
-        "Barrel"
-    ],
-    [
-        "Machines",
-        "Crate"
-    ],
-    [
-        "Machines",
-        "Barrel"
-    ],
-    [
-        "Machines",
-        "Crate"
-    ],
-    [
-        "Machines",
-        "Rarecrow"
-    ],
-    [
-        "Machines",
-        "Mushroom Box"
-    ],
-    [
-        "Machines",
-        "Chest"
-    ],
-    [
-        "Machines",
-        "Rarecrow"
-    ],
-    [
-        "Machines",
-        "Rarecrow"
-    ],
-    [
-        "Machines",
-        "Rarecrow"
-    ],
-    [
-        "Machines",
-        "Rarecrow"
-    ],
-    [
-        "Machines",
-        "Rarecrow"
-    ],
-    [
-        "Machines",
-        "Prairie King Arcade System"
-    ],
-    [
-        "Machines",
-        "Wooden Brazier"
-    ],
-    [
-        "Machines",
-        "Stone Brazier"
-    ],
-    [
-        "Machines",
-        "Gold Brazier"
-    ],
-    [
-        "Machines",
-        "Campfire"
-    ],
-    [
-        "Machines",
-        "Stump Brazier"
-    ],
-    [
-        "Machines",
-        "Carved Brazier"
-    ],
-    [
-        "Machines",
-        "Skull Brazier"
-    ],
-    [
-        "Machines",
-        "Barrel Brazier"
-    ],
-    [
-        "Machines",
-        "Marble Brazier"
-    ],
-    [
-        "Machines",
-        "Wood Lamp-post"
-    ],
-    [
-        "Machines",
-        "Iron Lamp-post"
-    ],
-    [
-        "Machines",
-        "Worm Bin"
-    ],
-    [
-        "Machines",
-        "??HMTGF??"
-    ],
-    [
-        "Machines",
-        "Slime Incubator"
-    ],
-    [
-        "Machines",
-        "Slime Egg-Press"
-    ],
-    [
-        "Machines",
-        "Junimo Kart Arcade System"
-    ],
-    [
-        "Machines",
-        "Statue Of Perfection"
-    ],
-    [
-        "Machines",
-        "??Pinky Lemon??"
-    ],
-    [
-        "Machines",
-        "??Foroguemon??"
-    ],
-    [
-        "Machines",
-        "Cask"
-    ],
-    [
-        "Machines",
-        "Solid Gold Lewis"
-    ],
-    [
-        "Machines",
-        "Auto-Grabber"
-    ],
-    [
-        "Machines",
-        "Deluxe Scarecrow"
-    ],
-    [
-        "Machines",
-        "Barrel"
-    ],
-    [
-        "Machines",
-        "Crate"
-    ],
-    [
-        "Machines",
-        "Seasonal Plant"
-    ],
-    [
-        "Machines",
-        "Seasonal Plant"
-    ],
-    [
-        "Machines",
-        "Seasonal Plant"
-    ],
-    [
-        "Machines",
-        "Seasonal Plant"
-    ],
-    [
-        "Machines",
-        "Seasonal Plant"
-    ],
-    [
-        "Machines",
-        "Seasonal Plant"
-    ],
-    [
-        "Machines",
-        "Workbench"
-    ],
-    [
-        "Machines",
-        "Mini-Jukebox"
-    ],
-    [
-        "Machines",
-        "Wood Chipper"
-    ],
-    [
-        "Machines",
-        "Telephone"
-    ],
-    [
-        "Machines",
-        "Mini-Fridge"
-    ],
-    [
-        "Machines",
-        "Cursed P.K. Arcade System"
-    ],
-    [
-        "Machines",
-        "Item Pedestal"
-    ],
-    [
-        "Machines",
-        "Stone Chest"
-    ],
-    [
-        "Machines",
-        "Mini-Obelisk"
-    ],
-    [
-        "Machines",
-        "Farm Computer"
-    ],
-    [
-        "Machines",
-        "Mini-Shipping Bin"
-    ],
-    [
-        "Machines",
-        "Ostrich Incubator"
-    ],
-    [
-        "Machines",
-        "Geode Crusher"
-    ],
-    [
-        "Machines",
-        "Coffee Maker"
-    ],
-    [
-        "Machines",
-        "Sewing Machine"
-    ],
-    [
-        "Machines",
-        "Solar Panel"
-    ],
-    [
-        "Machines",
-        "Bone Mill"
-    ],
-    [
-        "Machines",
-        "Junimo Chest"
-    ],
-    [
-        "Machines",
-        "Barrel"
-    ],
-    [
-        "Machines",
-        "Crate"
-    ],
-    [
-        "Machines",
-        "Heavy Tapper"
-    ],
-    [
-        "Machines",
-        "Deconstructor"
-    ],
-    [
-        "Machines",
-        "Auto-Petter"
-    ],
-    [
-        "Machines",
-        "Hopper"
-    ],
-    [
-        "Machines",
-        "Campfire"
-    ],
-    [
-        "Machines",
-        "Statue Of True Perfection"
-    ],
-    [
-        "Machines",
-        "Text Sign"
-    ],
-    [
-        "Machines",
-        "Mushroom Log"
-    ],
-    [
-        "Machines",
-        "Bait Maker"
-    ],
-    [
-        "Machines",
-        "Dehydrator"
-    ],
-    [
-        "Machines",
-        "Heavy Furnace"
-    ],
-    [
-        "Machines",
-        "Statue Of Blessings"
-    ],
-    [
-        "Machines",
-        "Statue Of The Dwarf King"
-    ],
-    [
-        "Machines",
-        "Anvil"
-    ],
-    [
-        "Machines",
-        "Mini-Forge"
-    ],
-    [
-        "Machines",
-        "Fish Smoker"
-    ],
-    [
-        "Machines",
-        "Deluxe Worm Bin"
-    ],
-    [
-        "Machines",
-        "Big Chest"
-    ],
-    [
-        "Machines",
-        "Big Stone Chest"
-    ],
-    [
-        "Bait",
-        "Pufferfish Bait"
-    ],
-    [
-        "Bait",
-        "Anchovy Bait"
-    ],
-    [
-        "Bait",
-        "Tuna Bait"
-    ],
-    [
-        "Bait",
-        "Sardine Bait"
-    ],
-    [
-        "Bait",
-        "Bream Bait"
-    ],
-    [
-        "Bait",
-        "Largemouth Bass Bait"
-    ],
-    [
-        "Bait",
-        "Smallmouth Bass Bait"
-    ],
-    [
-        "Bait",
-        "Rainbow Trout Bait"
-    ],
-    [
-        "Bait",
-        "Salmon Bait"
-    ],
-    [
-        "Bait",
-        "Walleye Bait"
-    ],
-    [
-        "Bait",
-        "Perch Bait"
-    ],
-    [
-        "Bait",
-        "Carp Bait"
-    ],
-    [
-        "Bait",
-        "Catfish Bait"
-    ],
-    [
-        "Bait",
-        "Pike Bait"
-    ],
-    [
-        "Bait",
-        "Sunfish Bait"
-    ],
-    [
-        "Bait",
-        "Red Mullet Bait"
-    ],
-    [
-        "Bait",
-        "Herring Bait"
-    ],
-    [
-        "Bait",
-        "Eel Bait"
-    ],
-    [
-        "Bait",
-        "Octopus Bait"
-    ],
-    [
-        "Bait",
-        "Red Snapper Bait"
-    ],
-    [
-        "Bait",
-        "Squid Bait"
-    ],
-    [
-        "Bait",
-        "Seaweed Bait"
-    ],
-    [
-        "Bait",
-        "Green Algae Bait"
-    ],
-    [
-        "Bait",
-        "Sea Cucumber Bait"
-    ],
-    [
-        "Bait",
-        "Super Cucumber Bait"
-    ],
-    [
-        "Bait",
-        "Ghostfish Bait"
-    ],
-    [
-        "Bait",
-        "White Algae Bait"
-    ],
-    [
-        "Bait",
-        "Stonefish Bait"
-    ],
-    [
-        "Bait",
-        "Crimsonfish Bait"
-    ],
-    [
-        "Bait",
-        "Angler Bait"
-    ],
-    [
-        "Bait",
-        "Ice Pip Bait"
-    ],
-    [
-        "Bait",
-        "Lava Eel Bait"
-    ],
-    [
-        "Bait",
-        "Legend Bait"
-    ],
-    [
-        "Bait",
-        "Sandfish Bait"
-    ],
-    [
-        "Bait",
-        "Scorpion Carp Bait"
-    ],
-    [
-        "Bait",
-        "Clam Bait"
-    ],
-    [
-        "Bait",
-        "Mutant Carp Bait"
-    ],
-    [
-        "Bait",
-        "Sturgeon Bait"
-    ],
-    [
-        "Bait",
-        "Tiger Trout Bait"
-    ],
-    [
-        "Bait",
-        "Bullhead Bait"
-    ],
-    [
-        "Bait",
-        "Tilapia Bait"
-    ],
-    [
-        "Bait",
-        "Chub Bait"
-    ],
-    [
-        "Bait",
-        "Dorado Bait"
-    ],
-    [
-        "Bait",
-        "Albacore Bait"
-    ],
-    [
-        "Bait",
-        "Shad Bait"
-    ],
-    [
-        "Bait",
-        "Lingcod Bait"
-    ],
-    [
-        "Bait",
-        "Halibut Bait"
-    ],
-    [
-        "Bait",
-        "Lobster Bait"
-    ],
-    [
-        "Bait",
-        "Crayfish Bait"
-    ],
-    [
-        "Bait",
-        "Crab Bait"
-    ],
-    [
-        "Bait",
-        "Cockle Bait"
-    ],
-    [
-        "Bait",
-        "Mussel Bait"
-    ],
-    [
-        "Bait",
-        "Shrimp Bait"
-    ],
-    [
-        "Bait",
-        "Snail Bait"
-    ],
-    [
-        "Bait",
-        "Periwinkle Bait"
-    ],
-    [
-        "Bait",
-        "Oyster Bait"
-    ],
-    [
-        "Bait",
-        "Woodskip Bait"
-    ],
-    [
-        "Bait",
-        "Glacierfish Bait"
-    ],
-    [
-        "Bait",
-        "Void Salmon Bait"
-    ],
-    [
-        "Bait",
-        "Slimejack Bait"
-    ],
-    [
-        "Bait",
-        "Midnight Squid Bait"
-    ],
-    [
-        "Bait",
-        "Spook Fish Bait"
-    ],
-    [
-        "Bait",
-        "Blobfish Bait"
-    ],
-    [
-        "Bait",
-        "Flounder Bait"
-    ],
-    [
-        "Bait",
-        "Midnight Carp Bait"
-    ],
-    [
-        "Bait",
-        "Stingray Bait"
-    ],
-    [
-        "Bait",
-        "Lionfish Bait"
-    ],
-    [
-        "Bait",
-        "Blue Discus Bait"
-    ],
-    [
-        "Bait",
-        "Son of Crimsonfish Bait"
-    ],
-    [
-        "Bait",
-        "Ms. Angler Bait"
-    ],
-    [
-        "Bait",
-        "Legend II Bait"
-    ],
-    [
-        "Bait",
-        "Radioactive Carp Bait"
-    ],
-    [
-        "Bait",
-        "Glacierfish Jr. Bait"
-    ],
-    [
-        "Bait",
-        "Sea Jelly Bait"
-    ],
-    [
-        "Bait",
-        "Cave Jelly Bait"
-    ],
-    [
-        "Bait",
-        "River Jelly Bait"
-    ],
-    [
-        "Bait",
-        "Goby Bait"
-    ],
-    [
-        "Roe",
-        "Pufferfish Roe"
-    ],
-    [
-        "Roe",
-        "Anchovy Roe"
-    ],
-    [
-        "Roe",
-        "Tuna Roe"
-    ],
-    [
-        "Roe",
-        "Sardine Roe"
-    ],
-    [
-        "Roe",
-        "Bream Roe"
-    ],
-    [
-        "Roe",
-        "Largemouth Bass Roe"
-    ],
-    [
-        "Roe",
-        "Smallmouth Bass Roe"
-    ],
-    [
-        "Roe",
-        "Rainbow Trout Roe"
-    ],
-    [
-        "Roe",
-        "Salmon Roe"
-    ],
-    [
-        "Roe",
-        "Walleye Roe"
-    ],
-    [
-        "Roe",
-        "Perch Roe"
-    ],
-    [
-        "Roe",
-        "Carp Roe"
-    ],
-    [
-        "Roe",
-        "Catfish Roe"
-    ],
-    [
-        "Roe",
-        "Pike Roe"
-    ],
-    [
-        "Roe",
-        "Sunfish Roe"
-    ],
-    [
-        "Roe",
-        "Red Mullet Roe"
-    ],
-    [
-        "Roe",
-        "Herring Roe"
-    ],
-    [
-        "Roe",
-        "Eel Roe"
-    ],
-    [
-        "Roe",
-        "Octopus Roe"
-    ],
-    [
-        "Roe",
-        "Red Snapper Roe"
-    ],
-    [
-        "Roe",
-        "Squid Roe"
-    ],
-    [
-        "Roe",
-        "Seaweed Roe"
-    ],
-    [
-        "Roe",
-        "Green Algae Roe"
-    ],
-    [
-        "Roe",
-        "Sea Cucumber Roe"
-    ],
-    [
-        "Roe",
-        "Super Cucumber Roe"
-    ],
-    [
-        "Roe",
-        "Ghostfish Roe"
-    ],
-    [
-        "Roe",
-        "White Algae Roe"
-    ],
-    [
-        "Roe",
-        "Stonefish Roe"
-    ],
-    [
-        "Roe",
-        "Crimsonfish Roe"
-    ],
-    [
-        "Roe",
-        "Angler Roe"
-    ],
-    [
-        "Roe",
-        "Ice Pip Roe"
-    ],
-    [
-        "Roe",
-        "Lava Eel Roe"
-    ],
-    [
-        "Roe",
-        "Legend Roe"
-    ],
-    [
-        "Roe",
-        "Sandfish Roe"
-    ],
-    [
-        "Roe",
-        "Scorpion Carp Roe"
-    ],
-    [
-        "Roe",
-        "Clam Roe"
-    ],
-    [
-        "Roe",
-        "Mutant Carp Roe"
-    ],
-    [
-        "Roe",
-        "Sturgeon Roe"
-    ],
-    [
-        "Roe",
-        "Tiger Trout Roe"
-    ],
-    [
-        "Roe",
-        "Bullhead Roe"
-    ],
-    [
-        "Roe",
-        "Tilapia Roe"
-    ],
-    [
-        "Roe",
-        "Chub Roe"
-    ],
-    [
-        "Roe",
-        "Dorado Roe"
-    ],
-    [
-        "Roe",
-        "Albacore Roe"
-    ],
-    [
-        "Roe",
-        "Shad Roe"
-    ],
-    [
-        "Roe",
-        "Lingcod Roe"
-    ],
-    [
-        "Roe",
-        "Halibut Roe"
-    ],
-    [
-        "Roe",
-        "Lobster Roe"
-    ],
-    [
-        "Roe",
-        "Crayfish Roe"
-    ],
-    [
-        "Roe",
-        "Crab Roe"
-    ],
-    [
-        "Roe",
-        "Cockle Roe"
-    ],
-    [
-        "Roe",
-        "Mussel Roe"
-    ],
-    [
-        "Roe",
-        "Shrimp Roe"
-    ],
-    [
-        "Roe",
-        "Snail Roe"
-    ],
-    [
-        "Roe",
-        "Periwinkle Roe"
-    ],
-    [
-        "Roe",
-        "Oyster Roe"
-    ],
-    [
-        "Roe",
-        "Woodskip Roe"
-    ],
-    [
-        "Roe",
-        "Glacierfish Roe"
-    ],
-    [
-        "Roe",
-        "Void Salmon Roe"
-    ],
-    [
-        "Roe",
-        "Slimejack Roe"
-    ],
-    [
-        "Roe",
-        "Midnight Squid Roe"
-    ],
-    [
-        "Roe",
-        "Spook Fish Roe"
-    ],
-    [
-        "Roe",
-        "Blobfish Roe"
-    ],
-    [
-        "Roe",
-        "Flounder Roe"
-    ],
-    [
-        "Roe",
-        "Midnight Carp Roe"
-    ],
-    [
-        "Roe",
-        "Stingray Roe"
-    ],
-    [
-        "Roe",
-        "Lionfish Roe"
-    ],
-    [
-        "Roe",
-        "Blue Discus Roe"
-    ],
-    [
-        "Roe",
-        "Son of Crimsonfish Roe"
-    ],
-    [
-        "Roe",
-        "Ms. Angler Roe"
-    ],
-    [
-        "Roe",
-        "Legend II Roe"
-    ],
-    [
-        "Roe",
-        "Radioactive Carp Roe"
-    ],
-    [
-        "Roe",
-        "Glacierfish Jr. Roe"
-    ],
-    [
-        "Roe",
-        "Sea Jelly Roe"
-    ],
-    [
-        "Roe",
-        "Cave Jelly Roe"
-    ],
-    [
-        "Roe",
-        "River Jelly Roe"
-    ],
-    [
-        "Roe",
-        "Goby Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Pufferfish Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Anchovy Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Tuna Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Sardine Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Bream Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Largemouth Bass Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Smallmouth Bass Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Rainbow Trout Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Salmon Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Walleye Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Perch Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Carp Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Catfish Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Pike Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Sunfish Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Red Mullet Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Herring Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Eel Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Octopus Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Red Snapper Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Squid Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Seaweed Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Green Algae Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Sea Cucumber Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Super Cucumber Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Ghostfish Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged White Algae Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Stonefish Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Crimsonfish Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Angler Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Ice Pip Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Lava Eel Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Legend Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Sandfish Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Scorpion Carp Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Clam Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Mutant Carp Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Sturgeon Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Tiger Trout Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Bullhead Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Tilapia Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Chub Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Dorado Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Albacore Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Shad Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Lingcod Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Halibut Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Lobster Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Crayfish Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Crab Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Cockle Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Mussel Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Shrimp Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Snail Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Periwinkle Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Oyster Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Woodskip Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Glacierfish Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Void Salmon Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Slimejack Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Midnight Squid Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Spook Fish Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Blobfish Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Flounder Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Midnight Carp Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Stingray Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Lionfish Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Blue Discus Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Son of Crimsonfish Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Ms. Angler Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Legend II Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Radioactive Carp Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Glacierfish Jr. Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Sea Jelly Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Cave Jelly Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged River Jelly Roe"
-    ],
-    [
-        "Aged Roe",
-        "Aged Goby Roe"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Pufferfish"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Anchovy"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Tuna"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Sardine"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Bream"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Largemouth Bass"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Smallmouth Bass"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Rainbow Trout"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Salmon"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Walleye"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Perch"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Carp"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Catfish"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Pike"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Sunfish"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Red Mullet"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Herring"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Eel"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Octopus"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Red Snapper"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Squid"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Seaweed"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Green Algae"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Sea Cucumber"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Super Cucumber"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Ghostfish"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked White Algae"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Stonefish"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Crimsonfish"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Angler"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Ice Pip"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Lava Eel"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Legend"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Sandfish"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Scorpion Carp"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Clam"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Mutant Carp"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Sturgeon"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Tiger Trout"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Bullhead"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Tilapia"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Chub"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Dorado"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Albacore"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Shad"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Lingcod"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Halibut"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Lobster"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Crayfish"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Crab"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Cockle"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Mussel"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Shrimp"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Snail"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Periwinkle"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Oyster"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Woodskip"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Glacierfish"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Void Salmon"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Slimejack"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Midnight Squid"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Spook Fish"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Blobfish"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Flounder"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Midnight Carp"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Stingray"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Lionfish"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Blue Discus"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Son of Crimsonfish"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Ms. Angler"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Legend II"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Radioactive Carp"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Glacierfish Jr."
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Sea Jelly"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Cave Jelly"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked River Jelly"
-    ],
-    [
-        "Smoked Fish",
-        "Smoked Goby"
-    ],
-    [
-        "Pickles",
-        "Parsnip Pickles"
-    ],
-    [
-        "Pickles",
-        "Green Bean Pickles"
-    ],
-    [
-        "Pickles",
-        "Cauliflower Pickles"
-    ],
-    [
-        "Pickles",
-        "Potato Pickles"
-    ],
-    [
-        "Pickles",
-        "Garlic Pickles"
-    ],
-    [
-        "Pickles",
-        "Kale Pickles"
-    ],
-    [
-        "Pickles",
-        "Tomato Pickles"
-    ],
-    [
-        "Pickles",
-        "Fiddlehead Fern Pickles"
-    ],
-    [
-        "Pickles",
-        "Wheat Pickles"
-    ],
-    [
-        "Pickles",
-        "Radish Pickles"
-    ],
-    [
-        "Pickles",
-        "Red Cabbage Pickles"
-    ],
-    [
-        "Pickles",
-        "Corn Pickles"
-    ],
-    [
-        "Pickles",
-        "Unmilled Rice Pickles"
-    ],
-    [
-        "Pickles",
-        "Eggplant Pickles"
-    ],
-    [
-        "Pickles",
-        "Artichoke Pickles"
-    ],
-    [
-        "Pickles",
-        "Pumpkin Pickles"
-    ],
-    [
-        "Pickles",
-        "Bok Choy Pickles"
-    ],
-    [
-        "Pickles",
-        "Yam Pickles"
-    ],
-    [
-        "Pickles",
-        "Beet Pickles"
-    ],
-    [
-        "Pickles",
-        "Amaranth Pickles"
-    ],
-    [
-        "Pickles",
-        "Hops Pickles"
-    ],
-    [
-        "Pickles",
-        "Tea Leaves Pickles"
-    ],
-    [
-        "Pickles",
-        "Taro Root Pickles"
-    ],
-    [
-        "Pickles",
-        "Carrot Pickles"
-    ],
-    [
-        "Pickles",
-        "Summer Squash Pickles"
-    ],
-    [
-        "Pickles",
-        "Broccoli Pickles"
-    ],
-    [
-        "Juice",
-        "Parsnip Juice"
-    ],
-    [
-        "Juice",
-        "Green Bean Juice"
-    ],
-    [
-        "Juice",
-        "Cauliflower Juice"
-    ],
-    [
-        "Juice",
-        "Potato Juice"
-    ],
-    [
-        "Juice",
-        "Garlic Juice"
-    ],
-    [
-        "Juice",
-        "Kale Juice"
-    ],
-    [
-        "Juice",
-        "Tomato Juice"
-    ],
-    [
-        "Juice",
-        "Fiddlehead Fern Juice"
-    ],
-    [
-        "Juice",
-        "Wheat Juice"
-    ],
-    [
-        "Juice",
-        "Radish Juice"
-    ],
-    [
-        "Juice",
-        "Red Cabbage Juice"
-    ],
-    [
-        "Juice",
-        "Corn Juice"
-    ],
-    [
-        "Juice",
-        "Unmilled Rice Juice"
-    ],
-    [
-        "Juice",
-        "Eggplant Juice"
-    ],
-    [
-        "Juice",
-        "Artichoke Juice"
-    ],
-    [
-        "Juice",
-        "Pumpkin Juice"
-    ],
-    [
-        "Juice",
-        "Bok Choy Juice"
-    ],
-    [
-        "Juice",
-        "Yam Juice"
-    ],
-    [
-        "Juice",
-        "Beet Juice"
-    ],
-    [
-        "Juice",
-        "Amaranth Juice"
-    ],
-    [
-        "Juice",
-        "Hops Juice"
-    ],
-    [
-        "Juice",
-        "Tea Leaves Juice"
-    ],
-    [
-        "Juice",
-        "Taro Root Juice"
-    ],
-    [
-        "Juice",
-        "Carrot Juice"
-    ],
-    [
-        "Juice",
-        "Summer Squash Juice"
-    ],
-    [
-        "Juice",
-        "Broccoli Juice"
-    ],
-    [
-        "Jelly",
-        "Sweet Gem Berry Jelly"
-    ],
-    [
-        "Jelly",
-        "Truffle Jelly"
-    ],
-    [
-        "Wine",
-        "Sweet Gem Berry Wine"
-    ],
-    [
-        "Wine",
-        "Truffle Wine"
-    ],
-    [
-        "Forage",
-        "h"
-    ],
-    [
-        "Forage",
-        "o"
-    ],
-    [
-        "Forage",
-        "a"
-    ],
-    [
-        "Forage",
-        "o"
-    ],
-    [
-        "Forage",
-        "u"
-    ],
-    [
-        "Dried",
-        "Dried h"
-    ],
-    [
-        "Dried",
-        "Dried o"
-    ],
-    [
-        "Dried",
-        "Dried a"
-    ],
-    [
-        "Dried",
-        "Dried o"
-    ],
-    [
-        "Dried",
-        "Dried u"
-    ],
-    [
-        "Dried",
-        "Dried Sweet Gem Berry"
-    ],
-    [
-        "Dried",
-        "Dried Truffle"
-    ],
-    [
-        "Dried",
-        "Raisins"
-    ]
+[
+"Forage",
+"Wild Horseradish",
+null
+],
+[
+"Forage",
+"Daffodil",
+null
+],
+[
+"Forage",
+"Leek",
+null
+],
+[
+"Forage",
+"Dandelion",
+null
+],
+[
+"Vegetables",
+"Parsnip",
+null
+],
+[
+"Gem",
+"Emerald",
+null
+],
+[
+"Gem",
+"Aquamarine",
+null
+],
+[
+"Gem",
+"Ruby",
+null
+],
+[
+"Gem",
+"Amethyst",
+null
+],
+[
+"Gem",
+"Topaz",
+null
+],
+[
+"Gem",
+"Jade",
+null
+],
+[
+"Quest",
+"Trimmed Lucky Purple Shorts",
+null
+],
+[
+"Gem",
+"Diamond",
+null
+],
+[
+"Gem",
+"Prismatic Shard",
+null
+],
+[
+"Forage",
+"Cave Carrot",
+null
+],
+[
+"Gem",
+"Quartz",
+null
+],
+[
+"Resources",
+"Fire Quartz",
+null
+],
+[
+"Gem",
+"Frozen Tear",
+null
+],
+[
+"Resources",
+"Earth Crystal",
+null
+],
+[
+"Fruits",
+"Coconut",
+null
+],
+[
+"Fruits",
+"Cactus Fruit",
+null
+],
+[
+"Resources",
+"Sap",
+null
+],
+[
+"Decoration (Lighting)",
+"Torch",
+null
+],
+[
+"Artifacts",
+"Dwarf Scroll I",
+null
+],
+[
+"Artifacts",
+"Dwarf Scroll II",
+null
+],
+[
+"Artifacts",
+"Dwarf Scroll III",
+null
+],
+[
+"Artifacts",
+"Dwarf Scroll IV",
+null
+],
+[
+"Artifacts",
+"Chipped Amphora",
+null
+],
+[
+"Artifacts",
+"Arrowhead",
+null
+],
+[
+"Artifacts",
+"Ancient Doll",
+null
+],
+[
+"Artifacts",
+"Elvish Jewelry",
+null
+],
+[
+"Artifacts",
+"Chewing Stick",
+null
+],
+[
+"Artifacts",
+"Ornamental Fan",
+null
+],
+[
+"Animal Products",
+"Dinosaur Egg",
+"Egg: Dinosaur"
+],
+[
+"Artifacts",
+"Rare Disc",
+null
+],
+[
+"Artifacts",
+"Ancient Sword",
+null
+],
+[
+"Artifacts",
+"Rusty Spoon",
+null
+],
+[
+"Artifacts",
+"Rusty Spur",
+null
+],
+[
+"Artifacts",
+"Rusty Cog",
+null
+],
+[
+"Artifacts",
+"Chicken Statue",
+null
+],
+[
+"Artifacts",
+"Ancient Seed",
+null
+],
+[
+"Artifacts",
+"Prehistoric Tool",
+null
+],
+[
+"Artifacts",
+"Dried Starfish",
+null
+],
+[
+"Artifacts",
+"Anchor",
+null
+],
+[
+"Artifacts",
+"Glass Shards",
+null
+],
+[
+"Artifacts",
+"Bone Flute",
+null
+],
+[
+"Artifacts",
+"Prehistoric Handaxe",
+null
+],
+[
+"Artifacts",
+"Dwarvish Helm",
+null
+],
+[
+"Artifacts",
+"Dwarf Gadget",
+null
+],
+[
+"Artifacts",
+"Ancient Drum",
+null
+],
+[
+"Artifacts",
+"Golden Mask",
+null
+],
+[
+"Artifacts",
+"Golden Relic",
+null
+],
+[
+"Artifacts",
+"Strange Doll",
+null
+],
+[
+"Artifacts",
+"Strange Doll",
+null
+],
+[
+"Fish",
+"Pufferfish",
+null
+],
+[
+"Fish",
+"Anchovy",
+null
+],
+[
+"Fish",
+"Tuna",
+null
+],
+[
+"Fish",
+"Sardine",
+null
+],
+[
+"Fish",
+"Bream",
+null
+],
+[
+"Fish",
+"Largemouth Bass",
+null
+],
+[
+"Fish",
+"Smallmouth Bass",
+null
+],
+[
+"Fish",
+"Rainbow Trout",
+null
+],
+[
+"Fish",
+"Salmon",
+null
+],
+[
+"Fish",
+"Walleye",
+null
+],
+[
+"Fish",
+"Perch",
+null
+],
+[
+"Fish",
+"Carp",
+null
+],
+[
+"Fish",
+"Catfish",
+null
+],
+[
+"Fish",
+"Pike",
+null
+],
+[
+"Fish",
+"Sunfish",
+null
+],
+[
+"Fish",
+"Red Mullet",
+null
+],
+[
+"Fish",
+"Herring",
+null
+],
+[
+"Fish",
+"Eel",
+null
+],
+[
+"Fish",
+"Octopus",
+null
+],
+[
+"Fish",
+"Red Snapper",
+null
+],
+[
+"Fish",
+"Squid",
+null
+],
+[
+"Resources",
+"Seaweed",
+null
+],
+[
+"Resources",
+"Green Algae",
+null
+],
+[
+"Fish",
+"Sea Cucumber",
+null
+],
+[
+"Fish",
+"Super Cucumber",
+null
+],
+[
+"Fish",
+"Ghostfish",
+null
+],
+[
+"Resources",
+"White Algae",
+null
+],
+[
+"Fish",
+"Stonefish",
+null
+],
+[
+"Fish",
+"Ice Pip",
+null
+],
+[
+"Fish",
+"Lava Eel",
+null
+],
+[
+"Fish",
+"Sandfish",
+null
+],
+[
+"Fish",
+"Scorpion Carp",
+null
+],
+[
+"Artifacts",
+"Treasure Chest",
+null
+],
+[
+"Trash",
+"Joja Cola",
+null
+],
+[
+"Trash",
+"Trash",
+null
+],
+[
+"Trash",
+"Driftwood",
+null
+],
+[
+"Trash",
+"Broken Glasses",
+null
+],
+[
+"Trash",
+"Broken CD",
+null
+],
+[
+"Trash",
+"Soggy Newspaper",
+null
+],
+[
+"Animal Products",
+"Egg",
+null
+],
+[
+"Animal Products",
+"Large Egg",
+null
+],
+[
+"Resources",
+"Hay",
+null
+],
+[
+"Animal Products",
+"Egg",
+null
+],
+[
+"Animal Products",
+"Large Egg",
+null
+],
+[
+"Animal Products",
+"Milk",
+null
+],
+[
+"Animal Products",
+"Large Milk",
+null
+],
+[
+"Vegetables",
+"Green Bean",
+null
+],
+[
+"Vegetables",
+"Cauliflower",
+null
+],
+[
+"Vegetables",
+"Potato",
+null
+],
+[
+"Cooking",
+"Fried Egg",
+null
+],
+[
+"Cooking",
+"Omelet",
+null
+],
+[
+"Cooking",
+"Salad",
+null
+],
+[
+"Cooking",
+"Cheese Cauliflower",
+null
+],
+[
+"Cooking",
+"Baked Fish",
+null
+],
+[
+"Cooking",
+"Parsnip Soup",
+null
+],
+[
+"Cooking",
+"Vegetable Medley",
+null
+],
+[
+"Cooking",
+"Complete Breakfast",
+null
+],
+[
+"Cooking",
+"Fried Calamari",
+null
+],
+[
+"Cooking",
+"Strange Bun",
+null
+],
+[
+"Cooking",
+"Lucky Lunch",
+null
+],
+[
+"Cooking",
+"Fried Mushroom",
+null
+],
+[
+"Cooking",
+"Pizza",
+null
+],
+[
+"Cooking",
+"Bean Hotpot",
+null
+],
+[
+"Cooking",
+"Glazed Yams",
+null
+],
+[
+"Cooking",
+"Carp Surprise",
+null
+],
+[
+"Cooking",
+"Hashbrowns",
+null
+],
+[
+"Cooking",
+"Pancakes",
+null
+],
+[
+"Cooking",
+"Salmon Dinner",
+null
+],
+[
+"Cooking",
+"Fish Taco",
+null
+],
+[
+"Cooking",
+"Crispy Bass",
+null
+],
+[
+"Cooking",
+"Pepper Poppers",
+null
+],
+[
+"Cooking",
+"Bread",
+null
+],
+[
+"Cooking",
+"Tom Kha Soup",
+null
+],
+[
+"Cooking",
+"Trout Soup",
+null
+],
+[
+"Cooking",
+"Chocolate Cake",
+null
+],
+[
+"Cooking",
+"Pink Cake",
+null
+],
+[
+"Cooking",
+"Rhubarb Pie",
+null
+],
+[
+"Cooking",
+"Cookie",
+null
+],
+[
+"Cooking",
+"Spaghetti",
+null
+],
+[
+"Cooking",
+"Fried Eel",
+null
+],
+[
+"Cooking",
+"Spicy Eel",
+null
+],
+[
+"Cooking",
+"Sashimi",
+null
+],
+[
+"Cooking",
+"Maki Roll",
+null
+],
+[
+"Cooking",
+"Tortilla",
+null
+],
+[
+"Cooking",
+"Red Plate",
+null
+],
+[
+"Cooking",
+"Eggplant Parmesan",
+null
+],
+[
+"Cooking",
+"Rice Pudding",
+null
+],
+[
+"Cooking",
+"Ice Cream",
+null
+],
+[
+"Cooking",
+"Blueberry Tart",
+null
+],
+[
+"Cooking",
+"Autumn's Bounty",
+null
+],
+[
+"Cooking",
+"Pumpkin Soup",
+null
+],
+[
+"Cooking",
+"Super Meal",
+null
+],
+[
+"Cooking",
+"Cranberry Sauce",
+null
+],
+[
+"Cooking",
+"Stuffing",
+null
+],
+[
+"Cooking",
+"Farmer's Lunch",
+null
+],
+[
+"Cooking",
+"Survival Burger",
+null
+],
+[
+"Cooking",
+"Dish O' The Sea",
+null
+],
+[
+"Cooking",
+"Miner's Treat",
+null
+],
+[
+"Cooking",
+"Roots Platter",
+null
+],
+[
+"Cooking",
+"Sugar",
+null
+],
+[
+"Cooking",
+"Wheat Flour",
+null
+],
+[
+"Cooking",
+"Oil",
+null
+],
+[
+"Vegetables",
+"Garlic",
+null
+],
+[
+"Vegetables",
+"Kale",
+null
+],
+[
+"Seeds",
+"Tea Sapling",
+null
+],
+[
+"Fruits",
+"Rhubarb",
+null
+],
+[
+"Cooking",
+"Triple Shot Espresso",
+null
+],
+[
+"Fruits",
+"Melon",
+null
+],
+[
+"Vegetables",
+"Tomato",
+null
+],
+[
+"Forage",
+"Morel",
+null
+],
+[
+"Fruits",
+"Blueberry",
+null
+],
+[
+"Vegetables",
+"Fiddlehead Fern",
+null
+],
+[
+"Fruits",
+"Hot Pepper",
+null
+],
+[
+"Consumables",
+"Warp Totem: Desert",
+"Totem: Deser"
+],
+[
+"Vegetables",
+"Wheat",
+null
+],
+[
+"Vegetables",
+"Radish",
+null
+],
+[
+"Vegetables",
+"Red Cabbage",
+null
+],
+[
+"Fruits",
+"Starfruit",
+null
+],
+[
+"Vegetables",
+"Corn",
+null
+],
+[
+"Vegetables",
+"Unmilled Rice",
+null
+],
+[
+"Vegetables",
+"Eggplant",
+null
+],
+[
+"Seeds",
+"Rice Shoot",
+null
+],
+[
+"Vegetables",
+"Artichoke",
+null
+],
+[
+"Geodes",
+"Artifact Trove",
+null
+],
+[
+"Vegetables",
+"Pumpkin",
+null
+],
+[
+"Gifts/Rewards",
+"Wilted Bouquet",
+"Bouquet: Wilted"
+],
+[
+"Vegetables",
+"Bok Choy",
+null
+],
+[
+"Cooking",
+"Magic Rock Candy",
+null
+],
+[
+"Vegetables",
+"Yam",
+null
+],
+[
+"Forage",
+"Chanterelle",
+null
+],
+[
+"Fruits",
+"Cranberries",
+null
+],
+[
+"Forage",
+"Holly",
+null
+],
+[
+"Vegetables",
+"Beet",
+null
+],
+[
+"Consumables",
+"Cherry Bomb",
+"Bomb: Cherry"
+],
+[
+"Consumables",
+"Bomb",
+"Bomb: Bomb"
+],
+[
+"Consumables",
+"Mega Bomb",
+"Bomb: Mega"
+],
+[
+"Decoration (Infrastructure)",
+"Brick Floor",
+null
+],
+[
+"Fruits",
+"Salmonberry",
+null
+],
+[
+"Seeds",
+"Grass Starter",
+null
+],
+[
+"Decoration (Infrastructure)",
+"Hardwood Fence",
+null
+],
+[
+"Seeds",
+"Amaranth Seeds",
+null
+],
+[
+"Vegetables",
+"Amaranth",
+null
+],
+[
+"Seeds",
+"Grape Starter",
+null
+],
+[
+"Seeds",
+"Hops Starter",
+null
+],
+[
+"Artisan Goods (Keg)",
+"Pale Ale",
+null
+],
+[
+"Vegetables",
+"Hops",
+null
+],
+[
+"Animal Products",
+"Void Egg",
+null
+],
+[
+"Artisan",
+"Mayonnaise",
+null
+],
+[
+"Artisan",
+"Duck Mayonnaise",
+null
+],
+[
+"Artisan",
+"Void Mayonnaise",
+null
+],
+[
+"Seeds",
+"Acorn",
+null
+],
+[
+"Seeds",
+"Maple Seed",
+null
+],
+[
+"Seeds",
+"Pine Cone",
+null
+],
+[
+"Decoration (Infrastructure)",
+"Wood Fence",
+null
+],
+[
+"Decoration (Infrastructure)",
+"Stone Fence",
+null
+],
+[
+"Decoration (Infrastructure)",
+"Iron Fence",
+null
+],
+[
+"Decoration (Infrastructure)",
+"Gate",
+null
+],
+[
+"Decoration (Infrastructure)",
+"Wood Floor",
+null
+],
+[
+"Decoration (Infrastructure)",
+"Stone Floor",
+null
+],
+[
+"Resources",
+"Clay",
+null
+],
+[
+"Decoration (Infrastructure)",
+"Weathered Floor",
+null
+],
+[
+"Decoration (Infrastructure)",
+"Crystal Floor",
+null
+],
+[
+"Resources",
+"Copper Bar",
+null
+],
+[
+"Resources",
+"Iron Bar",
+null
+],
+[
+"Resources",
+"Gold Bar",
+null
+],
+[
+"Resources",
+"Iridium Bar",
+null
+],
+[
+"Resources",
+"Refined Quartz",
+null
+],
+[
+"Artisan",
+"Honey",
+null
+],
+[
+"Decoration (Other)",
+"Tea Set",
+null
+],
+[
+"Artisan",
+"Pickles",
+null
+],
+[
+"Artisan",
+"Jelly",
+null
+],
+[
+"Artisan Goods (Keg)",
+"Beer",
+null
+],
+[
+"Seeds",
+"Rare Seed",
+null
+],
+[
+"Artisan Goods (Keg)",
+"Wine",
+null
+],
+[
+"Consumables",
+"Energy Tonic",
+null
+],
+[
+"Artisan Goods (Keg)",
+"Juice",
+null
+],
+[
+"Consumables",
+"Muscle Remedy",
+null
+],
+[
+"Fertilizers",
+"Basic Fertilizer",
+null
+],
+[
+"Fertilizers",
+"Quality Fertilizer",
+null
+],
+[
+"Fertilizers",
+"Basic Retaining Soil",
+null
+],
+[
+"Fertilizers",
+"Quality Retaining Soil",
+null
+],
+[
+"Fish",
+"Clam",
+null
+],
+[
+"Artifacts",
+"Golden Pumpkin",
+null
+],
+[
+"Resources",
+"Copper Ore",
+null
+],
+[
+"Resources",
+"Iron Ore",
+null
+],
+[
+"Resources",
+"Coal",
+null
+],
+[
+"Resources",
+"Gold Ore",
+null
+],
+[
+"Resources",
+"Iridium Ore",
+null
+],
+[
+"Resources",
+"Wood",
+null
+],
+[
+"Resources",
+"Stone",
+null
+],
+[
+"Forage",
+"Nautilus Shell",
+null
+],
+[
+"Fish",
+"Coral",
+null
+],
+[
+"Forage",
+"Rainbow Shell",
+null
+],
+[
+"Artisan Goods (Keg)",
+"Coffee",
+null
+],
+[
+"Fruits",
+"Spice Berry",
+null
+],
+[
+"Fish",
+"Sea Urchin",
+null
+],
+[
+"Fruits",
+"Grape",
+null
+],
+[
+"Forage",
+"Spring Onion",
+null
+],
+[
+"Fruits",
+"Strawberry",
+null
+],
+[
+"Decoration (Infrastructure)",
+"Straw Floor",
+null
+],
+[
+"Flowers",
+"Sweet Pea",
+null
+],
+[
+"Consumables",
+"Field Snack",
+null
+],
+[
+"Forage",
+"Common Mushroom",
+null
+],
+[
+"Decoration (Infrastructure)",
+"Wood Path",
+null
+],
+[
+"Fruits",
+"Wild Plum",
+null
+],
+[
+"Decoration (Infrastructure)",
+"Gravel Path",
+null
+],
+[
+"Forage",
+"Hazelnut",
+null
+],
+[
+"Decoration (Infrastructure)",
+"Crystal Path",
+null
+],
+[
+"Fruits",
+"Blackberry",
+null
+],
+[
+"Decoration (Infrastructure)",
+"Cobblestone Path",
+null
+],
+[
+"Forage",
+"Winter Root",
+null
+],
+[
+"Monster Drops",
+"Blue Slime Egg",
+"Slime Egg: Blue"
+],
+[
+"Fruits",
+"Crystal Fruit",
+null
+],
+[
+"Decoration (Infrastructure)",
+"Stepping Stone Path",
+null
+],
+[
+"Forage",
+"Snow Yam",
+null
+],
+[
+"Fruits",
+"Sweet Gem Berry",
+null
+],
+[
+"Flowers",
+"Crocus",
+null
+],
+[
+"Cooking",
+"Vinegar",
+null
+],
+[
+"Forage",
+"Red Mushroom",
+null
+],
+[
+"Flowers",
+"Sunflower",
+null
+],
+[
+"Forage",
+"Purple Mushroom",
+null
+],
+[
+"Cooking",
+"Rice",
+null
+],
+[
+"Artisan",
+"Cheese",
+null
+],
+[
+"Artisan",
+"Goat Cheese",
+null
+],
+[
+"Artisan",
+"Cloth",
+null
+],
+[
+"Animal Products",
+"Truffle",
+null
+],
+[
+"Artisan",
+"Truffle Oil",
+null
+],
+[
+"Seeds",
+"Coffee Bean",
+null
+],
+[
+"Animal Products",
+"Goat Milk",
+null
+],
+[
+"Monster Drops",
+"Red Slime Egg",
+"Slime Egg: Red"
+],
+[
+"Animal Products",
+"L. Goat Milk",
+null
+],
+[
+"Monster Drops",
+"Purple Slime Egg",
+"Slime Egg: Purple"
+],
+[
+"Animal Products",
+"Wool",
+null
+],
+[
+"Consumables",
+"Explosive Ammo",
+"Bomb: Explosive Ammo"
+],
+[
+"Animal Products",
+"Duck Egg",
+null
+],
+[
+"Animal Products",
+"Duck Feather",
+null
+],
+[
+"Animal Products",
+"Rabbit's Foot",
+null
+],
+[
+"Fruits",
+"Ancient Fruit",
+null
+],
+[
+"Cooking",
+"Algae Soup",
+null
+],
+[
+"Cooking",
+"Pale Broth",
+null
+],
+[
+"Gifts/Rewards",
+"Bouquet",
+null
+],
+[
+"Artisan Goods (Keg)",
+"Mead",
+null
+],
+[
+"Machines",
+"Drum Block",
+null
+],
+[
+"Machines",
+"Flute Block",
+null
+],
+[
+"Fertilizers",
+"Speed-Gro",
+null
+],
+[
+"Fertilizers",
+"Deluxe Speed-Gro",
+null
+],
+[
+"Seeds",
+"Parsnip Seeds",
+null
+],
+[
+"Seeds",
+"Bean Starter",
+null
+],
+[
+"Seeds",
+"Cauliflower Seeds",
+null
+],
+[
+"Seeds",
+"Potato Seeds",
+null
+],
+[
+"Seeds",
+"Garlic Seeds",
+null
+],
+[
+"Seeds",
+"Kale Seeds",
+null
+],
+[
+"Seeds",
+"Rhubarb Seeds",
+null
+],
+[
+"Seeds",
+"Melon Seeds",
+null
+],
+[
+"Seeds",
+"Tomato Seeds",
+null
+],
+[
+"Seeds",
+"Blueberry Seeds",
+null
+],
+[
+"Seeds",
+"Pepper Seeds",
+null
+],
+[
+"Seeds",
+"Wheat Seeds",
+null
+],
+[
+"Seeds",
+"Radish Seeds",
+null
+],
+[
+"Seeds",
+"Red Cabbage Seeds",
+null
+],
+[
+"Seeds",
+"Starfruit Seeds",
+null
+],
+[
+"Seeds",
+"Corn Seeds",
+null
+],
+[
+"Seeds",
+"Eggplant Seeds",
+null
+],
+[
+"Seeds",
+"Artichoke Seeds",
+null
+],
+[
+"Seeds",
+"Pumpkin Seeds",
+null
+],
+[
+"Seeds",
+"Bok Choy Seeds",
+null
+],
+[
+"Seeds",
+"Yam Seeds",
+null
+],
+[
+"Seeds",
+"Cranberry Seeds",
+null
+],
+[
+"Seeds",
+"Beet Seeds",
+null
+],
+[
+"Seeds",
+"Spring Seeds",
+null
+],
+[
+"Seeds",
+"Summer Seeds",
+null
+],
+[
+"Seeds",
+"Fall Seeds",
+null
+],
+[
+"Seeds",
+"Winter Seeds",
+null
+],
+[
+"Seeds",
+"Ancient Seeds",
+null
+],
+[
+"Seeds",
+"Tulip Bulb",
+null
+],
+[
+"Seeds",
+"Jazz Seeds",
+null
+],
+[
+"Seeds",
+"Poppy Seeds",
+null
+],
+[
+"Seeds",
+"Spangle Seeds",
+null
+],
+[
+"Seeds",
+"Sunflower Seeds",
+null
+],
+[
+"Seeds",
+"Fairy Seeds",
+null
+],
+[
+"Geodes",
+"Geode",
+null
+],
+[
+"Geodes",
+"Frozen Geode",
+null
+],
+[
+"Geodes",
+"Magma Geode",
+null
+],
+[
+"Minerals",
+"Alamite",
+null
+],
+[
+"Minerals",
+"Bixite",
+null
+],
+[
+"Minerals",
+"Baryte",
+null
+],
+[
+"Minerals",
+"Aerinite",
+null
+],
+[
+"Minerals",
+"Calcite",
+null
+],
+[
+"Minerals",
+"Dolomite",
+null
+],
+[
+"Minerals",
+"Esperite",
+null
+],
+[
+"Minerals",
+"Fluorapatite",
+null
+],
+[
+"Minerals",
+"Geminite",
+null
+],
+[
+"Minerals",
+"Helvite",
+null
+],
+[
+"Minerals",
+"Jamborite",
+null
+],
+[
+"Minerals",
+"Jagoite",
+null
+],
+[
+"Minerals",
+"Kyanite",
+null
+],
+[
+"Minerals",
+"Lunarite",
+null
+],
+[
+"Minerals",
+"Malachite",
+null
+],
+[
+"Minerals",
+"Neptunite",
+null
+],
+[
+"Minerals",
+"Lemon Stone",
+null
+],
+[
+"Minerals",
+"Nekoite",
+null
+],
+[
+"Minerals",
+"Orpiment",
+null
+],
+[
+"Minerals",
+"Petrified Slime",
+null
+],
+[
+"Minerals",
+"Thunder Egg",
+null
+],
+[
+"Minerals",
+"Pyrite",
+null
+],
+[
+"Minerals",
+"Ocean Stone",
+null
+],
+[
+"Minerals",
+"Ghost Crystal",
+null
+],
+[
+"Minerals",
+"Tigerseye",
+null
+],
+[
+"Minerals",
+"Jasper",
+null
+],
+[
+"Minerals",
+"Opal",
+null
+],
+[
+"Minerals",
+"Fire Opal",
+null
+],
+[
+"Minerals",
+"Celestine",
+null
+],
+[
+"Minerals",
+"Marble",
+null
+],
+[
+"Minerals",
+"Sandstone",
+null
+],
+[
+"Minerals",
+"Granite",
+null
+],
+[
+"Minerals",
+"Basalt",
+null
+],
+[
+"Minerals",
+"Limestone",
+null
+],
+[
+"Minerals",
+"Soapstone",
+null
+],
+[
+"Minerals",
+"Hematite",
+null
+],
+[
+"Minerals",
+"Mudstone",
+null
+],
+[
+"Minerals",
+"Obsidian",
+null
+],
+[
+"Minerals",
+"Slate",
+null
+],
+[
+"Minerals",
+"Fairy Stone",
+null
+],
+[
+"Minerals",
+"Star Shards",
+null
+],
+[
+"Artifacts",
+"Prehistoric Scapula",
+null
+],
+[
+"Artifacts",
+"Prehistoric Tibia",
+null
+],
+[
+"Artifacts",
+"Prehistoric Skull",
+null
+],
+[
+"Artifacts",
+"Skeletal Hand",
+null
+],
+[
+"Artifacts",
+"Prehistoric Rib",
+null
+],
+[
+"Artifacts",
+"Prehistoric Vertebra",
+null
+],
+[
+"Artifacts",
+"Skeletal Tail",
+null
+],
+[
+"Artifacts",
+"Nautilus Fossil",
+null
+],
+[
+"Artifacts",
+"Amphibian Fossil",
+null
+],
+[
+"Artifacts",
+"Palm Fossil",
+null
+],
+[
+"Artifacts",
+"Trilobite",
+null
+],
+[
+"Flowers",
+"Tulip",
+null
+],
+[
+"Flowers",
+"Summer Spangle",
+null
+],
+[
+"Flowers",
+"Fairy Rose",
+null
+],
+[
+"Flowers",
+"Blue Jazz",
+null
+],
+[
+"Machines",
+"Sprinkler",
+null
+],
+[
+"Flowers",
+"Poppy",
+null
+],
+[
+"Cooking",
+"Plum Pudding",
+null
+],
+[
+"Cooking",
+"Artichoke Dip",
+null
+],
+[
+"Cooking",
+"Stir Fry",
+null
+],
+[
+"Cooking",
+"Roasted Hazelnuts",
+null
+],
+[
+"Cooking",
+"Pumpkin Pie",
+null
+],
+[
+"Cooking",
+"Radish Salad",
+null
+],
+[
+"Cooking",
+"Fruit Salad",
+null
+],
+[
+"Cooking",
+"Blackberry Cobbler",
+null
+],
+[
+"Cooking",
+"Cranberry Candy",
+null
+],
+[
+"Fruits",
+"Apple",
+null
+],
+[
+"Artisan Goods (Keg)",
+"Green Tea",
+null
+],
+[
+"Cooking",
+"Bruschetta",
+null
+],
+[
+"Machines",
+"Quality Sprinkler",
+null
+],
+[
+"Machines",
+"Iridium Sprinkler",
+null
+],
+[
+"Cooking",
+"Coleslaw",
+null
+],
+[
+"Cooking",
+"Fiddlehead Risotto",
+null
+],
+[
+"Cooking",
+"Poppyseed Muffin",
+null
+],
+[
+"Seeds",
+"Cherry Sapling",
+null
+],
+[
+"Seeds",
+"Apricot Sapling",
+null
+],
+[
+"Seeds",
+"Orange Sapling",
+null
+],
+[
+"Seeds",
+"Peach Sapling",
+null
+],
+[
+"Seeds",
+"Pomegranate Sapling",
+null
+],
+[
+"Seeds",
+"Apple Sapling",
+null
+],
+[
+"Fruits",
+"Apricot",
+null
+],
+[
+"Fruits",
+"Orange",
+null
+],
+[
+"Fruits",
+"Peach",
+null
+],
+[
+"Fruits",
+"Pomegranate",
+null
+],
+[
+"Fruits",
+"Cherry",
+null
+],
+[
+"Monster Drops",
+"Green Slime Egg",
+"Slime Egg: Green"
+],
+[
+"Consumables",
+"Rain Totem",
+"Totem: Rain"
+],
+[
+"Monster Drops",
+"Bug Meat",
+null
+],
+[
+"Bait",
+"Bait",
+null
+],
+[
+"Consumables",
+"Warp Totem: Farm",
+"Totem: Farm"
+],
+[
+"Consumables",
+"Warp Totem: Mountains",
+"Totem: Mountains"
+],
+[
+"Consumables",
+"Warp Totem: Beach",
+"Totem: Beach"
+],
+[
+"Fish",
+"Sturgeon",
+null
+],
+[
+"Fish",
+"Tiger Trout",
+null
+],
+[
+"Fish",
+"Bullhead",
+null
+],
+[
+"Fish",
+"Tilapia",
+null
+],
+[
+"Fish",
+"Chub",
+null
+],
+[
+"Bait",
+"Magnet",
+null
+],
+[
+"Fish",
+"Dorado",
+null
+],
+[
+"Fish",
+"Albacore",
+null
+],
+[
+"Fish",
+"Shad",
+null
+],
+[
+"Fish",
+"Lingcod",
+null
+],
+[
+"Fish",
+"Halibut",
+null
+],
+[
+"Resources",
+"Hardwood",
+null
+],
+[
+"Machines",
+"Crab Pot",
+null
+],
+[
+"Fish",
+"Lobster",
+null
+],
+[
+"Fish",
+"Crayfish",
+null
+],
+[
+"Fish",
+"Crab",
+null
+],
+[
+"Fish",
+"Cockle",
+null
+],
+[
+"Fish",
+"Mussel",
+null
+],
+[
+"Fish",
+"Shrimp",
+null
+],
+[
+"Fish",
+"Snail",
+null
+],
+[
+"Fish",
+"Periwinkle",
+null
+],
+[
+"Fish",
+"Oyster",
+null
+],
+[
+"Resources",
+"Maple Syrup",
+null
+],
+[
+"Resources",
+"Oak Resin",
+null
+],
+[
+"Resources",
+"Pine Tar",
+null
+],
+[
+"Cooking",
+"Chowder",
+null
+],
+[
+"Cooking",
+"Lobster Bisque",
+null
+],
+[
+"Cooking",
+"Fish Stew",
+null
+],
+[
+"Cooking",
+"Escargot",
+null
+],
+[
+"Cooking",
+"Maple Bar",
+null
+],
+[
+"Cooking",
+"Crab Cakes",
+null
+],
+[
+"Cooking",
+"Shrimp Cocktail",
+null
+],
+[
+"Fish",
+"Woodskip",
+null
+],
+[
+"Seeds",
+"Strawberry Seeds",
+null
+],
+[
+"Decoration (Lighting)",
+"Jack-O-Lantern",
+null
+],
+[
+"Trash",
+"Rotten Plant",
+null
+],
+[
+"Trash",
+"Rotten Plant",
+null
+],
+[
+"Geodes",
+"Omni Geode",
+null
+],
+[
+"Monster Drops",
+"Slime",
+null
+],
+[
+"Monster Drops",
+"Bat Wing",
+null
+],
+[
+"Monster Drops",
+"Solar Essence",
+null
+],
+[
+"Monster Drops",
+"Void Essence",
+null
+],
+[
+"Seeds",
+"Mixed Seeds",
+null
+],
+[
+"Resources",
+"Fiber",
+null
+],
+[
+"Consumables",
+"Oil of Garlic",
+null
+],
+[
+"Consumables",
+"Life Elixir",
+null
+],
+[
+"Bait",
+"Wild Bait",
+null
+],
+[
+"Resources",
+"Battery Pack",
+null
+],
+[
+"Quest",
+"Lucky Purple Shorts",
+null
+],
+[
+"Fish",
+"Void Salmon",
+null
+],
+[
+"Fish",
+"Slimejack",
+null
+],
+[
+"Artifacts",
+"Pearl",
+null
+],
+[
+"Fish",
+"Midnight Squid",
+null
+],
+[
+"Fish",
+"Spook Fish",
+null
+],
+[
+"Fish",
+"Blobfish",
+null
+],
+[
+"Seeds",
+"Cactus Seeds",
+null
+],
+[
+"Fertilizers",
+"Tree Fertilizer",
+null
+],
+[
+"Artisan",
+"Dinosaur Mayonnaise",
+null
+],
+[
+"Gifts/Rewards",
+"Void Ghost Pendant",
+null
+],
+[
+"Gifts/Rewards",
+"Movie Ticket",
+null
+],
+[
+"Artisan",
+"Caviar",
+null
+],
+[
+"Monster Drops",
+"Squid Ink",
+null
+],
+[
+"Vegetables",
+"Tea Leaves",
+null
+],
+[
+"Fish",
+"Flounder",
+null
+],
+[
+"Cooking",
+"Seafoam Pudding",
+null
+],
+[
+"Fish",
+"Midnight Carp",
+null
+],
+[
+"Seeds",
+"Mahogany Seed",
+null
+],
+[
+"Animal Products",
+"Ostrich Egg",
+null
+],
+[
+"Seeds",
+"Banana Sapling",
+null
+],
+[
+"Fruits",
+"Banana",
+null
+],
+[
+"Geodes",
+"Golden Coconut",
+null
+],
+[
+"Artifacts",
+"Fossilized Skull",
+null
+],
+[
+"Artifacts",
+"Fossilized Spine",
+null
+],
+[
+"Artifacts",
+"Fossilized Tail",
+null
+],
+[
+"Artifacts",
+"Fossilized Leg",
+null
+],
+[
+"Artifacts",
+"Fossilized Ribs",
+null
+],
+[
+"Artifacts",
+"Snake Skull",
+null
+],
+[
+"Artifacts",
+"Snake Vertebrae",
+null
+],
+[
+"Artifacts",
+"Mummified Bat",
+null
+],
+[
+"Artifacts",
+"Mummified Frog",
+null
+],
+[
+"Forage",
+"Ginger",
+null
+],
+[
+"Vegetables",
+"Taro Root",
+null
+],
+[
+"Seeds",
+"Taro Tuber",
+null
+],
+[
+"Fruits",
+"Pineapple",
+null
+],
+[
+"Seeds",
+"Pineapple Seeds",
+null
+],
+[
+"Fruits",
+"Mango",
+null
+],
+[
+"Seeds",
+"Mango Sapling",
+null
+],
+[
+"Fish",
+"Stingray",
+null
+],
+[
+"Fish",
+"Lionfish",
+null
+],
+[
+"Fish",
+"Blue Discus",
+null
+],
+[
+"Decoration (Infrastructure)",
+"Rustic Plank Floor",
+null
+],
+[
+"Decoration (Infrastructure)",
+"Stone Walkway Floor",
+null
+],
+[
+"Resources",
+"Cinder Shard",
+null
+],
+[
+"Forage",
+"Magma Cap",
+null
+],
+[
+"Monster Drops",
+"Dragon Tooth",
+null
+],
+[
+"Monster Drops",
+"Tiger Slime Egg",
+"Slime Egg: Tiger"
+],
+[
+"Consumables",
+"Fairy Dust",
+null
+],
+[
+"Cooking",
+"Piña Colada",
+null
+],
+[
+"Consumables",
+"Bug Steak",
+null
+],
+[
+"Consumables",
+"Monster Musk",
+null
+],
+[
+"Resources",
+"Bone Fragment",
+null
+],
+[
+"Seeds",
+"Fiber Seeds",
+null
+],
+[
+"Consumables",
+"Warp Totem: Island",
+"Totem: Island"
+],
+[
+"Fruits",
+"Qi Fruit",
+null
+],
+[
+"Seeds",
+"Qi Bean",
+null
+],
+[
+"Seeds",
+"Mushroom Tree Seed",
+null
+],
+[
+"Consumables",
+"Fireworks (Red)",
+null
+],
+[
+"Consumables",
+"Fireworks (Purple)",
+null
+],
+[
+"Consumables",
+"Fireworks (Green)",
+null
+],
+[
+"Monster Drops",
+"Galaxy Soul",
+null
+],
+[
+"Fish",
+"Son of Crimsonfish",
+null
+],
+[
+"Fish",
+"Ms. Angler",
+null
+],
+[
+"Fish",
+"Legend II",
+null
+],
+[
+"Fish",
+"Radioactive Carp",
+null
+],
+[
+"Fish",
+"Glacierfish Jr.",
+null
+],
+[
+"Cooking",
+"Ginger Ale",
+null
+],
+[
+"Cooking",
+"Banana Pudding",
+null
+],
+[
+"Cooking",
+"Mango Sticky Rice",
+null
+],
+[
+"Cooking",
+"Poi",
+null
+],
+[
+"Cooking",
+"Tropical Curry",
+null
+],
+[
+"Bait",
+"Magic Bait",
+null
+],
+[
+"Resources",
+"Radioactive Ore",
+null
+],
+[
+"Resources",
+"Radioactive Bar",
+null
+],
+[
+"Machines",
+"Enricher",
+null
+],
+[
+"Machines",
+"Pressure Nozzle",
+null
+],
+[
+"Consumables",
+"Qi Seasoning",
+null
+],
+[
+"Fertilizers",
+"Hyper Speed-Gro",
+null
+],
+[
+"Fertilizers",
+"Deluxe Fertilizer",
+null
+],
+[
+"Fertilizers",
+"Deluxe Retaining Soil",
+null
+],
+[
+"Cooking",
+"Squid Ink Ravioli",
+null
+],
+[
+"Consumables",
+"Cookout Kit",
+null
+],
+[
+"Animal Products",
+"Golden Egg",
+null
+],
+[
+"Gifts/Rewards",
+"Far Away Stone",
+null
+],
+[
+"Seeds",
+"Mixed Flower Seeds",
+null
+],
+[
+"Gifts/Rewards",
+"Golden Bobber",
+null
+],
+[
+"Geodes",
+"Mystery Box",
+null
+],
+[
+"Gifts/Rewards",
+"Golden Tag",
+null
+],
+[
+"Bait",
+"Deluxe Bait",
+null
+],
+[
+"Resources",
+"Moss",
+null
+],
+[
+"Seeds",
+"Mossy Seed",
+null
+],
+[
+"Consumables",
+"Tent Kit",
+null
+],
+[
+"Seeds",
+"Mystic Tree Seed",
+null
+],
+[
+"Resources",
+"Mystic Syrup",
+null
+],
+[
+"Artisan",
+"Raisins",
+null
+],
+[
+"Gifts/Rewards",
+"Stardrop Tea",
+null
+],
+[
+"Gifts/Rewards",
+"Prize Ticket",
+null
+],
+[
+"Consumables",
+"Treasure Totem",
+"Totem: Treasure"
+],
+[
+"Bait",
+"Challenge Bait",
+null
+],
+[
+"Seeds",
+"Carrot Seeds",
+null
+],
+[
+"Vegetables",
+"Carrot",
+null
+],
+[
+"Seeds",
+"Summer Squash Seeds",
+null
+],
+[
+"Vegetables",
+"Summer Squash",
+null
+],
+[
+"Seeds",
+"Broccoli Seeds",
+null
+],
+[
+"Vegetables",
+"Broccoli",
+null
+],
+[
+"Seeds",
+"Powdermelon Seeds",
+null
+],
+[
+"Fruits",
+"Powdermelon",
+null
+],
+[
+"Artisan",
+"Smoked",
+null
+],
+[
+"Books",
+"Book Of Stars",
+null
+],
+[
+"Books",
+"Stardew Valley Almanac",
+null
+],
+[
+"Books",
+"Woodcutter's Weekly",
+null
+],
+[
+"Books",
+"Bait And Bobber",
+null
+],
+[
+"Books",
+"Mining Monthly",
+null
+],
+[
+"Books",
+"Combat Quarterly",
+null
+],
+[
+"Books",
+"The Alleyway Buffet",
+null
+],
+[
+"Books",
+"The Art O' Crabbing",
+null
+],
+[
+"Books",
+"Dwarvish Safety Manual",
+null
+],
+[
+"Books",
+"Jewels Of The Sea",
+null
+],
+[
+"Books",
+"Ways Of The Wild",
+null
+],
+[
+"Books",
+"Woody's Secret",
+null
+],
+[
+"Books",
+"Jack Be Nimble, Jack Be Thick",
+null
+],
+[
+"Books",
+"Friendship 101",
+null
+],
+[
+"Books",
+"Monster Compendium",
+null
+],
+[
+"Books",
+"Way Of The Wind pt. 1",
+null
+],
+[
+"Books",
+"Mapping Cave Systems",
+null
+],
+[
+"Books",
+"Price Catalogue",
+null
+],
+[
+"Books",
+"Queen Of Sauce Cookbook",
+null
+],
+[
+"Books",
+"The Diamond Hunter",
+null
+],
+[
+"Books",
+"Book of Mysteries",
+null
+],
+[
+"Books",
+"Animal Catalogue",
+null
+],
+[
+"Books",
+"Way Of The Wind pt. 2",
+null
+],
+[
+"Consumables",
+"Golden Animal Cracker",
+null
+],
+[
+"Geodes",
+"Golden Mystery Box",
+null
+],
+[
+"Resources",
+"Sea Jelly",
+"Jelly: Sea"
+],
+[
+"Resources",
+"Cave Jelly",
+"Jelly: Cave"
+],
+[
+"Resources",
+"River Jelly",
+"Jelly: River"
+],
+[
+"Fish",
+"Goby",
+null
+],
+[
+"Books",
+"Book_Artifact",
+"Treasures Appraisal Guide"
+],
+[
+"Books",
+"Book_Horse",
+"Horse: The Book"
+],
+[
+"Consumables",
+"Butterfly Powder",
+null
+],
+[
+"Seeds",
+"Blue Grass Starter",
+null
+],
+[
+"Cooking",
+"Moss Soup",
+null
+],
+[
+"Books",
+"Book_Grass",
+"Ol' Slitherlegs"
+],
+[
+"Decoration (Other)",
+"House Plant",
+null
+],
+[
+"Machines",
+"Scarecrow",
+null
+],
+[
+"Machines",
+"Lightning Rod",
+null
+],
+[
+"Machines",
+"Bee House",
+null
+],
+[
+"Machines",
+"Keg",
+null
+],
+[
+"Machines",
+"Furnace",
+null
+],
+[
+"Machines",
+"Preserves Jar",
+null
+],
+[
+"Machines",
+"Cheese Press",
+null
+],
+[
+"Machines",
+"Loom",
+null
+],
+[
+"Machines",
+"Oil Maker",
+null
+],
+[
+"Machines",
+"Recycling Machine",
+null
+],
+[
+"Machines",
+"Crystalarium",
+null
+],
+[
+"Machines",
+"Mayonnaise Machine",
+null
+],
+[
+"Machines",
+"Seed Maker",
+null
+],
+[
+"Artifacts",
+"Chicken Statue",
+null
+],
+[
+"Decoration (Other)",
+"Stone Cairn",
+null
+],
+[
+"Decoration (Other)",
+"Suit Of Armor",
+null
+],
+[
+"Decoration (Other)",
+"Sign Of The Vessel",
+null
+],
+[
+"Decoration (Other)",
+"Basic Log",
+null
+],
+[
+"Decoration (Other)",
+"Lawn Flamingo",
+null
+],
+[
+"Machines",
+"Wood Sign",
+null
+],
+[
+"Machines",
+"Stone Sign",
+null
+],
+[
+"Machines",
+"Dark Sign",
+null
+],
+[
+"Decoration (Other)",
+"Big Green Cane",
+null
+],
+[
+"Decoration (Other)",
+"Green Canes",
+null
+],
+[
+"Decoration (Other)",
+"Mixed Cane",
+null
+],
+[
+"Decoration (Other)",
+"Red Canes",
+null
+],
+[
+"Decoration (Other)",
+"Big Red Cane",
+null
+],
+[
+"Decoration (Other)",
+"Ornamental Hay Bale",
+null
+],
+[
+"Decoration (Other)",
+"Log Section",
+null
+],
+[
+"Decoration (Other)",
+"Grave Stone",
+null
+],
+[
+"Decoration (Other)",
+"Seasonal Decor",
+null
+],
+[
+"Decoration (Other)",
+"Stone Frog",
+null
+],
+[
+"Machines",
+"Stone Parrot",
+null
+],
+[
+"Machines",
+"Stone Owl",
+null
+],
+[
+"Decoration (Other)",
+"Stone Junimo",
+null
+],
+[
+"Machines",
+"Garden Pot",
+null
+],
+[
+"Machines",
+"Staircase",
+null
+],
+[
+"Machines",
+"Wicked Statue",
+null
+],
+[
+"Machines",
+"Wicked Statue",
+null
+],
+[
+"Machines",
+"Stone Owl",
+null
+],
+[
+"Machines",
+"Feed Hopper",
+null
+],
+[
+"Machines",
+"Incubator",
+null
+],
+[
+"Machines",
+"Heater",
+null
+],
+[
+"Machines",
+"Tapper",
+null
+],
+[
+"Decoration (Other)",
+"Plush Bunny",
+null
+],
+[
+"Machines",
+"Tub o' Flowers",
+null
+],
+[
+"Machines",
+"Rarecrow",
+null
+],
+[
+"Machines",
+"Rarecrow",
+null
+],
+[
+"Machines",
+"Charcoal Kiln",
+null
+],
+[
+"Machines",
+"Rarecrow",
+null
+],
+[
+"Machines",
+"Statue Of Endless Fortune",
+null
+],
+[
+"Machines",
+"Chest",
+null
+],
+[
+"Machines",
+"Rarecrow",
+null
+],
+[
+"Machines",
+"Rarecrow",
+null
+],
+[
+"Machines",
+"Rarecrow",
+null
+],
+[
+"Machines",
+"Rarecrow",
+null
+],
+[
+"Machines",
+"Rarecrow",
+null
+],
+[
+"Decoration (Lighting)",
+"Wooden Brazier",
+null
+],
+[
+"Decoration (Lighting)",
+"Stone Brazier",
+null
+],
+[
+"Decoration (Lighting)",
+"Gold Brazier",
+null
+],
+[
+"Decoration (Lighting)",
+"Campfire",
+null
+],
+[
+"Machines",
+"Stump Brazier",
+null
+],
+[
+"Decoration (Lighting)",
+"Carved Brazier",
+null
+],
+[
+"Decoration (Lighting)",
+"Skull Brazier",
+null
+],
+[
+"Decoration (Lighting)",
+"Barrel Brazier",
+null
+],
+[
+"Decoration (Lighting)",
+"Marble Brazier",
+null
+],
+[
+"Decoration (Lighting)",
+"Wood Lamp-post",
+null
+],
+[
+"Decoration (Lighting)",
+"Iron Lamp-post",
+null
+],
+[
+"Machines",
+"Worm Bin",
+null
+],
+[
+"Decoration (Other)",
+"??HMTGF??",
+null
+],
+[
+"Machines",
+"Slime Incubator",
+null
+],
+[
+"Machines",
+"Slime Egg-Press",
+null
+],
+[
+"Decoration (Other)",
+"??Pinky Lemon??",
+null
+],
+[
+"Decoration (Other)",
+"??Foroguemon??",
+null
+],
+[
+"Machines",
+"Cask",
+null
+],
+[
+"Machines",
+"Auto-Grabber",
+null
+],
+[
+"Machines",
+"Deluxe Scarecrow",
+null
+],
+[
+"Decoration (Other)",
+"Seasonal Plant",
+null
+],
+[
+"Decoration (Other)",
+"Seasonal Plant",
+null
+],
+[
+"Decoration (Other)",
+"Seasonal Plant",
+null
+],
+[
+"Decoration (Other)",
+"Seasonal Plant",
+null
+],
+[
+"Decoration (Other)",
+"Seasonal Plant",
+null
+],
+[
+"Decoration (Other)",
+"Seasonal Plant",
+null
+],
+[
+"Machines",
+"Workbench",
+null
+],
+[
+"Machines",
+"Mini-Jukebox",
+null
+],
+[
+"Machines",
+"Wood Chipper",
+null
+],
+[
+"Machines",
+"Telephone",
+null
+],
+[
+"Machines",
+"Mini-Fridge",
+null
+],
+[
+"Machines",
+"Stone Chest",
+null
+],
+[
+"Machines",
+"Mini-Obelisk",
+null
+],
+[
+"Machines",
+"Farm Computer",
+null
+],
+[
+"Machines",
+"Mini-Shipping Bin",
+null
+],
+[
+"Machines",
+"Ostrich Incubator",
+null
+],
+[
+"Machines",
+"Geode Crusher",
+null
+],
+[
+"Machines",
+"Solar Panel",
+null
+],
+[
+"Machines",
+"Bone Mill",
+null
+],
+[
+"Machines",
+"Junimo Chest",
+null
+],
+[
+"Machines",
+"Heavy Tapper",
+null
+],
+[
+"Machines",
+"Deconstructor",
+null
+],
+[
+"Machines",
+"Auto-Petter",
+null
+],
+[
+"Machines",
+"Hopper",
+null
+],
+[
+"Decoration (Lighting)",
+"Campfire",
+null
+],
+[
+"Machines",
+"Text Sign",
+null
+],
+[
+"Machines",
+"Mushroom Log",
+null
+],
+[
+"Machines",
+"Bait Maker",
+null
+],
+[
+"Machines",
+"Dehydrator",
+null
+],
+[
+"Machines",
+"Heavy Furnace",
+null
+],
+[
+"Machines",
+"Statue Of Blessings",
+null
+],
+[
+"Machines",
+"Statue Of The Dwarf King",
+null
+],
+[
+"Machines",
+"Anvil",
+null
+],
+[
+"Machines",
+"Mini-Forge",
+null
+],
+[
+"Machines",
+"Fish Smoker",
+null
+],
+[
+"Machines",
+"Deluxe Worm Bin",
+null
+],
+[
+"Machines",
+"Big Chest",
+null
+],
+[
+"Machines",
+"Big Stone Chest",
+null
+],
+[
+"Bait",
+"Pufferfish Bait",
+null
+],
+[
+"Bait",
+"Anchovy Bait",
+null
+],
+[
+"Bait",
+"Tuna Bait",
+null
+],
+[
+"Bait",
+"Sardine Bait",
+null
+],
+[
+"Bait",
+"Bream Bait",
+null
+],
+[
+"Bait",
+"Largemouth Bass Bait",
+null
+],
+[
+"Bait",
+"Smallmouth Bass Bait",
+null
+],
+[
+"Bait",
+"Rainbow Trout Bait",
+null
+],
+[
+"Bait",
+"Salmon Bait",
+null
+],
+[
+"Bait",
+"Walleye Bait",
+null
+],
+[
+"Bait",
+"Perch Bait",
+null
+],
+[
+"Bait",
+"Carp Bait",
+null
+],
+[
+"Bait",
+"Catfish Bait",
+null
+],
+[
+"Bait",
+"Pike Bait",
+null
+],
+[
+"Bait",
+"Sunfish Bait",
+null
+],
+[
+"Bait",
+"Red Mullet Bait",
+null
+],
+[
+"Bait",
+"Herring Bait",
+null
+],
+[
+"Bait",
+"Eel Bait",
+null
+],
+[
+"Bait",
+"Octopus Bait",
+null
+],
+[
+"Bait",
+"Red Snapper Bait",
+null
+],
+[
+"Bait",
+"Squid Bait",
+null
+],
+[
+"Bait",
+"Sea Cucumber Bait",
+null
+],
+[
+"Bait",
+"Super Cucumber Bait",
+null
+],
+[
+"Bait",
+"Ghostfish Bait",
+null
+],
+[
+"Bait",
+"Stonefish Bait",
+null
+],
+[
+"Bait",
+"Ice Pip Bait",
+null
+],
+[
+"Bait",
+"Lava Eel Bait",
+null
+],
+[
+"Bait",
+"Sandfish Bait",
+null
+],
+[
+"Bait",
+"Scorpion Carp Bait",
+null
+],
+[
+"Bait",
+"Clam Bait",
+null
+],
+[
+"Bait",
+"Sea Urchin Bait",
+null
+],
+[
+"Bait",
+"Sturgeon Bait",
+null
+],
+[
+"Bait",
+"Tiger Trout Bait",
+null
+],
+[
+"Bait",
+"Bullhead Bait",
+null
+],
+[
+"Bait",
+"Tilapia Bait",
+null
+],
+[
+"Bait",
+"Chub Bait",
+null
+],
+[
+"Bait",
+"Dorado Bait",
+null
+],
+[
+"Bait",
+"Albacore Bait",
+null
+],
+[
+"Bait",
+"Shad Bait",
+null
+],
+[
+"Bait",
+"Lingcod Bait",
+null
+],
+[
+"Bait",
+"Halibut Bait",
+null
+],
+[
+"Bait",
+"Lobster Bait",
+null
+],
+[
+"Bait",
+"Crayfish Bait",
+null
+],
+[
+"Bait",
+"Crab Bait",
+null
+],
+[
+"Bait",
+"Cockle Bait",
+null
+],
+[
+"Bait",
+"Mussel Bait",
+null
+],
+[
+"Bait",
+"Shrimp Bait",
+null
+],
+[
+"Bait",
+"Snail Bait",
+null
+],
+[
+"Bait",
+"Periwinkle Bait",
+null
+],
+[
+"Bait",
+"Oyster Bait",
+null
+],
+[
+"Bait",
+"Woodskip Bait",
+null
+],
+[
+"Bait",
+"Void Salmon Bait",
+null
+],
+[
+"Bait",
+"Slimejack Bait",
+null
+],
+[
+"Bait",
+"Midnight Squid Bait",
+null
+],
+[
+"Bait",
+"Spook Fish Bait",
+null
+],
+[
+"Bait",
+"Blobfish Bait",
+null
+],
+[
+"Bait",
+"Squid Ink Bait",
+null
+],
+[
+"Bait",
+"Flounder Bait",
+null
+],
+[
+"Bait",
+"Midnight Carp Bait",
+null
+],
+[
+"Bait",
+"Stingray Bait",
+null
+],
+[
+"Bait",
+"Lionfish Bait",
+null
+],
+[
+"Bait",
+"Blue Discus Bait",
+null
+],
+[
+"Bait",
+"Son of Crimsonfish Bait",
+null
+],
+[
+"Bait",
+"Ms. Angler Bait",
+null
+],
+[
+"Bait",
+"Legend II Bait",
+null
+],
+[
+"Bait",
+"Radioactive Carp Bait",
+null
+],
+[
+"Bait",
+"Glacierfish Jr. Bait",
+null
+],
+[
+"Bait",
+"Goby Bait",
+null
+],
+[
+"Roe",
+"Pufferfish Roe",
+null
+],
+[
+"Roe",
+"Anchovy Roe",
+null
+],
+[
+"Roe",
+"Tuna Roe",
+null
+],
+[
+"Roe",
+"Sardine Roe",
+null
+],
+[
+"Roe",
+"Bream Roe",
+null
+],
+[
+"Roe",
+"Largemouth Bass Roe",
+null
+],
+[
+"Roe",
+"Smallmouth Bass Roe",
+null
+],
+[
+"Roe",
+"Rainbow Trout Roe",
+null
+],
+[
+"Roe",
+"Salmon Roe",
+null
+],
+[
+"Roe",
+"Walleye Roe",
+null
+],
+[
+"Roe",
+"Perch Roe",
+null
+],
+[
+"Roe",
+"Carp Roe",
+null
+],
+[
+"Roe",
+"Catfish Roe",
+null
+],
+[
+"Roe",
+"Pike Roe",
+null
+],
+[
+"Roe",
+"Sunfish Roe",
+null
+],
+[
+"Roe",
+"Red Mullet Roe",
+null
+],
+[
+"Roe",
+"Herring Roe",
+null
+],
+[
+"Roe",
+"Eel Roe",
+null
+],
+[
+"Roe",
+"Octopus Roe",
+null
+],
+[
+"Roe",
+"Red Snapper Roe",
+null
+],
+[
+"Roe",
+"Squid Roe",
+null
+],
+[
+"Roe",
+"Sea Cucumber Roe",
+null
+],
+[
+"Roe",
+"Super Cucumber Roe",
+null
+],
+[
+"Roe",
+"Ghostfish Roe",
+null
+],
+[
+"Roe",
+"Stonefish Roe",
+null
+],
+[
+"Roe",
+"Ice Pip Roe",
+null
+],
+[
+"Roe",
+"Lava Eel Roe",
+null
+],
+[
+"Roe",
+"Sandfish Roe",
+null
+],
+[
+"Roe",
+"Scorpion Carp Roe",
+null
+],
+[
+"Roe",
+"Clam Roe",
+null
+],
+[
+"Roe",
+"Sea Urchin Roe",
+null
+],
+[
+"Roe",
+"Sturgeon Roe",
+null
+],
+[
+"Roe",
+"Tiger Trout Roe",
+null
+],
+[
+"Roe",
+"Bullhead Roe",
+null
+],
+[
+"Roe",
+"Tilapia Roe",
+null
+],
+[
+"Roe",
+"Chub Roe",
+null
+],
+[
+"Roe",
+"Dorado Roe",
+null
+],
+[
+"Roe",
+"Albacore Roe",
+null
+],
+[
+"Roe",
+"Shad Roe",
+null
+],
+[
+"Roe",
+"Lingcod Roe",
+null
+],
+[
+"Roe",
+"Halibut Roe",
+null
+],
+[
+"Roe",
+"Lobster Roe",
+null
+],
+[
+"Roe",
+"Crayfish Roe",
+null
+],
+[
+"Roe",
+"Crab Roe",
+null
+],
+[
+"Roe",
+"Cockle Roe",
+null
+],
+[
+"Roe",
+"Mussel Roe",
+null
+],
+[
+"Roe",
+"Shrimp Roe",
+null
+],
+[
+"Roe",
+"Snail Roe",
+null
+],
+[
+"Roe",
+"Periwinkle Roe",
+null
+],
+[
+"Roe",
+"Oyster Roe",
+null
+],
+[
+"Roe",
+"Woodskip Roe",
+null
+],
+[
+"Roe",
+"Void Salmon Roe",
+null
+],
+[
+"Roe",
+"Slimejack Roe",
+null
+],
+[
+"Roe",
+"Midnight Squid Roe",
+null
+],
+[
+"Roe",
+"Spook Fish Roe",
+null
+],
+[
+"Roe",
+"Blobfish Roe",
+null
+],
+[
+"Roe",
+"Squid Ink Roe",
+null
+],
+[
+"Roe",
+"Flounder Roe",
+null
+],
+[
+"Roe",
+"Midnight Carp Roe",
+null
+],
+[
+"Roe",
+"Stingray Roe",
+null
+],
+[
+"Roe",
+"Lionfish Roe",
+null
+],
+[
+"Roe",
+"Blue Discus Roe",
+null
+],
+[
+"Roe",
+"Son of Crimsonfish Roe",
+null
+],
+[
+"Roe",
+"Ms. Angler Roe",
+null
+],
+[
+"Roe",
+"Legend II Roe",
+null
+],
+[
+"Roe",
+"Radioactive Carp Roe",
+null
+],
+[
+"Roe",
+"Glacierfish Jr. Roe",
+null
+],
+[
+"Roe",
+"Goby Roe",
+null
+],
+[
+"Roe",
+"Angler Roe",
+null
+],
+[
+"Roe",
+"Crimsonfish Roe",
+null
+],
+[
+"Roe",
+"Glacierfish Roe",
+null
+],
+[
+"Roe",
+"Legend Roe",
+null
+],
+[
+"Roe",
+"Mutant Carp Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Pufferfish Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Anchovy Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Tuna Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Sardine Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Bream Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Largemouth Bass Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Smallmouth Bass Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Rainbow Trout Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Salmon Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Walleye Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Perch Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Carp Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Catfish Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Pike Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Sunfish Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Red Mullet Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Herring Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Eel Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Octopus Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Red Snapper Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Squid Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Sea Cucumber Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Super Cucumber Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Ghostfish Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Stonefish Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Ice Pip Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Lava Eel Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Sandfish Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Scorpion Carp Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Clam Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Sea Urchin Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Sturgeon Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Tiger Trout Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Bullhead Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Tilapia Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Chub Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Dorado Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Albacore Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Shad Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Lingcod Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Halibut Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Lobster Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Crayfish Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Crab Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Cockle Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Mussel Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Shrimp Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Snail Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Periwinkle Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Oyster Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Woodskip Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Void Salmon Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Slimejack Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Midnight Squid Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Spook Fish Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Blobfish Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Squid Ink Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Flounder Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Midnight Carp Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Stingray Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Lionfish Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Blue Discus Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Son of Crimsonfish Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Ms. Angler Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Legend II Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Radioactive Carp Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Glacierfish Jr. Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Goby Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Angler Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Crimsonfish Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Glacierfish Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Legend Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Mutant Carp Roe",
+null
+],
+[
+"Smoked Fish",
+"Smoked Pufferfish",
+null
+],
+[
+"Smoked Fish",
+"Smoked Anchovy",
+null
+],
+[
+"Smoked Fish",
+"Smoked Tuna",
+null
+],
+[
+"Smoked Fish",
+"Smoked Sardine",
+null
+],
+[
+"Smoked Fish",
+"Smoked Bream",
+null
+],
+[
+"Smoked Fish",
+"Smoked Largemouth Bass",
+null
+],
+[
+"Smoked Fish",
+"Smoked Smallmouth Bass",
+null
+],
+[
+"Smoked Fish",
+"Smoked Rainbow Trout",
+null
+],
+[
+"Smoked Fish",
+"Smoked Salmon",
+null
+],
+[
+"Smoked Fish",
+"Smoked Walleye",
+null
+],
+[
+"Smoked Fish",
+"Smoked Perch",
+null
+],
+[
+"Smoked Fish",
+"Smoked Carp",
+null
+],
+[
+"Smoked Fish",
+"Smoked Catfish",
+null
+],
+[
+"Smoked Fish",
+"Smoked Pike",
+null
+],
+[
+"Smoked Fish",
+"Smoked Sunfish",
+null
+],
+[
+"Smoked Fish",
+"Smoked Red Mullet",
+null
+],
+[
+"Smoked Fish",
+"Smoked Herring",
+null
+],
+[
+"Smoked Fish",
+"Smoked Eel",
+null
+],
+[
+"Smoked Fish",
+"Smoked Octopus",
+null
+],
+[
+"Smoked Fish",
+"Smoked Red Snapper",
+null
+],
+[
+"Smoked Fish",
+"Smoked Squid",
+null
+],
+[
+"Smoked Fish",
+"Smoked Sea Cucumber",
+null
+],
+[
+"Smoked Fish",
+"Smoked Super Cucumber",
+null
+],
+[
+"Smoked Fish",
+"Smoked Ghostfish",
+null
+],
+[
+"Smoked Fish",
+"Smoked Stonefish",
+null
+],
+[
+"Smoked Fish",
+"Smoked Ice Pip",
+null
+],
+[
+"Smoked Fish",
+"Smoked Lava Eel",
+null
+],
+[
+"Smoked Fish",
+"Smoked Sandfish",
+null
+],
+[
+"Smoked Fish",
+"Smoked Scorpion Carp",
+null
+],
+[
+"Smoked Fish",
+"Smoked Clam",
+null
+],
+[
+"Smoked Fish",
+"Smoked Sea Urchin",
+null
+],
+[
+"Smoked Fish",
+"Smoked Sturgeon",
+null
+],
+[
+"Smoked Fish",
+"Smoked Tiger Trout",
+null
+],
+[
+"Smoked Fish",
+"Smoked Bullhead",
+null
+],
+[
+"Smoked Fish",
+"Smoked Tilapia",
+null
+],
+[
+"Smoked Fish",
+"Smoked Chub",
+null
+],
+[
+"Smoked Fish",
+"Smoked Dorado",
+null
+],
+[
+"Smoked Fish",
+"Smoked Albacore",
+null
+],
+[
+"Smoked Fish",
+"Smoked Shad",
+null
+],
+[
+"Smoked Fish",
+"Smoked Lingcod",
+null
+],
+[
+"Smoked Fish",
+"Smoked Halibut",
+null
+],
+[
+"Smoked Fish",
+"Smoked Lobster",
+null
+],
+[
+"Smoked Fish",
+"Smoked Crayfish",
+null
+],
+[
+"Smoked Fish",
+"Smoked Crab",
+null
+],
+[
+"Smoked Fish",
+"Smoked Cockle",
+null
+],
+[
+"Smoked Fish",
+"Smoked Mussel",
+null
+],
+[
+"Smoked Fish",
+"Smoked Shrimp",
+null
+],
+[
+"Smoked Fish",
+"Smoked Snail",
+null
+],
+[
+"Smoked Fish",
+"Smoked Periwinkle",
+null
+],
+[
+"Smoked Fish",
+"Smoked Oyster",
+null
+],
+[
+"Smoked Fish",
+"Smoked Woodskip",
+null
+],
+[
+"Smoked Fish",
+"Smoked Void Salmon",
+null
+],
+[
+"Smoked Fish",
+"Smoked Slimejack",
+null
+],
+[
+"Smoked Fish",
+"Smoked Midnight Squid",
+null
+],
+[
+"Smoked Fish",
+"Smoked Spook Fish",
+null
+],
+[
+"Smoked Fish",
+"Smoked Blobfish",
+null
+],
+[
+"Smoked Fish",
+"Smoked Squid Ink",
+null
+],
+[
+"Smoked Fish",
+"Smoked Flounder",
+null
+],
+[
+"Smoked Fish",
+"Smoked Midnight Carp",
+null
+],
+[
+"Smoked Fish",
+"Smoked Stingray",
+null
+],
+[
+"Smoked Fish",
+"Smoked Lionfish",
+null
+],
+[
+"Smoked Fish",
+"Smoked Blue Discus",
+null
+],
+[
+"Smoked Fish",
+"Smoked Son of Crimsonfish",
+null
+],
+[
+"Smoked Fish",
+"Smoked Ms. Angler",
+null
+],
+[
+"Smoked Fish",
+"Smoked Legend II",
+null
+],
+[
+"Smoked Fish",
+"Smoked Radioactive Carp",
+null
+],
+[
+"Smoked Fish",
+"Smoked Glacierfish Jr.",
+null
+],
+[
+"Smoked Fish",
+"Smoked Goby",
+null
+],
+[
+"Pickles",
+"Pickled Parsnip",
+null
+],
+[
+"Pickles",
+"Pickled Green Bean",
+null
+],
+[
+"Pickles",
+"Pickled Cauliflower",
+null
+],
+[
+"Pickles",
+"Pickled Potato",
+null
+],
+[
+"Pickles",
+"Pickled Garlic",
+null
+],
+[
+"Pickles",
+"Pickled Kale",
+null
+],
+[
+"Pickles",
+"Pickled Tomato",
+null
+],
+[
+"Pickles",
+"Pickled Fiddlehead Fern",
+null
+],
+[
+"Pickles",
+"Pickled Wheat",
+null
+],
+[
+"Pickles",
+"Pickled Radish",
+null
+],
+[
+"Pickles",
+"Pickled Red Cabbage",
+null
+],
+[
+"Pickles",
+"Pickled Corn",
+null
+],
+[
+"Pickles",
+"Pickled Unmilled Rice",
+null
+],
+[
+"Pickles",
+"Pickled Eggplant",
+null
+],
+[
+"Pickles",
+"Pickled Artichoke",
+null
+],
+[
+"Pickles",
+"Pickled Pumpkin",
+null
+],
+[
+"Pickles",
+"Pickled Bok Choy",
+null
+],
+[
+"Pickles",
+"Pickled Yam",
+null
+],
+[
+"Pickles",
+"Pickled Beet",
+null
+],
+[
+"Pickles",
+"Pickled Amaranth",
+null
+],
+[
+"Pickles",
+"Pickled Hops",
+null
+],
+[
+"Pickles",
+"Pickled Tea Leaves",
+null
+],
+[
+"Pickles",
+"Pickled Taro Root",
+null
+],
+[
+"Pickles",
+"Pickled Carrot",
+null
+],
+[
+"Pickles",
+"Pickled Summer Squash",
+null
+],
+[
+"Pickles",
+"Pickled Broccoli",
+null
+],
+[
+"Juice",
+"Parsnip Juice",
+null
+],
+[
+"Juice",
+"Green Bean Juice",
+null
+],
+[
+"Juice",
+"Cauliflower Juice",
+null
+],
+[
+"Juice",
+"Potato Juice",
+null
+],
+[
+"Juice",
+"Garlic Juice",
+null
+],
+[
+"Juice",
+"Kale Juice",
+null
+],
+[
+"Juice",
+"Tomato Juice",
+null
+],
+[
+"Juice",
+"Fiddlehead Fern Juice",
+null
+],
+[
+"Juice",
+"Radish Juice",
+null
+],
+[
+"Juice",
+"Red Cabbage Juice",
+null
+],
+[
+"Juice",
+"Corn Juice",
+null
+],
+[
+"Juice",
+"Unmilled Rice Juice",
+null
+],
+[
+"Juice",
+"Eggplant Juice",
+null
+],
+[
+"Juice",
+"Artichoke Juice",
+null
+],
+[
+"Juice",
+"Pumpkin Juice",
+null
+],
+[
+"Juice",
+"Bok Choy Juice",
+null
+],
+[
+"Juice",
+"Yam Juice",
+null
+],
+[
+"Juice",
+"Beet Juice",
+null
+],
+[
+"Juice",
+"Amaranth Juice",
+null
+],
+[
+"Juice",
+"Hops Juice",
+null
+],
+[
+"Juice",
+"Taro Root Juice",
+null
+],
+[
+"Juice",
+"Carrot Juice",
+null
+],
+[
+"Juice",
+"Summer Squash Juice",
+null
+],
+[
+"Juice",
+"Broccoli Juice",
+null
+],
+[
+"Dried",
+"Dried Coconuts",
+null
+],
+[
+"Dried",
+"Dried Cactus Fruits",
+null
+],
+[
+"Dried",
+"Dried Rhubarbs",
+null
+],
+[
+"Dried",
+"Dried Melons",
+null
+],
+[
+"Dried",
+"Dried Blueberries",
+null
+],
+[
+"Dried",
+"Dried Hot Peppers",
+null
+],
+[
+"Dried",
+"Dried Starfruits",
+null
+],
+[
+"Dried",
+"Dried Cranberries",
+null
+],
+[
+"Dried",
+"Dried Salmonberries",
+null
+],
+[
+"Dried",
+"Dried Spice Berries",
+null
+],
+[
+"Dried",
+"Dried Grapes",
+null
+],
+[
+"Dried",
+"Dried Strawberries",
+null
+],
+[
+"Dried",
+"Dried Wild Plums",
+null
+],
+[
+"Dried",
+"Dried Blackberries",
+null
+],
+[
+"Dried",
+"Dried Crystal Fruits",
+null
+],
+[
+"Dried",
+"Dried Ancient Fruits",
+null
+],
+[
+"Dried",
+"Dried Apples",
+null
+],
+[
+"Dried",
+"Dried Apricots",
+null
+],
+[
+"Dried",
+"Dried Oranges",
+null
+],
+[
+"Dried",
+"Dried Peaches",
+null
+],
+[
+"Dried",
+"Dried Pomegranates",
+null
+],
+[
+"Dried",
+"Dried Cherries",
+null
+],
+[
+"Dried",
+"Dried Bananas",
+null
+],
+[
+"Dried",
+"Dried Pineapples",
+null
+],
+[
+"Dried",
+"Dried Mangos",
+null
+],
+[
+"Dried",
+"Dried Qi Fruits",
+null
+],
+[
+"Dried",
+"Dried Powdermelons",
+null
+],
+[
+"Dried",
+"Raisins",
+null
+],
+[
+"Wine",
+"Coconut Wine",
+null
+],
+[
+"Wine",
+"Cactus Fruit Wine",
+null
+],
+[
+"Wine",
+"Rhubarb Wine",
+null
+],
+[
+"Wine",
+"Melon Wine",
+null
+],
+[
+"Wine",
+"Blueberry Wine",
+null
+],
+[
+"Wine",
+"Hot Pepper Wine",
+null
+],
+[
+"Wine",
+"Starfruit Wine",
+null
+],
+[
+"Wine",
+"Cranberries Wine",
+null
+],
+[
+"Wine",
+"Salmonberry Wine",
+null
+],
+[
+"Wine",
+"Spice Berry Wine",
+null
+],
+[
+"Wine",
+"Grape Wine",
+null
+],
+[
+"Wine",
+"Strawberry Wine",
+null
+],
+[
+"Wine",
+"Wild Plum Wine",
+null
+],
+[
+"Wine",
+"Blackberry Wine",
+null
+],
+[
+"Wine",
+"Crystal Fruit Wine",
+null
+],
+[
+"Wine",
+"Ancient Fruit Wine",
+null
+],
+[
+"Wine",
+"Apple Wine",
+null
+],
+[
+"Wine",
+"Apricot Wine",
+null
+],
+[
+"Wine",
+"Orange Wine",
+null
+],
+[
+"Wine",
+"Peach Wine",
+null
+],
+[
+"Wine",
+"Pomegranate Wine",
+null
+],
+[
+"Wine",
+"Cherry Wine",
+null
+],
+[
+"Wine",
+"Banana Wine",
+null
+],
+[
+"Wine",
+"Pineapple Wine",
+null
+],
+[
+"Wine",
+"Mango Wine",
+null
+],
+[
+"Wine",
+"Qi Fruit Wine",
+null
+],
+[
+"Wine",
+"Powdermelon Wine",
+null
+],
+[
+"Jelly",
+"Coconut Jelly",
+null
+],
+[
+"Jelly",
+"Cactus Fruit Jelly",
+null
+],
+[
+"Jelly",
+"Rhubarb Jelly",
+null
+],
+[
+"Jelly",
+"Melon Jelly",
+null
+],
+[
+"Jelly",
+"Blueberry Jelly",
+null
+],
+[
+"Jelly",
+"Hot Pepper Jelly",
+null
+],
+[
+"Jelly",
+"Starfruit Jelly",
+null
+],
+[
+"Jelly",
+"Cranberries Jelly",
+null
+],
+[
+"Jelly",
+"Salmonberry Jelly",
+null
+],
+[
+"Jelly",
+"Spice Berry Jelly",
+null
+],
+[
+"Jelly",
+"Grape Jelly",
+null
+],
+[
+"Jelly",
+"Strawberry Jelly",
+null
+],
+[
+"Jelly",
+"Wild Plum Jelly",
+null
+],
+[
+"Jelly",
+"Blackberry Jelly",
+null
+],
+[
+"Jelly",
+"Crystal Fruit Jelly",
+null
+],
+[
+"Jelly",
+"Ancient Fruit Jelly",
+null
+],
+[
+"Jelly",
+"Apple Jelly",
+null
+],
+[
+"Jelly",
+"Apricot Jelly",
+null
+],
+[
+"Jelly",
+"Orange Jelly",
+null
+],
+[
+"Jelly",
+"Peach Jelly",
+null
+],
+[
+"Jelly",
+"Pomegranate Jelly",
+null
+],
+[
+"Jelly",
+"Cherry Jelly",
+null
+],
+[
+"Jelly",
+"Banana Jelly",
+null
+],
+[
+"Jelly",
+"Pineapple Jelly",
+null
+],
+[
+"Jelly",
+"Mango Jelly",
+null
+],
+[
+"Jelly",
+"Qi Fruit Jelly",
+null
+],
+[
+"Jelly",
+"Powdermelon Jelly",
+null
+],
+[
+"Forage",
+"Chanterelle",
+null
+],
+[
+"Forage",
+"Common Mushroom",
+null
+],
+[
+"Forage",
+"Magma Cap",
+null
+],
+[
+"Forage",
+"Morel",
+null
+],
+[
+"Forage",
+"Purple Mushroom",
+null
+],
+[
+"Forage",
+"Red Mushroom",
+null
+],
+[
+"Dried",
+"Dried Chanterelles",
+null
+],
+[
+"Dried",
+"Dried Common Mushrooms",
+null
+],
+[
+"Dried",
+"Dried Magma Caps",
+null
+],
+[
+"Dried",
+"Dried Morels",
+null
+],
+[
+"Dried",
+"Dried Purple Mushrooms",
+null
+],
+[
+"Juice",
+"Wild Horseradish Juice",
+null
+],
+[
+"Juice",
+"Daffodil Juice",
+null
+],
+[
+"Juice",
+"Leek Juice",
+null
+],
+[
+"Juice",
+"Dandelion Juice",
+null
+],
+[
+"Juice",
+"Cave Carrot Juice",
+null
+],
+[
+"Juice",
+"Spring Onion Juice",
+null
+],
+[
+"Juice",
+"Hazelnut Juice",
+null
+],
+[
+"Juice",
+"Winter Root Juice",
+null
+],
+[
+"Juice",
+"Snow Yam Juice",
+null
+],
+[
+"Juice",
+"Ginger Juice",
+null
+],
+[
+"Pickles",
+"Pickled Wild Horseradish",
+null
+],
+[
+"Pickles",
+"Pickled Daffodil",
+null
+],
+[
+"Pickles",
+"Pickled Leek",
+null
+],
+[
+"Pickles",
+"Pickled Dandelion",
+null
+],
+[
+"Pickles",
+"Pickled Cave Carrot",
+null
+],
+[
+"Pickles",
+"Pickled Morel",
+null
+],
+[
+"Pickles",
+"Pickled Chanterelle",
+null
+],
+[
+"Pickles",
+"Pickled Spring Onion",
+null
+],
+[
+"Pickles",
+"Pickled Common Mushroom",
+null
+],
+[
+"Pickles",
+"Pickled Hazelnut",
+null
+],
+[
+"Pickles",
+"Pickled Winter Root",
+null
+],
+[
+"Pickles",
+"Pickled Snow Yam",
+null
+],
+[
+"Pickles",
+"Pickled Purple Mushroom",
+null
+],
+[
+"Pickles",
+"Pickled Ginger",
+null
+],
+[
+"Pickles",
+"Pickled Magma Cap",
+null
+],
+[
+"Artisan Goods (Other)",
+"Sunflower Honey",
+"Honey: Sunflower"
+],
+[
+"Artisan Goods (Other)",
+"Tulip Honey",
+"Honey: Tulip"
+],
+[
+"Artisan Goods (Other)",
+"Summer Spangle Honey",
+"Honey: Summer Spangle"
+],
+[
+"Artisan Goods (Other)",
+"Fairy Rose Honey",
+"Honey: Fairy Rose"
+],
+[
+"Artisan Goods (Other)",
+"Blue Jazz Honey",
+"Honey: Blue Jazz"
+],
+[
+"Artisan Goods (Other)",
+"Poppy Honey",
+"Honey: Poppy"
+],
+[
+"Artisan Goods (Other)",
+"Wild Honey",
+null
+],
+[
+"Decoration (Other)",
+"CursedMannequinFemale"
+],
+[
+"Decoration (Other)",
+"CursedMannequinMale"
+],
+[
+"Decoration (Other)",
+"MannequinFemale"
+],
+[
+"Decoration (Other)",
+"MannequinMale"
+]
 ]

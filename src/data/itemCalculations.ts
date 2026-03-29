@@ -26,7 +26,7 @@ const shopEntriesMap = new Map<string, ShopEntry[]>();
   type RawEntry = [string, number, number, string, (string | undefined)?];
   const data = pricesData as unknown as Record<string, RawEntry[]>;
   for (const [key, entries] of Object.entries(data)) {
-    if (key.startsWith('FLAVORED_ITEM')) continue;
+    // if (key.startsWith('FLAVORED_ITEM')) continue;
     const firstEntry = entries[0];
     if (!firstEntry) continue;
     const itemName: string = key.startsWith('(O)') ? firstEntry[3] : key;
@@ -94,7 +94,8 @@ export interface UsedByInfo {
 }
 
 export interface ItemTooltipData {
-  note: string | null;
+  count: number;
+  note: string[] | null;
   recipe: IngredientInfo[] | null;
   craftableCount: number;
   limitingIngredient: string | null;
@@ -130,6 +131,12 @@ function getCookingItems(): Set<string> {
   );
 }
 
+function getCrabpotItems(): Set<string> {
+  return new Set<string>(
+      ["Crab", "Crayfish", "Lobster", "Periwinkle", "Shrimp", "Snail"]
+  )
+}
+
 (function buildMaps() {
   for (const [craftedName, ingredients] of partsData as PartsEntry[]) {
     const recipe = new Map<string, number>();
@@ -163,10 +170,11 @@ function craftableCount(
 
 function computeTooltipData(
   itemName: string,
+  count: number,
   inventoryMap: Map<string, number>,
   completionMap: Map<string, boolean>
 ): ItemTooltipData {
-  const note = (notesData as Record<string, string>)[itemName] ?? null;
+  const note = (notesData as Record<string, string[]>)[itemName] ?? null;
 
   const ownRecipe = recipeMap.get(itemName);
   let recipe: IngredientInfo[] | null = null;
@@ -197,6 +205,9 @@ function computeTooltipData(
 
   const cookingItems = Config.getQuality() === 'highest' ? getCookingItems() : null;
   const usedBy: UsedByInfo[] = (reverseMap.get(itemName) ?? []).map(craftedName => {
+    // if(itemName === 'Radioactive Ore') {
+    //   console.log(itemName);
+    // }
     const { count } = craftableCount(craftedName, inventoryMap);
     const alreadyHave = inventoryMap.get(craftedName) ?? 0;
     const done = completionMap.get(craftedName) ?? false;
@@ -222,7 +233,7 @@ function computeTooltipData(
 
   const done = completionMap.get(itemName) ?? false;
   const shops = shopEntriesMap.get(itemName) ?? [];
-  return { note, recipe, craftableCount: canCraft, limitingIngredient, done, usedBy, shops };
+  return { count, note, recipe, craftableCount: canCraft, limitingIngredient, done, usedBy, shops };
 }
 
 export function hasTooltipContent(t: ItemTooltipData): boolean {
@@ -247,20 +258,23 @@ function getQualityFilteredCount(stacks: number[] | undefined, quality: Quality,
     default: return stacks.reduce((s, v) => s + v, 0);
   }
 }
-
+// MVDB
 export function computeCategoryItems(
   categoryName: string,
   compacted: Array<{ name: string; stack: number; quality?: number[] }>
 ): ItemRow[] {
+  // console.log(categoryName, compacted);
   const quality = Config.getQuality();
   const inventoryMap = new Map<string, number>();
   const stacksMap = new Map<string, number[]>();
   for (const item of compacted) {
-    // Cooking items naturally cap at gold; only iridium via Qi Seasoning
-    const maxTier = (quality === 'highest' && getCookingItems().has(item.name)) ? 2 : 4;
-    const count = item.quality
-      ? getQualityFilteredCount(item.quality, quality, maxTier)
-      : item.stack;
+    let  maxTier = (quality === 'highest' && getCookingItems().has(item.name)) ? 2 : 4;
+    maxTier = (quality === 'highest' && getCrabpotItems().has(item.name)) ? 1 : maxTier;
+    // this is making a different count for higest quality
+    // const count = item.quality
+    //   ? getQualityFilteredCount(item.quality, quality, maxTier)
+    //   : item.stack;
+    const count = item.stack;
     inventoryMap.set(item.name, (inventoryMap.get(item.name) ?? 0) + count);
     if (item.quality) {
       const prev = stacksMap.get(item.name) ?? [0, 0, 0, 0, 0];
@@ -317,10 +331,11 @@ export function computeCategoryItems(
     const required = TARGET + (requiredFromParts.get(itemName) ?? 0);
     const total = totalFromParts.get(itemName) ?? 0;
 
-    rows.push({ name: itemName, required, total, raw, rawStacks: stacksMap.get(itemName), buyPrice: priceMap.get(itemName), tooltip: computeTooltipData(itemName, inventoryMap, completionMap) });
+    rows.push({ name: itemName, required, total, raw, rawStacks: stacksMap.get(itemName), buyPrice: priceMap.get(itemName), tooltip: computeTooltipData(itemName, raw , inventoryMap, completionMap) });
   }
 
   rows.sort((a, b) => a.name.localeCompare(b.name));
+  // console.log(categoryName, rows);
   return rows;
 }
 
@@ -360,3 +375,20 @@ export function logDataIssues(
     }
   }
 }
+
+// -----------------------------------------
+// test-only exports (excluded in production)
+// -----------------------------------------
+export const __test = {
+  craftableCount,
+  computeTooltipData,
+  isWildcard,
+  getCookingItems,
+  getCrabpotItems,
+  avgYieldOf,
+  recipeMap,
+  reverseMap,
+  yieldMap,
+  priceMap,
+  shopEntriesMap
+};

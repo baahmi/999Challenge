@@ -1,9 +1,10 @@
 {
   "names": [
-    "Aged Roe","Animal Products","Artifacts","Artisan","Bait","Basic","Books",
-    "Cooking","Crafting","Dried","Fertilizers","Fish","Flowers","Forage","Fruit",
-    "Fruits","Furniture","Gem","Jelly","Juice","M","Machines","Minerals","Monster Drops",
-    "Pickles","Resources","Roe","Seeds","Smoked Fish","Trash","Vegetables","Wine","asdf"
+    "Resources","Geodes", "Consumables", "Monster Drops", "Gifts/Rewards","Animal Products","Artifacts","Artisan",
+    "Cooking", "Dried","Fertilizers","Fish","Flowers","Forage","Bait","Books",
+    "Fruits","Gem","Jelly","Juice","Machines","Minerals","Aged Roe",
+    "Pickles","Roe","Seeds","Smoked Fish","Trash","Vegetables","Wine",
+    "Artisan Goods (Keg)", "Artisan Goods (Dehydrator)", "Artisan Goods (Other)", "Decoration (Other)"
   ],
   "ignored": [
     -22,
