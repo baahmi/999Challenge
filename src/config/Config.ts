@@ -26,8 +26,8 @@ export class Config {
   private static readonly DEFAULT_CONFIG: AppConfig = {
     ui: {
       theme: 'light',
-      tabsPosition: 'bottom',
-      selectedTab: 'All'
+      tabsPosition: 'both',
+      selectedTab: 'Resources'
     },
     quality: 'highest'
   };
