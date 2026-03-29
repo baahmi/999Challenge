@@ -15,7 +15,7 @@ interface CategoryDialogProps {
 
 export function CategoryDialog({ open, onClose }: CategoryDialogProps) {
   const [categories, setCategories] = useState<string[]>([]);
-  const [items, setItems] = useState<[string, string][]>([]);
+  const [items, setItems] = useState<[string, string, string][]>([]);
   const [newCatName, setNewCatName] = useState('');
   const [editingCat, setEditingCat] = useState<string | null>(null);
   const [editingCatName, setEditingCatName] = useState('');
@@ -59,7 +59,7 @@ export function CategoryDialog({ open, onClose }: CategoryDialogProps) {
 
   const deleteCategory = (cat: string) => {
     setCategories(prev => prev.filter(c => c !== cat));
-    setItems(prev => prev.map(([c, n]) => c === cat ? ['asdf', n] : [c, n]));
+    setItems(prev => prev.map(([c, n]) => c === cat ? ['asdf', n, n] : [c, n, n]));
     if (filterCat === cat) setFilterCat('All');
   };
 
@@ -77,14 +77,14 @@ export function CategoryDialog({ open, onClose }: CategoryDialogProps) {
     }
     if (newName !== editingCat) {
       setCategories(prev => prev.map(c => c === editingCat ? newName : c));
-      setItems(prev => prev.map(([c, n]) => c === editingCat ? [newName, n] : [c, n]));
+      setItems(prev => prev.map(([c, n]) => c === editingCat ? [newName, n, n] : [c, n, n]));
       if (filterCat === editingCat) setFilterCat(newName);
     }
     setEditingCat(null);
   };
 
   const changeItemCategory = (originalIdx: number, newCat: string) => {
-    setItems(prev => prev.map((entry, i) => i === originalIdx ? [newCat, entry[1]!] : entry));
+    setItems(prev => prev.map((entry, i) => i === originalIdx ? [newCat, entry[1]!, entry[1]!] : entry));
   };
 
   const handleSave = () => {

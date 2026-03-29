@@ -13,7 +13,8 @@ export interface ItemWithCalculations extends Item {
 export function calculatePercentage(item: Item): number {
   if (item.required === 0) return 0;
   const obtained = item.raw + item.total;
-  return obtained >= item.required ? 100 : (obtained / item.required) * 100;
+  const isCompleted = item.raw >= 999 && obtained >= item.required
+  return isCompleted ? 100 : (obtained / item.required) * 100;
 }
 
 export function calculateCategoryTotal(items: Item[]): number {

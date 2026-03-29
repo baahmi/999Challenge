@@ -12,16 +12,43 @@ interface ItemTableProps {
 
 function TooltipPanel({ name, data }: { name: string; data: ItemTooltipData }) {
   const canCraftColor = data.done ? '#6f6' : data.craftableCount > 0 ? '#6f6' : '#f66';
+  const usedBySorted = data.usedBy?.sort((a, b) => (a.done ? 1 : 0) - (b.done ? 1 : 0));
   return (
     <div style={{
       maxWidth: 340,
       fontSize: 13,
       lineHeight: 1.5,
+      overflowY: 'auto',
     }}>
-      <div style={{ fontWeight: 700, marginBottom: 4, fontSize: 14 }}>{name}</div>
+      <div style={{ fontWeight: 700, marginBottom: 4, fontSize: 14 }}>{name} ({data.count})</div>
 
       {data.note && (
         <div style={{ fontStyle: 'italic', color: '#bbb', marginBottom: 6 }}>{data.note}</div>
+      )}
+
+      {data.shops.length > 0 && (
+          <div style={{ marginTop: data.recipe || data.usedBy.length > 0 || data.note ? 8 : 0 }}>
+            <div style={{ fontWeight: 600, marginBottom: 2 }}>Available at:</div>
+            {data.shops.map((s, i) => {
+              const packSuffix = s.qty > 1 ? ` ×${s.qty}` : '';
+              const priceStr = s.currency === 'Qi Gem'
+                  ? `${s.price.toLocaleString()} ✦${packSuffix}`
+                  : s.currency
+                      ? `${s.price.toLocaleString()} ${s.currency}${packSuffix}`
+                      : `${s.price.toLocaleString()}g${packSuffix}`;
+              const shopLabel = s.shop.startsWith('Festival ')
+                  ? `🎪 ${s.shop.replace('Festival ', '').replace(/_/g, ' ')}`
+                  : s.shop;
+              return (
+                  <div key={i} style={{ paddingLeft: 10, display: 'flex', gap: 6, alignItems: 'baseline', fontSize: 12 }}>
+                    <span style={{ color: '#ccc' }}>• {shopLabel}</span>
+                    <span style={{ marginLeft: 'auto', whiteSpace: 'nowrap', color: s.currency === 'Qi Gem' ? '#c084fc' : s.currency ? '#f9a825' : '#86efac' }}>
+                  {priceStr}
+                </span>
+                  </div>
+              );
+            })}
+          </div>
       )}
 
       {data.recipe && (
@@ -46,7 +73,7 @@ function TooltipPanel({ name, data }: { name: string; data: ItemTooltipData }) {
         </div>
       )}
 
-      {data.usedBy.length > 0 && (
+      {usedBySorted.length > 0 && (
         <div>
           <div style={{ fontWeight: 600, marginBottom: 2 }}>Used in:</div>
           {data.usedBy.map(dep => (
@@ -73,31 +100,6 @@ function TooltipPanel({ name, data }: { name: string; data: ItemTooltipData }) {
         </div>
       )}
 
-      {data.shops.length > 0 && (
-        <div style={{ marginTop: data.recipe || data.usedBy.length > 0 || data.note ? 8 : 0 }}>
-          <div style={{ fontWeight: 600, marginBottom: 2 }}>Available at:</div>
-          {data.shops.map((s, i) => {
-            const packSuffix = s.qty > 1 ? ` ×${s.qty}` : '';
-            const priceStr = s.currency === 'Qi Gem'
-              ? `${s.price.toLocaleString()} ✦${packSuffix}`
-              : s.currency
-              ? `${s.price.toLocaleString()} ${s.currency}${packSuffix}`
-              : `${s.price.toLocaleString()}g${packSuffix}`;
-            const shopLabel = s.shop.startsWith('Festival ')
-              ? `🎪 ${s.shop.replace('Festival ', '').replace(/_/g, ' ')}`
-              : s.shop;
-            return (
-              <div key={i} style={{ paddingLeft: 10, display: 'flex', gap: 6, alignItems: 'baseline', fontSize: 12 }}>
-                <span style={{ color: '#ccc' }}>• {shopLabel}</span>
-                <span style={{ marginLeft: 'auto', whiteSpace: 'nowrap', color: s.currency === 'Qi Gem' ? '#c084fc' : s.currency ? '#f9a825' : '#86efac' }}>
-                  {priceStr}
-                </span>
-              </div>
-            );
-          })}
-        </div>
-      )}
-
       {!data.recipe && data.usedBy.length === 0 && !data.note && data.shops.length === 0 && (
         <div style={{ color: '#888' }}>No recipe or dependency info.</div>
       )}
@@ -105,7 +107,7 @@ function TooltipPanel({ name, data }: { name: string; data: ItemTooltipData }) {
   );
 }
 
-function fmtCost(n: number): string {
+function fmtNumber(n: string | number): string {
   if (n === 0) return '';
   return n.toLocaleString();
 }
@@ -187,7 +189,6 @@ export function ItemTable({ items }: ItemTableProps) {
   try {
     const categoryTotal = items.reduce((sum, item) => sum + item.raw, 0);
     const enrichedItems = enrichItemsWithCalculations(items, categoryTotal);
-    
     const totalRequired = enrichedItems.reduce((sum, item) => sum + item.required, 0);
     const totalRaw = enrichedItems.reduce((sum, item) => sum + item.raw, 0);
     const totalUsed = enrichedItems.reduce((sum, item) => sum + item.total, 0);
@@ -219,27 +220,27 @@ export function ItemTable({ items }: ItemTableProps) {
         case 'checkbox':   return isTotal ? '—' : (done ? '☑' : '☐');
         case 'percentage': return `${Math.floor(row.percentage)}%`;
         case 'name':       return isTotal ? 'Total' : row.name;
-        case 'required':   return row.required;
-        case 'needed':     return Math.max(0, row.required - row.raw + row.total);
-        case 'total':      return row.raw + row.total;
-        case 'raw':        return row.raw;
-        case 'raw_N':      return isTotal ? '' : (row.rawStacks?.[0] ?? 0);
-        case 'raw_S':      return isTotal ? '' : (row.rawStacks?.[1] ?? 0);
-        case 'raw_G':      return isTotal ? '' : (row.rawStacks?.[2] ?? 0);
-        case 'raw_I':      return isTotal ? '' : (row.rawStacks?.[4] ?? 0);
+        case 'required':   return fmtNumber(row.required);
+        case 'needed':     return fmtNumber(Math.max(0, row.required - (row.raw + row.total)));
+        case 'total':      return fmtNumber(row.raw + row.total);
+        case 'raw':        return fmtNumber(row.raw);
+        case 'raw_N':      return fmtNumber(isTotal ? '' : (row.rawStacks?.[0] ?? 0));
+        case 'raw_S':      return fmtNumber(isTotal ? '' : (row.rawStacks?.[1] ?? 0));
+        case 'raw_G':      return fmtNumber(isTotal ? '' : (row.rawStacks?.[2] ?? 0));
+        case 'raw_I':      return fmtNumber(isTotal ? '' : (row.rawStacks?.[4] ?? 0));
         case 'gold_needed': {
-          if (isTotal) return fmtCost(totalGoldNeeded);
+          if (isTotal) return fmtNumber(totalGoldNeeded);
           const needed = Math.max(0, row.required - (row.raw + row.total));
           const bp = (row as unknown as ItemRow).buyPrice;
           if (!bp?.gold || needed === 0) return '';
-          return fmtCost(needed * bp.gold);
+          return fmtNumber(needed * bp.gold);
         }
         case 'qi_needed': {
-          if (isTotal) return fmtCost(totalQiNeeded);
+          if (isTotal) return fmtNumber(totalQiNeeded);
           const needed = Math.max(0, row.required - (row.raw + row.total));
           const bp = (row as unknown as ItemRow).buyPrice;
           if (!bp?.qiGem || needed === 0) return '';
-          return fmtCost(needed * bp.qiGem);
+          return fmtNumber(needed * bp.qiGem);
         }
         default:           return '';
       }
@@ -272,11 +273,11 @@ export function ItemTable({ items }: ItemTableProps) {
     const colW = (key: string): number => {
       const stored = columnWidths[key] ?? COLUMNS.find(c => c.key === key)?.minW ?? 40;
       if (key === 'gold_needed' && showGoldCol) {
-        const needed = Math.ceil(fmtCost(totalGoldNeeded).length * 8.5) + 16;
+        const needed = Math.ceil(fmtNumber(totalGoldNeeded).length * 8.5) + 16;
         return Math.max(stored, needed);
       }
       if (key === 'qi_needed' && showQiCol) {
-        const needed = Math.ceil(fmtCost(totalQiNeeded).length * 8.5) + 16;
+        const needed = Math.ceil(fmtNumber(totalQiNeeded).length * 8.5) + 16;
         return Math.max(stored, needed);
       }
       return stored;
@@ -351,11 +352,24 @@ export function ItemTable({ items }: ItemTableProps) {
         </table>
         {hover && (() => {
           const tipW = 360;
-          const tipH = 220;
-          const x = hover.x + 16 + tipW > window.innerWidth ? hover.x - tipW - 8 : hover.x + 16;
-          const y = hover.y + 16 + tipH > window.innerHeight ? hover.y - tipH - 8 : hover.y + 16;
+          const margin = 8;
+          const viewportW = document.documentElement.clientWidth;
+          const viewportH = document.documentElement.clientHeight;
+          let x = hover.x + 16;
+          if (x + tipW > viewportW - margin) x = hover.x - tipW - margin;
+          if (x < margin) x = margin;
+          const maxTipH = viewportH * 0.6;
+          let y = hover.y;
+          if (y + maxTipH > viewportH - margin) {
+            y = hover.y - 20;
+          }
+          if (y < margin) y = margin;
+          if (y + maxTipH > viewportH - margin) y = viewportH - maxTipH - margin;
           return (
-            <div style={{
+            <div
+              onMouseEnter={() => setHover(hover)}
+              onMouseLeave={() => setHover(null)}
+              style={{
               position: 'fixed',
               left: x,
               top: y,
@@ -365,9 +379,10 @@ export function ItemTable({ items }: ItemTableProps) {
               borderRadius: 6,
               padding: '10px 14px',
               boxShadow: '0 4px 16px rgba(0,0,0,0.5)',
-              pointerEvents: 'none',
               color: '#ddd',
               minWidth: 220,
+              maxHeight: '60vh',
+              overflowY: 'auto',
             }}>
               <TooltipPanel name={hover.name} data={hover.data} />
             </div>

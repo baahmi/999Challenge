@@ -23,7 +23,7 @@ export function Tabs({ onCategoryChange, children }: TabsProps) {
   const [tabsPosition, setTabsPosition] = useState(Config.getTabsPosition());
   const [maxWidth, setMaxWidth] = useState<string>('auto');
   const [categoryNames, setCategoryNames] = useState<string[]>(
-    () => [...Config.getCategoryNames()].sort((a, b) => a.localeCompare(b))
+    () => [...Config.getCategoryNames()]
   );
 
   useEffect(() => {
@@ -52,9 +52,7 @@ export function Tabs({ onCategoryChange, children }: TabsProps) {
     };
 
     // Subscribe to config changes
-    const unsubscribe = Config.getInstance().subscribe(handleConfigChange);
-    
-    return unsubscribe;
+    return Config.getInstance().subscribe(handleConfigChange);
   }, []);
 
   useEffect(() => {
