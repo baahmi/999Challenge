@@ -176,9 +176,13 @@ function computeAllItems(
 
   {
     // add trove to the requireds
+    // Need 999 artifact troves in inventory + 999*length to open for all trove items
+    // (opening a trove destroys it and gives 1 random item from the 28 possible)
     const length = CustomDataStore.getTroveItems().length;
     const minTroveCount: number = Math.min(...CustomDataStore.getTroveItems().map(itemName => inventoryMap.get(itemName) ?? 0));
-    requiredFromParts.set("Artifact Trove", TARGET*length);
+    const troveRequired = TARGET + TARGET * length;
+    requiredFromParts.set("Artifact Trove", troveRequired);
+    // Total is just what you've already opened (consumed)
     totalFromParts.set("Artifact Trove", minTroveCount*length);
   }
 
@@ -186,15 +190,21 @@ function computeAllItems(
     const craftedCount = inventoryMap.get(craftedItemName) ?? 0;
     const avgYield = yieldMap.get(craftedItemName) ?? 1;
     const required = requiredFromParts.get(craftedItemName);
-    const craftsNeeded = Math.ceil((required ?? TARGET )/ avgYield);
+    const targetAmount = required ?? TARGET;
+    const totalCrafted = totalFromParts.get(craftedItemName) ?? 0;
+    
+    // How many of this crafted item do we have (inventory + what we've made/opened)
+    const totalHave = craftedCount + totalCrafted;
+    
     for (const [ingredientId, ingredientEntry] of Object.entries(ingredients)) {
       const [ingredientName, qty] = ingredientEntry as [string | null, number];
       if (isWildcard(ingredientId, ingredientName)) continue;
       const name = ingredientName!;
-      const requiredCount = Math.round((qty * (TARGET+(required ?? 0))) / avgYield);
-      // Cap totalCount at what's needed for 999 of the crafted item
-      // If you have 2000 stone chests, only count 999 toward stone's total
-      const totalCount = Math.round(Math.min(craftedCount, TARGET) / avgYield);
+      
+      // Calculate total ingredients required (for the full targetAmount)
+      const requiredCount = Math.round((qty * targetAmount) / avgYield);
+      // Calculate ingredients already used (for what we have)
+      const totalCount = Math.round((qty * totalHave) / avgYield);
       requiredFromParts.set(name, (requiredFromParts.get(name) ?? 0) + requiredCount);
       totalFromParts.set(name, (totalFromParts.get(name) ?? 0) + totalCount);
     }
@@ -390,7 +400,9 @@ function computeTooltipData(
       craftableCache.set(itemName, cached);
     }
     const { count, limiting } = cached;
-    canCraft = count;
+    // Multiply by yield to show total output (e.g., 408 fish → 3060 bait at 7.5 avg yield)
+    const avgYield = yieldMap.get(itemName) ?? 1;
+    canCraft = Math.floor(count * avgYield);
     limitingIngredient = limiting;
     recipe = Array.from(ownRecipe.entries()).map(([name, qty]) => ({
       name,
@@ -418,6 +430,9 @@ function computeTooltipData(
       craftableCache.set(craftedName, cachedCrafted);
     }
     const { count } = cachedCrafted;
+    // Multiply by yield to show total output
+    const avgYield = yieldMap.get(craftedName) ?? 1;
+    const totalOutput = Math.floor(count * avgYield);
     const alreadyHave = inventoryMap.get(craftedName) ?? 0;
     const done = completionMap.get(craftedName) ?? false;
     const depRecipe = recipeMap.get(craftedName);
@@ -437,7 +452,7 @@ function computeTooltipData(
         done: completionMap.get('Qi Seasoning') ?? false,
       });
     }
-    return { craftedName, craftableCount: count, alreadyHave, done, recipe };
+    return { craftedName, craftableCount: totalOutput, alreadyHave, done, recipe };
   });
 
   const done = completionMap.get(itemName) ?? false;
@@ -494,9 +509,10 @@ export function computeCategoryItemsUncached(
   const totalFromParts = new Map<string, number>();
 
   {
+    // Need 999 artifact troves in inventory + 999*length to open for all trove items
     const length = CustomDataStore.getTroveItems().length;
     const minTroveCount: number = Math.min(...CustomDataStore.getTroveItems().map(itemName => inventoryMap.get(itemName) ?? 0));
-    requiredFromParts.set("Artifact Trove", TARGET * length);
+    requiredFromParts.set("Artifact Trove", TARGET + TARGET * length);
     totalFromParts.set("Artifact Trove", minTroveCount * length);
   }
 
@@ -504,13 +520,21 @@ export function computeCategoryItemsUncached(
     const craftedCount = inventoryMap.get(craftedItemName) ?? 0;
     const avgYield = yieldMap.get(craftedItemName) ?? 1;
     const required = requiredFromParts.get(craftedItemName);
+    const targetAmount = required ?? TARGET;
+    const totalCrafted = totalFromParts.get(craftedItemName) ?? 0;
+    
+    // How many of this crafted item do we have (inventory + what we've made/opened)
+    const totalHave = craftedCount + totalCrafted;
+    
     for (const [ingredientId, ingredientEntry] of Object.entries(ingredients)) {
       const [ingredientName, qty] = ingredientEntry as [string | null, number];
       if (isWildcard(ingredientId, ingredientName)) continue;
       const name = ingredientName!;
-      const requiredCount = Math.round((qty * (TARGET + (required ?? 0))) / avgYield);
-      // Cap totalCount at what's needed for 999 of the crafted item
-      const totalCount = Math.round(Math.min(craftedCount, TARGET) / avgYield);
+      
+      // Calculate total ingredients required (for the full targetAmount)
+      const requiredCount = Math.round((qty * targetAmount) / avgYield);
+      // Calculate ingredients already used (for what we have)
+      const totalCount = Math.round((qty * totalHave) / avgYield);
       requiredFromParts.set(name, (requiredFromParts.get(name) ?? 0) + requiredCount);
       totalFromParts.set(name, (totalFromParts.get(name) ?? 0) + totalCount);
     }
