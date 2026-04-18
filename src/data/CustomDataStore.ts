@@ -116,7 +116,7 @@ class CustomDataManager {
         }));
     
     for (const invItem of itemsArray) {
-      const displayName = invItem.name; // Already resolved by VariantResolver (e.g., "Blue Jazz (35,127,255)")
+      const displayName = VariantResolver.normalizeDisplayName(invItem.name);
       
       // Get base name (e.g., "Blue Jazz")
       const baseName = VariantResolver.getBaseName(displayName);

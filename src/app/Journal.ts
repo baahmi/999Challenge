@@ -1,3 +1,5 @@
+import { VariantResolver } from '@/data/CustomDataStore';
+
 const STORAGE_KEY = 'stardew-journal';
 
 export type QualityStacks = [number, number, number, number, number];
@@ -124,7 +126,7 @@ export class JournalStore {
     return Object.entries(items)
       .filter(([, item]) => !ignoredCategories.includes(item.cat))
       .map(([name, item]) => ({
-        name,
+        name: VariantResolver.normalizeDisplayName(name),
         itemId: item.id,
         category: item.cat,
         stack: item.q.reduce((s, v) => s + v, 0),

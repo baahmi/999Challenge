@@ -1,4 +1,5 @@
 import variantDefinitions from './itemVariants.json' assert { type: 'json' };
+import flowerColorNames from './flowerColorNames.json' assert { type: 'json' };
 
 interface ColorRGBA {
   R: number;
@@ -25,6 +26,23 @@ interface VariantData {
 }
 
 const data = variantDefinitions as VariantData;
+const FLOWER_COLOR_NAMES = flowerColorNames as Record<string, Record<string, string>>;
+
+const FLOWER_VARIANT_DISPLAY_NAMES = new Map<string, string>();
+
+for (const [baseName, variants] of Object.entries(FLOWER_COLOR_NAMES)) {
+  for (const displayName of Object.values(variants)) {
+    FLOWER_VARIANT_DISPLAY_NAMES.set(displayName, baseName);
+  }
+}
+
+function getColorKey(colorData: ColorRGBA): string {
+  return `${colorData.R},${colorData.G},${colorData.B}`;
+}
+
+function getNamedFlowerVariant(itemName: string, colorData: ColorRGBA): string | undefined {
+  return FLOWER_COLOR_NAMES[itemName]?.[getColorKey(colorData)];
+}
 
 /**
  * Resolves item variants from save file data.
@@ -61,9 +79,12 @@ export class VariantResolver {
     }
     
     // Handle color-based variants (flowers)
-    // If item has color data AND is defined as having color variants, use RGB notation
+    // Use friendly names for known save colors and fall back to RGB for unseen colors.
     if (variantDef && variantDef.variantType === 'color' && colorData) {
-      // Always use RGB notation for dynamic tracking
+      const namedVariant = getNamedFlowerVariant(itemName, colorData);
+      if (namedVariant) {
+        return namedVariant;
+      }
       return `${itemName} (${colorData.R},${colorData.G},${colorData.B})`;
     }
     
@@ -100,10 +121,16 @@ export class VariantResolver {
   
   /**
    * Get base item name from a variant display name
+   * E.g., "Blue Jazz (Bright Blue)" -> "Blue Jazz"
    * E.g., "Blue Jazz (35,127,255)" -> "Blue Jazz"
    * E.g., "Strange Doll (Green)" -> "Strange Doll"
    */
   static getBaseName(displayName: string): string {
+    const mappedFlowerBaseName = FLOWER_VARIANT_DISPLAY_NAMES.get(displayName);
+    if (mappedFlowerBaseName) {
+      return mappedFlowerBaseName;
+    }
+
     // Check for RGB notation pattern: "Name (R,G,B)"
     const rgbMatch = displayName.match(/^(.+?)\s*\(\d+,\d+,\d+\)$/);
     if (rgbMatch && rgbMatch[1]) {
@@ -148,6 +175,27 @@ export class VariantResolver {
    */
   static applyAlias(name: string): string {
     return data.nameAliases[name] || name;
+  }
+
+  /**
+   * Normalize legacy stored variant names to the current display naming.
+   * E.g., "Blue Jazz (109,131,255)" -> "Blue Jazz (Periwinkle)"
+   */
+  static normalizeDisplayName(displayName: string): string {
+    const rgbMatch = displayName.match(/^(.+?)\s*\((\d+),(\d+),(\d+)\)$/);
+    if (!rgbMatch) {
+      return displayName;
+    }
+
+    const [, itemName, r, g, b] = rgbMatch;
+    const namedVariant = getNamedFlowerVariant(itemName, {
+      R: Number(r),
+      G: Number(g),
+      B: Number(b),
+      A: 255
+    });
+
+    return namedVariant ?? displayName;
   }
   
   /**

@@ -1,0 +1,37 @@
+{
+  "Blue Jazz": {
+    "35,127,255": "Blue Jazz (Bright Blue)",
+    "40,150,255": "Blue Jazz (Sky Blue)",
+    "94,121,255": "Blue Jazz (Cornflower Blue)",
+    "109,131,255": "Blue Jazz (Periwinkle)",
+    "112,207,255": "Blue Jazz (Robin's Egg Blue)",
+    "191,228,255": "Blue Jazz (Powder Blue)"
+  },
+  "Tulip": {
+    "223,191,255": "Tulip (Pale Lavender)",
+    "255,80,0": "Tulip (Vermilion)",
+    "255,158,193": "Tulip (Rose Pink)",
+    "255,186,255": "Tulip (Blush Pink)",
+    "255,246,0": "Tulip (Lemon Yellow)"
+  },
+  "Summer Spangle": {
+    "0,208,255": "Summer Spangle (Turquoise)",
+    "99,255,210": "Summer Spangle (Seafoam)",
+    "206,91,255": "Summer Spangle (Orchid)",
+    "255,0,238": "Summer Spangle (Fuchsia)",
+    "255,144,122": "Summer Spangle (Salmon)",
+    "255,212,0": "Summer Spangle (Golden Yellow)"
+  },
+  "Fairy Rose": {
+    "71,227,255": "Fairy Rose (Aqua)",
+    "119,137,255": "Fairy Rose (Bluebell)",
+    "140,119,255": "Fairy Rose (Lavender)",
+    "187,0,255": "Fairy Rose (Violet)",
+    "205,178,255": "Fairy Rose (Lilac)",
+    "255,127,144": "Fairy Rose (Coral Pink)"
+  },
+  "Poppy": {
+    "255,0,0": "Poppy (Scarlet)",
+    "255,170,0": "Poppy (Orange)"
+  }
+}
