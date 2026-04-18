@@ -108,6 +108,8 @@ export interface ItemRow {
   rawStacks?: number[]; // [normal, silver, gold, unused, iridium]
   buyPrice?: BuyPrice;
   tooltip: ItemTooltipData;
+  hasWrongQuality?: boolean; // Has stacks but not in the correct quality tier
+  hasUnfinishedDependents?: boolean; // Item is complete but has uncrafted dependencies
 }
 
 function isWildcard(id: string, name: string | null): boolean {
@@ -189,7 +191,9 @@ function computeAllItems(
       if (isWildcard(ingredientId, ingredientName)) continue;
       const name = ingredientName!;
       const requiredCount = Math.round((qty * (TARGET+(required ?? 0))) / avgYield);
-      const totalCount = Math.round(craftedCount / avgYield);
+      // Cap totalCount at what's needed for 999 of the crafted item
+      // If you have 2000 stone chests, only count 999 toward stone's total
+      const totalCount = Math.round(Math.min(craftedCount, TARGET) / avgYield);
       requiredFromParts.set(name, (requiredFromParts.get(name) ?? 0) + requiredCount);
       totalFromParts.set(name, (totalFromParts.get(name) ?? 0) + totalCount);
     }
@@ -202,7 +206,8 @@ function computeAllItems(
       if (item.category !== 'Cooking' || seen.has(item.name)) continue;
       seen.add(item.name);
       requiredFromParts.set('Qi Seasoning', (requiredFromParts.get('Qi Seasoning') ?? 0) + TARGET);
-      totalFromParts.set('Qi Seasoning', (totalFromParts.get('Qi Seasoning') ?? 0) + (inventoryMap.get(item.name) ?? 0));
+      // Cap at TARGET per cooking item
+      totalFromParts.set('Qi Seasoning', (totalFromParts.get('Qi Seasoning') ?? 0) + Math.min(inventoryMap.get(item.name) ?? 0, TARGET));
     }
   }
 
@@ -214,6 +219,61 @@ function computeAllItems(
     // to be complete we need raw to be at least 999.
     completionMap.set(item.name, r + tot >= req && r >= TARGET);
   }
+
+  // Helper to check if an item has wrong quality stacks
+  const hasWrongQualityStacks = (itemName: string): boolean => {
+    if (quality !== 'highest') return false;
+    const stacks = stacksMap.get(itemName);
+    if (!stacks) return false;
+    
+    // Only apply quality checks to items that actually have quality tiers
+    const isCooking = getCookingItems().has(itemName);
+    const isCrabpot = getCrabpotItems().has(itemName);
+    
+    // Check if this item type can have quality at all
+    // Most items don't have quality tiers (like Hay, Stone, Wood, etc.)
+    const totalItems = [0, 1, 2, 4].reduce((sum, tier) => sum + (stacks[tier] ?? 0), 0);
+    const nonZeroTiers = [0, 1, 2, 4].filter(tier => (stacks[tier] ?? 0) > 0).length;
+    
+    // If item only has one tier with items, it doesn't have quality variations
+    // (e.g., Hay is all in tier 0, no quality concept)
+    if (nonZeroTiers <= 1 && !isCooking && !isCrabpot) return false;
+    
+    const correctTier = isCooking ? 2 : isCrabpot ? 1 : 4; // gold for cooking, silver for crabpot, iridium for others
+    const correctQualityCount = stacks[correctTier] ?? 0;
+    
+    // Get requirements
+    const req = TARGET + (requiredFromParts.get(itemName) ?? 0);
+    const tot = totalFromParts.get(itemName) ?? 0;
+    
+    // Only show blue (wrong quality) if:
+    // 1. We have 999+ items total across all qualities
+    // 2. We have enough total items to meet requirements (totalItems + tot >= req)
+    // 3. BUT we don't have 999 in the correct quality tier
+    // Example: 8000 pink cakes (enough total) but 0 gold quality -> blue
+    // Counter-example: 999 bread (not enough total for 22998 required) -> white, not blue
+    return totalItems >= TARGET && (totalItems + tot >= req) && correctQualityCount < TARGET;
+  };
+
+  // Helper to check if an item has unfinished dependents
+  const hasUnfinishedDependents = (itemName: string): boolean => {
+    const dependents = reverseMap.get(itemName) ?? [];
+    if (dependents.length === 0) return false;
+    
+    // Check if this item is complete
+    const r = inventoryMap.get(itemName) ?? 0;
+    const req = TARGET + (requiredFromParts.get(itemName) ?? 0);
+    const tot = totalFromParts.get(itemName) ?? 0;
+    const isComplete = r + tot >= req && r >= TARGET;
+    
+    if (!isComplete) return false;
+    
+    // Check if any dependent is not complete
+    return dependents.some(depName => {
+      const depComplete = completionMap.get(depName) ?? false;
+      return !depComplete;
+    });
+  };
 
   const source = CustomDataStore.getItemsData();
   const seen = new Set<string>();
@@ -227,7 +287,17 @@ function computeAllItems(
     const raw = inventoryMap.get(item.name) ?? 0;
     const required = TARGET + (requiredFromParts.get(item.name) ?? 0);
     const total = totalFromParts.get(item.name) ?? 0;
-    allComputedRows.push({ name: item.displayName || item.name, required, total, raw, rawStacks: stacksMap.get(item.name), buyPrice: priceMap.get(item.name), tooltip: computeTooltipData(item.name, raw , inventoryMap, completionMap, globalCraftableCache) });
+    allComputedRows.push({ 
+      name: item.displayName || item.name, 
+      required, 
+      total, 
+      raw, 
+      rawStacks: stacksMap.get(item.name), 
+      buyPrice: priceMap.get(item.name), 
+      tooltip: computeTooltipData(item.name, raw , inventoryMap, completionMap, globalCraftableCache),
+      hasWrongQuality: hasWrongQualityStacks(item.name),
+      hasUnfinishedDependents: hasUnfinishedDependents(item.name)
+    });
   }
 
   allComputedRows.sort((a, b) => a.name.localeCompare(b.name));
@@ -372,12 +442,9 @@ function getQualityFilteredCount(stacks: number[] | undefined, quality: Quality,
     case 'gold':    return stacks[2] ?? 0;
     case 'iridium': return stacks[4] ?? 0;
     case 'highest': {
-      for (const i of [4, 2, 1, 0]) {
-        if (i > maxTierIndex) continue;
-        const v = stacks[i] ?? 0;
-        if (v > 0) return v;
-      }
-      return 0;
+      // For "highest" quality, return total across all tiers so user can see how many they have
+      // The completion check uses rawStacks to verify correct quality tier
+      return stacks.reduce((s, v) => s + v, 0);
     }
     default: return stacks.reduce((s, v) => s + v, 0);
   }
@@ -427,7 +494,8 @@ export function computeCategoryItemsUncached(
       if (isWildcard(ingredientId, ingredientName)) continue;
       const name = ingredientName!;
       const requiredCount = Math.round((qty * (TARGET + (required ?? 0))) / avgYield);
-      const totalCount = Math.round(craftedCount / avgYield);
+      // Cap totalCount at what's needed for 999 of the crafted item
+      const totalCount = Math.round(Math.min(craftedCount, TARGET) / avgYield);
       requiredFromParts.set(name, (requiredFromParts.get(name) ?? 0) + requiredCount);
       totalFromParts.set(name, (totalFromParts.get(name) ?? 0) + totalCount);
     }
@@ -439,7 +507,8 @@ export function computeCategoryItemsUncached(
       if (item.category !== 'Cooking' || seen.has(item.name)) continue;
       seen.add(item.name);
       requiredFromParts.set('Qi Seasoning', (requiredFromParts.get('Qi Seasoning') ?? 0) + TARGET);
-      totalFromParts.set('Qi Seasoning', (totalFromParts.get('Qi Seasoning') ?? 0) + (inventoryMap.get(item.name) ?? 0));
+      // Cap at TARGET per cooking item
+      totalFromParts.set('Qi Seasoning', (totalFromParts.get('Qi Seasoning') ?? 0) + Math.min(inventoryMap.get(item.name) ?? 0, TARGET));
     }
   }
 

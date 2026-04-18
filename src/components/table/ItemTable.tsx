@@ -246,26 +246,40 @@ export function ItemTable({ items }: ItemTableProps) {
       }
     };
 
-    // Hide quality columns when every item with stock has exactly one tier, same across all
-    const showQualityCols = (() => {
-      let singleTier: number | undefined;
-      for (const item of enrichedItems) {
-        if (!item.rawStacks) return false;
-        const tiers = [0, 1, 2, 4].filter(i => (item.rawStacks![i] ?? 0) > 0);
-        if (tiers.length === 0) continue;
-        if (tiers.length > 1) return true;
-        const tier = tiers[0]!;
-        if (singleTier === undefined) singleTier = tier;
-        else if (singleTier !== tier) return true;
-      }
-      return false;
-    })();
+    // Determine which quality tiers are actually used or needed
+    const usedTiers = new Set<number>();
+    const itemsWithQuality = enrichedItems.filter(item => item.rawStacks !== undefined);
+    
+    for (const item of itemsWithQuality) {
+      [0, 1, 2, 4].forEach(tier => {
+        if ((item.rawStacks![tier] ?? 0) > 0) usedTiers.add(tier);
+      });
+    }
+    
+    // If any item with quality has wrong quality, show both the tier they have and the tier they need
+    // For cooking: if they have normal (0) but need gold (2), show both
+    const hasWrongQualityItems = itemsWithQuality.some(item => (item as unknown as ItemRow).hasWrongQuality);
+    if (hasWrongQualityItems) {
+      if (usedTiers.has(0)) usedTiers.add(2); // If has normal, also show gold
+      if (usedTiers.has(1)) usedTiers.add(4); // If has silver, also show iridium
+    }
+    
+    // Only show quality columns if there are items with quality data
+    const showQualityCols = itemsWithQuality.length > 0 && usedTiers.size > 0;
 
     const showGoldCol = enrichedItems.some(item => (item as unknown as ItemRow).buyPrice?.gold !== undefined);
     const showQiCol = enrichedItems.some(item => (item as unknown as ItemRow).buyPrice?.qiGem !== undefined);
 
     const visibleCols = COLUMNS.filter(c => {
-      if (QUALITY_KEYS.has(c.key)) return showQualityCols;
+      if (QUALITY_KEYS.has(c.key)) {
+        if (!showQualityCols) return false;
+        // Only show quality columns for tiers that are actually used or needed
+        if (c.key === 'raw_N') return usedTiers.has(0);
+        if (c.key === 'raw_S') return usedTiers.has(1);
+        if (c.key === 'raw_G') return usedTiers.has(2);
+        if (c.key === 'raw_I') return usedTiers.has(4);
+        return false;
+      }
       if (c.key === 'gold_needed') return showGoldCol;
       if (c.key === 'qi_needed') return showQiCol;
       return true;
@@ -316,11 +330,18 @@ export function ItemTable({ items }: ItemTableProps) {
               const done = !isTotal && row.percentage >= 100;
               const rawTooltip = !isTotal ? (row as ItemRow & { percentage: number }).tooltip : undefined;
               const tooltipData = rawTooltip && hasTooltipContent(rawTooltip) ? rawTooltip : undefined;
+              const itemRow = !isTotal ? (row as ItemRow & { percentage: number }) : undefined;
+              const hasWrongQuality = itemRow?.hasWrongQuality ?? false;
+              const hasUnfinishedDependents = itemRow?.hasUnfinishedDependents ?? false;
               const rowBg = isTotal
                 ? (isDark ? '#3a3a3a' : '#d0d0d0')
-                : done
-                  ? (isDark ? '#1b4a1e' : '#c8e6c9')
-                  : (isDark ? 'transparent' : 'white');
+                : hasWrongQuality
+                  ? (isDark ? '#1e3a4a' : '#b3e5fc') // light blue for wrong quality (takes priority)
+                  : hasUnfinishedDependents
+                    ? (isDark ? '#4a3a1e' : '#fff9c4') // yellow for unfinished dependents
+                    : done
+                      ? (isDark ? '#1b4a1e' : '#c8e6c9') // green for done
+                      : (isDark ? 'transparent' : 'white');
               const stickyStyle: React.CSSProperties = isTopTotal
                 ? { position: 'sticky', top: `calc(var(--sticky-top-offset, 0px) + ${theadHeight}px)`, zIndex: 2, backgroundColor: rowBg }
                 : isBottomTotal
