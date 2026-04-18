@@ -84,6 +84,18 @@
   min-width: auto;
 }
 
+.tabs-scroll-container .category-tab {
+  cursor: grab;
+}
+
+.tabs-scroll-container .category-tab.category-tab-dragging {
+  opacity: 0.45;
+}
+
+.tabs-scroll-container .category-tab.category-tab-drop-target {
+  background-color: rgba(25, 118, 210, 0.12);
+}
+
 [data-mui-color-scheme='dark'] .tabs-wrapper {
   background-color: var(--mui-palette-background-default);
   border-top-color: rgba(255, 255, 255, 0.12);
@@ -109,4 +121,8 @@
 
 [data-mui-color-scheme='dark'] .tab-scroll-button:active {
   background-color: rgba(255, 255, 255, 0.15);
+}
+
+[data-mui-color-scheme='dark'] .tabs-scroll-container .category-tab.category-tab-drop-target {
+  background-color: rgba(144, 202, 249, 0.18);
 }

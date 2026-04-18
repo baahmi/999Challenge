@@ -9,6 +9,7 @@ export interface UIConfig {
   tabsPosition: TabsPosition;
   selectedTab: string;
   theme: Theme;
+  tabOrder: string[];
 }
 
 export interface CategoriesConfig {
@@ -27,7 +28,8 @@ export class Config {
     ui: {
       theme: 'light',
       tabsPosition: 'both',
-      selectedTab: 'Resources'
+      selectedTab: 'Resources',
+      tabOrder: []
     },
     quality: 'highest'
   };
@@ -79,7 +81,15 @@ export class Config {
   }
 
   public static getCategoryNames(): string[] {
-    return CustomDataStore.getCategoryNames();
+    return this.getInstance().getOrderedCategoryNames(CustomDataStore.getCategoryNames());
+  }
+
+  public static getTabOrder(): string[] {
+    return [...this.getInstance().getConfig().ui.tabOrder];
+  }
+
+  public static setTabOrder(tabOrder: string[]): void {
+    this.getInstance().setTabOrder(tabOrder);
   }
 
   public static getIgnoredCategories(): number[] {
@@ -94,7 +104,15 @@ export class Config {
         const stored = localStorage.getItem(Config.STORAGE_KEY);
         if (stored) {
           const parsed = JSON.parse(stored) as Partial<AppConfig>;
-          return { ...Config.DEFAULT_CONFIG, ...parsed };
+          return {
+            ...Config.DEFAULT_CONFIG,
+            ...parsed,
+            ui: {
+              ...Config.DEFAULT_CONFIG.ui,
+              ...parsed.ui,
+              tabOrder: Array.isArray(parsed.ui?.tabOrder) ? parsed.ui.tabOrder : Config.DEFAULT_CONFIG.ui.tabOrder
+            }
+          };
         }
       }
     } catch (error) {
@@ -121,7 +139,25 @@ export class Config {
   }
 
   public getConfig(): AppConfig {
-    return { ...this.config };
+    return {
+      ...this.config,
+      ui: {
+        ...this.config.ui,
+        tabOrder: [...this.config.ui.tabOrder]
+      }
+    };
+  }
+
+  private getOrderedCategoryNames(categoryNames: string[], preferredOrder = this.config.ui.tabOrder): string[] {
+    const order = preferredOrder;
+    if (order.length === 0) {
+      return [...categoryNames];
+    }
+
+    const categorySet = new Set(categoryNames);
+    const ordered = order.filter(name => categorySet.has(name));
+    const missing = categoryNames.filter(name => !ordered.includes(name));
+    return [...ordered, ...missing];
   }
 
   public setTheme(theme: Theme): void {
@@ -143,6 +179,17 @@ export class Config {
       this.config.ui.selectedTab = tab;
       this.saveConfig();
     }
+  }
+
+  public setTabOrder(tabOrder: string[]): void {
+    const categoryNames = CustomDataStore.getCategoryNames();
+    const normalized = this.getOrderedCategoryNames(categoryNames, tabOrder.filter(Boolean));
+    const current = this.config.ui.tabOrder;
+    if (normalized.length === current.length && normalized.every((name, index) => name === current[index])) {
+      return;
+    }
+    this.config.ui.tabOrder = normalized;
+    this.saveConfig();
   }
 
   public setQuality(quality: Quality): void {

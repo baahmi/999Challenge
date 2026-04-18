@@ -44,8 +44,13 @@ export function Main() {
   const [categoryNames, setCategoryNames] = useState<string[]>(() => Config.getCategoryNames());
 
   useEffect(() => {
-    const unsub = CustomDataStore.subscribe(() => setCategoryNames(Config.getCategoryNames()));
-    return unsub;
+    const syncCategoryNames = () => setCategoryNames(Config.getCategoryNames());
+    const unsubData = CustomDataStore.subscribe(syncCategoryNames);
+    const unsubConfig = Config.getInstance().subscribe(syncCategoryNames);
+    return () => {
+      unsubData();
+      unsubConfig();
+    };
   }, []);
 
   // Compute data when compacted, categoryNames, or quality changes

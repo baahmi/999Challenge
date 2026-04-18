@@ -22,18 +22,27 @@ export function Tabs({ onCategoryChange, children }: TabsProps) {
   const [value, setValue] = useState(Config.getSelectedTab());
   const [tabsPosition, setTabsPosition] = useState(Config.getTabsPosition());
   const [maxWidth, setMaxWidth] = useState<string>('auto');
+  const [draggedCategory, setDraggedCategory] = useState<string | null>(null);
+  const [dropTargetCategory, setDropTargetCategory] = useState<string | null>(null);
   const [categoryNames, setCategoryNames] = useState<string[]>(
     () => [...Config.getCategoryNames()]
   );
+  const suppressSelectionRef = useRef(false);
 
   useEffect(() => {
-    const unsub = CustomDataStore.subscribe(() => {
-      const next = [...Config.getCategoryNames()].sort((a, b) => a.localeCompare(b));
+    const syncCategoryNames = () => {
+      const next = [...Config.getCategoryNames()];
       setCategoryNames(next);
       // If selected tab no longer exists, fall back to Overview
       setValue(v => next.includes(v) || v === Config.getSelectedTab() ? v : OVERVIEW_TAB);
-    });
-    return unsub;
+    };
+
+    const unsubData = CustomDataStore.subscribe(syncCategoryNames);
+    const unsubConfig = Config.getInstance().subscribe(syncCategoryNames);
+    return () => {
+      unsubData();
+      unsubConfig();
+    };
   }, []);
   const tabListTopRef = useRef<HTMLDivElement>(null);
   const tabListBottomRef = useRef<HTMLDivElement>(null);
@@ -89,9 +98,25 @@ export function Tabs({ onCategoryChange, children }: TabsProps) {
   };
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+    if (suppressSelectionRef.current) {
+      suppressSelectionRef.current = false;
+      return;
+    }
     setValue(newValue);
     Config.setSelectedTab(newValue);
     onCategoryChange?.(newValue);
+  };
+
+  const reorderCategories = (fromCategory: string, toCategory: string) => {
+    if (fromCategory === toCategory) return;
+    const next = [...categoryNames];
+    const fromIndex = next.indexOf(fromCategory);
+    const toIndex = next.indexOf(toCategory);
+    if (fromIndex === -1 || toIndex === -1) return;
+    const [moved] = next.splice(fromIndex, 1);
+    if (!moved) return;
+    next.splice(toIndex, 0, moved);
+    Config.setTabOrder(next);
   };
 
   const renderTabBar = (ref: React.RefObject<HTMLDivElement | null>, stickyClass: string) => (
@@ -119,8 +144,45 @@ export function Tabs({ onCategoryChange, children }: TabsProps) {
           <Tab key={OVERVIEW_TAB} label={OVERVIEW_TAB} value={OVERVIEW_TAB}
             style={isDark && value !== OVERVIEW_TAB ? { color: 'rgba(255,255,255,0.6)' } : undefined} />
           {categoryNames.map((category) => (
-            <Tab key={category} label={formatTabLabel(category)} value={category}
-              style={isDark && value !== category ? { color: 'rgba(255,255,255,0.6)' } : undefined} />
+            <Tab
+              key={category}
+              label={formatTabLabel(category)}
+              value={category}
+              draggable
+              title="Drag to reorder"
+              onDragStart={() => {
+                setDraggedCategory(category);
+                setDropTargetCategory(category);
+              }}
+              onDragEnd={() => {
+                setDraggedCategory(null);
+                setDropTargetCategory(null);
+              }}
+              onDragOver={(event) => {
+                event.preventDefault();
+                if (dropTargetCategory !== category) {
+                  setDropTargetCategory(category);
+                }
+              }}
+              onDrop={(event) => {
+                event.preventDefault();
+                if (draggedCategory && draggedCategory !== category) {
+                  suppressSelectionRef.current = true;
+                  reorderCategories(draggedCategory, category);
+                  window.setTimeout(() => {
+                    suppressSelectionRef.current = false;
+                  }, 0);
+                }
+                setDraggedCategory(null);
+                setDropTargetCategory(null);
+              }}
+              className={[
+                'category-tab',
+                draggedCategory === category ? 'category-tab-dragging' : '',
+                dropTargetCategory === category && draggedCategory !== category ? 'category-tab-drop-target' : ''
+              ].filter(Boolean).join(' ')}
+              style={isDark && value !== category ? { color: 'rgba(255,255,255,0.6)' } : undefined}
+            />
           ))}
         </TabList>
       </div>

@@ -112,6 +112,32 @@ function fmtNumber(n: string | number): string {
   return n.toLocaleString();
 }
 
+function clampPercent(value: number): number {
+  return Math.max(0, Math.min(100, value));
+}
+
+function getNameCellProgressStyle(
+  percentage: number,
+  isDark: boolean,
+  rowBg: string,
+  enabled: boolean
+): React.CSSProperties {
+  if (!enabled) {
+    return { backgroundColor: rowBg };
+  }
+
+  const progress = clampPercent(percentage);
+  if (progress <= 0) {
+    return { backgroundColor: rowBg };
+  }
+
+  const fillColor = isDark ? 'rgba(102, 187, 106, 0.34)' : 'rgba(102, 187, 106, 0.28)';
+  return {
+    backgroundColor: rowBg,
+    backgroundImage: `linear-gradient(90deg, ${fillColor} 0%, ${fillColor} ${progress}%, transparent ${progress}%, transparent 100%)`
+  };
+}
+
 const COLUMNS: Array<{ key: string; label: string; minW: number }> = [
   { key: 'checkbox',    label: '✓',         minW: 20 },
   { key: 'percentage',  label: '%',         minW: 40 },
@@ -335,6 +361,7 @@ export function ItemTable({ items }: ItemTableProps) {
               const hasUnfinishedDependents = itemRow?.hasUnfinishedDependents ?? false;
               // Check if at least one quality tier has a complete stack of 999
               const hasCompleteStack = !isTotal && (itemRow?.rawStacks?.some(count => count >= 999) ?? false);
+              const showNameProgress = !isTotal && !hasUnfinishedDependents && !(done && hasCompleteStack);
               const rowBg = isTotal
                 ? (isDark ? '#3a3a3a' : '#d0d0d0')
                 : hasWrongQuality
@@ -363,6 +390,7 @@ export function ItemTable({ items }: ItemTableProps) {
                       overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
                       textAlign: col.key === 'checkbox' ? 'center' : COST_KEYS.has(col.key) ? 'right' : undefined,
                       color: col.key === 'gold_needed' ? (isDark ? '#ffd54f' : '#9a7000') : col.key === 'qi_needed' ? (isDark ? '#ce93d8' : '#8b44ac') : undefined,
+                      ...(col.key === 'name' ? getNameCellProgressStyle(row.percentage, isDark, rowBg, showNameProgress) : { backgroundColor: rowBg }),
                       ...stickyStyle,
                     }}>
                       {renderCell(row, index, col.key)}
