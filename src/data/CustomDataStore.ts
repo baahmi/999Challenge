@@ -1,10 +1,21 @@
-import defaultItemsData from './items.json';
+import rawItemsData from './items.json';
 import defaultCategoriesData from './categories.json';
+import rawTroveItems from './trove.json';
+import rawPartsData from './parts.json';
 
 const STORAGE_KEY = 'stardew-custom-data';
 
 // [category, name, displayName]
-export type ItemEntry = [string, string, string];
+export type RawItemEntry = [category: string, name: string, displayName: string];
+export type ItemEntry = {
+  category: string,
+  name: string,
+  displayName: string | null
+};
+
+export type IngredientMap = Record<string, [string | null, number]>;
+export type YieldSpec = number | [number, number];
+export type PartsEntry = [string, IngredientMap, YieldSpec?];
 
 export interface CustomData {
   categoryNames: string[];
@@ -17,9 +28,13 @@ class CustomDataManager {
   private static instance: CustomDataManager;
   private data: CustomData;
   private listeners: Set<Listener> = new Set();
+  private partsData: PartsEntry[];
+  private troveItems: string[];
 
   private constructor() {
     this.data = this.loadFromStorage() ?? this.buildDefaults();
+    this.partsData = rawPartsData as PartsEntry[];
+    this.troveItems = rawTroveItems as string[];
   }
 
   static getInstance(): CustomDataManager {
@@ -42,6 +57,12 @@ class CustomDataManager {
   }
 
   private buildDefaults(): CustomData {
+    // convert to real type
+    const defaultItemsData: ItemEntry[] = (rawItemsData as RawItemEntry[]).map(([category, name, displayName]) => ({
+      category,
+      name,
+      displayName
+    }));
     return {
       categoryNames: (defaultCategoriesData as { names: string[] }).names,
       items: defaultItemsData as ItemEntry[],
@@ -58,6 +79,14 @@ class CustomDataManager {
     } catch {
       return false;
     }
+  }
+
+  getTroveItems(): string[] {
+    return this.troveItems;
+  }
+
+  getPartsData(): PartsEntry[] {
+    return this.partsData;
   }
 
   getCategoryNames(): string[] {

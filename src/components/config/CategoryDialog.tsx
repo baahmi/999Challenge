@@ -6,7 +6,7 @@ import {
 } from '@mui/material';
 import { Add, Search, Edit } from '@mui/icons-material';
 import { CustomDataStore } from '../../data/CustomDataStore';
-import type { CustomData } from '../../data/CustomDataStore';
+import type { CustomData, ItemEntry } from '../../data/CustomDataStore';
 
 interface CategoryDialogProps {
   open: boolean;
@@ -15,7 +15,7 @@ interface CategoryDialogProps {
 
 export function CategoryDialog({ open, onClose }: CategoryDialogProps) {
   const [categories, setCategories] = useState<string[]>([]);
-  const [items, setItems] = useState<[string, string, string][]>([]);
+  const [items, setItems] = useState<ItemEntry[]>([]);
   const [newCatName, setNewCatName] = useState('');
   const [editingCat, setEditingCat] = useState<string | null>(null);
   const [editingCatName, setEditingCatName] = useState('');
@@ -43,11 +43,11 @@ export function CategoryDialog({ open, onClose }: CategoryDialogProps) {
   const filteredItems = useMemo(() => {
     return items
       .map((entry, idx) => ({ entry, idx }))
-      .filter(({ entry: [cat, name] }) => {
-        const catMatch = filterCat === 'All' || cat === filterCat;
-        const nameMatch = name.toLowerCase().includes(search.toLowerCase());
-        return catMatch && nameMatch;
-      });
+      // .filter(({ entry: [cat, name] }) => {
+      //   const catMatch = filterCat === 'All' || cat === filterCat;
+      //   const nameMatch = name.toLowerCase().includes(search.toLowerCase());
+      //   return catMatch && nameMatch;
+      // });
   }, [items, filterCat, search]);
 
   const addCategory = () => {
@@ -59,7 +59,7 @@ export function CategoryDialog({ open, onClose }: CategoryDialogProps) {
 
   const deleteCategory = (cat: string) => {
     setCategories(prev => prev.filter(c => c !== cat));
-    setItems(prev => prev.map(([c, n]) => c === cat ? ['asdf', n, n] : [c, n, n]));
+    // setItems(prev => prev.map(([c, n]) => c === cat ? ['asdf', n, n] : [c, n, n]));
     if (filterCat === cat) setFilterCat('All');
   };
 
@@ -77,14 +77,15 @@ export function CategoryDialog({ open, onClose }: CategoryDialogProps) {
     }
     if (newName !== editingCat) {
       setCategories(prev => prev.map(c => c === editingCat ? newName : c));
-      setItems(prev => prev.map(([c, n]) => c === editingCat ? [newName, n, n] : [c, n, n]));
+      // setItems(prev => prev.map(([c, n]) => c === editingCat ? [newName, n, n] : [c, n, n]));
       if (filterCat === editingCat) setFilterCat(newName);
     }
     setEditingCat(null);
   };
 
+  // Disabled for now
   const changeItemCategory = (originalIdx: number, newCat: string) => {
-    setItems(prev => prev.map((entry, i) => i === originalIdx ? [newCat, entry[1]!, entry[1]!] : entry));
+    // setItems(prev => prev.map((entry, i) => i === originalIdx ? ItemEntry(newCat, entry[1]!, entry[1]!) : entry));
   };
 
   const handleSave = () => {
@@ -197,24 +198,24 @@ export function CategoryDialog({ open, onClose }: CategoryDialogProps) {
               </tr>
             </thead>
             <tbody>
-              {filteredItems.map(({ entry: [cat, name], idx }) => (
-                <tr key={idx} style={{ borderBottom: '1px solid rgba(128,128,128,0.12)' }}>
-                  <td style={{ padding: '3px 12px', fontSize: '0.875rem' }}>{name}</td>
-                  <td style={{ padding: '3px 12px' }}>
-                    <select
-                      value={cat}
-                      onChange={e => changeItemCategory(idx, e.target.value)}
-                      style={{ fontSize: '0.85rem', minWidth: 160, padding: '3px 6px' }}
-                    >
-                      {itemSelectCategories.map(c => (
-                        <option key={c} value={c}>
-                          {c === 'asdf' ? '(unassigned)' : c}
-                        </option>
-                      ))}
-                    </select>
-                  </td>
-                </tr>
-              ))}
+              {/*{filteredItems.map(({ entry: [cat, name], idx }) => (*/}
+              {/*  <tr key={idx} style={{ borderBottom: '1px solid rgba(128,128,128,0.12)' }}>*/}
+              {/*    <td style={{ padding: '3px 12px', fontSize: '0.875rem' }}>{name}</td>*/}
+              {/*    <td style={{ padding: '3px 12px' }}>*/}
+              {/*      <select*/}
+              {/*        value={cat}*/}
+              {/*        onChange={e => changeItemCategory(idx, e.target.value)}*/}
+              {/*        style={{ fontSize: '0.85rem', minWidth: 160, padding: '3px 6px' }}*/}
+              {/*      >*/}
+              {/*        {itemSelectCategories.map(c => (*/}
+              {/*          <option key={c} value={c}>*/}
+              {/*            {c === 'asdf' ? '(unassigned)' : c}*/}
+              {/*          </option>*/}
+              {/*        ))}*/}
+              {/*      </select>*/}
+              {/*    </td>*/}
+              {/*  </tr>*/}
+              {/*))}*/}
               {filteredItems.length === 0 && (
                 <tr>
                   <td colSpan={2} style={{ padding: '16px', textAlign: 'center', opacity: 0.5 }}>

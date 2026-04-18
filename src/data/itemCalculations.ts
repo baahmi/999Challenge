@@ -1,9 +1,9 @@
-import partsData from './parts.json';
 import { CustomDataStore } from './CustomDataStore';
 import notesData from './notes.json';
 import pricesData from './prices.json';
 import { Config } from '../config/Config';
 import type { Quality } from '../config/Config';
+import type { YieldSpec } from "./CustomDataStore";
 
 const TARGET = 999;
 
@@ -60,10 +60,6 @@ const shopEntriesMap = new Map<string, ShopEntry[]>();
   }
 })();
 
-type IngredientMap = Record<string, [string | null, number]>;
-type YieldSpec = number | [number, number];
-type PartsEntry = [string, IngredientMap, YieldSpec?];
-
 function avgYieldOf(spec: YieldSpec | undefined): number {
   if (spec === undefined) return 1;
   if (Array.isArray(spec)) return (spec[0] + spec[1]) / 2;
@@ -72,7 +68,7 @@ function avgYieldOf(spec: YieldSpec | undefined): number {
 
 const yieldMap = new Map<string, number>();
 (function buildYieldMap() {
-  for (const entry of partsData as PartsEntry[]) {
+  for (const entry of CustomDataStore.getPartsData()) {
     const spec = entry[2];
     if (spec !== undefined) yieldMap.set(entry[0], avgYieldOf(spec));
   }
@@ -127,7 +123,7 @@ const reverseMap = new Map<string, string[]>();           // ingredient -> [craf
 // Cooking items cap at gold quality naturally (Qi Seasoning provides iridium)
 function getCookingItems(): Set<string> {
   return new Set<string>(
-    CustomDataStore.getItemsData().filter(([cat]) => cat === 'Cooking').map(([, name]) => name)
+    CustomDataStore.getItemsData().filter((item) => item.category === 'Cooking').map((item) => item.name)
   );
 }
 
@@ -138,7 +134,7 @@ function getCrabpotItems(): Set<string> {
 }
 
 (function buildMaps() {
-  for (const [craftedName, ingredients] of partsData as PartsEntry[]) {
+  for (const [craftedName, ingredients] of CustomDataStore.getPartsData()) {
     const recipe = new Map<string, number>();
     for (const [id, entry] of Object.entries(ingredients)) {
       const [name, qty] = entry as [string | null, number];
@@ -156,6 +152,10 @@ function craftableCount(
   craftedName: string,
   inventoryMap: Map<string, number>
 ): { count: number; limiting: string | null } {
+  if(craftedName === 'Void Salmon Bait') {
+    console.log(craftedName, inventoryMap);
+    debugger;
+  }
   const recipe = recipeMap.get(craftedName);
   if (!recipe) return { count: 0, limiting: null };
   let min = Infinity;
@@ -205,9 +205,6 @@ function computeTooltipData(
 
   const cookingItems = Config.getQuality() === 'highest' ? getCookingItems() : null;
   const usedBy: UsedByInfo[] = (reverseMap.get(itemName) ?? []).map(craftedName => {
-    // if(itemName === 'Radioactive Ore') {
-    //   console.log(itemName);
-    // }
     const { count } = craftableCount(craftedName, inventoryMap);
     const alreadyHave = inventoryMap.get(craftedName) ?? 0;
     const done = completionMap.get(craftedName) ?? false;
@@ -258,7 +255,7 @@ function getQualityFilteredCount(stacks: number[] | undefined, quality: Quality,
     default: return stacks.reduce((s, v) => s + v, 0);
   }
 }
-// MVDB
+
 export function computeCategoryItems(
   categoryName: string,
   compacted: Array<{ name: string; stack: number; quality?: number[] }>
@@ -271,10 +268,10 @@ export function computeCategoryItems(
     let  maxTier = (quality === 'highest' && getCookingItems().has(item.name)) ? 2 : 4;
     maxTier = (quality === 'highest' && getCrabpotItems().has(item.name)) ? 1 : maxTier;
     // this is making a different count for higest quality
-    // const count = item.quality
-    //   ? getQualityFilteredCount(item.quality, quality, maxTier)
-    //   : item.stack;
-    const count = item.stack;
+    const count = item.quality
+      ? getQualityFilteredCount(item.quality, quality, maxTier)
+      : item.stack;
+    // const count = item.stack;
     inventoryMap.set(item.name, (inventoryMap.get(item.name) ?? 0) + count);
     if (item.quality) {
       const prev = stacksMap.get(item.name) ?? [0, 0, 0, 0, 0];
@@ -285,57 +282,69 @@ export function computeCategoryItems(
   const requiredFromParts = new Map<string, number>();
   const totalFromParts = new Map<string, number>();
 
-  for (const [craftedItemName, ingredients] of partsData as PartsEntry[]) {
+  {
+    // add trove to the requireds
+    const length = CustomDataStore.getTroveItems().length;
+    const minTroveCount: number = Math.min(...CustomDataStore.getTroveItems().map(itemName => inventoryMap.get(itemName) ?? 0));
+    requiredFromParts.set("Artifact Trove", TARGET*length);
+    totalFromParts.set("Artifact Trove", minTroveCount*length);
+  }
+
+  for (const [craftedItemName, ingredients] of CustomDataStore.getPartsData()) {
+
     const craftedCount = inventoryMap.get(craftedItemName) ?? 0;
     const avgYield = yieldMap.get(craftedItemName) ?? 1;
-    const craftsNeeded = Math.ceil(TARGET / avgYield);
+    const required = requiredFromParts.get(craftedItemName);
+    const craftsNeeded = Math.ceil((required ?? TARGET )/ avgYield);
     for (const [ingredientId, ingredientEntry] of Object.entries(ingredients)) {
       const [ingredientName, qty] = ingredientEntry as [string | null, number];
       if (isWildcard(ingredientId, ingredientName)) continue;
       const name = ingredientName!;
-      requiredFromParts.set(name, (requiredFromParts.get(name) ?? 0) + qty * craftsNeeded);
-      totalFromParts.set(name, (totalFromParts.get(name) ?? 0) + Math.round(craftedCount / avgYield) * qty);
+      const requiredCount = Math.round((qty * (TARGET+(required ?? 0))) / avgYield);
+      const totalCount = Math.round(craftedCount / avgYield);
+      requiredFromParts.set(name, (requiredFromParts.get(name) ?? 0) + requiredCount);
+      totalFromParts.set(name, (totalFromParts.get(name) ?? 0) + totalCount);
     }
   }
 
   // Qi Seasoning: one per cooked dish when targeting highest quality
   if (quality === 'highest') {
     const seen = new Set<string>();
-    for (const [cat, itemName] of CustomDataStore.getItemsData()) {
-      if (cat !== 'Cooking' || seen.has(itemName)) continue;
-      seen.add(itemName);
+    for (const item of CustomDataStore.getItemsData()) {
+      if (item.category !== 'Cooking' || seen.has(item.name)) continue;
+      seen.add(item.name);
       requiredFromParts.set('Qi Seasoning', (requiredFromParts.get('Qi Seasoning') ?? 0) + TARGET);
-      totalFromParts.set('Qi Seasoning', (totalFromParts.get('Qi Seasoning') ?? 0) + (inventoryMap.get(itemName) ?? 0));
+      totalFromParts.set('Qi Seasoning', (totalFromParts.get('Qi Seasoning') ?? 0) + (inventoryMap.get(item.name) ?? 0));
     }
   }
 
   const completionMap = new Map<string, boolean>();
-  for (const [, itemName] of CustomDataStore.getItemsData()) {
-    const r = inventoryMap.get(itemName) ?? 0;
-    const req = TARGET + (requiredFromParts.get(itemName) ?? 0);
-    const tot = totalFromParts.get(itemName) ?? 0;
-    completionMap.set(itemName, r + tot >= req);
+  for (const item of CustomDataStore.getItemsData()) {
+    const r = inventoryMap.get(item.name) ?? 0;
+    const req = TARGET + (requiredFromParts.get(item.name) ?? 0);
+    const tot = totalFromParts.get(item.name) ?? 0;
+    // to be complete we need raw to be at least 999.
+    completionMap.set(item.name, r + tot >= req && r >= TARGET);
   }
 
   const source = CustomDataStore.getItemsData();
-  const entries = categoryName === 'All' ? source : source.filter(([cat]) => cat === categoryName);
+  const entries = categoryName === 'All' ? source : source.filter((item) => item.category === categoryName);
 
   const seen = new Set<string>();
+  // ignore Qi fruit, even though we can have a count of it, it is too short.
+  seen.add("Qi Fruit");
   const rows: ItemRow[] = [];
 
-  for (const [, itemName] of entries) {
-    if (seen.has(itemName)) continue;
-    seen.add(itemName);
-
-    const raw = inventoryMap.get(itemName) ?? 0;
-    const required = TARGET + (requiredFromParts.get(itemName) ?? 0);
-    const total = totalFromParts.get(itemName) ?? 0;
-
-    rows.push({ name: itemName, required, total, raw, rawStacks: stacksMap.get(itemName), buyPrice: priceMap.get(itemName), tooltip: computeTooltipData(itemName, raw , inventoryMap, completionMap) });
+  for (const item of entries) {
+    if (seen.has(item.name)) continue;
+    seen.add(item.name);
+    const raw = inventoryMap.get(item.name) ?? 0;
+    const required = TARGET + (requiredFromParts.get(item.name) ?? 0);
+    const total = totalFromParts.get(item.name) ?? 0;
+    rows.push({ name: item.displayName || item.name, required, total, raw, rawStacks: stacksMap.get(item.name), buyPrice: priceMap.get(item.name), tooltip: computeTooltipData(item.name, raw , inventoryMap, completionMap) });
   }
 
   rows.sort((a, b) => a.name.localeCompare(b.name));
-  // console.log(categoryName, rows);
   return rows;
 }
 
@@ -343,16 +352,10 @@ export function logDataIssues(
   compacted: Array<{ name: string; stack: number }>
 ): void {
   const itemsList = CustomDataStore.getItemsData();
-  const partsList = partsData as PartsEntry[];
+  const partsList = CustomDataStore.getPartsData();
 
-  const knownItemNames = new Set(itemsList.map(([, name]) => name));
+  const knownItemNames = new Set(itemsList.map((item) => item.name));
   const inventoryNames = new Set(compacted.map(i => i.name));
-
-  for (const [cat, name] of itemsList) {
-    if (cat === 'asdf') {
-      console.warn(`[items.json] Item "${name}" has placeholder category "asdf" — assign a real category`);
-    }
-  }
 
   for (const [craftedName, ingredients] of partsList) {
     if (!knownItemNames.has(craftedName)) {
@@ -380,6 +383,7 @@ export function logDataIssues(
 // test-only exports (excluded in production)
 // -----------------------------------------
 export const __test = {
+  computeCategoryItems,
   craftableCount,
   computeTooltipData,
   isWildcard,

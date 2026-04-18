@@ -4,9 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "bun --hot src/index.ts",
+    "dev": "bun --hot src/index.ts --sourcemap",
     "start": "NODE_ENV=production bun src/index.ts",
-    "build": "bun run build.ts"
+    "build": "bun run build.ts --sourcemap"
   },
   "dependencies": {
     "@emotion/styled": "11.14.1",

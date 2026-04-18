@@ -20,11 +20,7 @@ export function App() {
           <CssBaseline/>
           <div className="app">
             <Header />
-            <Main>
-              <section>
-                <h1>Welcome</h1>
-              </section>
-            </Main>
+            <Main/>
             <Footer />
           </div>
       </ThemeProvider>

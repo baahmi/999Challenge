@@ -817,7 +817,7 @@ null
 [
 "Forage",
 "Morel",
-null
+"Mushroom: Morel"
 ],
 [
 "Fruits",
@@ -837,7 +837,7 @@ null
 [
 "Consumables",
 "Warp Totem: Desert",
-"Totem: Deser"
+"Totem: Desert"
 ],
 [
 "Vegetables",
@@ -917,7 +917,7 @@ null
 [
 "Forage",
 "Chanterelle",
-null
+"Mushroom: Chanterelle"
 ],
 [
 "Fruits",
@@ -1005,19 +1005,19 @@ null
 null
 ],
 [
-"Artisan",
+"Artisan Goods (Other)",
 "Mayonnaise",
 null
 ],
 [
-"Artisan",
+"Artisan Goods (Other)",
 "Duck Mayonnaise",
-null
+"Mayanaise: Duck"
 ],
 [
-"Artisan",
+"Artisan Goods (Other)",
 "Void Mayonnaise",
-null
+"Mayanaise: Void"
 ],
 [
 "Seeds",
@@ -1105,7 +1105,7 @@ null
 null
 ],
 [
-"Artisan",
+"Artisan Goods (Other)",
 "Honey",
 null
 ],
@@ -1115,12 +1115,12 @@ null
 null
 ],
 [
-"Artisan",
+"Pickles",
 "Pickles",
 null
 ],
 [
-"Artisan",
+"Jelly",
 "Jelly",
 null
 ],
@@ -1225,7 +1225,7 @@ null
 null
 ],
 [
-"Fish",
+"Forage",
 "Coral",
 null
 ],
@@ -1245,7 +1245,7 @@ null
 null
 ],
 [
-"Fish",
+"Forage",
 "Sea Urchin",
 null
 ],
@@ -1282,7 +1282,7 @@ null
 [
 "Forage",
 "Common Mushroom",
-null
+"Mushroom: Common"
 ],
 [
 "Decoration (Infrastructure)",
@@ -1362,7 +1362,7 @@ null
 [
 "Forage",
 "Red Mushroom",
-null
+"Mushroom: Red"
 ],
 [
 "Flowers",
@@ -1372,7 +1372,7 @@ null
 [
 "Forage",
 "Purple Mushroom",
-null
+"Mushroom: Purple"
 ],
 [
 "Cooking",
@@ -1380,17 +1380,17 @@ null
 null
 ],
 [
-"Artisan",
+"Artisan Goods (Other)",
 "Cheese",
 null
 ],
 [
-"Artisan",
+"Artisan Goods (Other)",
 "Goat Cheese",
 null
 ],
 [
-"Artisan",
+"Artisan Goods (Other)",
 "Cloth",
 null
 ],
@@ -1400,7 +1400,7 @@ null
 null
 ],
 [
-"Artisan",
+"Artisan Goods (Other)",
 "Truffle Oil",
 null
 ],
@@ -1967,7 +1967,7 @@ null
 [
 "Machines",
 "Sprinkler",
-null
+"Sprinkler: Basic"
 ],
 [
 "Flowers",
@@ -2037,12 +2037,12 @@ null
 [
 "Machines",
 "Quality Sprinkler",
-null
+"Sprinkler: Quality"
 ],
 [
 "Machines",
 "Iridium Sprinkler",
-null
+"Sprinkler: Iridium"
 ],
 [
 "Cooking",
@@ -2435,9 +2435,9 @@ null
 null
 ],
 [
-"Artisan",
+"Artisan Goods (Other)",
 "Dinosaur Mayonnaise",
-null
+"Mayanaise: Dino"
 ],
 [
 "Gifts/Rewards",
@@ -2450,7 +2450,7 @@ null
 null
 ],
 [
-"Artisan",
+"Aged Roe",
 "Caviar",
 null
 ],
@@ -2617,7 +2617,7 @@ null
 [
 "Forage",
 "Magma Cap",
-null
+"Mushroom: Magma Cap"
 ],
 [
 "Monster Drops",
@@ -2865,7 +2865,7 @@ null
 null
 ],
 [
-"Artisan",
+"Artisan Goods (Dehydrator)",
 "Raisins",
 null
 ],
@@ -2927,11 +2927,6 @@ null
 [
 "Fruits",
 "Powdermelon",
-null
-],
-[
-"Artisan",
-"Smoked",
 null
 ],
 [
@@ -3275,12 +3270,12 @@ null
 null
 ],
 [
-"Machines",
+"Decoration (Other)",
 "Stone Parrot",
 null
 ],
 [
-"Machines",
+"Decoration (Other)",
 "Stone Owl",
 null
 ],
@@ -3310,7 +3305,7 @@ null
 null
 ],
 [
-"Machines",
+"Decoration (Other)",
 "Stone Owl",
 null
 ],
@@ -3420,7 +3415,7 @@ null
 null
 ],
 [
-"Machines",
+"Decoration (Lighting)",
 "Stump Brazier",
 null
 ],
@@ -3497,7 +3492,7 @@ null
 [
 "Machines",
 "Deluxe Scarecrow",
-null
+"Scarecrow: Deluxe"
 ],
 [
 "Decoration (Other)",
@@ -3841,11 +3836,6 @@ null
 ],
 [
 "Bait",
-"Sea Urchin Bait",
-null
-],
-[
-"Bait",
 "Sturgeon Bait",
 null
 ],
@@ -3967,11 +3957,6 @@ null
 [
 "Bait",
 "Blobfish Bait",
-null
-],
-[
-"Bait",
-"Squid Ink Bait",
 null
 ],
 [
@@ -4547,11 +4532,6 @@ null
 [
 "Aged Roe",
 "Aged Sea Urchin Roe",
-null
-],
-[
-"Aged Roe",
-"Aged Sturgeon Roe",
 null
 ],
 [
@@ -5350,142 +5330,137 @@ null
 null
 ],
 [
-"Dried",
+"Artisan Goods (Dehydrator)",
 "Dried Coconuts",
 null
 ],
 [
-"Dried",
+"Artisan Goods (Dehydrator)",
 "Dried Cactus Fruits",
 null
 ],
 [
-"Dried",
+"Artisan Goods (Dehydrator)",
 "Dried Rhubarbs",
 null
 ],
 [
-"Dried",
+"Artisan Goods (Dehydrator)",
 "Dried Melons",
 null
 ],
 [
-"Dried",
+"Artisan Goods (Dehydrator)",
 "Dried Blueberries",
 null
 ],
 [
-"Dried",
+"Artisan Goods (Dehydrator)",
 "Dried Hot Peppers",
 null
 ],
 [
-"Dried",
+"Artisan Goods (Dehydrator)",
 "Dried Starfruits",
 null
 ],
 [
-"Dried",
+"Artisan Goods (Dehydrator)",
 "Dried Cranberries",
 null
 ],
 [
-"Dried",
+"Artisan Goods (Dehydrator)",
 "Dried Salmonberries",
 null
 ],
 [
-"Dried",
+"Artisan Goods (Dehydrator)",
 "Dried Spice Berries",
 null
 ],
 [
-"Dried",
-"Dried Grapes",
-null
-],
-[
-"Dried",
+"Artisan Goods (Dehydrator)",
 "Dried Strawberries",
 null
 ],
 [
-"Dried",
+"Artisan Goods (Dehydrator)",
 "Dried Wild Plums",
 null
 ],
 [
-"Dried",
+"Artisan Goods (Dehydrator)",
 "Dried Blackberries",
 null
 ],
 [
-"Dried",
+"Artisan Goods (Dehydrator)",
 "Dried Crystal Fruits",
 null
 ],
 [
-"Dried",
+"Artisan Goods (Dehydrator)",
 "Dried Ancient Fruits",
 null
 ],
 [
-"Dried",
+"Artisan Goods (Dehydrator)",
 "Dried Apples",
 null
 ],
 [
-"Dried",
+"Artisan Goods (Dehydrator)",
 "Dried Apricots",
 null
 ],
 [
-"Dried",
+"Artisan Goods (Dehydrator)",
 "Dried Oranges",
 null
 ],
 [
-"Dried",
+"Artisan Goods (Dehydrator)",
 "Dried Peaches",
 null
 ],
 [
-"Dried",
+"Artisan Goods (Dehydrator)",
 "Dried Pomegranates",
 null
 ],
 [
-"Dried",
+"Artisan Goods (Dehydrator)",
 "Dried Cherries",
 null
 ],
 [
-"Dried",
+"Artisan Goods (Dehydrator)",
 "Dried Bananas",
 null
 ],
 [
-"Dried",
+"Artisan Goods (Dehydrator)",
 "Dried Pineapples",
 null
 ],
 [
-"Dried",
+"Artisan Goods (Dehydrator)",
 "Dried Mangos",
 null
 ],
 [
-"Dried",
+"Artisan Goods (Dehydrator)",
 "Dried Qi Fruits",
 null
 ],
 [
-"Dried",
+"Artisan Goods (Dehydrator)",
 "Dried Powdermelons",
 null
 ],
 [
-"Dried",
+"Artisan Goods (Dehydrator)",
 "Raisins",
 null
 ],
@@ -5762,55 +5737,55 @@ null
 [
 "Forage",
 "Chanterelle",
-null
+"Mushroom: Chanterelle"
 ],
 [
 "Forage",
 "Common Mushroom",
-null
+"Mushroom: Common"
 ],
 [
 "Forage",
 "Magma Cap",
-null
+"Mushroom: Magma Cap"
 ],
 [
 "Forage",
 "Morel",
-null
+"Mushroom: Morel"
 ],
 [
 "Forage",
 "Purple Mushroom",
-null
+"Mushroom: Purple"
 ],
 [
 "Forage",
 "Red Mushroom",
-null
+"Mushroom: Red"
 ],
 [
-"Dried",
+"Artisan Goods (Dehydrator)",
 "Dried Chanterelles",
 null
 ],
 [
-"Dried",
+"Artisan Goods (Dehydrator)",
 "Dried Common Mushrooms",
 null
 ],
 [
-"Dried",
+"Artisan Goods (Dehydrator)",
 "Dried Magma Caps",
 null
 ],
 [
-"Dried",
+"Artisan Goods (Dehydrator)",
 "Dried Morels",
 null
 ],
 [
-"Dried",
+"Artisan Goods (Dehydrator)",
 "Dried Purple Mushrooms",
 null
 ],
@@ -5972,7 +5947,7 @@ null
 [
 "Artisan Goods (Other)",
 "Wild Honey",
-null
+"Honey: Wile"
 ],
 [
 "Decoration (Other)",

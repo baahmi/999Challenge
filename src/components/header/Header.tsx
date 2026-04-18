@@ -185,7 +185,7 @@ export function Header() {
                 </nav>
             </div>
             <ConfigDialog open={configOpen} onClose={() => setConfigOpen(false)} />
-            <CategoryDialog open={categoryOpen} onClose={() => setCategoryOpen(false)} />
+            {/*<CategoryDialog open={categoryOpen} onClose={() => setCategoryOpen(false)} />*/}
             <DiffDialog open={diffOpen} onClose={() => setDiffOpen(false)} journal={AppData.getJournal()} />
             <HistoryDialog open={historyOpen} onClose={() => setHistoryOpen(false)} journal={AppData.getJournal()} />
             <StatsDialog open={statsOpen} onClose={() => setStatsOpen(false)} stats={AppData.getStats()} journal={AppData.getJournal()} />

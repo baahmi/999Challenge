@@ -1,3 +1,7 @@
+[build]
+# will provide source maps in js files, so not for production
+sourcemap = "inline"
+#sourcemap = "external"
 [serve.static]
 plugins = ["bun-plugin-tailwind"]
 env = "BUN_PUBLIC_*"

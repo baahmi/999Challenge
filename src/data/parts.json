@@ -1060,8 +1060,6 @@
 "": ["Clam Roe",1]
 },1],["Aged Sea Urchin Roe",{
 "": ["Sea Urchin Roe",1]
-},1],["Aged Sturgeon Roe",{
-"": ["Sturgeon Roe",1]
 },1],["Aged Tiger Trout Roe",{
 "": ["Tiger Trout Roe",1]
 },1],["Aged Bullhead Roe",{
@@ -1144,6 +1142,8 @@
 "": ["Legend Roe",1]
 },1],["Aged Mutant Carp Roe",{
 "": ["Mutant Carp Roe",1]
+},1],["Caviar",{
+"": ["Sturgeon Roe",1]
 },1],["Pickled Parsnip",{
 "24": ["Parsnip",1]
 },1],["Pickled Green Bean",{
@@ -1410,6 +1410,66 @@
 "889": ["Qi Fruit",5]
 },1],["Dried Powdermelons",{
 "Powdermelon": ["Powdermelon",5]
+},1],["Pickled Wild Horseradish",{
+"16": ["Wild Horseradish",1]
+},1],["Pickled Daffodil",{
+"18": ["Daffodil",1]
+},1],["Pickled Leek",{
+"20": ["Leek",1]
+},1],["Pickled Dandelion",{
+"22": ["Dandelion",1]
+},1],["Pickled Cave Carrot",{
+"78": ["Cave Carrot",1]
+},1],["Pickled Morel",{
+"257": ["Morel",1]
+},1],["Pickled Chanterelle",{
+"281": ["Chanterelle",1]
+},1],["Pickled Spring Onion",{
+"399": ["Spring Onion",1]
+},1],["Pickled Common Mushroom",{
+"404": ["Common Mushroom",1]
+},1],["Pickled Hazelnut",{
+"408": ["Hazelnut",1]
+},1],["Pickled Winter Root",{
+"412": ["Winter Root",1]
+},1],["Pickled Snow Yam",{
+"416": ["Snow Yam",1]
+},1],["Pickled Purple Mushroom",{
+"422": ["Purple Mushroom",1]
+},1],["Pickled Ginger",{
+"829": ["Ginger",1]
+},1],["Pickled Magma Cap",{
+"851": ["Magma Cap",1]
+},1],["Wild Horseradish Juice",{
+"16": ["Wild Horseradish",1]
+},1],["Daffodil Juice",{
+"18": ["Daffodil",1]
+},1],["Leek Juice",{
+"20": ["Leek",1]
+},1],["Dandelion Juice",{
+"22": ["Dandelion",1]
+},1],["Cave Carrot Juice",{
+"78": ["Cave Carrot",1]
+},1],["Spring Onion Juice",{
+"399": ["Spring Onion",1]
+},1],["Hazelnut Juice",{
+"408": ["Hazelnut",1]
+},1],["Winter Root Juice",{
+"412": ["Winter Root",1]
+},1],["Snow Yam Juice",{
+"416": ["Snow Yam",1]
+},1],["Ginger Juice",{
+"829": ["Ginger",1]
+},1],["Dried Chanterelles",{
+"281": ["Chanterelle",5]
+},1],["Dried Common Mushrooms",{
+"404": ["Common Mushroom",5]
+},1],["Dried Magma Caps",{
+"851": ["Magma Cap",5]
+},1],["Dried Morels",{
+"257": ["Morel",5]
+},1],["Dried Purple Mushrooms",{
+"422": ["Purple Mushroom",5]
 },1],["Copper Bar",{
 "378": ["Copper Ore",5]
 },1],["Iron Bar",{
@@ -1430,60 +1490,6 @@
 "GoldenMysteryBox": ["Golden Mystery Box",105]
 },1],["Fossilized Skull",{
 "791": ["Golden Coconut",7]
-},1],["Chipped Amphora",{
-"275": ["Artifact Trove",28]
-},1],["Arrowhead",{
-"275": ["Artifact Trove",28]
-},1],["Ancient Doll",{
-"275": ["Artifact Trove",28]
-},1],["Elvish Jewelry",{
-"275": ["Artifact Trove",28]
-},1],["Chewing Stick",{
-"275": ["Artifact Trove",28]
-},1],["Ornamental Fan",{
-"275": ["Artifact Trove",28]
-},1],["Rare Disc",{
-"275": ["Artifact Trove",28]
-},1],["Ancient Sword",{
-"275": ["Artifact Trove",28]
-},1],["Rusty Spoon",{
-"275": ["Artifact Trove",28]
-},1],["Rusty Spur",{
-"275": ["Artifact Trove",28]
-},1],["Rusty Cog",{
-"275": ["Artifact Trove",28]
-},1],["Chicken Statue",{
-"275": ["Artifact Trove",28]
-},1],["Ancient Seed",{
-"275": ["Artifact Trove",28]
-},1],["Prehistoric Tool",{
-"275": ["Artifact Trove",28]
-},1],["Dried Starfish",{
-"275": ["Artifact Trove",28]
-},1],["Anchor",{
-"275": ["Artifact Trove",28]
-},1],["Glass Shards",{
-"275": ["Artifact Trove",28]
-},1],["Bone Flute",{
-"275": ["Artifact Trove",28]
-},1],["Prehistoric Handaxe",{
-"275": ["Artifact Trove",28]
-},1],["Dwarvish Helm",{
-"275": ["Artifact Trove",28]
-},1],["Dwarf Gadget",{
-"275": ["Artifact Trove",28]
-},1],["Ancient Drum",{
-"275": ["Artifact Trove",28]
-},1],["Golden Mask",{
-"275": ["Artifact Trove",28]
-},1],["Golden Relic",{
-"275": ["Artifact Trove",28]
-},1],["Treasure Chest",{
-"275": ["Artifact Trove",28]
-},1],["Golden Pumpkin",{
-"275": ["Artifact Trove",28]
-},1],["Pearl",{
-"275": ["Artifact Trove",28]
-},1],["Book_Artifact",{
-"275": ["Artifact Trove",28]
-},1]]
+},1],["Refined Quartz",{
+"82": ["Fire Quartz",5]
+},[15,20]]]

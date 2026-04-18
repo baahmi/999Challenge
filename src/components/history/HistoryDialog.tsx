@@ -195,7 +195,7 @@ export function HistoryDialog({ open, onClose, journal }: HistoryDialogProps) {
   }, [journal]);
 
   const allItems = useMemo(
-    () => [...new Set(CustomDataStore.getItemsData().map(([, name]) => name))].sort(),
+    () => [...new Set(CustomDataStore.getItemsData().map((itemEntry) => itemEntry.name))].sort(),
     []
   );
 
