@@ -74,20 +74,24 @@ function CircleStat({ value, max, label, fmt }: { value: number; max: number; la
 }
 
 export function Overview({ compacted, categoryNames }: OverviewProps) {
+  const [categoryStatsData, setCategoryStatsData] = React.useState<CategoryStat[]>([]);
+  const [allRows, setAllRows] = React.useState<ItemRow[]>([]);
+  
   const validCategories = useMemo(
     () => categoryNames.filter(n => n !== 'asdf'),
     [categoryNames]
   );
 
-  const categoryStatsData = useMemo(
-    () =>
-      validCategories
-        .map(name => buildCategoryStat(name, computeCategoryItems(name, compacted)))
-        .sort((a, b) => a.pct - b.pct),
-    [validCategories, compacted]
-  );
-
-  const allRows = useMemo(() => computeCategoryItems('All', compacted), [compacted]);
+  React.useEffect(() => {
+    if (compacted.length === 0) return;
+    
+    const stats = [];
+    for (const name of validCategories) {
+      stats.push(buildCategoryStat(name, computeCategoryItems(name, compacted)));
+    }
+    setCategoryStatsData(stats.sort((a, b) => a.pct - b.pct));
+    setAllRows(computeCategoryItems('All', compacted));
+  }, [validCategories, compacted]);
 
   const { goldTotal, goldCovered, qiTotal, qiCovered } = useMemo(() => ({
     goldTotal:   allRows.reduce((s, r) => s + (r.buyPrice?.gold  ? r.required * r.buyPrice.gold  : 0), 0),

@@ -120,6 +120,120 @@ function isWildcard(id: string, name: string | null): boolean {
 const recipeMap = new Map<string, Map<string, number>>(); // craftedName -> ingredient -> qty
 const reverseMap = new Map<string, string[]>();           // ingredient -> [craftedNames]
 
+// Global cache - computed once when data changes
+let globalCraftableCache = new Map<string, { count: number; limiting: string | null }>();
+let lastCompactedRef: any = null;
+let lastQuality: string | null = null;
+let globalInventoryMap = new Map<string, number>();
+let globalStacksMap = new Map<string, number[]>();
+
+// All computed item rows - computed once, filtered by category in the view
+let allComputedRows: ItemRow[] = [];
+
+// Flag to prevent concurrent computations
+let isComputing = false;
+
+// Compute all items once - called when data changes
+function computeAllItems(
+  compacted: Array<{ name: string; stack: number; quality?: number[] }>,
+  quality: Quality
+): void {
+  console.log(`[CACHE] Computing all items from scratch`);
+  
+  // Build inventory and stacks maps
+  globalInventoryMap.clear();
+  globalStacksMap.clear();
+  for (const item of compacted) {
+    let  maxTier = (quality === 'highest' && getCookingItems().has(item.name)) ? 2 : 4;
+    maxTier = (quality === 'highest' && getCrabpotItems().has(item.name)) ? 1 : maxTier;
+    const count = item.quality
+      ? getQualityFilteredCount(item.quality, quality, maxTier)
+      : item.stack;
+    globalInventoryMap.set(item.name, (globalInventoryMap.get(item.name) ?? 0) + count);
+    if (item.quality) {
+      const prev = globalStacksMap.get(item.name) ?? [0, 0, 0, 0, 0];
+      globalStacksMap.set(item.name, item.quality.map((v, i) => (prev[i] ?? 0) + v));
+    }
+  }
+  
+  // Pre-compute ALL craftable counts upfront
+  console.log(`[CACHE] Pre-computing all craftable counts`);
+  globalCraftableCache.clear();
+  for (const craftedName of recipeMap.keys()) {
+    const cached = craftableCount(craftedName, globalInventoryMap);
+    globalCraftableCache.set(craftedName, cached);
+  }
+  console.log(`[CACHE] Pre-computed ${globalCraftableCache.size} craftable counts`);
+  
+  const inventoryMap = globalInventoryMap;
+  const stacksMap = globalStacksMap;
+
+  const requiredFromParts = new Map<string, number>();
+  const totalFromParts = new Map<string, number>();
+
+  {
+    // add trove to the requireds
+    const length = CustomDataStore.getTroveItems().length;
+    const minTroveCount: number = Math.min(...CustomDataStore.getTroveItems().map(itemName => inventoryMap.get(itemName) ?? 0));
+    requiredFromParts.set("Artifact Trove", TARGET*length);
+    totalFromParts.set("Artifact Trove", minTroveCount*length);
+  }
+
+  for (const [craftedItemName, ingredients] of CustomDataStore.getPartsData()) {
+    const craftedCount = inventoryMap.get(craftedItemName) ?? 0;
+    const avgYield = yieldMap.get(craftedItemName) ?? 1;
+    const required = requiredFromParts.get(craftedItemName);
+    const craftsNeeded = Math.ceil((required ?? TARGET )/ avgYield);
+    for (const [ingredientId, ingredientEntry] of Object.entries(ingredients)) {
+      const [ingredientName, qty] = ingredientEntry as [string | null, number];
+      if (isWildcard(ingredientId, ingredientName)) continue;
+      const name = ingredientName!;
+      const requiredCount = Math.round((qty * (TARGET+(required ?? 0))) / avgYield);
+      const totalCount = Math.round(craftedCount / avgYield);
+      requiredFromParts.set(name, (requiredFromParts.get(name) ?? 0) + requiredCount);
+      totalFromParts.set(name, (totalFromParts.get(name) ?? 0) + totalCount);
+    }
+  }
+
+  // Qi Seasoning: one per cooked dish when targeting highest quality
+  if (quality === 'highest') {
+    const seen = new Set<string>();
+    for (const item of CustomDataStore.getItemsData()) {
+      if (item.category !== 'Cooking' || seen.has(item.name)) continue;
+      seen.add(item.name);
+      requiredFromParts.set('Qi Seasoning', (requiredFromParts.get('Qi Seasoning') ?? 0) + TARGET);
+      totalFromParts.set('Qi Seasoning', (totalFromParts.get('Qi Seasoning') ?? 0) + (inventoryMap.get(item.name) ?? 0));
+    }
+  }
+
+  const completionMap = new Map<string, boolean>();
+  for (const item of CustomDataStore.getItemsData()) {
+    const r = inventoryMap.get(item.name) ?? 0;
+    const req = TARGET + (requiredFromParts.get(item.name) ?? 0);
+    const tot = totalFromParts.get(item.name) ?? 0;
+    // to be complete we need raw to be at least 999.
+    completionMap.set(item.name, r + tot >= req && r >= TARGET);
+  }
+
+  const source = CustomDataStore.getItemsData();
+  const seen = new Set<string>();
+  // ignore Qi fruit, even though we can have a count of it, it is too short.
+  seen.add("Qi Fruit");
+  allComputedRows = [];
+
+  for (const item of source) {
+    if (seen.has(item.name)) continue;
+    seen.add(item.name);
+    const raw = inventoryMap.get(item.name) ?? 0;
+    const required = TARGET + (requiredFromParts.get(item.name) ?? 0);
+    const total = totalFromParts.get(item.name) ?? 0;
+    allComputedRows.push({ name: item.displayName || item.name, required, total, raw, rawStacks: stacksMap.get(item.name), buyPrice: priceMap.get(item.name), tooltip: computeTooltipData(item.name, raw , inventoryMap, completionMap, globalCraftableCache) });
+  }
+
+  allComputedRows.sort((a, b) => a.name.localeCompare(b.name));
+  console.log(`[CACHE] Computed ${allComputedRows.length} items`);
+}
+
 // Cooking items cap at gold quality naturally (Qi Seasoning provides iridium)
 function getCookingItems(): Set<string> {
   return new Set<string>(
@@ -154,7 +268,9 @@ function craftableCount(
 ): { count: number; limiting: string | null } {
   if(craftedName === 'Void Salmon Bait') {
     console.log(craftedName, inventoryMap);
-    debugger;
+    console.log("test");
+    console.log('Call stack:', new Error().stack);
+    // debugger;
   }
   const recipe = recipeMap.get(craftedName);
   if (!recipe) return { count: 0, limiting: null };
@@ -172,7 +288,8 @@ function computeTooltipData(
   itemName: string,
   count: number,
   inventoryMap: Map<string, number>,
-  completionMap: Map<string, boolean>
+  completionMap: Map<string, boolean>,
+  craftableCache: Map<string, { count: number; limiting: string | null }>
 ): ItemTooltipData {
   const note = (notesData as Record<string, string[]>)[itemName] ?? null;
 
@@ -182,7 +299,12 @@ function computeTooltipData(
   let limitingIngredient: string | null = null;
 
   if (ownRecipe) {
-    const { count, limiting } = craftableCount(itemName, inventoryMap);
+    let cached = craftableCache.get(itemName);
+    if (!cached) {
+      cached = craftableCount(itemName, inventoryMap);
+      craftableCache.set(itemName, cached);
+    }
+    const { count, limiting } = cached;
     canCraft = count;
     limitingIngredient = limiting;
     recipe = Array.from(ownRecipe.entries()).map(([name, qty]) => ({
@@ -205,7 +327,12 @@ function computeTooltipData(
 
   const cookingItems = Config.getQuality() === 'highest' ? getCookingItems() : null;
   const usedBy: UsedByInfo[] = (reverseMap.get(itemName) ?? []).map(craftedName => {
-    const { count } = craftableCount(craftedName, inventoryMap);
+    let cachedCrafted = craftableCache.get(craftedName);
+    if (!cachedCrafted) {
+      cachedCrafted = craftableCount(craftedName, inventoryMap);
+      craftableCache.set(craftedName, cachedCrafted);
+    }
+    const { count } = cachedCrafted;
     const alreadyHave = inventoryMap.get(craftedName) ?? 0;
     const done = completionMap.get(craftedName) ?? false;
     const depRecipe = recipeMap.get(craftedName);
@@ -256,58 +383,56 @@ function getQualityFilteredCount(stacks: number[] | undefined, quality: Quality,
   }
 }
 
-export function computeCategoryItems(
+// Lightweight computation for historical/one-off data that doesn't use global cache
+// Used by History dialog to compute past game states without polluting the main cache
+export function computeCategoryItemsUncached(
   categoryName: string,
   compacted: Array<{ name: string; stack: number; quality?: number[] }>
 ): ItemRow[] {
-  // console.log(categoryName, compacted);
   const quality = Config.getQuality();
+  
+  // Build local inventory map (doesn't touch global cache)
   const inventoryMap = new Map<string, number>();
   const stacksMap = new Map<string, number[]>();
+  
   for (const item of compacted) {
-    let  maxTier = (quality === 'highest' && getCookingItems().has(item.name)) ? 2 : 4;
+    let maxTier = (quality === 'highest' && getCookingItems().has(item.name)) ? 2 : 4;
     maxTier = (quality === 'highest' && getCrabpotItems().has(item.name)) ? 1 : maxTier;
-    // this is making a different count for higest quality
     const count = item.quality
       ? getQualityFilteredCount(item.quality, quality, maxTier)
       : item.stack;
-    // const count = item.stack;
     inventoryMap.set(item.name, (inventoryMap.get(item.name) ?? 0) + count);
     if (item.quality) {
       const prev = stacksMap.get(item.name) ?? [0, 0, 0, 0, 0];
       stacksMap.set(item.name, item.quality.map((v, i) => (prev[i] ?? 0) + v));
     }
   }
-
+  
   const requiredFromParts = new Map<string, number>();
   const totalFromParts = new Map<string, number>();
 
   {
-    // add trove to the requireds
     const length = CustomDataStore.getTroveItems().length;
     const minTroveCount: number = Math.min(...CustomDataStore.getTroveItems().map(itemName => inventoryMap.get(itemName) ?? 0));
-    requiredFromParts.set("Artifact Trove", TARGET*length);
-    totalFromParts.set("Artifact Trove", minTroveCount*length);
+    requiredFromParts.set("Artifact Trove", TARGET * length);
+    totalFromParts.set("Artifact Trove", minTroveCount * length);
   }
 
   for (const [craftedItemName, ingredients] of CustomDataStore.getPartsData()) {
-
     const craftedCount = inventoryMap.get(craftedItemName) ?? 0;
     const avgYield = yieldMap.get(craftedItemName) ?? 1;
     const required = requiredFromParts.get(craftedItemName);
-    const craftsNeeded = Math.ceil((required ?? TARGET )/ avgYield);
     for (const [ingredientId, ingredientEntry] of Object.entries(ingredients)) {
       const [ingredientName, qty] = ingredientEntry as [string | null, number];
       if (isWildcard(ingredientId, ingredientName)) continue;
       const name = ingredientName!;
-      const requiredCount = Math.round((qty * (TARGET+(required ?? 0))) / avgYield);
+      const requiredCount = Math.round((qty * (TARGET + (required ?? 0))) / avgYield);
       const totalCount = Math.round(craftedCount / avgYield);
       requiredFromParts.set(name, (requiredFromParts.get(name) ?? 0) + requiredCount);
       totalFromParts.set(name, (totalFromParts.get(name) ?? 0) + totalCount);
     }
   }
 
-  // Qi Seasoning: one per cooked dish when targeting highest quality
   if (quality === 'highest') {
     const seen = new Set<string>();
     for (const item of CustomDataStore.getItemsData()) {
@@ -318,20 +443,9 @@ export function computeCategoryItems(
     }
   }
 
-  const completionMap = new Map<string, boolean>();
-  for (const item of CustomDataStore.getItemsData()) {
-    const r = inventoryMap.get(item.name) ?? 0;
-    const req = TARGET + (requiredFromParts.get(item.name) ?? 0);
-    const tot = totalFromParts.get(item.name) ?? 0;
-    // to be complete we need raw to be at least 999.
-    completionMap.set(item.name, r + tot >= req && r >= TARGET);
-  }
-
   const source = CustomDataStore.getItemsData();
   const entries = categoryName === 'All' ? source : source.filter((item) => item.category === categoryName);
-
   const seen = new Set<string>();
-  // ignore Qi fruit, even though we can have a count of it, it is too short.
   seen.add("Qi Fruit");
   const rows: ItemRow[] = [];
 
@@ -341,11 +455,57 @@ export function computeCategoryItems(
     const raw = inventoryMap.get(item.name) ?? 0;
     const required = TARGET + (requiredFromParts.get(item.name) ?? 0);
     const total = totalFromParts.get(item.name) ?? 0;
-    rows.push({ name: item.displayName || item.name, required, total, raw, rawStacks: stacksMap.get(item.name), buyPrice: priceMap.get(item.name), tooltip: computeTooltipData(item.name, raw , inventoryMap, completionMap) });
+    rows.push({ 
+      name: item.displayName || item.name, 
+      required, 
+      total, 
+      raw, 
+      rawStacks: stacksMap.get(item.name), 
+      buyPrice: priceMap.get(item.name),
+      tooltip: undefined as any // History doesn't need tooltips
+    });
   }
 
   rows.sort((a, b) => a.name.localeCompare(b.name));
   return rows;
+}
+
+export function computeCategoryItems(
+  categoryName: string,
+  compacted: Array<{ name: string; stack: number; quality?: number[] }>
+): ItemRow[] {
+  const quality = Config.getQuality();
+  
+  // Compute ALL items once when data or quality changes
+  if (compacted !== lastCompactedRef || quality !== lastQuality) {
+    // Set these FIRST so subsequent calls don't re-trigger
+    lastCompactedRef = compacted;
+    lastQuality = quality;
+    
+    // Only compute if not already computing (prevents concurrent calls)
+    if (!isComputing) {
+      isComputing = true;
+      try {
+        computeAllItems(compacted, quality);
+      } finally {
+        isComputing = false;
+      }
+    }
+  }
+  
+  // Just filter the pre-computed rows by category
+  if (categoryName === 'All') {
+    return allComputedRows;
+  }
+  
+  // Filter by category - need to match against original item data
+  const categoryItems = new Set(
+    CustomDataStore.getItemsData()
+      .filter(item => item.category === categoryName)
+      .map(item => item.displayName || item.name)
+  );
+  
+  return allComputedRows.filter(row => categoryItems.has(row.name));
 }
 
 export function logDataIssues(

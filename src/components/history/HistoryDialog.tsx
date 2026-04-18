@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useRef } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import {
   Dialog, DialogTitle, DialogContent, DialogActions, Button,
   Box, Typography, Autocomplete, TextField,
@@ -9,7 +9,7 @@ import { useColorScheme } from '@mui/material';
 import { JournalStore } from '../../app/Journal';
 import type { Journal } from '../../app/Journal';
 import { CustomDataStore } from '../../data/CustomDataStore';
-import { computeCategoryItems } from '../../data/itemCalculations';
+import { computeCategoryItemsUncached } from '../../data/itemCalculations';
 import { Config } from '../../config/Config';
 
 export interface HistoryDialogProps {
@@ -188,6 +188,8 @@ function LineChart({
 export function HistoryDialog({ open, onClose, journal }: HistoryDialogProps) {
   const [tab, setTab] = useState('item');
   const [selectedItem, setSelectedItem] = useState('');
+  const [itemSeries, setItemSeries] = useState<ChartSeries[]>([]);
+  const [progressSeries, setProgressSeries] = useState<ChartSeries[]>([]);
 
   const availableDays = useMemo(() => {
     if (!journal) return [];
@@ -199,34 +201,52 @@ export function HistoryDialog({ open, onClose, journal }: HistoryDialogProps) {
     []
   );
 
-  const itemSeries = useMemo((): ChartSeries[] => {
-    if (!journal || !selectedItem || availableDays.length === 0) return [];
-    const data = availableDays.map(day => {
+  useEffect(() => {
+    if (!open || !journal || !selectedItem) {
+      setItemSeries([]);
+      return;
+    }
+    const days = Object.keys(journal.days).map(Number).sort((a, b) => a - b);
+    if (days.length === 0) {
+      setItemSeries([]);
+      return;
+    }
+    const data = days.map(day => {
       const items = JournalStore.reconstructItemsAtDay(journal, day);
-      const item = items[selectedItem];
-      return { x: day, y: item ? item.q.reduce((s, v) => s + v, 0) : 0 };
+      const compacted = JournalStore.toCompactedItems(items, Config.getIgnoredCategories());
+      const row = computeCategoryItemsUncached('All', compacted).find(r => r.name === selectedItem);
+      return { x: day, y: row ? row.raw + row.total : 0 };
     });
-    return [{ label: selectedItem, color: PALETTE[0]!, data }];
-  }, [journal, selectedItem, availableDays]);
+    setItemSeries([{ label: selectedItem, color: PALETTE[0]!, data }]);
+  }, [open, journal, selectedItem]);
 
-  const progressSeries = useMemo((): ChartSeries[] => {
-    if (!journal || availableDays.length === 0) return [];
+  useEffect(() => {
+    // Only compute when the progress tab is actually visible
+    if (!open || !journal || tab !== 'progress') {
+      setProgressSeries([]);
+      return;
+    }
+    const days = Object.keys(journal.days).map(Number).sort((a, b) => a - b);
+    if (days.length === 0) {
+      setProgressSeries([]);
+      return;
+    }
     const cats = Config.getCategoryNames();
     const ignored = Config.getIgnoredCategories();
-    const data = availableDays.map(day => {
+    const data = days.map(day => {
       const items = JournalStore.reconstructItemsAtDay(journal, day);
       const compacted = JournalStore.toCompactedItems(items, ignored);
       let totalHave = 0, totalRequired = 0;
       for (const cat of cats) {
-        for (const row of computeCategoryItems(cat, compacted)) {
+        for (const row of computeCategoryItemsUncached(cat, compacted)) {
           totalRequired += row.required;
           totalHave += Math.min(row.raw + row.total, row.required);
         }
       }
       return { x: day, y: totalRequired > 0 ? Math.round((totalHave / totalRequired) * 10000) / 100 : 0 };
     });
-    return [{ label: 'Overall', color: PALETTE[0]!, data }];
-  }, [journal, availableDays]);
+    setProgressSeries([{ label: 'Overall', color: PALETTE[0]!, data }]);
+  }, [open, journal, tab]);
 
   if (!journal || availableDays.length === 0) return null;
 

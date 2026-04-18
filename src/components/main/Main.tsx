@@ -12,6 +12,7 @@ export function Main() {
   const [selectedCategory, setSelectedCategory] = useState(Config.getSelectedTab());
   const [compacted, setCompacted] = useState<Array<{ name: string; stack: number; quality?: number[] }>>([]);
   const [quality, setQuality] = useState(Config.getQuality());
+  const [allCategoryData, setAllCategoryData] = useState<Map<string, any>>(new Map());
 
   useEffect(() => {
     const handleConfigChange = () => {
@@ -47,10 +48,16 @@ export function Main() {
     return unsub;
   }, []);
 
-  const allCategoryData = useMemo(
-    () => new Map(categoryNames.map(cat => [cat, computeCategoryItems(cat, compacted)])),
-    [categoryNames, compacted, quality]  // quality triggers recompute when setting changes
-  );
+  // Compute data when compacted, categoryNames, or quality changes
+  useEffect(() => {
+    if (compacted.length === 0) return;
+    
+    const map = new Map();
+    for (const cat of categoryNames) {
+      map.set(cat, computeCategoryItems(cat, compacted));
+    }
+    setAllCategoryData(map);
+  }, [categoryNames, compacted, quality]);
 
   return (
     <main className="main">
