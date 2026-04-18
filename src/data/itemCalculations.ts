@@ -1,4 +1,4 @@
-import { CustomDataStore } from './CustomDataStore';
+import { CustomDataStore, VariantResolver } from './CustomDataStore';
 import notesData from './notes.json';
 import pricesData from './prices.json';
 import { Config } from '../config/Config';
@@ -224,7 +224,7 @@ function computeAllItems(
 
   const completionMap = new Map<string, boolean>();
   for (const item of CustomDataStore.getItemsData()) {
-    const r = inventoryMap.get(item.name) ?? 0;
+    const r = inventoryMap.get(item.name) ?? 0; // Use base name for inventory lookup
     const req = TARGET + (requiredFromParts.get(item.name) ?? 0);
     const tot = totalFromParts.get(item.name) ?? 0;
     // to be complete we need raw to be at least 999.
@@ -258,12 +258,12 @@ function computeAllItems(
     const tot = totalFromParts.get(itemName) ?? 0;
     
     // Only show blue (wrong quality) if:
-    // 1. We have 999+ items total across all qualities
-    // 2. We have enough total items to meet requirements (totalItems + tot >= req)
-    // 3. BUT we don't have 999 in the correct quality tier
-    // Example: 8000 pink cakes (enough total) but 0 gold quality -> blue
-    // Counter-example: 999 bread (not enough total for 22998 required) -> white, not blue
-    return totalItems >= TARGET && (totalItems + tot >= req) && correctQualityCount < TARGET;
+    // 1. At least one quality tier has 999+ items (a complete stack exists)
+    // 2. BUT the correct quality tier doesn't have 999
+    // Example: 1000 iridium eggs but need silver -> blue
+    // Counter-example: 953 normal + 302 silver + 130 gold (no complete stack) -> white, not blue
+    const hasCompleteStack = stacks.some(count => count >= TARGET);
+    return hasCompleteStack && correctQualityCount < TARGET;
   };
 
   // Helper to check if an item has unfinished dependents
@@ -306,23 +306,86 @@ function computeAllItems(
   allComputedRows = [];
 
   for (const item of source) {
-    if (seen.has(item.name)) continue;
-    seen.add(item.name);
-    const raw = inventoryMap.get(item.name) ?? 0;
-    const required = TARGET + (requiredFromParts.get(item.name) ?? 0);
-    const total = totalFromParts.get(item.name) ?? 0;
+    let itemKey = item.displayName || item.name;
+    let lookupKey = itemKey;
+    let isExtraVariant = false;
+    
+    // For items with displayName that are NOT variants (like "Bouquet: Wilted"), use base name for lookup
+    if (item.displayName !== null && !VariantResolver.hasColorVariants(item.name) && item.name !== 'Strange Doll') {
+      lookupKey = item.name;
+    }
+    
+    // For base items with variants, check if base name exists in inventory
+    if (item.displayName === null && (VariantResolver.hasColorVariants(item.name) || item.name === 'Strange Doll')) {
+      if (inventoryMap.has(item.name)) {
+        // Base item has inventory - show as (Cart) variant
+        itemKey = `${item.name} (Cart)`;
+        lookupKey = item.name;
+      } else {
+        // No inventory for base item - skip it
+        continue;
+      }
+    }
+    
+    // Track by display name to allow multiple variants of same base item
+    if (seen.has(itemKey)) continue;
+    seen.add(itemKey);
+    
+    let raw = inventoryMap.get(lookupKey) ?? 0;
+    let required = TARGET + (requiredFromParts.get(item.name) ?? 0);
+    let total = totalFromParts.get(item.name) ?? 0;
+    
+    // For color variant items and Cart variants, required is always 999 (no recipe requirements)
+    if ((item.displayName !== null && VariantResolver.hasColorVariants(item.name)) || itemKey.endsWith(' (Cart)')) {
+      required = TARGET;
+      total = 0; // Cart and color variants don't show crafted totals
+    }
     allComputedRows.push({ 
-      name: item.displayName || item.name, 
+      name: itemKey, 
       required, 
       total, 
       raw, 
-      rawStacks: stacksMap.get(item.name), 
+      rawStacks: stacksMap.get(lookupKey), // Use lookupKey to get actual stacks
       buyPrice: priceMap.get(item.name), 
       tooltip: computeTooltipData(item.name, raw , inventoryMap, completionMap, globalCraftableCache),
-      hasWrongQuality: hasWrongQualityStacks(item.name),
+      hasWrongQuality: hasWrongQualityStacks(itemKey), // Use itemKey for variants
       hasUnfinishedDependents: hasUnfinishedDependents(item.name),
-      correctQualityCount: getCorrectQualityCount(item.name)
+      correctQualityCount: getCorrectQualityCount(itemKey) // Use itemKey for variants
     });
+  }
+  
+  // Add "Extra" variants for flowers used in recipes
+  // These show excess items (total raw across all variants - 999 per variant) available for crafting
+  const flowerBaseNames = new Set(
+    source
+      .filter(item => item.displayName === null && VariantResolver.hasColorVariants(item.name))
+      .map(item => item.name)
+  );
+  
+  for (const baseName of flowerBaseNames) {
+    const recipeReq = requiredFromParts.get(baseName) ?? 0;
+    if (recipeReq === 0) continue; // Skip if not used in recipes
+    
+    // Calculate total raw across all variants of this flower
+    const variantRows = allComputedRows.filter(r => VariantResolver.getBaseName(r.name) === baseName);
+    const totalRawAllVariants = variantRows.reduce((sum, r) => sum + r.raw, 0);
+    const numVariants = variantRows.length;
+    const excessRaw = Math.max(0, totalRawAllVariants - (TARGET * numVariants));
+    
+    if (excessRaw > 0 || recipeReq > 0) {
+      allComputedRows.push({
+        name: `${baseName} Extra`,
+        required: recipeReq, // Only recipe requirements, no 999
+        total: Math.min(totalFromParts.get(baseName) ?? 0, recipeReq), // Cap at recipe requirement
+        raw: excessRaw, // Only the excess
+        rawStacks: undefined,
+        buyPrice: priceMap.get(baseName),
+        tooltip: computeTooltipData(baseName, excessRaw, inventoryMap, completionMap, globalCraftableCache),
+        hasWrongQuality: false,
+        hasUnfinishedDependents: false,
+        correctQualityCount: undefined
+      });
+    }
   }
 
   allComputedRows.sort((a, b) => a.name.localeCompare(b.name));
@@ -558,17 +621,34 @@ export function computeCategoryItemsUncached(
   const rows: ItemRow[] = [];
 
   for (const item of entries) {
-    if (seen.has(item.name)) continue;
-    seen.add(item.name);
-    const raw = inventoryMap.get(item.name) ?? 0;
+    let itemKey = item.displayName || item.name;
+    let lookupKey = itemKey;
+    
+    // For base items with variants, check if base name exists in inventory
+    if (item.displayName === null && (VariantResolver.hasColorVariants(item.name) || item.name === 'Strange Doll')) {
+      if (inventoryMap.has(item.name)) {
+        // Base item has inventory - show as (Cart) variant
+        itemKey = `${item.name} (Cart)`;
+        lookupKey = item.name;
+      } else {
+        // No inventory for base item - skip it
+        continue;
+      }
+    }
+    
+    // Track by display name to allow multiple variants of same base item
+    if (seen.has(itemKey)) continue;
+    seen.add(itemKey);
+    
+    const raw = inventoryMap.get(lookupKey) ?? 0;
     const required = TARGET + (requiredFromParts.get(item.name) ?? 0);
     const total = totalFromParts.get(item.name) ?? 0;
     rows.push({ 
-      name: item.displayName || item.name, 
+      name: itemKey, 
       required, 
       total, 
       raw, 
-      rawStacks: stacksMap.get(item.name), 
+      rawStacks: stacksMap.get(lookupKey), // Use lookupKey to get actual stacks
       buyPrice: priceMap.get(item.name),
       tooltip: undefined as any // History doesn't need tooltips
     });
@@ -607,13 +687,23 @@ export function computeCategoryItems(
   }
   
   // Filter by category - need to match against original item data
-  const categoryItems = new Set(
-    CustomDataStore.getItemsData()
-      .filter(item => item.category === categoryName)
-      .map(item => item.displayName || item.name)
-  );
+  // Build a set of both item.name AND item.displayName for matching
+  const categoryItemIdentifiers = new Set<string>();
+  for (const item of CustomDataStore.getItemsData()) {
+    if (item.category === categoryName) {
+      categoryItemIdentifiers.add(item.name);
+      if (item.displayName) {
+        categoryItemIdentifiers.add(item.displayName);
+      }
+    }
+  }
   
-  return allComputedRows.filter(row => categoryItems.has(row.name));
+  // Include rows where the base name OR the row name matches
+  return allComputedRows.filter(row => {
+    // For variants like "Blue Jazz (Cart)" or "Blue Jazz (35,127,255)", extract base name
+    const baseName = VariantResolver.getBaseName(row.name);
+    return categoryItemIdentifiers.has(baseName) || categoryItemIdentifiers.has(row.name);
+  });
 }
 
 export function logDataIssues(
@@ -622,7 +712,10 @@ export function logDataIssues(
   const itemsList = CustomDataStore.getItemsData();
   const partsList = CustomDataStore.getPartsData();
 
-  const knownItemNames = new Set(itemsList.map((item) => item.name));
+  // Include both base names and display names (for variants)
+  const knownItemNames = new Set(
+    itemsList.flatMap((item) => [item.name, item.displayName].filter(Boolean))
+  );
   const inventoryNames = new Set(compacted.map(i => i.name));
 
   for (const [craftedName, ingredients] of partsList) {

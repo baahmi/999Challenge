@@ -1,0 +1,46 @@
+{
+  "variantDefinitions": {
+    "Strange Doll": {
+      "baseItemId": "126",
+      "variantType": "itemId",
+      "variants": [
+        {
+          "itemId": "126",
+          "displayName": "Strange Doll (Green)",
+          "distinguisher": "green"
+        },
+        {
+          "itemId": "127",
+          "displayName": "Strange Doll (Pink)",
+          "distinguisher": "pink"
+        }
+      ]
+    },
+    "Blue Jazz": {
+      "baseItemId": "597",
+      "variantType": "color"
+    },
+    "Tulip": {
+      "baseItemId": "591",
+      "variantType": "color"
+    },
+    "Summer Spangle": {
+      "baseItemId": "593",
+      "variantType": "color"
+    },
+    "Fairy Rose": {
+      "baseItemId": "595",
+      "variantType": "color"
+    },
+    "Poppy": {
+      "baseItemId": "376",
+      "variantType": "color"
+    }
+  },
+  "nameAliases": {
+    "Wild Seeds (Sp)": "Wild Seeds: Spring",
+    "Wild Seeds (Su)": "Wild Seeds: Summer",
+    "Wild Seeds (Fa)": "Wild Seeds: Fall",
+    "Wild Seeds (Wi)": "Wild Seeds: Winter"
+  }
+}

@@ -1,5 +1,6 @@
 import { Config } from "@/config/Config";
 import { JournalStore, type Journal, type ImportDiff } from './Journal';
+import { VariantResolver, CustomDataStore } from '@/data/CustomDataStore';
 
 type Listener = () => void;
 
@@ -175,6 +176,10 @@ class AppDataManager {
       this.state.qiGems = parseInt(qiGemsEl.textContent || '0', 10);
     }
     this.extractItems(root, this.state.items);
+    
+    // Add discovered variants to CustomDataStore items list
+    CustomDataStore.addVariantsFromInventory(this.state.items);
+    
     this.compactItems();
     this.saveToJournal();
   }
@@ -188,6 +193,10 @@ class AppDataManager {
     this.state.mysteryBoxesOpened = main.mysteryBoxesOpened;
     this.state.ticketPrizesClaimed = main.ticketPrizesClaimed;
     this.state.childrenTurnedToDoves = main.childrenTurnedToDoves ?? null;
+    
+    // Add variants from stored journal data
+    CustomDataStore.addVariantsFromInventory(main.items as any);
+    
     this.state.compacted = JournalStore.toCompactedItems(main.items, Config.getIgnoredCategories()) as unknown as Record<string, extractedItem>;
 
     const sortedDays = Object.keys(days).map(Number).sort((a, b) => a - b);
@@ -290,6 +299,7 @@ class AppDataManager {
     const compacted: Record<string, { itemId: number; category: number; stacks: number[] }> = {};
 
     for (const item of this.state.items) {
+      // Keep variants as separate items (e.g., "Blue Jazz (35,127,255)" stays separate)
       compacted[item.name] ??= {
         itemId: item.itemId,
         category: item.category,
@@ -332,8 +342,28 @@ private extractItems(node: Element, out: extractedItem[]): void {
       if (stack === 0) stack = 1;
 
       const quality = this.getInt(node, "quality");
+      
+      // Extract color data for variant resolution (flowers)
+      const colorNode = node.querySelector("color");
+      let colorData: { R: number; G: number; B: number; A: number } | undefined;
+      if (colorNode) {
+        const r = this.getInt(colorNode, "R");
+        const g = this.getInt(colorNode, "G");
+        const b = this.getInt(colorNode, "B");
+        const a = this.getInt(colorNode, "A");
+        if (r || g || b || a) {
+          colorData = { R: r, G: g, B: b, A: a };
+        }
+      }
+      
+      // Resolve variant display name
+      const displayName = VariantResolver.resolveDisplayName(
+        name,
+        itemId.toString(),
+        colorData
+      );
 
-      out.push({ name, itemId, category, stack, quality });
+      out.push({ name: displayName, itemId, category, stack, quality });
     }
   }
 

@@ -333,14 +333,16 @@ export function ItemTable({ items }: ItemTableProps) {
               const itemRow = !isTotal ? (row as ItemRow & { percentage: number }) : undefined;
               const hasWrongQuality = itemRow?.hasWrongQuality ?? false;
               const hasUnfinishedDependents = itemRow?.hasUnfinishedDependents ?? false;
+              // Check if at least one quality tier has a complete stack of 999
+              const hasCompleteStack = !isTotal && (itemRow?.rawStacks?.some(count => count >= 999) ?? false);
               const rowBg = isTotal
                 ? (isDark ? '#3a3a3a' : '#d0d0d0')
                 : hasWrongQuality
                   ? (isDark ? '#1e3a4a' : '#b3e5fc') // light blue for wrong quality (takes priority)
                   : hasUnfinishedDependents
                     ? (isDark ? '#4a3a1e' : '#fff9c4') // yellow for unfinished dependents
-                    : done
-                      ? (isDark ? '#1b4a1e' : '#c8e6c9') // green for done
+                    : done && hasCompleteStack
+                      ? (isDark ? '#1b4a1e' : '#c8e6c9') // green for done with complete stack
                       : (isDark ? 'transparent' : 'white');
               const stickyStyle: React.CSSProperties = isTopTotal
                 ? { position: 'sticky', top: `calc(var(--sticky-top-offset, 0px) + ${theadHeight}px)`, zIndex: 2, backgroundColor: rowBg }
