@@ -5,6 +5,7 @@ export interface Item {
   raw: number;
   rawStacks?: number[]; // [normal, silver, gold, unused, iridium]
   hasWrongQuality?: boolean; // Has stacks but not in the correct quality tier
+  correctQualityCount?: number; // Count of items in the correct quality tier
 }
 
 export interface ItemWithCalculations extends Item {
@@ -13,8 +14,14 @@ export interface ItemWithCalculations extends Item {
 
 export function calculatePercentage(item: Item): number {
   if (item.required === 0) return 0;
-  // If item has wrong quality, it's 0% complete (don't have items in correct tier)
-  if (item.hasWrongQuality) return 0;
+  
+  // If item has wrong quality, use the correct quality count for percentage
+  // Example: 500 gold + 500 normal cooking items = 50% (500 gold / 999 needed)
+  if (item.hasWrongQuality && item.correctQualityCount !== undefined) {
+    const obtained = item.correctQualityCount + item.total;
+    return Math.min(100, (obtained / item.required) * 100);
+  }
+  
   const obtained = item.raw + item.total;
   // Cap at 100%
   return Math.min(100, (obtained / item.required) * 100);

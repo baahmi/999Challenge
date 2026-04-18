@@ -110,6 +110,7 @@ export interface ItemRow {
   tooltip: ItemTooltipData;
   hasWrongQuality?: boolean; // Has stacks but not in the correct quality tier
   hasUnfinishedDependents?: boolean; // Item is complete but has uncrafted dependencies
+  correctQualityCount?: number; // Count of items in the correct quality tier
 }
 
 function isWildcard(id: string, name: string | null): boolean {
@@ -275,6 +276,19 @@ function computeAllItems(
     });
   };
 
+  // Helper to get count in the correct quality tier
+  const getCorrectQualityCount = (itemName: string): number | undefined => {
+    if (quality !== 'highest') return undefined;
+    const stacks = stacksMap.get(itemName);
+    if (!stacks) return undefined;
+    
+    const isCooking = getCookingItems().has(itemName);
+    const isCrabpot = getCrabpotItems().has(itemName);
+    const correctTier = isCooking ? 2 : isCrabpot ? 1 : 4;
+    
+    return stacks[correctTier] ?? 0;
+  };
+
   const source = CustomDataStore.getItemsData();
   const seen = new Set<string>();
   // ignore Qi fruit, even though we can have a count of it, it is too short.
@@ -296,7 +310,8 @@ function computeAllItems(
       buyPrice: priceMap.get(item.name), 
       tooltip: computeTooltipData(item.name, raw , inventoryMap, completionMap, globalCraftableCache),
       hasWrongQuality: hasWrongQualityStacks(item.name),
-      hasUnfinishedDependents: hasUnfinishedDependents(item.name)
+      hasUnfinishedDependents: hasUnfinishedDependents(item.name),
+      correctQualityCount: getCorrectQualityCount(item.name)
     });
   }
 
