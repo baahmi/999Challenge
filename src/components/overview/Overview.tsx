@@ -42,7 +42,7 @@ function buildCategoryStat(name: string, rows: ItemRow[]): CategoryStat {
   const itemCount = rows.length;
   const readyCount = rows.filter(r => rowPct(r) >= 100).length;
   const required = rows.reduce((s, r) => s + r.required, 0);
-  const total = rows.reduce((s, r) => s + r.raw + r.total, 0);
+  const total = rows.reduce((s, r) => s + (r.excludeFromTotals ? 0 : r.raw + r.total), 0);
   const effectiveTotal = rows.reduce((s, r) => s + Math.min(effectiveRowTotal(r), r.required), 0);
   const goldNeeded = rows.reduce((s, r) => {
     const needed = Math.max(0, r.required - Math.min(effectiveRowTotal(r), r.required));

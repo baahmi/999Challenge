@@ -6,6 +6,7 @@ export interface Item {
   rawStacks?: number[]; // [normal, silver, gold, unused, iridium]
   hasWrongQuality?: boolean; // Has stacks but not in the correct quality tier
   correctQualityCount?: number; // Count of items in the correct quality tier
+  excludeFromTotals?: boolean; // Synthetic availability rows; raw is already counted by source items
 }
 
 export interface ItemWithCalculations extends Item {

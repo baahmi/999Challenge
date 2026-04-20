@@ -216,8 +216,8 @@ export function ItemTable({ items }: ItemTableProps) {
     const categoryTotal = items.reduce((sum, item) => sum + item.raw, 0);
     const enrichedItems = enrichItemsWithCalculations(items, categoryTotal);
     const totalRequired = enrichedItems.reduce((sum, item) => sum + item.required, 0);
-    const totalRaw = enrichedItems.reduce((sum, item) => sum + item.raw, 0);
-    const totalUsed = enrichedItems.reduce((sum, item) => sum + item.total, 0);
+    const totalRaw = enrichedItems.reduce((sum, item) => sum + (item.excludeFromTotals ? 0 : item.raw), 0);
+    const totalUsed = enrichedItems.reduce((sum, item) => sum + (item.excludeFromTotals ? 0 : item.total), 0);
     const cappedHave = enrichedItems.reduce((sum, item) => sum + Math.min(item.raw + item.total, item.required), 0);
     const totalGoldNeeded = enrichedItems.reduce((sum, item) => {
       const needed = Math.max(0, item.required - (item.raw + item.total));

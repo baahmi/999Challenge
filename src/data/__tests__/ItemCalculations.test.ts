@@ -48,23 +48,23 @@ describe('computeCategoryItems', () => {
         CustomDataStore.troveItems = ['Missing Artifact']
         CustomDataStore.data.categoryNames = ['Cooking']
         CustomDataStore.data.items = [
-            { category: 'Cooking', name: 'Fried Egg', displayName: null },
+            { category: 'Cooking', name: 'Salad', displayName: null },
         ];
         CustomDataStore.partsData = [
-            ["Fried Egg", { "-5": [null, 1] }, 1],
+            ["Salad", { "20": ["Leek", 1] }, 1],
         ] as PartsEntry[]
 
         const rows = computeCategoryItems('Cooking', [
-            { name: 'Fried Egg', stack: 500, category: 'Cooking', quality: [500,0,0,0,0] },
+            { name: 'Salad', stack: 500, category: 'Cooking', quality: [500,0,0,0,0] },
         ]);
-        const dish = rows.find(row => row.name === 'Fried Egg')!;
+        const dish = rows.find(row => row.name === 'Salad')!;
 
         expect(dish.hasWrongQuality).toBe(false);
         expect(dish.correctQualityCount).toBe(0);
         expect(calculatePercentage(dish)).toBe(0);
     });
 
-    it('does not require cooking ingredient items to use cooking quality', () => {
+    it('does not require cooking ingredient or intermediate cooking items to use cooking quality', () => {
         CustomDataStore.troveItems = ['Missing Artifact']
         CustomDataStore.data.categoryNames = ['Cooking']
         CustomDataStore.data.items = [
@@ -84,8 +84,133 @@ describe('computeCategoryItems', () => {
 
         expect(oil.correctQualityCount).toBeUndefined();
         expect(calculatePercentage(oil)).toBeGreaterThan(0);
-        expect(dish.correctQualityCount).toBe(0);
-        expect(calculatePercentage(dish)).toBe(0);
+        expect(dish.correctQualityCount).toBeUndefined();
+        expect(calculatePercentage(dish)).toBeGreaterThan(0);
+    });
+
+    it('only counts correct-quality cooked dishes as having consumed their ingredients', () => {
+        CustomDataStore.troveItems = ['Missing Artifact']
+        CustomDataStore.data.categoryNames = ['Cooking']
+        CustomDataStore.data.items = [
+            { category: 'Cooking', name: 'Tortilla', displayName: null },
+            { category: 'Cooking', name: 'Lucky Lunch', displayName: null },
+            { category: 'Cooking', name: 'Fish Taco', displayName: null },
+            { category: 'Resources', name: 'Qi Seasoning', displayName: null },
+        ];
+        CustomDataStore.partsData = [
+            ["Lucky Lunch", { "229": ["Tortilla", 1] }, 1],
+            ["Fish Taco", { "229": ["Tortilla", 1] }, 1],
+            ["Tortilla", { "270": ["Corn", 1] }, 1],
+        ] as PartsEntry[]
+
+        const rows = computeCategoryItems('All', [
+            { name: 'Tortilla', stack: 1, category: 'Cooking', quality: [1,0,0,0,0] },
+            { name: 'Lucky Lunch', stack: 100, category: 'Cooking', quality: [90,0,10,0,0] },
+            { name: 'Fish Taco', stack: 100, category: 'Cooking', quality: [80,0,20,0,0] },
+        ]);
+
+        expect(rows.find(row => row.name === 'Tortilla')?.correctQualityCount).toBeUndefined();
+        expect(rows.find(row => row.name === 'Tortilla')?.total).toBe(30);
+        expect(rows.find(row => row.name === 'Qi Seasoning')?.total).toBe(30);
+    });
+
+    it('routes wildcard egg requirements to Egg: Extra using only completed egg surplus', () => {
+        CustomDataStore.troveItems = ['Missing Artifact']
+        CustomDataStore.data.categoryNames = ['Animal Products', 'Cooking']
+        CustomDataStore.data.items = [
+            { category: 'Animal Products', name: 'Egg', displayName: null },
+            { category: 'Animal Products', name: 'Duck Egg', displayName: null },
+            { category: 'Cooking', name: 'Fried Egg', displayName: null },
+        ];
+        CustomDataStore.partsData = [
+            ["Fried Egg", { "-5": [null, 1] }, 1],
+        ] as PartsEntry[]
+
+        const rows = computeCategoryItems('Animal Products', [
+            { name: 'Egg', stack: 1200, category: 'Animal Products', quality: [0,0,0,0,1200] },
+            { name: 'Duck Egg', stack: 900, category: 'Animal Products', quality: [0,0,0,0,900] },
+        ]);
+        const extra = rows.find(row => row.name === 'Egg: Extra')!;
+
+        expect(extra.required).toBe(999);
+        expect(extra.raw).toBe(201);
+        expect(extra.hasUnfinishedDependents).toBe(false);
+        expect(extra.excludeFromTotals).toBe(true);
+        expect(extra.tooltip.usedBy.map(dep => dep.craftedName)).toContain('Fried Egg');
+        expect(extra.tooltip.usedBy.find(dep => dep.craftedName === 'Fried Egg')?.recipe).toEqual([
+            { name: 'Egg: Extra', qty: 1, available: 201, done: true },
+        ]);
+    });
+
+    it('does not count normal animal products toward highest quality progress', () => {
+        CustomDataStore.troveItems = ['Missing Artifact']
+        CustomDataStore.data.categoryNames = ['Animal Products']
+        CustomDataStore.data.items = [
+            { category: 'Animal Products', name: 'Milk', displayName: null },
+            { category: 'Animal Products', name: 'Goat Milk', displayName: null },
+            { category: 'Animal Products', name: 'Egg', displayName: null },
+        ];
+        CustomDataStore.partsData = [] as PartsEntry[]
+
+        const rows = computeCategoryItems('Animal Products', [
+            { name: 'Milk', stack: 220, category: 'Animal Products', quality: [220,0,0,0,0] },
+            { name: 'Goat Milk', stack: 180, category: 'Animal Products', quality: [180,0,0,0,0] },
+            { name: 'Egg', stack: 1200, category: 'Animal Products', quality: [1200,0,0,0,0] },
+        ]);
+
+        for (const name of ['Milk', 'Goat Milk', 'Egg']) {
+            const row = rows.find(item => item.name === name)!;
+            expect(row.correctQualityCount).toBe(0);
+            expect(calculatePercentage(row)).toBe(0);
+        }
+    });
+
+    it('uses any-quality egg surplus for Egg: Extra after the egg row is complete', () => {
+        CustomDataStore.troveItems = ['Missing Artifact']
+        CustomDataStore.data.categoryNames = ['Animal Products', 'Cooking']
+        CustomDataStore.data.items = [
+            { category: 'Animal Products', name: 'Egg', displayName: null },
+            { category: 'Cooking', name: 'Fried Egg', displayName: null },
+        ];
+        CustomDataStore.partsData = [
+            ["Fried Egg", { "-5": [null, 1] }, 1],
+        ] as PartsEntry[]
+
+        const normalRows = computeCategoryItems('Animal Products', [
+            { name: 'Egg', stack: 2500, category: 'Animal Products', quality: [2500,0,0,0,0] },
+        ]);
+        expect(normalRows.find(row => row.name === 'Egg: Extra')?.raw).toBe(0);
+
+        const iridiumRows = computeCategoryItems('Animal Products', [
+            { name: 'Egg', stack: 2500, category: 'Animal Products', quality: [0,0,0,0,2500] },
+        ]);
+        expect(iridiumRows.find(row => row.name === 'Egg: Extra')?.raw).toBe(1501);
+
+        const mixedRows = computeCategoryItems('Animal Products', [
+            { name: 'Egg', stack: 1099, category: 'Animal Products', quality: [100,0,0,0,999] },
+        ]);
+        expect(mixedRows.find(row => row.name === 'Egg: Extra')?.raw).toBe(100);
+    });
+
+    it('marks completed wildcard extra rows yellow while their recipes are not crafted', () => {
+        CustomDataStore.troveItems = ['Missing Artifact']
+        CustomDataStore.data.categoryNames = ['Animal Products', 'Cooking']
+        CustomDataStore.data.items = [
+            { category: 'Animal Products', name: 'Egg', displayName: null },
+            { category: 'Cooking', name: 'Fried Egg', displayName: null },
+        ];
+        CustomDataStore.partsData = [
+            ["Fried Egg", { "-5": [null, 1] }, 1],
+        ] as PartsEntry[]
+
+        const rows = computeCategoryItems('Animal Products', [
+            { name: 'Egg', stack: 2500, category: 'Animal Products', quality: [0,0,0,0,2500] },
+        ]);
+        const extra = rows.find(row => row.name === 'Egg: Extra')!;
+
+        expect(extra.raw + extra.total).toBeGreaterThanOrEqual(extra.required);
+        expect(extra.total).toBeLessThan(extra.required);
+        expect(extra.hasUnfinishedDependents).toBe(true);
     });
 
     it('returns rows sorted alphabetically', () => {
