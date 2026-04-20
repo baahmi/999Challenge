@@ -236,6 +236,59 @@ describe('computeCategoryItems', () => {
         expect(calculateNeededCount(wine)).toBe(999);
     });
 
+    it('requires iridium input fish in smoked fish recipe tooltips', () => {
+        CustomDataStore.troveItems = ['Missing Artifact']
+        CustomDataStore.data.categoryNames = ['Fish', 'Smoked Fish']
+        CustomDataStore.data.items = [
+            { category: 'Fish', name: 'Mussel', displayName: null },
+            { category: 'Smoked Fish', name: 'Smoked Mussel', displayName: null },
+        ];
+        CustomDataStore.partsData = [
+            ["Smoked Mussel", { "719": ["Mussel", 1] }, 1],
+        ] as PartsEntry[]
+
+        const rows = computeCategoryItems('All', [
+            { name: 'Mussel', stack: 7000, category: 'Fish', quality: [7000,0,0,0,0] },
+            { name: 'Smoked Mussel', stack: 999, category: 'Smoked Fish', quality: [999,0,0,0,0] },
+        ]);
+        const smoked = rows.find(item => item.name === 'Smoked Mussel')!;
+        const musselIngredient = smoked.tooltip.recipe?.find(ing => ing.name === 'Mussel');
+        const mussel = rows.find(item => item.name === 'Mussel')!;
+        const usedInSmoked = mussel.tooltip.usedBy.find(dep => dep.craftedName === 'Smoked Mussel')!;
+
+        expect(mussel.correctQualityCount).toBe(0);
+        expect(calculateNeededCount(mussel)).toBe(1998);
+        expect(smoked.correctQualityCount).toBe(0);
+        expect(smoked.hasWrongQuality).toBe(true);
+        expect(musselIngredient).toEqual({ name: 'Mussel', qty: 1, available: 0, done: false });
+        expect(usedInSmoked.recipe.find(ing => ing.name === 'Mussel')).toEqual({ name: 'Mussel', qty: 1, available: 0, done: false });
+        expect(usedInSmoked.craftableCount).toBe(0);
+    });
+
+    it('uses silver as the highest quality for smoked crabpot-only fish', () => {
+        CustomDataStore.troveItems = ['Missing Artifact']
+        CustomDataStore.data.categoryNames = ['Fish', 'Smoked Fish']
+        CustomDataStore.data.items = [
+            { category: 'Fish', name: 'Snail', displayName: null },
+            { category: 'Smoked Fish', name: 'Smoked Snail', displayName: null },
+        ];
+        CustomDataStore.partsData = [
+            ["Smoked Snail", { "721": ["Snail", 1] }, 1],
+        ] as PartsEntry[]
+
+        const rows = computeCategoryItems('All', [
+            { name: 'Snail', stack: 999, category: 'Fish', quality: [0,999,0,0,0] },
+            { name: 'Smoked Snail', stack: 999, category: 'Smoked Fish', quality: [0,999,0,0,0] },
+        ]);
+        const smoked = rows.find(item => item.name === 'Smoked Snail')!;
+        const snailIngredient = smoked.tooltip.recipe?.find(ing => ing.name === 'Snail');
+
+        expect(smoked.correctQualityCount).toBe(999);
+        expect(smoked.hasWrongQuality).toBe(false);
+        expect(calculatePercentage(smoked)).toBe(100);
+        expect(snailIngredient).toEqual({ name: 'Snail', qty: 1, available: 999, done: true });
+    });
+
     it('uses any-quality egg surplus for Egg: Extra after the egg row is complete', () => {
         CustomDataStore.troveItems = ['Missing Artifact']
         CustomDataStore.data.categoryNames = ['Animal Products', 'Cooking']
