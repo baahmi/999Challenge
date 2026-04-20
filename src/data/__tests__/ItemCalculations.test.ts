@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach } from 'bun:test';
 import {CustomDataStore, type PartsEntry} from '../CustomDataStore';
 import {  computeCategoryItems,  __test } from '../itemCalculations';
+import { calculatePercentage } from '../../types/Item';
 
 describe('computeCategoryItems', () => {
     it('propagates required counts through dependencies even when parts data is unordered', () => {
@@ -41,6 +42,24 @@ describe('computeCategoryItems', () => {
 
         expect(rows.find(row => row.name === 'Crafted')?.raw).toBe(10000);
         expect(rows.find(row => row.name === 'Raw')?.total).toBe(98901);
+    });
+
+    it('uses the correct quality tier for cooking percentage before wrong-quality highlighting starts', () => {
+        CustomDataStore.troveItems = ['Missing Artifact']
+        CustomDataStore.data.categoryNames = ['Cooking']
+        CustomDataStore.data.items = [
+            { category: 'Cooking', name: 'Dish', displayName: null },
+        ];
+        CustomDataStore.partsData = [] as PartsEntry[]
+
+        const rows = computeCategoryItems('Cooking', [
+            { name: 'Dish', stack: 500, category: 'Cooking', quality: [500,0,0,0,0] },
+        ]);
+        const dish = rows.find(row => row.name === 'Dish')!;
+
+        expect(dish.hasWrongQuality).toBe(false);
+        expect(dish.correctQualityCount).toBe(0);
+        expect(calculatePercentage(dish)).toBe(0);
     });
 
     it('returns rows sorted alphabetically', () => {

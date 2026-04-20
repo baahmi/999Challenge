@@ -15,9 +15,9 @@ export interface ItemWithCalculations extends Item {
 export function calculatePercentage(item: Item): number {
   if (item.required === 0) return 0;
   
-  // If item has wrong quality, use the correct quality count for percentage
+  // If item has a required quality tier, use that tier for percentage.
   // Example: 500 gold + 500 normal cooking items = 50% (500 gold / 999 needed)
-  if (item.hasWrongQuality && item.correctQualityCount !== undefined) {
+  if (item.correctQualityCount !== undefined) {
     const obtained = item.correctQualityCount + item.total;
     return Math.min(100, (obtained / item.required) * 100);
   }

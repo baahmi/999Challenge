@@ -349,6 +349,7 @@ function computeAllItems(
     
     const isCooking = getCookingItems().has(itemName);
     const isCrabpot = getCrabpotItems().has(itemName);
+    if (!isCooking && !isCrabpot) return undefined;
     const correctTier = isCooking ? 2 : isCrabpot ? 1 : 4;
     
     return stacks[correctTier] ?? 0;
