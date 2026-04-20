@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Box, Typography, Divider } from '@mui/material';
+import { Box, Typography, Divider, useColorScheme } from '@mui/material';
 import { computeCategoryItems } from '../../data/itemCalculations';
 import type { ItemRow } from '../../data/itemCalculations';
 import { calculatePercentage } from '../../types/Item';
@@ -9,24 +9,62 @@ export const OVERVIEW_TAB = 'Overview';
 interface OverviewProps {
   compacted: Array<{ name: string; stack: number; quality?: number[] }>;
   categoryNames: string[];
+  onCategorySelect?: (category: string) => void;
 }
 
 interface CategoryStat {
   name: string;
+  itemCount: number;
+  readyCount: number;
+  required: number;
   total: number;
-  done: number;
+  goldNeeded: number;
+  qiNeeded: number;
   pct: number;
 }
 
 function rowPct(row: ItemRow): number {
-  return calculatePercentage({ name: row.name, required: row.required, total: row.total, raw: row.raw });
+  return calculatePercentage({
+    name: row.name,
+    required: row.required,
+    total: row.total,
+    raw: row.raw,
+    hasWrongQuality: row.hasWrongQuality,
+    correctQualityCount: row.correctQualityCount,
+  });
+}
+
+function effectiveRowTotal(row: ItemRow): number {
+  return (rowPct(row) / 100) * row.required;
 }
 
 function buildCategoryStat(name: string, rows: ItemRow[]): CategoryStat {
-  const total = rows.length;
-  const done = rows.filter(r => r.raw + r.total >= r.required).length;
-  const pct = total > 0 ? rows.reduce((s, r) => s + rowPct(r), 0) / total : 0;
-  return { name, total, done, pct };
+  const itemCount = rows.length;
+  const readyCount = rows.filter(r => rowPct(r) >= 100).length;
+  const required = rows.reduce((s, r) => s + r.required, 0);
+  const total = rows.reduce((s, r) => s + r.raw + r.total, 0);
+  const effectiveTotal = rows.reduce((s, r) => s + Math.min(effectiveRowTotal(r), r.required), 0);
+  const goldNeeded = rows.reduce((s, r) => {
+    const needed = Math.max(0, r.required - Math.min(effectiveRowTotal(r), r.required));
+    return s + (r.buyPrice?.gold ? needed * r.buyPrice.gold : 0);
+  }, 0);
+  const qiNeeded = rows.reduce((s, r) => {
+    const needed = Math.max(0, r.required - Math.min(effectiveRowTotal(r), r.required));
+    return s + (r.buyPrice?.qiGem ? needed * r.buyPrice.qiGem : 0);
+  }, 0);
+  const pct = required > 0 ? (effectiveTotal / required) * 100 : 0;
+  return { name, itemCount, readyCount, required, total, goldNeeded, qiNeeded, pct };
+}
+
+function getProgressRowBackground(pct: number, isDark: boolean, baseColor?: string) {
+  const progress = Math.max(0, Math.min(100, pct));
+  const fillColor = isDark ? 'rgba(102, 187, 106, 0.34)' : 'rgba(102, 187, 106, 0.28)';
+  return {
+    backgroundColor: baseColor,
+    backgroundImage: progress > 0
+      ? `linear-gradient(90deg, ${fillColor} 0%, ${fillColor} ${progress}%, transparent ${progress}%, transparent 100%)`
+      : undefined,
+  };
 }
 
 function fmtC(n: number): string {
@@ -38,31 +76,31 @@ function fmtC(n: number): string {
 
 function CircleStat({ value, max, label, fmt }: { value: number; max: number; label: string; fmt?: (n: number) => string }) {
   const pct = max > 0 ? Math.min((value / max) * 100, 100) : 0;
-  const r = 38;
+  const r = 76;
   const circ = 2 * Math.PI * r;
   const dashOffset = circ * (1 - pct / 100);
   const display = fmt ?? ((n: number) => n.toLocaleString());
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1 }}>
-      <svg width="130" height="130" viewBox="0 0 100 100">
-        <circle cx="50" cy="50" r={r} fill="none" stroke="#ef5350" strokeWidth="9" />
+    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1, width: 310 }}>
+      <svg width="310" height="260" viewBox="0 0 230 190">
+        <circle cx="115" cy="95" r={r} fill="none" stroke="#ef5350" strokeWidth="12" />
         {pct > 0 && (
           <circle
-            cx="50" cy="50" r={r}
+            cx="115" cy="95" r={r}
             fill="none"
             stroke="#4caf50"
-            strokeWidth="9"
+            strokeWidth="12"
             strokeDasharray={String(circ)}
             strokeDashoffset={dashOffset}
             strokeLinecap="round"
-            transform="rotate(-90 50 50)"
+            transform="rotate(-90 115 95)"
           />
         )}
-        <text x="50" y="47" textAnchor="middle" fontSize="17" fontWeight="bold" fill="currentColor">
+        <text x="115" y="88" textAnchor="middle" dominantBaseline="middle" fontSize="25" fontWeight="bold" fill="currentColor">
           {Math.round(pct)}%
         </text>
-        <text x="50" y="62" textAnchor="middle" fontSize="9" fill="currentColor" opacity="0.55">
+        <text x="115" y="111" textAnchor="middle" dominantBaseline="middle" fontSize="12" fill="currentColor" opacity="0.72">
           {display(value)} / {display(max)}
         </text>
       </svg>
@@ -73,36 +111,40 @@ function CircleStat({ value, max, label, fmt }: { value: number; max: number; la
   );
 }
 
-export function Overview({ compacted, categoryNames }: OverviewProps) {
-  const [categoryStatsData, setCategoryStatsData] = React.useState<CategoryStat[]>([]);
-  const [allRows, setAllRows] = React.useState<ItemRow[]>([]);
+export function Overview({ compacted, categoryNames, onCategorySelect }: OverviewProps) {
+  const { mode } = useColorScheme();
+  const isDark = mode === 'dark';
   
   const validCategories = useMemo(
     () => categoryNames.filter(n => n !== 'asdf'),
     [categoryNames]
   );
 
-  React.useEffect(() => {
+  const { categoryStatsData, allRows, totalStat } = useMemo(() => {
     if (compacted.length === 0) return;
-    
-    const stats = [];
+
+    const stats: CategoryStat[] = [];
     for (const name of validCategories) {
       stats.push(buildCategoryStat(name, computeCategoryItems(name, compacted)));
     }
-    setCategoryStatsData(stats.sort((a, b) => a.pct - b.pct));
-    setAllRows(computeCategoryItems('All', compacted));
-  }, [validCategories, compacted]);
+    const all = computeCategoryItems('All', compacted);
+    return {
+      categoryStatsData: stats,
+      allRows: all,
+      totalStat: buildCategoryStat('Total', all),
+    };
+  }, [validCategories, compacted]) ?? { categoryStatsData: [], allRows: [], totalStat: buildCategoryStat('Total', []) };
 
   const { goldTotal, goldCovered, qiTotal, qiCovered } = useMemo(() => ({
     goldTotal:   allRows.reduce((s, r) => s + (r.buyPrice?.gold  ? r.required * r.buyPrice.gold  : 0), 0),
-    goldCovered: allRows.reduce((s, r) => s + (r.buyPrice?.gold  ? Math.min(r.raw + r.total, r.required) * r.buyPrice.gold  : 0), 0),
+    goldCovered: allRows.reduce((s, r) => s + (r.buyPrice?.gold  ? Math.min(effectiveRowTotal(r), r.required) * r.buyPrice.gold  : 0), 0),
     qiTotal:     allRows.reduce((s, r) => s + (r.buyPrice?.qiGem ? r.required * r.buyPrice.qiGem : 0), 0),
-    qiCovered:   allRows.reduce((s, r) => s + (r.buyPrice?.qiGem ? Math.min(r.raw + r.total, r.required) * r.buyPrice.qiGem : 0), 0),
+    qiCovered:   allRows.reduce((s, r) => s + (r.buyPrice?.qiGem ? Math.min(effectiveRowTotal(r), r.required) * r.buyPrice.qiGem : 0), 0),
   }), [allRows]);
 
-  const globalDone = allRows.filter(r => r.raw + r.total >= r.required).length;
+  const globalDone = allRows.filter(r => rowPct(r) >= 100).length;
   const globalTotal = allRows.length;
-  const totalGathered = allRows.reduce((s, r) => s + r.raw + r.total, 0);
+  const totalGathered = allRows.reduce((s, r) => s + Math.min(effectiveRowTotal(r), r.required), 0);
   const totalRequired = allRows.reduce((s, r) => s + r.required, 0);
 
   if (compacted.length === 0) {
@@ -114,85 +156,110 @@ export function Overview({ compacted, categoryNames }: OverviewProps) {
     );
   }
 
+  const tableRows = [totalStat, ...categoryStatsData, totalStat];
+  const borderColor = isDark ? '#555' : '#ccc';
+  const headerBg = isDark ? '#2a2a2a' : '#f0f0f0';
+  const totalBg = isDark ? '#3a3a3a' : '#d0d0d0';
+  const cellSx = {
+    border: `1px solid ${borderColor}`,
+    py: 0.5,
+    px: 0.75,
+    fontSize: '13px',
+    whiteSpace: 'nowrap',
+  };
+  const numberCellSx = {
+    ...cellSx,
+    textAlign: 'right',
+    fontFamily: 'monospace',
+  };
+
   return (
-    <Box sx={{ p: { xs: 1.5, sm: 2.5 }, maxWidth: 900, mx: 'auto' }}>
+    <Box sx={{ width: '100%', border: `1px solid ${borderColor}`, p: '10px' }}>
       <Typography variant="h6" fontWeight={700} sx={{ mb: 1.5 }}>
-        Category Breakdown
+        Overview
       </Typography>
 
       <Box
         component="table"
-        sx={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.875rem' }}
+        sx={{ borderCollapse: 'collapse', tableLayout: 'fixed', minWidth: 900 }}
       >
-        <Box component="thead">
-          <Box component="tr" sx={{ borderBottom: '2px solid', borderColor: 'divider' }}>
-            <Box component="th" sx={{ textAlign: 'left', py: 1, pr: 2, fontWeight: 700 }}>
-              Category
-            </Box>
-            <Box component="th" sx={{ textAlign: 'center', py: 1, px: 1, fontWeight: 700, whiteSpace: 'nowrap' }}>
-              Done&nbsp;/&nbsp;Total
-            </Box>
-            <Box component="th" sx={{ py: 1, px: 1, fontWeight: 700, width: '50%' }}>
-              Progress
-            </Box>
-            <Box component="th" sx={{ textAlign: 'right', py: 1, pl: 2, fontWeight: 700 }}>
-              %
-            </Box>
-          </Box>
-        </Box>
-        <Box component="tbody">
-          {categoryStatsData.map(stat => (
-            <Box
-              key={stat.name}
-              component="tr"
-              sx={{
-                borderBottom: '1px solid',
-                borderColor: 'divider',
-                '&:last-child': { borderBottom: 'none' },
-                '&:hover': { bgcolor: 'action.hover' },
-              }}
-            >
-              <Box component="td" sx={{ py: 0.75, pr: 2, fontWeight: stat.done === stat.total && stat.total > 0 ? 700 : 400 }}>
-                {stat.name}
-              </Box>
-              <Box component="td" sx={{ textAlign: 'center', py: 0.75, px: 1, color: 'text.secondary', whiteSpace: 'nowrap', fontFamily: 'monospace', fontSize: '0.8rem' }}>
-                {stat.done}&nbsp;/&nbsp;{stat.total}
-              </Box>
-              <Box component="td" sx={{ py: 0.75, px: 1 }}>
-                <Box sx={{ height: 8, borderRadius: 4, bgcolor: 'action.selected', overflow: 'hidden' }}>
-                  <Box
-                    sx={{
-                      height: '100%',
-                      borderRadius: 4,
-                      width: `${Math.min(stat.pct, 100)}%`,
-                      bgcolor:
-                        stat.pct >= 100 ? 'success.main' :
-                        stat.pct >= 66 ? 'warning.light' :
-                        stat.pct >= 33 ? 'warning.main' :
-                        'error.main',
-                      transition: 'width 0.4s ease',
-                    }}
-                  />
-                </Box>
-              </Box>
+        <thead>
+          <tr>
+            {['Category', '% Ready', 'Items', 'Ready', 'Required', 'Total', '💰 Gold needed', '✦ Qi needed'].map((label) => (
               <Box
-                component="td"
+                key={label}
+                component="th"
                 sx={{
-                  textAlign: 'right',
-                  py: 0.75,
-                  pl: 2,
-                  fontWeight: 600,
-                  whiteSpace: 'nowrap',
-                  color: stat.pct >= 100 ? 'success.main' : 'text.primary',
-                  fontFamily: 'monospace',
-                  fontSize: '0.85rem',
+                  ...cellSx,
+                  textAlign: label === 'Category' ? 'left' : 'right',
+                  fontWeight: 700,
+                  color: isDark ? '#e0e0e0' : 'black',
+                  backgroundColor: headerBg,
                 }}
               >
+                {label}
+              </Box>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {tableRows.map((stat, index) => {
+            const isTotal = index === 0 || index === tableRows.length - 1;
+            const rowBackground = getProgressRowBackground(stat.pct, isDark, isTotal ? totalBg : undefined);
+            const canSelect = !isTotal && onCategorySelect !== undefined;
+            return (
+            <Box
+              key={`${stat.name}-${index}`}
+              component="tr"
+              role={canSelect ? 'button' : undefined}
+              tabIndex={canSelect ? 0 : undefined}
+              onClick={canSelect ? () => onCategorySelect(stat.name) : undefined}
+              onKeyDown={canSelect ? (event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                  event.preventDefault();
+                  onCategorySelect(stat.name);
+                }
+              } : undefined}
+              sx={{
+                ...rowBackground,
+                cursor: canSelect ? 'pointer' : undefined,
+                '&:hover': {
+                  filter: 'brightness(1.06)',
+                },
+                '&:focus-visible': canSelect ? {
+                  outline: `2px solid ${isDark ? '#90caf9' : '#1976d2'}`,
+                  outlineOffset: '-2px',
+                } : undefined,
+              }}
+            >
+              <Box component="td" sx={{ ...cellSx, fontWeight: isTotal ? 700 : 400 }}>
+                {stat.name}
+              </Box>
+              <Box component="td" sx={{ ...numberCellSx, fontWeight: isTotal ? 700 : 600, color: stat.pct >= 100 ? 'success.main' : undefined }}>
                 {stat.pct.toFixed(1)}%
               </Box>
+              <Box component="td" sx={numberCellSx}>
+                {stat.itemCount.toLocaleString()}
+              </Box>
+              <Box component="td" sx={numberCellSx}>
+                {stat.readyCount.toLocaleString()}
+              </Box>
+              <Box component="td" sx={numberCellSx}>
+                {Math.round(stat.required).toLocaleString()}
+              </Box>
+              <Box component="td" sx={numberCellSx}>
+                {Math.round(stat.total).toLocaleString()}
+              </Box>
+              <Box component="td" sx={{ ...numberCellSx, color: isDark ? '#ffd54f' : '#9a7000' }}>
+                {Math.round(stat.goldNeeded).toLocaleString()}
+              </Box>
+              <Box component="td" sx={{ ...numberCellSx, color: isDark ? '#ce93d8' : '#8b44ac' }}>
+                {Math.round(stat.qiNeeded).toLocaleString()}
+              </Box>
             </Box>
-          ))}
-        </Box>
+            );
+          })}
+        </tbody>
       </Box>
 
       <Divider sx={{ my: 3 }} />
@@ -200,7 +267,7 @@ export function Overview({ compacted, categoryNames }: OverviewProps) {
       <Typography variant="h6" fontWeight={700} sx={{ mb: 2 }}>
         Overall Statistics
       </Typography>
-      <Box sx={{ display: 'flex', gap: { xs: 3, sm: 6 }, flexWrap: 'wrap', justifyContent: 'center', pb: 2 }}>
+      <Box sx={{ display: 'flex', gap: { xs: 3, sm: 4 }, flexWrap: 'wrap', justifyContent: 'flex-start', pb: 2 }}>
         <CircleStat
           value={globalDone}
           max={globalTotal}

@@ -23,6 +23,10 @@ export interface CustomData {
   items: ItemEntry[];
 }
 
+interface StoredCustomData {
+  categoryNames?: string[];
+}
+
 type Listener = () => void;
 
 class CustomDataManager {
@@ -33,29 +37,24 @@ class CustomDataManager {
   private troveItems: string[];
 
   private constructor() {
+    const defaults = this.buildDefaults();
     const cached = this.loadFromStorage();
-    // Validate cached data - if missing critical items, rebuild from defaults
-    const isValid = cached ? this.validateData(cached) : false;
-    if (cached && isValid) {
-      this.data = cached;
-    } else {
-      this.data = this.buildDefaults();
-      this.saveToStorage();
-    }
+    this.data = {
+      categoryNames: cached?.categoryNames ?? defaults.categoryNames,
+      items: defaults.items,
+    };
     this.partsData = rawPartsData as PartsEntry[];
     this.troveItems = rawTroveItems as string[];
   }
-  
-  private validateData(data: CustomData): boolean {
-    // Check for critical items that should always exist
-    const criticalItems = ['Wilted Bouquet', 'Void Ghost Pendant'];
-    const itemNames = new Set(data.items.map(item => item.name));
-    return criticalItems.every(name => itemNames.has(name));
-  }
-  
+
   private saveToStorage(): void {
+    const stored: StoredCustomData = {
+      categoryNames: this.data.categoryNames,
+    };
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(this.data));
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(stored));
+      }
     } catch (e) {
       console.warn('Failed to save custom data:', e);
     }
@@ -68,13 +67,14 @@ class CustomDataManager {
     return CustomDataManager.instance;
   }
 
-  private loadFromStorage(): CustomData | null {
+  private loadFromStorage(): StoredCustomData | null {
     try {
+      if (typeof localStorage === 'undefined') return null;
       const raw = localStorage.getItem(STORAGE_KEY);
       if (!raw) return null;
-      const parsed = JSON.parse(raw) as Partial<CustomData>;
-      if (Array.isArray(parsed.categoryNames) && Array.isArray(parsed.items)) {
-        return parsed as CustomData;
+      const parsed = JSON.parse(raw) as StoredCustomData;
+      if (Array.isArray(parsed.categoryNames)) {
+        return { categoryNames: parsed.categoryNames };
       }
     } catch {}
     return null;
@@ -153,6 +153,7 @@ class CustomDataManager {
 
   isCustomized(): boolean {
     try {
+      if (typeof localStorage === 'undefined') return false;
       return localStorage.getItem(STORAGE_KEY) !== null;
     } catch {
       return false;
@@ -176,21 +177,32 @@ class CustomDataManager {
   }
 
   setData(data: CustomData): void {
-    this.data = data;
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-    } catch (e) {
-      console.warn('Failed to save custom data:', e);
-    }
+    const defaults = this.buildDefaults();
+    this.data = {
+      categoryNames: data.categoryNames,
+      items: this.withExistingVariants(defaults.items),
+    };
+    this.saveToStorage();
     this.notify();
   }
 
   resetToDefaults(): void {
     try {
-      localStorage.removeItem(STORAGE_KEY);
+      if (typeof localStorage !== 'undefined') {
+        localStorage.removeItem(STORAGE_KEY);
+      }
     } catch {}
     this.data = this.buildDefaults();
     this.notify();
+  }
+
+  private withExistingVariants(defaultItems: ItemEntry[]): ItemEntry[] {
+    const defaultKeys = new Set(defaultItems.map(item => `${item.name}|${item.displayName ?? ''}`));
+    const variants = this.data.items.filter(item => {
+      if (item.displayName === null) return false;
+      return !defaultKeys.has(`${item.name}|${item.displayName}`);
+    });
+    return [...defaultItems, ...variants];
   }
 
   subscribe(listener: Listener): () => void {

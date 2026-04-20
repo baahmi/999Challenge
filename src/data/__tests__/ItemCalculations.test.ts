@@ -3,6 +3,46 @@ import {CustomDataStore, type PartsEntry} from '../CustomDataStore';
 import {  computeCategoryItems,  __test } from '../itemCalculations';
 
 describe('computeCategoryItems', () => {
+    it('propagates required counts through dependencies even when parts data is unordered', () => {
+        CustomDataStore.troveItems = ['Missing Artifact']
+        CustomDataStore.data.categoryNames = ['Test']
+        CustomDataStore.data.items = [
+            { category: 'Test', name: 'Parent', displayName: null },
+            { category: 'Test', name: 'Middle', displayName: null },
+            { category: 'Test', name: 'Raw', displayName: null },
+        ];
+        CustomDataStore.partsData = [
+            ["Middle", { "1": ["Raw", 1] }, 1],
+            ["Parent", { "2": ["Middle", 1] }, 1],
+        ] as PartsEntry[]
+
+        const rows = computeCategoryItems('Test', []);
+
+        expect(rows.find(row => row.name === 'Parent')?.required).toBe(999);
+        expect(rows.find(row => row.name === 'Middle')?.required).toBe(1998);
+        expect(rows.find(row => row.name === 'Raw')?.required).toBe(2997);
+    });
+
+    it('caps ingredient totals from surplus crafted items at the required challenge amount', () => {
+        const compacted = [
+            { name: 'Crafted', stack: 10000, category: 'Test', quality: [10000,0,0,0,0] },
+        ];
+        CustomDataStore.troveItems = ['Missing Artifact']
+        CustomDataStore.data.categoryNames = ['Test']
+        CustomDataStore.data.items = [
+            { category: 'Test', name: 'Crafted', displayName: null },
+            { category: 'Test', name: 'Raw', displayName: null },
+        ];
+        CustomDataStore.partsData = [
+            ["Crafted", { "1": ["Raw", 99] }, 1],
+        ] as PartsEntry[]
+
+        const rows = computeCategoryItems('Test', compacted);
+
+        expect(rows.find(row => row.name === 'Crafted')?.raw).toBe(10000);
+        expect(rows.find(row => row.name === 'Raw')?.total).toBe(98901);
+    });
+
     it('returns rows sorted alphabetically', () => {
         const compacted = [
             { name: 'Void Salmon', stack: 999, category: 'Fish', quality: [0,0,0,0,999] },

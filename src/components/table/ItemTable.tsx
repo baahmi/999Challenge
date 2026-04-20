@@ -290,8 +290,9 @@ export function ItemTable({ items }: ItemTableProps) {
       if (usedTiers.has(1)) usedTiers.add(4); // If has silver, also show iridium
     }
     
-    // Only show quality columns if there are items with quality data
-    const showQualityCols = itemsWithQuality.length > 0 && usedTiers.size > 0;
+    // A lone normal stack means the item has no useful quality breakdown.
+    const onlyNormalTier = usedTiers.size === 1 && usedTiers.has(0);
+    const showQualityCols = itemsWithQuality.length > 0 && usedTiers.size > 0 && !onlyNormalTier;
 
     const showGoldCol = enrichedItems.some(item => (item as unknown as ItemRow).buyPrice?.gold !== undefined);
     const showQiCol = enrichedItems.some(item => (item as unknown as ItemRow).buyPrice?.qiGem !== undefined);

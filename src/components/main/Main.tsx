@@ -41,6 +41,11 @@ export function Main() {
     setSelectedCategory(category);
   };
 
+  const selectCategory = (category: string) => {
+    setSelectedCategory(category);
+    Config.setSelectedTab(category);
+  };
+
   const [categoryNames, setCategoryNames] = useState<string[]>(() => Config.getCategoryNames());
 
   useEffect(() => {
@@ -69,7 +74,7 @@ export function Main() {
       <div className="container">
         <Tabs onCategoryChange={handleCategoryChange}>
           {selectedCategory === OVERVIEW_TAB
-            ? <Overview compacted={compacted} categoryNames={categoryNames} />
+            ? <Overview compacted={compacted} categoryNames={categoryNames} onCategorySelect={selectCategory} />
             : <ItemTable key={selectedCategory} items={allCategoryData.get(selectedCategory) ?? []} />
           }
         </Tabs>

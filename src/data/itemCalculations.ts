@@ -3,7 +3,7 @@ import notesData from './notes.json';
 import pricesData from './prices.json';
 import { Config } from '../config/Config';
 import type { Quality } from '../config/Config';
-import type { YieldSpec } from "./CustomDataStore";
+import type { PartsEntry, YieldSpec } from "./CustomDataStore";
 
 const TARGET = 999;
 
@@ -119,6 +119,61 @@ function isWildcard(id: string, name: string | null): boolean {
   return Number.isFinite(numId) && numId < 0;
 }
 
+function getPartsDataConsumersFirst(): PartsEntry[] {
+  const parts = CustomDataStore.getPartsData();
+  const craftedNames = new Set(parts.map(([craftedName]) => craftedName));
+  const incomingCounts = new Map<string, number>();
+  const outgoingEdges = new Map<string, string[]>();
+
+  for (const [craftedName] of parts) {
+    incomingCounts.set(craftedName, 0);
+    outgoingEdges.set(craftedName, []);
+  }
+
+  for (const [craftedName, ingredients] of parts) {
+    for (const [ingredientId, ingredientEntry] of Object.entries(ingredients)) {
+      const [ingredientName] = ingredientEntry as [string | null, number];
+      if (isWildcard(ingredientId, ingredientName)) continue;
+      if (!craftedNames.has(ingredientName)) continue;
+
+      outgoingEdges.get(craftedName)!.push(ingredientName);
+      incomingCounts.set(ingredientName, (incomingCounts.get(ingredientName) ?? 0) + 1);
+    }
+  }
+
+  const queue = parts
+    .map(([craftedName]) => craftedName)
+    .filter(craftedName => (incomingCounts.get(craftedName) ?? 0) === 0);
+  const byName = new Map(parts.map(entry => [entry[0], entry] as const));
+  const ordered: PartsEntry[] = [];
+  const emitted = new Set<string>();
+
+  for (let index = 0; index < queue.length; index++) {
+    const craftedName = queue[index]!;
+    if (emitted.has(craftedName)) continue;
+    const entry = byName.get(craftedName);
+    if (!entry) continue;
+
+    ordered.push(entry);
+    emitted.add(craftedName);
+
+    for (const ingredientName of outgoingEdges.get(craftedName) ?? []) {
+      const nextCount = (incomingCounts.get(ingredientName) ?? 0) - 1;
+      incomingCounts.set(ingredientName, nextCount);
+      if (nextCount === 0) queue.push(ingredientName);
+    }
+  }
+
+  if (ordered.length !== parts.length) {
+    console.warn('[parts.json] Cycle detected while ordering dependencies; falling back to source order for remaining recipes');
+    for (const entry of parts) {
+      if (!emitted.has(entry[0])) ordered.push(entry);
+    }
+  }
+
+  return ordered;
+}
+
 // Static maps built once from partsData (never changes at runtime)
 const recipeMap = new Map<string, Map<string, number>>(); // craftedName -> ingredient -> qty
 const reverseMap = new Map<string, string[]>();           // ingredient -> [craftedNames]
@@ -180,21 +235,21 @@ function computeAllItems(
     // (opening a trove destroys it and gives 1 random item from the 28 possible)
     const length = CustomDataStore.getTroveItems().length;
     const minTroveCount: number = Math.min(...CustomDataStore.getTroveItems().map(itemName => inventoryMap.get(itemName) ?? 0));
-    const troveRequired = TARGET + TARGET * length;
+    const troveRequired = TARGET * length;
     requiredFromParts.set("Artifact Trove", troveRequired);
     // Total is just what you've already opened (consumed)
     totalFromParts.set("Artifact Trove", minTroveCount*length);
   }
 
-  for (const [craftedItemName, ingredients] of CustomDataStore.getPartsData()) {
+  for (const [craftedItemName, ingredients] of getPartsDataConsumersFirst()) {
     const craftedCount = inventoryMap.get(craftedItemName) ?? 0;
     const avgYield = yieldMap.get(craftedItemName) ?? 1;
-    const required = requiredFromParts.get(craftedItemName);
-    const targetAmount = required ?? TARGET;
+    const required = requiredFromParts.get(craftedItemName) ?? 0;
+    const targetAmount = TARGET + required;
     const totalCrafted = totalFromParts.get(craftedItemName) ?? 0;
     
     // How many of this crafted item do we have (inventory + what we've made/opened)
-    const totalHave = craftedCount + totalCrafted;
+    const totalHave = Math.min(craftedCount + totalCrafted, targetAmount);
     
     for (const [ingredientId, ingredientEntry] of Object.entries(ingredients)) {
       const [ingredientName, qty] = ingredientEntry as [string | null, number];
@@ -424,12 +479,6 @@ function craftableCount(
   craftedName: string,
   inventoryMap: Map<string, number>
 ): { count: number; limiting: string | null } {
-  if(craftedName === 'Void Salmon Bait') {
-    console.log(craftedName, inventoryMap);
-    console.log("test");
-    console.log('Call stack:', new Error().stack);
-    // debugger;
-  }
   const recipe = recipeMap.get(craftedName);
   if (!recipe) return { count: 0, limiting: null };
   let min = Infinity;
@@ -575,19 +624,19 @@ export function computeCategoryItemsUncached(
     // Need 999 artifact troves in inventory + 999*length to open for all trove items
     const length = CustomDataStore.getTroveItems().length;
     const minTroveCount: number = Math.min(...CustomDataStore.getTroveItems().map(itemName => inventoryMap.get(itemName) ?? 0));
-    requiredFromParts.set("Artifact Trove", TARGET + TARGET * length);
+    requiredFromParts.set("Artifact Trove", TARGET * length);
     totalFromParts.set("Artifact Trove", minTroveCount * length);
   }
 
-  for (const [craftedItemName, ingredients] of CustomDataStore.getPartsData()) {
+  for (const [craftedItemName, ingredients] of getPartsDataConsumersFirst()) {
     const craftedCount = inventoryMap.get(craftedItemName) ?? 0;
     const avgYield = yieldMap.get(craftedItemName) ?? 1;
-    const required = requiredFromParts.get(craftedItemName);
-    const targetAmount = required ?? TARGET;
+    const required = requiredFromParts.get(craftedItemName) ?? 0;
+    const targetAmount = TARGET + required;
     const totalCrafted = totalFromParts.get(craftedItemName) ?? 0;
     
     // How many of this crafted item do we have (inventory + what we've made/opened)
-    const totalHave = craftedCount + totalCrafted;
+    const totalHave = Math.min(craftedCount + totalCrafted, targetAmount);
     
     for (const [ingredientId, ingredientEntry] of Object.entries(ingredients)) {
       const [ingredientName, qty] = ingredientEntry as [string | null, number];
