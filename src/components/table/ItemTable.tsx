@@ -1,6 +1,6 @@
 import React from 'react';
 import { Tooltip, useColorScheme } from '@mui/material';
-import { enrichItemsWithCalculations } from '../../types/Item';
+import { calculateNeededCount, calculateObtainedCount, enrichItemsWithCalculations } from '../../types/Item';
 import type { ItemWithCalculations } from '../../types/Item';
 import type { ItemRow, ItemTooltipData } from '../../data/itemCalculations';
 import { hasTooltipContent } from '../../data/itemCalculations';
@@ -218,14 +218,14 @@ export function ItemTable({ items }: ItemTableProps) {
     const totalRequired = enrichedItems.reduce((sum, item) => sum + item.required, 0);
     const totalRaw = enrichedItems.reduce((sum, item) => sum + (item.excludeFromTotals ? 0 : item.raw), 0);
     const totalUsed = enrichedItems.reduce((sum, item) => sum + (item.excludeFromTotals ? 0 : item.total), 0);
-    const cappedHave = enrichedItems.reduce((sum, item) => sum + Math.min(item.raw + item.total, item.required), 0);
+    const cappedHave = enrichedItems.reduce((sum, item) => sum + Math.min(calculateObtainedCount(item), item.required), 0);
     const totalGoldNeeded = enrichedItems.reduce((sum, item) => {
-      const needed = Math.max(0, item.required - (item.raw + item.total));
+      const needed = calculateNeededCount(item);
       const bp = (item as unknown as ItemRow).buyPrice;
       return sum + (bp?.gold ? needed * bp.gold : 0);
     }, 0);
     const totalQiNeeded = enrichedItems.reduce((sum, item) => {
-      const needed = Math.max(0, item.required - (item.raw + item.total));
+      const needed = calculateNeededCount(item);
       const bp = (item as unknown as ItemRow).buyPrice;
       return sum + (bp?.qiGem ? needed * bp.qiGem : 0);
     }, 0);
@@ -247,8 +247,8 @@ export function ItemTable({ items }: ItemTableProps) {
         case 'percentage': return `${Math.floor(row.percentage)}%`;
         case 'name':       return isTotal ? 'Total' : row.name;
         case 'required':   return fmtNumber(row.required);
-        case 'needed':     return fmtNumber(Math.max(0, row.required - (row.raw + row.total)));
-        case 'total':      return fmtNumber(row.raw + row.total);
+        case 'needed':     return fmtNumber(calculateNeededCount(row));
+        case 'total':      return fmtNumber(calculateObtainedCount(row));
         case 'raw':        return fmtNumber(row.raw);
         case 'raw_N':      return fmtNumber(isTotal ? '' : (row.rawStacks?.[0] ?? 0));
         case 'raw_S':      return fmtNumber(isTotal ? '' : (row.rawStacks?.[1] ?? 0));
@@ -256,14 +256,14 @@ export function ItemTable({ items }: ItemTableProps) {
         case 'raw_I':      return fmtNumber(isTotal ? '' : (row.rawStacks?.[4] ?? 0));
         case 'gold_needed': {
           if (isTotal) return fmtNumber(totalGoldNeeded);
-          const needed = Math.max(0, row.required - (row.raw + row.total));
+          const needed = calculateNeededCount(row);
           const bp = (row as unknown as ItemRow).buyPrice;
           if (!bp?.gold || needed === 0) return '';
           return fmtNumber(needed * bp.gold);
         }
         case 'qi_needed': {
           if (isTotal) return fmtNumber(totalQiNeeded);
-          const needed = Math.max(0, row.required - (row.raw + row.total));
+          const needed = calculateNeededCount(row);
           const bp = (row as unknown as ItemRow).buyPrice;
           if (!bp?.qiGem || needed === 0) return '';
           return fmtNumber(needed * bp.qiGem);
@@ -362,14 +362,16 @@ export function ItemTable({ items }: ItemTableProps) {
               const hasUnfinishedDependents = itemRow?.hasUnfinishedDependents ?? false;
               // Check if at least one quality tier has a complete stack of 999
               const hasCompleteStack = !isTotal && (itemRow?.rawStacks?.some(count => count >= 999) ?? false);
-              const showNameProgress = !isTotal && !hasUnfinishedDependents && !(done && hasCompleteStack);
+              const isExtraAvailabilityRow = !isTotal && (row.name.endsWith(' Extra') || row.name.endsWith(': Extra'));
+              const showDoneRow = done && (hasCompleteStack || isExtraAvailabilityRow);
+              const showNameProgress = !isTotal && !hasUnfinishedDependents && !showDoneRow;
               const rowBg = isTotal
                 ? (isDark ? '#3a3a3a' : '#d0d0d0')
                 : hasWrongQuality
                   ? (isDark ? '#1e3a4a' : '#b3e5fc') // light blue for wrong quality (takes priority)
                   : hasUnfinishedDependents
                     ? (isDark ? '#4a3a1e' : '#fff9c4') // yellow for unfinished dependents
-                    : done && hasCompleteStack
+                    : showDoneRow
                       ? (isDark ? '#1b4a1e' : '#c8e6c9') // green for done with complete stack
                       : (isDark ? 'transparent' : 'white');
               const stickyStyle: React.CSSProperties = isTopTotal

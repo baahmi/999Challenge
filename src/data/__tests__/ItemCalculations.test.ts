@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach } from 'bun:test';
 import {CustomDataStore, type PartsEntry} from '../CustomDataStore';
 import {  computeCategoryItems,  __test } from '../itemCalculations';
-import { calculatePercentage } from '../../types/Item';
+import { calculateNeededCount, calculatePercentage } from '../../types/Item';
 
 describe('computeCategoryItems', () => {
     it('propagates required counts through dependencies even when parts data is unordered', () => {
@@ -62,6 +62,7 @@ describe('computeCategoryItems', () => {
         expect(dish.hasWrongQuality).toBe(false);
         expect(dish.correctQualityCount).toBe(0);
         expect(calculatePercentage(dish)).toBe(0);
+        expect(calculateNeededCount(dish)).toBe(999);
     });
 
     it('does not require cooking ingredient or intermediate cooking items to use cooking quality', () => {
@@ -114,6 +115,38 @@ describe('computeCategoryItems', () => {
         expect(rows.find(row => row.name === 'Qi Seasoning')?.total).toBe(30);
     });
 
+    it('shows wildcard ingredients in the crafted item recipe tooltip', () => {
+        CustomDataStore.troveItems = ['Missing Artifact']
+        CustomDataStore.data.categoryNames = ['Animal Products', 'Cooking']
+        CustomDataStore.data.items = [
+            { category: 'Animal Products', name: 'Egg', displayName: null },
+            { category: 'Cooking', name: 'Chocolate Cake', displayName: null },
+            { category: 'Cooking', name: 'Wheat Flour', displayName: null },
+            { category: 'Cooking', name: 'Sugar', displayName: null },
+        ];
+        CustomDataStore.partsData = [
+            ["Chocolate Cake", {
+                "246": ["Wheat Flour", 1],
+                "245": ["Sugar", 1],
+                "-5": [null, 1],
+            }, 1],
+        ] as PartsEntry[]
+
+        const rows = computeCategoryItems('Cooking', [
+            { name: 'Egg', stack: 1500, category: 'Animal Products', quality: [0,0,0,0,1500] },
+            { name: 'Wheat Flour', stack: 200, category: 'Cooking', quality: [200,0,0,0,0] },
+            { name: 'Sugar', stack: 200, category: 'Cooking', quality: [200,0,0,0,0] },
+        ]);
+        const cake = rows.find(row => row.name === 'Chocolate Cake')!;
+
+        expect(cake.tooltip.recipe).toContainEqual({
+            name: 'Egg: Extra',
+            qty: 1,
+            available: 501,
+            done: true,
+        });
+    });
+
     it('routes wildcard egg requirements to Egg: Extra using only completed egg surplus', () => {
         CustomDataStore.troveItems = ['Missing Artifact']
         CustomDataStore.data.categoryNames = ['Animal Products', 'Cooking']
@@ -163,6 +196,44 @@ describe('computeCategoryItems', () => {
             expect(row.correctQualityCount).toBe(0);
             expect(calculatePercentage(row)).toBe(0);
         }
+    });
+
+    it('does not count wrong-quality flower variants toward highest quality progress', () => {
+        CustomDataStore.troveItems = ['Missing Artifact']
+        CustomDataStore.data.categoryNames = ['Flowers']
+        CustomDataStore.data.items = [
+            { category: 'Flowers', name: 'Summer Spangle', displayName: null },
+            { category: 'Flowers', name: 'Summer Spangle', displayName: 'Summer Spangle (Fuchsia)' },
+        ];
+        CustomDataStore.partsData = [] as PartsEntry[]
+
+        const rows = computeCategoryItems('Flowers', [
+            { name: 'Summer Spangle (Fuchsia)', stack: 8, category: 'Flowers', quality: [0,1,4,3,0] },
+        ]);
+        const flower = rows.find(item => item.name === 'Summer Spangle (Fuchsia)')!;
+
+        expect(flower.correctQualityCount).toBe(0);
+        expect(calculatePercentage(flower)).toBe(0);
+        expect(calculateNeededCount(flower)).toBe(999);
+    });
+
+    it('marks wine with a complete non-iridium stack as wrong quality in highest mode', () => {
+        CustomDataStore.troveItems = ['Missing Artifact']
+        CustomDataStore.data.categoryNames = ['Wine']
+        CustomDataStore.data.items = [
+            { category: 'Wine', name: 'Ancient Fruit Wine', displayName: null },
+        ];
+        CustomDataStore.partsData = [] as PartsEntry[]
+
+        const rows = computeCategoryItems('Wine', [
+            { name: 'Ancient Fruit Wine', stack: 999, category: 'Wine', quality: [999,0,0,0,0] },
+        ]);
+        const wine = rows.find(item => item.name === 'Ancient Fruit Wine')!;
+
+        expect(wine.correctQualityCount).toBe(0);
+        expect(wine.hasWrongQuality).toBe(true);
+        expect(calculatePercentage(wine)).toBe(0);
+        expect(calculateNeededCount(wine)).toBe(999);
     });
 
     it('uses any-quality egg surplus for Egg: Extra after the egg row is complete', () => {

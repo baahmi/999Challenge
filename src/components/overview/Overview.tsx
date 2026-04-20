@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { Box, Typography, Divider, useColorScheme } from '@mui/material';
 import { computeCategoryItems } from '../../data/itemCalculations';
 import type { ItemRow } from '../../data/itemCalculations';
-import { calculatePercentage } from '../../types/Item';
+import { calculateObtainedCount, calculatePercentage } from '../../types/Item';
 
 export const OVERVIEW_TAB = 'Overview';
 
@@ -35,7 +35,7 @@ function rowPct(row: ItemRow): number {
 }
 
 function effectiveRowTotal(row: ItemRow): number {
-  return (rowPct(row) / 100) * row.required;
+  return calculateObtainedCount(row);
 }
 
 function buildCategoryStat(name: string, rows: ItemRow[]): CategoryStat {

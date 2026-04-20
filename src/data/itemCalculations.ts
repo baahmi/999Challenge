@@ -123,6 +123,8 @@ function isWildcard(id: string, name: string | null): boolean {
 
 const IRIDIUM_QUALITY_CATEGORIES = new Set([
   'Animal Products',
+  'Flowers',
+  'Wine',
 ]);
 
 const ANY_INGREDIENTS: Record<string, { name: string; category: string; candidates: string[] }> = {
@@ -332,6 +334,7 @@ function computeAllItems(
     // to be complete we need raw to be at least 999.
     completionMap.set(item.name, r + tot >= req && r >= TARGET);
   }
+  const anyIngredientAvailability = computeAnyIngredientAvailability(inventoryMap, stacksMap, quality, requiredFromParts, totalFromParts);
 
   // Helper to check if an item has wrong quality stacks
   const hasWrongQualityStacks = (itemName: string): boolean => {
@@ -440,7 +443,7 @@ function computeAllItems(
       raw, 
       rawStacks: stacksMap.get(lookupKey), // Use lookupKey to get actual stacks
       buyPrice: priceMap.get(item.name), 
-      tooltip: computeTooltipData(item.name, raw , inventoryMap, completionMap, globalCraftableCache),
+      tooltip: computeTooltipData(item.name, raw , inventoryMap, completionMap, globalCraftableCache, anyIngredientAvailability),
       hasWrongQuality: hasWrongQualityStacks(itemKey), // Use itemKey for variants
       hasUnfinishedDependents: hasUnfinishedDependents(item.name),
       correctQualityCount: getCorrectQualityCount(itemKey) // Use itemKey for variants
@@ -474,7 +477,7 @@ function computeAllItems(
         raw: excessRaw, // Only the excess
         rawStacks: undefined,
         buyPrice: priceMap.get(baseName),
-        tooltip: computeTooltipData(baseName, excessRaw, inventoryMap, completionMap, globalCraftableCache),
+        tooltip: computeTooltipData(baseName, excessRaw, inventoryMap, completionMap, globalCraftableCache, anyIngredientAvailability),
         hasWrongQuality: false,
         hasUnfinishedDependents: false,
         correctQualityCount: undefined
@@ -496,7 +499,7 @@ function computeAllItems(
       raw,
       rawStacks: undefined,
       buyPrice: undefined,
-      tooltip: computeAnyIngredientTooltipData(info.name, raw, inventoryMap, completionMap),
+      tooltip: computeAnyIngredientTooltipData(info.name, raw, inventoryMap, completionMap, anyIngredientAvailability),
       hasWrongQuality: false,
       hasUnfinishedDependents: raw + total >= recipeReq && total < recipeReq,
       correctQualityCount: undefined,
@@ -528,7 +531,13 @@ function getCrabpotItems(): Set<string> {
 function getQualityTargetTier(itemName: string): number | undefined {
   if (getCookingItems().has(itemName)) return 2;
   if (getCrabpotItems().has(itemName)) return 1;
-  const item = CustomDataStore.getItemsData().find(entry => entry.name === itemName || entry.displayName === itemName);
+  const baseName = VariantResolver.getBaseName(itemName);
+  const item = CustomDataStore.getItemsData().find(entry =>
+    entry.name === itemName ||
+    entry.displayName === itemName ||
+    entry.name === baseName ||
+    entry.displayName === baseName
+  );
   if (item && IRIDIUM_QUALITY_CATEGORIES.has(item.category)) return 4;
   return undefined;
 }
@@ -543,6 +552,35 @@ function getProgressInventoryCount(
   const correctTier = getQualityTargetTier(itemName);
   if (correctTier === undefined) return inventoryMap.get(itemName) ?? 0;
   return stacksMap.get(itemName)?.[correctTier] ?? 0;
+}
+
+function computeAnyIngredientAvailability(
+  inventoryMap: Map<string, number>,
+  stacksMap: Map<string, number[]>,
+  quality: Quality,
+  requiredFromParts: Map<string, number>,
+  totalFromParts: Map<string, number>,
+): Map<string, number> {
+  const availability = new Map<string, number>();
+  for (const [wildcardId, anyIngredient] of Object.entries(ANY_INGREDIENTS)) {
+    const info = getAnyIngredientInfo(wildcardId)!;
+    let raw = 0;
+    for (const candidateName of info.candidates) {
+      const candidateRaw = inventoryMap.get(candidateName) ?? 0;
+      if (candidateRaw === 0) continue;
+      const required = TARGET + (requiredFromParts.get(candidateName) ?? 0);
+      const total = totalFromParts.get(candidateName) ?? 0;
+      const neededForCompletion = Math.max(TARGET, required - total);
+      const correctTier = getQualityTargetTier(candidateName);
+      const availableForCompletion = quality === 'highest' && correctTier !== undefined
+        ? stacksMap.get(candidateName)?.[correctTier] ?? 0
+        : candidateRaw;
+      if (availableForCompletion < neededForCompletion) continue;
+      raw += Math.max(0, candidateRaw - neededForCompletion);
+    }
+    availability.set(anyIngredient.name, raw);
+  }
+  return availability;
 }
 
 function rawNeededForCompletion(row: ItemRow): number {
@@ -592,14 +630,21 @@ function extraRawForAnyIngredient(candidateNames: string[], rows: ItemRow[]): nu
 
 function craftableCount(
   craftedName: string,
-  inventoryMap: Map<string, number>
+  inventoryMap: Map<string, number>,
+  anyIngredientAvailability = new Map<string, number>()
 ): { count: number; limiting: string | null } {
   const recipe = recipeMap.get(craftedName);
-  if (!recipe) return { count: 0, limiting: null };
+  const wildcardRecipe = wildcardRecipeMap.get(craftedName);
+  if (!recipe && !wildcardRecipe) return { count: 0, limiting: null };
   let min = Infinity;
   let limiting: string | null = null;
-  for (const [ingredient, qty] of recipe) {
+  for (const [ingredient, qty] of recipe ?? []) {
     const have = inventoryMap.get(ingredient) ?? 0;
+    const can = Math.floor(have / qty);
+    if (can < min) { min = can; limiting = ingredient; }
+  }
+  for (const [ingredient, qty] of wildcardRecipe ?? []) {
+    const have = anyIngredientAvailability.get(ingredient) ?? 0;
     const can = Math.floor(have / qty);
     if (can < min) { min = can; limiting = ingredient; }
   }
@@ -611,18 +656,22 @@ function computeTooltipData(
   count: number,
   inventoryMap: Map<string, number>,
   completionMap: Map<string, boolean>,
-  craftableCache: Map<string, { count: number; limiting: string | null }>
+  craftableCache: Map<string, { count: number; limiting: string | null }>,
+  anyIngredientAvailability = new Map<string, number>()
 ): ItemTooltipData {
   const note = (notesData as Record<string, string[]>)[itemName] ?? null;
 
   const ownRecipe = recipeMap.get(itemName);
+  const ownWildcardRecipe = wildcardRecipeMap.get(itemName);
   let recipe: IngredientInfo[] | null = null;
   let canCraft = 0;
   let limitingIngredient: string | null = null;
 
-  if (ownRecipe) {
+  if (ownRecipe || ownWildcardRecipe) {
     let cached = craftableCache.get(itemName);
-    if (!cached) {
+    if (ownWildcardRecipe) {
+      cached = craftableCount(itemName, inventoryMap, anyIngredientAvailability);
+    } else if (!cached) {
       cached = craftableCount(itemName, inventoryMap);
       craftableCache.set(itemName, cached);
     }
@@ -631,12 +680,20 @@ function computeTooltipData(
     const avgYield = yieldMap.get(itemName) ?? 1;
     canCraft = Math.floor(count * avgYield);
     limitingIngredient = limiting;
-    recipe = Array.from(ownRecipe.entries()).map(([name, qty]) => ({
-      name,
-      qty,
-      available: inventoryMap.get(name) ?? 0,
-      done: completionMap.get(name) ?? false,
-    }));
+    recipe = [
+      ...Array.from(ownWildcardRecipe?.entries() ?? []).map(([name, qty]) => ({
+        name,
+        qty,
+        available: anyIngredientAvailability.get(name) ?? 0,
+        done: (anyIngredientAvailability.get(name) ?? 0) >= qty,
+      })),
+      ...Array.from(ownRecipe?.entries() ?? []).map(([name, qty]) => ({
+        name,
+        qty,
+        available: inventoryMap.get(name) ?? 0,
+        done: completionMap.get(name) ?? false,
+      })),
+    ];
   }
 
   if (Config.getQuality() === 'highest' && getCookingItems().has(itemName)) {
@@ -652,7 +709,9 @@ function computeTooltipData(
   const cookingItems = Config.getQuality() === 'highest' ? getCookingItems() : null;
   const usedBy: UsedByInfo[] = (reverseMap.get(itemName) ?? []).map(craftedName => {
     let cachedCrafted = craftableCache.get(craftedName);
-    if (!cachedCrafted) {
+    if (wildcardRecipeMap.has(craftedName)) {
+      cachedCrafted = craftableCount(craftedName, inventoryMap, anyIngredientAvailability);
+    } else if (!cachedCrafted) {
       cachedCrafted = craftableCount(craftedName, inventoryMap);
       craftableCache.set(craftedName, cachedCrafted);
     }
@@ -663,14 +722,21 @@ function computeTooltipData(
     const alreadyHave = inventoryMap.get(craftedName) ?? 0;
     const done = completionMap.get(craftedName) ?? false;
     const depRecipe = recipeMap.get(craftedName);
-    const recipe: IngredientInfo[] = depRecipe
-      ? Array.from(depRecipe.entries()).map(([name, qty]) => ({
+    const depWildcardRecipe = wildcardRecipeMap.get(craftedName);
+    const recipe: IngredientInfo[] = [
+      ...Array.from(depWildcardRecipe?.entries() ?? []).map(([name, qty]) => ({
+          name,
+          qty,
+          available: anyIngredientAvailability.get(name) ?? 0,
+          done: (anyIngredientAvailability.get(name) ?? 0) >= qty,
+        })),
+      ...Array.from(depRecipe?.entries() ?? []).map(([name, qty]) => ({
           name,
           qty,
           available: inventoryMap.get(name) ?? 0,
           done: completionMap.get(name) ?? false,
-        }))
-      : [];
+        })),
+    ];
     if (cookingItems?.has(craftedName)) {
       recipe.push({
         name: 'Qi Seasoning',
@@ -692,6 +758,7 @@ function computeAnyIngredientTooltipData(
   count: number,
   inventoryMap: Map<string, number>,
   completionMap: Map<string, boolean>,
+  anyIngredientAvailability = new Map<string, number>(),
 ): ItemTooltipData {
   const usedBy: UsedByInfo[] = (wildcardReverseMap.get(itemName) ?? []).map(craftedName => {
     const avgYield = yieldMap.get(craftedName) ?? 1;
@@ -705,8 +772,8 @@ function computeAnyIngredientTooltipData(
       ...Array.from(wildcardRecipe.entries()).map(([name, qty]) => ({
         name,
         qty,
-        available: name === itemName ? count : 0,
-        done: name === itemName ? count >= qty : false,
+        available: anyIngredientAvailability.get(name) ?? 0,
+        done: (anyIngredientAvailability.get(name) ?? 0) >= qty,
       })),
       ...Array.from(concreteRecipe.entries()).map(([name, qty]) => ({
         name,
