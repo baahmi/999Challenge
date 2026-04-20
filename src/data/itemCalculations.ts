@@ -269,7 +269,7 @@ function computeAllItems(
   if (quality === 'highest') {
     const seen = new Set<string>();
     for (const item of CustomDataStore.getItemsData()) {
-      if (item.category !== 'Cooking' || seen.has(item.name)) continue;
+      if (!getCookingItems().has(item.name) || seen.has(item.name)) continue;
       seen.add(item.name);
       requiredFromParts.set('Qi Seasoning', (requiredFromParts.get('Qi Seasoning') ?? 0) + TARGET);
       // Cap at TARGET per cooking item
@@ -448,10 +448,14 @@ function computeAllItems(
   console.log(`[CACHE] Computed ${allComputedRows.length} items`);
 }
 
-// Cooking items cap at gold quality naturally (Qi Seasoning provides iridium)
+// Cooked outputs cap at gold quality naturally (Qi Seasoning provides iridium).
+// Cooking-category ingredients like Oil, Vinegar, and Wheat Flour are not cooked dishes.
 function getCookingItems(): Set<string> {
+  const craftedNames = new Set(CustomDataStore.getPartsData().map(([craftedName]) => craftedName));
   return new Set<string>(
-    CustomDataStore.getItemsData().filter((item) => item.category === 'Cooking').map((item) => item.name)
+    CustomDataStore.getItemsData()
+      .filter((item) => item.category === 'Cooking' && craftedNames.has(item.name))
+      .map((item) => item.name)
   );
 }
 
@@ -656,7 +660,7 @@ export function computeCategoryItemsUncached(
   if (quality === 'highest') {
     const seen = new Set<string>();
     for (const item of CustomDataStore.getItemsData()) {
-      if (item.category !== 'Cooking' || seen.has(item.name)) continue;
+      if (!getCookingItems().has(item.name) || seen.has(item.name)) continue;
       seen.add(item.name);
       requiredFromParts.set('Qi Seasoning', (requiredFromParts.get('Qi Seasoning') ?? 0) + TARGET);
       // Cap at TARGET per cooking item

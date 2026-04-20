@@ -48,16 +48,42 @@ describe('computeCategoryItems', () => {
         CustomDataStore.troveItems = ['Missing Artifact']
         CustomDataStore.data.categoryNames = ['Cooking']
         CustomDataStore.data.items = [
-            { category: 'Cooking', name: 'Dish', displayName: null },
+            { category: 'Cooking', name: 'Fried Egg', displayName: null },
         ];
-        CustomDataStore.partsData = [] as PartsEntry[]
+        CustomDataStore.partsData = [
+            ["Fried Egg", { "-5": [null, 1] }, 1],
+        ] as PartsEntry[]
 
         const rows = computeCategoryItems('Cooking', [
-            { name: 'Dish', stack: 500, category: 'Cooking', quality: [500,0,0,0,0] },
+            { name: 'Fried Egg', stack: 500, category: 'Cooking', quality: [500,0,0,0,0] },
         ]);
-        const dish = rows.find(row => row.name === 'Dish')!;
+        const dish = rows.find(row => row.name === 'Fried Egg')!;
 
         expect(dish.hasWrongQuality).toBe(false);
+        expect(dish.correctQualityCount).toBe(0);
+        expect(calculatePercentage(dish)).toBe(0);
+    });
+
+    it('does not require cooking ingredient items to use cooking quality', () => {
+        CustomDataStore.troveItems = ['Missing Artifact']
+        CustomDataStore.data.categoryNames = ['Cooking']
+        CustomDataStore.data.items = [
+            { category: 'Cooking', name: 'Oil', displayName: null },
+            { category: 'Cooking', name: 'Fried Egg', displayName: null },
+        ];
+        CustomDataStore.partsData = [
+            ["Fried Egg", { "1": ["Oil", 1] }, 1],
+        ] as PartsEntry[]
+
+        const rows = computeCategoryItems('Cooking', [
+            { name: 'Oil', stack: 500, category: 'Cooking', quality: [500,0,0,0,0] },
+            { name: 'Fried Egg', stack: 500, category: 'Cooking', quality: [500,0,0,0,0] },
+        ]);
+        const oil = rows.find(row => row.name === 'Oil')!;
+        const dish = rows.find(row => row.name === 'Fried Egg')!;
+
+        expect(oil.correctQualityCount).toBeUndefined();
+        expect(calculatePercentage(oil)).toBeGreaterThan(0);
         expect(dish.correctQualityCount).toBe(0);
         expect(calculatePercentage(dish)).toBe(0);
     });
