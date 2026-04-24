@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import './Header.css';
-import {IconButton, Tooltip} from "@mui/material";
-import {Upload, ViewWeekOutlined, Settings, FileDownload, CompareArrows, Category, Timeline, BarChart, HelpOutline} from "@mui/icons-material";
+import {Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Tooltip} from "@mui/material";
+import {Upload, ViewWeekOutlined, Settings, FileDownload, CompareArrows, Category, Timeline, BarChart, HelpOutline, East} from "@mui/icons-material";
 import {ThemeToggle} from "@/components/theme/ThemeToggle.tsx";
 import {ConfigDialog} from "@/components/config/ConfigDialog.tsx";
 import {DiffDialog} from "@/components/diff/DiffDialog.tsx";
@@ -24,8 +24,10 @@ export function Header() {
     const [historyOpen, setHistoryOpen] = useState(false);
     const [statsOpen, setStatsOpen] = useState(false);
     const [helpOpen, setHelpOpen] = useState(false);
+    const [showGettingStarted, setShowGettingStarted] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const headerRef = useRef<HTMLElement>(null);
+    const hasLoadedData = daysPlayed !== null || qiGems !== null || journalDays > 0;
 
     React.useEffect(() => {
         if (!headerRef.current) return;
@@ -59,6 +61,14 @@ export function Header() {
         const unsubscribe = AppData.subscribe(handleAppDataChange);
         return unsubscribe;
     }, []);
+
+    React.useEffect(() => {
+        if (!hasLoadedData) {
+            setShowGettingStarted(true);
+        } else {
+            setShowGettingStarted(false);
+        }
+    }, [hasLoadedData]);
 
     const TABS_CYCLE: import('../../config/Config').TabsPosition[] = ['top', 'bottom', 'both'];
     const TABS_LABELS: Record<string, string> = { top: 'Top only', bottom: 'Bottom only', both: 'Both' };
@@ -158,6 +168,15 @@ export function Header() {
                             <FileDownload />
                         </IconButton>
                     </Tooltip>
+                    {!hasLoadedData && (
+                        <div className="upload-callout" aria-live="polite">
+                            <East className="upload-callout-arrow" fontSize="large" />
+                            <div className="upload-callout-text">
+                                <strong>Upload now</strong>
+                                <span>Load a Stardew save file to get started.</span>
+                            </div>
+                        </div>
+                    )}
                     <Tooltip title="Upload save file (.xml) or restore journal (.json)">
                         <IconButton 
                             size="small" 
@@ -197,6 +216,34 @@ export function Header() {
             <HistoryDialog open={historyOpen} onClose={() => setHistoryOpen(false)} journal={AppData.getJournal()} />
             <StatsDialog open={statsOpen} onClose={() => setStatsOpen(false)} stats={AppData.getStats()} journal={AppData.getJournal()} />
             <HelpDialog open={helpOpen} onClose={() => setHelpOpen(false)} />
+            <Dialog open={showGettingStarted} onClose={() => setShowGettingStarted(false)} maxWidth="sm" fullWidth>
+                <DialogTitle>To get started, upload your save file</DialogTitle>
+                <DialogContent dividers>
+                    <div className="getting-started-copy">
+                        <p>This app needs a Stardew Valley save file before it can show your progress.</p>
+                        <p>Common save locations:</p>
+                        <ul>
+                            <li>Windows: <code>%AppData%\StardewValley\Saves</code></li>
+                            <li>macOS: <code>~/.config/StardewValley/Saves</code></li>
+                            <li>Linux: <code>~/.config/StardewValley/Saves</code></li>
+                        </ul>
+                        <p>You can also restore a previously exported journal `.json` file.</p>
+                    </div>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setShowGettingStarted(false)}>Later</Button>
+                    <Button
+                        variant="contained"
+                        onClick={() => {
+                            setShowGettingStarted(false);
+                            handleUploadClick();
+                        }}
+                        startIcon={<Upload />}
+                    >
+                        Upload now
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </header>
     );
 }

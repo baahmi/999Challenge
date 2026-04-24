@@ -19,3 +19,54 @@
     display: flex;
     gap: 1rem;
 }
+
+.upload-callout {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    max-width: min(280px, 28vw);
+    padding: 0.35rem 0.6rem;
+    border: 1px solid color-mix(in srgb, currentColor 18%, transparent);
+    border-radius: 6px;
+    background: color-mix(in srgb, currentColor 8%, transparent);
+}
+
+.upload-callout-arrow {
+    flex: 0 0 auto;
+}
+
+.upload-callout-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 0;
+    font-size: 12px;
+    line-height: 1.35;
+}
+
+.upload-callout-text span {
+    opacity: 0.8;
+}
+
+.upload-callout-text code {
+    font-size: 11px;
+    white-space: nowrap;
+}
+
+.getting-started-copy {
+    font-size: 14px;
+    line-height: 1.55;
+}
+
+.getting-started-copy p {
+    margin: 0 0 10px;
+}
+
+.getting-started-copy ul {
+    margin: 0 0 10px 20px;
+    padding: 0;
+}
+
+.getting-started-copy li {
+    margin-bottom: 6px;
+}
