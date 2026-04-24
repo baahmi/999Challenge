@@ -13,12 +13,23 @@
     font-size: 0.9375rem;
 }
 
-/*.link {*/
-/*    text-decoration: none;*/
-/*}*/
+.footer-version {
+    opacity: 0.75;
+    white-space: nowrap;
+}
 
-/*.link:hover,*/
-/*.link:focus-visible {*/
-/*    text-decoration: underline;*/
-/*    outline: none;*/
-/*}*/
+.footer-link-button {
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    opacity: 0.95;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.footer-link-button:hover,
+.footer-link-button:focus-visible {
+    opacity: 1;
+}

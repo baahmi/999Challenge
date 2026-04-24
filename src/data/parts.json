@@ -224,21 +224,21 @@
 "382": ["Coal",2]
 },5],["Ancient Seeds",{
 "114": ["Ancient Seed",1]
-},1],["Wild Seeds (Sp)",{
+},1],["Spring Seeds",{
 "16": ["Wild Horseradish",1],
 "18": ["Daffodil",1],
 "20": ["Leek",1],
 "22": ["Dandelion",1]
-},10],["Wild Seeds (Su)",{
+},10],["Summer Seeds",{
 "396": ["Spice Berry",1],
 "398": ["Grape",1],
 "402": ["Sweet Pea",1]
-},10],["Wild Seeds (Fa)",{
+},10],["Fall Seeds",{
 "404": ["Common Mushroom",1],
 "406": ["Wild Plum",1],
 "408": ["Hazelnut",1],
 "410": ["Blackberry",1]
-},10],["Wild Seeds (Wi)",{
+},10],["Winter Seeds",{
 "412": ["Winter Root",1],
 "414": ["Crystal Fruit",1],
 "416": ["Snow Yam",1],
@@ -1500,4 +1500,12 @@
 "155": ["Super Cucumber",1]
 },1],["??Pinky Lemon??",{
 "307": ["Duck Mayonnaise",1]
+},1],["Duck Mayonnaise",{
+"442": ["Duck Egg",1]
+},1],["Dinosaur Mayonnaise",{
+"107": ["Dinosaur Egg",1]
+},1],["Truffle Oil",{
+"430": ["Truffle",1]
+},1],["Far Away Stone",{
+"103": ["Ancient Doll",1]
 },1]]

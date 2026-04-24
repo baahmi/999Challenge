@@ -1,0 +1,95 @@
+.help-page {
+  width: 100%;
+  margin: 0 auto;
+  padding: 4px 0 24px;
+  color: inherit;
+}
+
+.help-header {
+  margin-bottom: 24px;
+}
+
+.help-header h1 {
+  margin: 0 0 8px;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.help-header p {
+  margin: 0;
+  max-width: 780px;
+  line-height: 1.55;
+  color: color-mix(in srgb, currentColor 76%, transparent);
+}
+
+.help-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.help-section {
+  border: 1px solid color-mix(in srgb, currentColor 18%, transparent);
+  border-radius: 8px;
+  padding: 16px;
+  background: color-mix(in srgb, currentColor 4%, transparent);
+}
+
+.help-section h2 {
+  margin: 0 0 10px;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.help-section p,
+.help-section li,
+.help-section dd {
+  line-height: 1.5;
+}
+
+.help-section p,
+.help-section ol,
+.help-section ul,
+.help-section dl {
+  margin: 0;
+}
+
+.help-section p + p,
+.help-section p + ul {
+  margin-top: 10px;
+}
+
+.help-section ol,
+.help-section ul {
+  padding-left: 20px;
+}
+
+.help-section li + li {
+  margin-top: 6px;
+}
+
+.help-section dt {
+  font-weight: 700;
+  margin-top: 10px;
+}
+
+.help-section dt:first-child {
+  margin-top: 0;
+}
+
+.help-section dd {
+  margin: 2px 0 0;
+  color: color-mix(in srgb, currentColor 78%, transparent);
+}
+
+.help-section kbd {
+  display: inline-block;
+  min-width: 20px;
+  padding: 1px 5px;
+  border: 1px solid color-mix(in srgb, currentColor 25%, transparent);
+  border-radius: 4px;
+  background: color-mix(in srgb, currentColor 8%, transparent);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12px;
+  text-align: center;
+}

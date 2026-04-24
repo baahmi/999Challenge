@@ -1,13 +1,14 @@
 import React, { useState, useRef } from 'react';
 import './Header.css';
 import {IconButton, Tooltip} from "@mui/material";
-import {Upload, ViewWeekOutlined, Settings, FileDownload, CompareArrows, Category, Timeline, BarChart} from "@mui/icons-material";
+import {Upload, ViewWeekOutlined, Settings, FileDownload, CompareArrows, Category, Timeline, BarChart, HelpOutline} from "@mui/icons-material";
 import {ThemeToggle} from "@/components/theme/ThemeToggle.tsx";
 import {ConfigDialog} from "@/components/config/ConfigDialog.tsx";
 import {DiffDialog} from "@/components/diff/DiffDialog.tsx";
 import {CategoryDialog} from "../config/CategoryDialog.tsx";
 import {HistoryDialog} from "../history/HistoryDialog.tsx";
 import {StatsDialog} from "../stats/StatsDialog.tsx";
+import {HelpDialog} from "../help/HelpDialog.tsx";
 import {Config} from "../../config/Config.ts";
 import {AppData} from "../../app/AppData.ts";
 
@@ -22,6 +23,7 @@ export function Header() {
     const [diffOpen, setDiffOpen] = useState(false);
     const [historyOpen, setHistoryOpen] = useState(false);
     const [statsOpen, setStatsOpen] = useState(false);
+    const [helpOpen, setHelpOpen] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const headerRef = useRef<HTMLElement>(null);
 
@@ -121,6 +123,11 @@ export function Header() {
                 </div>
                 <nav className="nav" aria-label="Primary" style={{ marginLeft: 'auto', display: 'flex', gap: '8px' }}>
                     <ThemeToggle/>
+                    <Tooltip title="Help">
+                        <IconButton size="small" onClick={() => setHelpOpen(true)}>
+                            <HelpOutline />
+                        </IconButton>
+                    </Tooltip>
                     <Tooltip title="Player statistics">
                         <IconButton size="small" onClick={() => setStatsOpen(true)}>
                             <BarChart />
@@ -189,6 +196,7 @@ export function Header() {
             <DiffDialog open={diffOpen} onClose={() => setDiffOpen(false)} journal={AppData.getJournal()} />
             <HistoryDialog open={historyOpen} onClose={() => setHistoryOpen(false)} journal={AppData.getJournal()} />
             <StatsDialog open={statsOpen} onClose={() => setStatsOpen(false)} stats={AppData.getStats()} journal={AppData.getJournal()} />
+            <HelpDialog open={helpOpen} onClose={() => setHelpOpen(false)} />
         </header>
     );
 }

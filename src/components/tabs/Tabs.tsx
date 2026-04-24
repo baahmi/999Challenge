@@ -34,7 +34,7 @@ export function Tabs({ onCategoryChange, children }: TabsProps) {
       const next = [...Config.getCategoryNames()];
       setCategoryNames(next);
       // If selected tab no longer exists, fall back to Overview
-      setValue(v => next.includes(v) || v === Config.getSelectedTab() ? v : OVERVIEW_TAB);
+      setValue(v => next.includes(v) || v === OVERVIEW_TAB || v === Config.getSelectedTab() ? v : OVERVIEW_TAB);
     };
 
     const unsubData = CustomDataStore.subscribe(syncCategoryNames);

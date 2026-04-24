@@ -1,8 +1,9 @@
 #!/usr/bin/env bun
 import plugin from "bun-plugin-tailwind";
-import { existsSync } from "fs";
+import { existsSync, readFileSync, writeFileSync } from "fs";
 import { rm } from "fs/promises";
 import path from "path";
+import packageJson from "./package.json" assert { type: "json" };
 
 if (process.argv.includes("--help") || process.argv.includes("-h")) {
   console.log(`
@@ -109,6 +110,11 @@ console.log("\n🚀 Starting build process...\n");
 
 const cliConfig = parseArgs();
 const outdir = cliConfig.outdir || path.join(process.cwd(), "dist");
+const changelogMarkdown = readFileSync(path.join(process.cwd(), "CHANGELOG.md"), "utf8");
+writeFileSync(
+  path.join(process.cwd(), "src", "app", "generatedChangelog.ts"),
+  `export const CHANGELOG_MARKDOWN = ${JSON.stringify(changelogMarkdown)};\n`
+);
 
 if (existsSync(outdir)) {
   console.log(`🗑️ Cleaning previous build at ${outdir}`);
@@ -131,6 +137,8 @@ const result = await Bun.build({
   sourcemap: "linked",
   define: {
     "process.env.NODE_ENV": JSON.stringify("production"),
+    "__APP_VERSION__": JSON.stringify(packageJson.version),
+    "__BUILD_DATE__": JSON.stringify(new Date().toISOString().slice(0, 10)),
   },
   ...cliConfig,
 });
