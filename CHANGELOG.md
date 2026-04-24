@@ -1,13 +1,5 @@
 # Changelog
 
-All notable changes to this project should be recorded in this file.
-
-The format is intentionally simple:
-
-- Keep a top-level `## [Unreleased]` section for ongoing work.
-- When cutting a release, move unreleased items into a versioned section like `## [0.1.0] - 2026-04-23`.
-- Group entries under `Added`, `Changed`, `Fixed`, and `Removed` where useful.
-
 ### Notes
 - I have only tested with the "Highest Quality" settings, so not sure the other settings functions.
 - I cannot guarantee that uploads are "stable", so dependning on changes . My goal is to make soure eg conversion is happning.
