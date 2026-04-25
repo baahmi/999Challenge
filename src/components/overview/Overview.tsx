@@ -18,7 +18,9 @@ interface CategoryStat {
   readyCount: number;
   required: number;
   total: number;
+  goldSpend: number;
   goldNeeded: number;
+  qiSpend: number;
   qiNeeded: number;
   pct: number;
 }
@@ -38,22 +40,32 @@ function effectiveRowTotal(row: ItemRow): number {
   return calculateObtainedCount(row);
 }
 
+function spendCoveredCount(row: ItemRow): number {
+  return Math.min(row.raw + row.total, row.required);
+}
+
 function buildCategoryStat(name: string, rows: ItemRow[]): CategoryStat {
   const itemCount = rows.length;
   const readyCount = rows.filter(r => rowPct(r) >= 100).length;
   const required = rows.reduce((s, r) => s + r.required, 0);
   const total = rows.reduce((s, r) => s + (r.excludeFromTotals ? 0 : r.raw + r.total), 0);
   const effectiveTotal = rows.reduce((s, r) => s + Math.min(effectiveRowTotal(r), r.required), 0);
+  const goldSpend = rows.reduce((s, r) => {
+    return s + (r.buyPrice?.gold ? spendCoveredCount(r) * r.buyPrice.gold : 0);
+  }, 0);
   const goldNeeded = rows.reduce((s, r) => {
-    const needed = Math.max(0, r.required - Math.min(effectiveRowTotal(r), r.required));
+    const needed = Math.max(0, r.required - spendCoveredCount(r));
     return s + (r.buyPrice?.gold ? needed * r.buyPrice.gold : 0);
   }, 0);
+  const qiSpend = rows.reduce((s, r) => {
+    return s + (r.buyPrice?.qiGem ? spendCoveredCount(r) * r.buyPrice.qiGem : 0);
+  }, 0);
   const qiNeeded = rows.reduce((s, r) => {
-    const needed = Math.max(0, r.required - Math.min(effectiveRowTotal(r), r.required));
+    const needed = Math.max(0, r.required - spendCoveredCount(r));
     return s + (r.buyPrice?.qiGem ? needed * r.buyPrice.qiGem : 0);
   }, 0);
   const pct = required > 0 ? (effectiveTotal / required) * 100 : 0;
-  return { name, itemCount, readyCount, required, total, goldNeeded, qiNeeded, pct };
+  return { name, itemCount, readyCount, required, total, goldSpend, goldNeeded, qiSpend, qiNeeded, pct };
 }
 
 function getProgressRowBackground(pct: number, isDark: boolean, baseColor?: string) {
@@ -137,9 +149,9 @@ export function Overview({ compacted, categoryNames, onCategorySelect }: Overvie
 
   const { goldTotal, goldCovered, qiTotal, qiCovered } = useMemo(() => ({
     goldTotal:   allRows.reduce((s, r) => s + (r.buyPrice?.gold  ? r.required * r.buyPrice.gold  : 0), 0),
-    goldCovered: allRows.reduce((s, r) => s + (r.buyPrice?.gold  ? Math.min(effectiveRowTotal(r), r.required) * r.buyPrice.gold  : 0), 0),
+    goldCovered: allRows.reduce((s, r) => s + (r.buyPrice?.gold  ? spendCoveredCount(r) * r.buyPrice.gold  : 0), 0),
     qiTotal:     allRows.reduce((s, r) => s + (r.buyPrice?.qiGem ? r.required * r.buyPrice.qiGem : 0), 0),
-    qiCovered:   allRows.reduce((s, r) => s + (r.buyPrice?.qiGem ? Math.min(effectiveRowTotal(r), r.required) * r.buyPrice.qiGem : 0), 0),
+    qiCovered:   allRows.reduce((s, r) => s + (r.buyPrice?.qiGem ? spendCoveredCount(r) * r.buyPrice.qiGem : 0), 0),
   }), [allRows]);
 
   const globalDone = allRows.filter(r => rowPct(r) >= 100).length;
@@ -185,7 +197,7 @@ export function Overview({ compacted, categoryNames, onCategorySelect }: Overvie
       >
         <thead>
           <tr>
-            {['Category', '% Ready', 'Items', 'Ready', 'Required', 'Total', '💰 Gold needed', '✦ Qi needed'].map((label) => (
+            {['Category', '% Ready', 'Items', 'Ready', 'Required', 'Total', '💰 Gold spend', '💰 Gold needed', '✦ Qi spend', '✦ Qi needed'].map((label) => (
               <Box
                 key={label}
                 component="th"
@@ -251,7 +263,13 @@ export function Overview({ compacted, categoryNames, onCategorySelect }: Overvie
                 {Math.round(stat.total).toLocaleString()}
               </Box>
               <Box component="td" sx={{ ...numberCellSx, color: isDark ? '#ffd54f' : '#9a7000' }}>
+                {Math.round(stat.goldSpend).toLocaleString()}
+              </Box>
+              <Box component="td" sx={{ ...numberCellSx, color: isDark ? '#ffd54f' : '#9a7000' }}>
                 {Math.round(stat.goldNeeded).toLocaleString()}
+              </Box>
+              <Box component="td" sx={{ ...numberCellSx, color: isDark ? '#ce93d8' : '#8b44ac' }}>
+                {Math.round(stat.qiSpend).toLocaleString()}
               </Box>
               <Box component="td" sx={{ ...numberCellSx, color: isDark ? '#ce93d8' : '#8b44ac' }}>
                 {Math.round(stat.qiNeeded).toLocaleString()}

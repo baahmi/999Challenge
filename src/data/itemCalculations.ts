@@ -21,6 +21,9 @@ export interface ShopEntry {
 
 const priceMap = new Map<string, BuyPrice>();
 const shopEntriesMap = new Map<string, ShopEntry[]>();
+const PRICE_OVERRIDES: Record<string, BuyPrice> = {
+  'Statue Of Endless Fortune': { gold: 1_000_000 },
+};
 
 (function buildPriceMap() {
   type RawEntry = [string, number, number, string, (string | undefined)?];
@@ -57,6 +60,13 @@ const shopEntriesMap = new Map<string, ShopEntry[]>();
     if (bp.gold !== undefined || bp.qiGem !== undefined) {
       priceMap.set(itemName, bp);
     }
+  }
+
+  for (const [itemName, override] of Object.entries(PRICE_OVERRIDES)) {
+    priceMap.set(itemName, {
+      ...priceMap.get(itemName),
+      ...override,
+    });
   }
 })();
 

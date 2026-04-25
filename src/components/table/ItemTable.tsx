@@ -13,6 +13,22 @@ interface ItemTableProps {
 function TooltipPanel({ name, data }: { name: string; data: ItemTooltipData }) {
   const canCraftColor = data.done ? '#6f6' : data.craftableCount > 0 ? '#6f6' : '#f66';
   const usedBySorted = data.usedBy?.sort((a, b) => (a.done ? 1 : 0) - (b.done ? 1 : 0));
+  const formatShopPrice = (shop: string, price: number, qty: number, currency?: string) => {
+    const packSuffix = qty > 1 ? ` ×${qty}` : '';
+    if (currency === 'Qi Gem') {
+      return { text: `${price.toLocaleString()} ✦${packSuffix}`, color: '#c084fc' };
+    }
+    if (currency) {
+      return { text: `${price.toLocaleString()} ${currency}${packSuffix}`, color: '#f9a825' };
+    }
+    if (shop === 'Casino') {
+      return { text: `${price.toLocaleString()} Qi coins${packSuffix}`, color: '#f9a825' };
+    }
+    if (shop.includes('StarTokens')) {
+      return { text: `${price.toLocaleString()} star tokens${packSuffix}`, color: '#f9a825' };
+    }
+    return { text: `${price.toLocaleString()}g${packSuffix}`, color: '#86efac' };
+  };
   return (
     <div style={{
       maxWidth: 340,
@@ -30,19 +46,14 @@ function TooltipPanel({ name, data }: { name: string; data: ItemTooltipData }) {
           <div style={{ marginTop: data.recipe || data.usedBy.length > 0 || data.note ? 8 : 0 }}>
             <div style={{ fontWeight: 600, marginBottom: 2 }}>Available at:</div>
             {data.shops.map((s, i) => {
-              const packSuffix = s.qty > 1 ? ` ×${s.qty}` : '';
-              const priceStr = s.currency === 'Qi Gem'
-                  ? `${s.price.toLocaleString()} ✦${packSuffix}`
-                  : s.currency
-                      ? `${s.price.toLocaleString()} ${s.currency}${packSuffix}`
-                      : `${s.price.toLocaleString()}g${packSuffix}`;
+              const { text: priceStr, color: priceColor } = formatShopPrice(s.shop, s.price, s.qty, s.currency);
               const shopLabel = s.shop.startsWith('Festival ')
                   ? `🎪 ${s.shop.replace('Festival ', '').replace(/_/g, ' ')}`
                   : s.shop;
               return (
                   <div key={i} style={{ paddingLeft: 10, display: 'flex', gap: 6, alignItems: 'baseline', fontSize: 12 }}>
                     <span style={{ color: '#ccc' }}>• {shopLabel}</span>
-                    <span style={{ marginLeft: 'auto', whiteSpace: 'nowrap', color: s.currency === 'Qi Gem' ? '#c084fc' : s.currency ? '#f9a825' : '#86efac' }}>
+                    <span style={{ marginLeft: 'auto', whiteSpace: 'nowrap', color: priceColor }}>
                   {priceStr}
                 </span>
                   </div>
