@@ -19,5 +19,6 @@
 
 ### Fixed
 - Price metadata corrections in `prices.json`, which also removed several downstream overview and tooltip pricing mistakes.
+- Metadata fixes for `Hops`, and removal of invalid generated entries like `Daffodil Juice` and `Pickles` where they are not real item targets.
 - `Statue Of Endless Fortune` now contributes its 1,000,000g value in overview totals through a local price override until the generated price data is corrected.
 - Shop tooltips now show `Casino` prices as `Qi coins` instead of gold when the generated entry has no explicit currency.

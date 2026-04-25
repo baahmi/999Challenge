@@ -217,6 +217,48 @@ describe('computeCategoryItems', () => {
         expect(calculateNeededCount(flower)).toBe(999);
     });
 
+    it('requires iridium forage quality in highest mode', () => {
+        CustomDataStore.troveItems = ['Missing Artifact']
+        CustomDataStore.data.categoryNames = ['Forage']
+        CustomDataStore.data.items = [
+            { category: 'Forage', name: 'Daffodil', displayName: null },
+        ];
+        CustomDataStore.partsData = [] as PartsEntry[]
+
+        const rows = computeCategoryItems('Forage', [
+            { name: 'Daffodil', stack: 1183, category: 'Forage', quality: [342,0,0,0,841] },
+        ]);
+        const daffodil = rows.find(item => item.name === 'Daffodil')!;
+
+        expect(daffodil.correctQualityCount).toBe(841);
+        expect(daffodil.hasWrongQuality).toBe(false);
+        expect(calculatePercentage(daffodil)).toBeCloseTo((841 / 999) * 100, 5);
+        expect(calculateNeededCount(daffodil)).toBe(158);
+    });
+
+    it('does not require quality for forage items that cannot have it', () => {
+        CustomDataStore.troveItems = ['Missing Artifact']
+        CustomDataStore.data.categoryNames = ['Forage']
+        CustomDataStore.data.items = [
+            { category: 'Forage', name: 'Cave Carrot', displayName: null },
+            { category: 'Forage', name: 'Ginger', displayName: null },
+        ];
+        CustomDataStore.partsData = [] as PartsEntry[]
+
+        const rows = computeCategoryItems('Forage', [
+            { name: 'Cave Carrot', stack: 500, category: 'Forage', quality: [500,0,0,0,0] },
+            { name: 'Ginger', stack: 700, category: 'Forage', quality: [700,0,0,0,0] },
+        ]);
+
+        const caveCarrot = rows.find(item => item.name === 'Cave Carrot')!;
+        expect(caveCarrot.correctQualityCount).toBeUndefined();
+        expect(calculatePercentage(caveCarrot)).toBeCloseTo((500 / 999) * 100, 5);
+
+        const ginger = rows.find(item => item.name === 'Ginger')!;
+        expect(ginger.correctQualityCount).toBeUndefined();
+        expect(calculatePercentage(ginger)).toBeCloseTo((700 / 999) * 100, 5);
+    });
+
     it('marks wine with a complete non-iridium stack as wrong quality in highest mode', () => {
         CustomDataStore.troveItems = ['Missing Artifact']
         CustomDataStore.data.categoryNames = ['Wine']

@@ -135,6 +135,7 @@ const IRIDIUM_QUALITY_CATEGORIES = new Set([
   'Animal Products',
   'Fish',
   'Flowers',
+  'Forage',
   'Wine',
 ]);
 
@@ -147,6 +148,11 @@ const IRIDIUM_QUALITY_ITEMS = new Set([
   'Cockle',
   'Mussel',
   'Oyster',
+]);
+
+const NO_QUALITY_ITEMS = new Set([
+  'Cave Carrot',
+  'Ginger',
 ]);
 
 const ANY_INGREDIENTS: Record<string, { name: string; category: string; candidates: string[] }> = {
@@ -551,6 +557,7 @@ function getCrabpotItems(): Set<string> {
 }
 
 function getQualityTargetTier(itemName: string): number | undefined {
+  if (NO_QUALITY_ITEMS.has(VariantResolver.getBaseName(itemName))) return undefined;
   if (getCookingItems().has(itemName)) return 2;
   if (getCrabpotItems().has(itemName)) return 1;
   if (IRIDIUM_QUALITY_ITEMS.has(VariantResolver.getBaseName(itemName))) return 4;

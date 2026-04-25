@@ -1200,6 +1200,8 @@
 "815": ["Tea Leaves",1]
 },1],["Beer",{
 "262": ["Wheat",1]
+},1],["Pale Ale",{
+"304": ["Hops",1]
 },1],["Parsnip Juice",{
 "24": ["Parsnip",1]
 },1],["Green Bean Juice",{
@@ -1238,8 +1240,6 @@
 "284": ["Beet",1]
 },1],["Amaranth Juice",{
 "300": ["Amaranth",1]
-},1],["Hops Juice",{
-"304": ["Hops",1]
 },1],["Taro Root Juice",{
 "830": ["Taro Root",1]
 },1],["Carrot Juice",{
@@ -1412,8 +1412,6 @@
 "Powdermelon": ["Powdermelon",5]
 },1],["Pickled Wild Horseradish",{
 "16": ["Wild Horseradish",1]
-},1],["Pickled Daffodil",{
-"18": ["Daffodil",1]
 },1],["Pickled Leek",{
 "20": ["Leek",1]
 },1],["Pickled Dandelion",{
@@ -1442,8 +1440,6 @@
 "851": ["Magma Cap",1]
 },1],["Wild Horseradish Juice",{
 "16": ["Wild Horseradish",1]
-},1],["Daffodil Juice",{
-"18": ["Daffodil",1]
 },1],["Leek Juice",{
 "20": ["Leek",1]
 },1],["Dandelion Juice",{
