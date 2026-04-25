@@ -259,6 +259,72 @@ describe('computeCategoryItems', () => {
         expect(calculatePercentage(ginger)).toBeCloseTo((700 / 999) * 100, 5);
     });
 
+    it('requires iridium fruit quality in highest mode', () => {
+        CustomDataStore.troveItems = ['Missing Artifact']
+        CustomDataStore.data.categoryNames = ['Fruits', 'Jelly', 'Wine', 'Dried Fruit']
+        CustomDataStore.data.items = [
+            { category: 'Fruits', name: 'Cherry', displayName: null },
+            { category: 'Jelly', name: 'Cherry Jelly', displayName: null },
+            { category: 'Wine', name: 'Cherry Wine', displayName: null },
+            { category: 'Dried Fruit', name: 'Dried Cherries', displayName: null },
+        ];
+        CustomDataStore.partsData = [
+            ["Cherry Jelly", { "638": ["Cherry", 1] }, 1],
+            ["Cherry Wine", { "638": ["Cherry", 1] }, 1],
+            ["Dried Cherries", { "638": ["Cherry", 5] }, 1],
+        ] as PartsEntry[]
+
+        const rows = computeCategoryItems('Fruits', [
+            { name: 'Cherry', stack: 1506, category: 'Fruits', quality: [0,0,507,0,999] },
+            { name: 'Cherry Jelly', stack: 1002, category: 'Jelly', quality: [1002,0,0,0,0] },
+            { name: 'Cherry Wine', stack: 999, category: 'Wine', quality: [0,0,0,0,999] },
+            { name: 'Dried Cherries', stack: 1020, category: 'Dried Fruit', quality: [1020,0,0,0,0] },
+        ]);
+        const cherry = rows.find(item => item.name === 'Cherry')!;
+
+        expect(cherry.required).toBe(7992);
+        expect(cherry.correctQualityCount).toBe(999);
+        expect(calculatePercentage(cherry)).toBe(100);
+        expect(calculateNeededCount(cherry)).toBe(0);
+    });
+
+    it('counts normal-quality ageable artisan goods toward ingredient consumption', () => {
+        CustomDataStore.troveItems = ['Missing Artifact']
+        CustomDataStore.data.categoryNames = ['Fruits', 'Jelly', 'Wine', 'Dried Fruit']
+        CustomDataStore.data.items = [
+            { category: 'Fruits', name: 'Cherry', displayName: null },
+            { category: 'Jelly', name: 'Cherry Jelly', displayName: null },
+            { category: 'Wine', name: 'Cherry Wine', displayName: null },
+            { category: 'Dried Fruit', name: 'Dried Cherries', displayName: null },
+        ];
+        CustomDataStore.partsData = [
+            ["Cherry Jelly", { "638": ["Cherry", 1] }, 1],
+            ["Cherry Wine", { "638": ["Cherry", 1] }, 1],
+            ["Dried Cherries", { "638": ["Cherry", 5] }, 1],
+        ] as PartsEntry[]
+
+        const rows = computeCategoryItems('Fruits', [
+            { name: 'Cherry', stack: 1506, category: 'Fruits', quality: [0,0,507,0,999] },
+            { name: 'Cherry Jelly', stack: 1002, category: 'Jelly', quality: [1002,0,0,0,0] },
+            { name: 'Cherry Wine', stack: 999, category: 'Wine', quality: [999,0,0,0,0] },
+            { name: 'Dried Cherries', stack: 1020, category: 'Dried Fruit', quality: [1020,0,0,0,0] },
+        ]);
+        const cherry = rows.find(item => item.name === 'Cherry')!;
+        const wine = computeCategoryItems('Wine', [
+            { name: 'Cherry', stack: 1506, category: 'Fruits', quality: [0,0,507,0,999] },
+            { name: 'Cherry Jelly', stack: 1002, category: 'Jelly', quality: [1002,0,0,0,0] },
+            { name: 'Cherry Wine', stack: 999, category: 'Wine', quality: [999,0,0,0,0] },
+            { name: 'Dried Cherries', stack: 1020, category: 'Dried Fruit', quality: [1020,0,0,0,0] },
+        ]).find(item => item.name === 'Cherry Wine')!;
+
+        expect(cherry.total).toBe(6993);
+        expect(calculatePercentage(cherry)).toBe(100);
+        expect(calculateNeededCount(cherry)).toBe(0);
+        expect(wine.correctQualityCount).toBe(0);
+        expect(calculatePercentage(wine)).toBe(0);
+        expect(wine.hasWrongQuality).toBe(true);
+    });
+
     it('marks wine with a complete non-iridium stack as wrong quality in highest mode', () => {
         CustomDataStore.troveItems = ['Missing Artifact']
         CustomDataStore.data.categoryNames = ['Wine']

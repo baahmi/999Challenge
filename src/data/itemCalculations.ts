@@ -114,7 +114,11 @@ export interface ItemRow {
   name: string;
   category?: string;
   required: number;
+  requiredStrict?: number;
+  requiredFlexible?: number;
   total: number;
+  totalStrict?: number;
+  totalFlexible?: number;
   raw: number;
   rawStacks?: number[]; // [normal, silver, gold, unused, iridium]
   buyPrice?: BuyPrice;
@@ -136,11 +140,20 @@ const IRIDIUM_QUALITY_CATEGORIES = new Set([
   'Fish',
   'Flowers',
   'Forage',
+  'Fruits',
   'Wine',
 ]);
 
 const QUALITY_PRESERVING_CRAFT_CATEGORIES = new Set([
   'Smoked Fish',
+]);
+
+const AGEABLE_CRAFT_ITEMS = new Set([
+  'Beer',
+  'Cheese',
+  'Goat Cheese',
+  'Mead',
+  'Pale Ale',
 ]);
 
 const IRIDIUM_QUALITY_ITEMS = new Set([
@@ -292,8 +305,24 @@ function computeAllItems(
   const inventoryMap = globalInventoryMap;
   const stacksMap = globalStacksMap;
 
+  const requiredFromPartsStrict = new Map<string, number>();
+  const requiredFromPartsFlexible = new Map<string, number>();
+  const totalFromPartsStrict = new Map<string, number>();
+  const totalFromPartsFlexible = new Map<string, number>();
   const requiredFromParts = new Map<string, number>();
   const totalFromParts = new Map<string, number>();
+
+  const addPartRequirement = (name: string, requiredCount: number, totalCount: number, strict: boolean) => {
+    if (strict) {
+      requiredFromPartsStrict.set(name, (requiredFromPartsStrict.get(name) ?? 0) + requiredCount);
+      totalFromPartsStrict.set(name, (totalFromPartsStrict.get(name) ?? 0) + totalCount);
+    } else {
+      requiredFromPartsFlexible.set(name, (requiredFromPartsFlexible.get(name) ?? 0) + requiredCount);
+      totalFromPartsFlexible.set(name, (totalFromPartsFlexible.get(name) ?? 0) + totalCount);
+    }
+    requiredFromParts.set(name, (requiredFromParts.get(name) ?? 0) + requiredCount);
+    totalFromParts.set(name, (totalFromParts.get(name) ?? 0) + totalCount);
+  };
 
   {
     // add trove to the requireds
@@ -308,11 +337,12 @@ function computeAllItems(
   }
 
   for (const [craftedItemName, ingredients] of getPartsDataConsumersFirst()) {
-    const craftedCount = getProgressInventoryCount(craftedItemName, inventoryMap, stacksMap, quality);
+    const craftedCount = getDependencyInventoryCount(craftedItemName, inventoryMap, stacksMap, quality);
     const avgYield = yieldMap.get(craftedItemName) ?? 1;
     const required = requiredFromParts.get(craftedItemName) ?? 0;
     const targetAmount = TARGET + required;
     const totalCrafted = totalFromParts.get(craftedItemName) ?? 0;
+    const strictIngredients = usesQualitySensitiveIngredients(craftedItemName);
     
     // How many of this crafted item do we have (inventory + what we've made/opened)
     const totalHave = Math.min(craftedCount + totalCrafted, targetAmount);
@@ -324,8 +354,7 @@ function computeAllItems(
         if (!anyIngredient) continue;
         const requiredCount = Math.round((qty * targetAmount) / avgYield);
         const totalCount = Math.round((qty * totalHave) / avgYield);
-        requiredFromParts.set(anyIngredient.name, (requiredFromParts.get(anyIngredient.name) ?? 0) + requiredCount);
-        totalFromParts.set(anyIngredient.name, (totalFromParts.get(anyIngredient.name) ?? 0) + totalCount);
+        addPartRequirement(anyIngredient.name, requiredCount, totalCount, strictIngredients);
         continue;
       }
       const name = ingredientName!;
@@ -334,8 +363,7 @@ function computeAllItems(
       const requiredCount = Math.round((qty * targetAmount) / avgYield);
       // Calculate ingredients already used (for what we have)
       const totalCount = Math.round((qty * totalHave) / avgYield);
-      requiredFromParts.set(name, (requiredFromParts.get(name) ?? 0) + requiredCount);
-      totalFromParts.set(name, (totalFromParts.get(name) ?? 0) + totalCount);
+      addPartRequirement(name, requiredCount, totalCount, strictIngredients);
     }
   }
 
@@ -345,12 +373,13 @@ function computeAllItems(
     for (const item of CustomDataStore.getItemsData()) {
       if (!getCookingItems().has(item.name) || seen.has(item.name)) continue;
       seen.add(item.name);
-      requiredFromParts.set('Qi Seasoning', (requiredFromParts.get('Qi Seasoning') ?? 0) + TARGET);
-      // Cap at TARGET per cooking item
-      totalFromParts.set(
+      addPartRequirement(
         'Qi Seasoning',
-        (totalFromParts.get('Qi Seasoning') ?? 0) + Math.min(getProgressInventoryCount(item.name, inventoryMap, stacksMap, quality), TARGET)
+        TARGET,
+        Math.min(getProgressInventoryCount(item.name, inventoryMap, stacksMap, quality), TARGET),
+        false
       );
+      // Cap at TARGET per cooking item
     }
   }
 
@@ -463,11 +492,15 @@ function computeAllItems(
       required = TARGET;
       total = 0; // Cart and color variants don't show crafted totals
     }
-    allComputedRows.push({ 
+      allComputedRows.push({ 
       name: itemKey, 
       category: item.category,
       required, 
+      requiredStrict: requiredFromPartsStrict.get(item.name) ?? 0,
+      requiredFlexible: requiredFromPartsFlexible.get(item.name) ?? 0,
       total, 
+      totalStrict: totalFromPartsStrict.get(item.name) ?? 0,
+      totalFlexible: totalFromPartsFlexible.get(item.name) ?? 0,
       raw, 
       rawStacks: stacksMap.get(lookupKey), // Use lookupKey to get actual stacks
       buyPrice: priceMap.get(item.name), 
@@ -601,6 +634,27 @@ function getProgressInventoryCount(
   const correctTier = getQualityTargetTier(itemName);
   if (correctTier === undefined) return inventoryMap.get(itemName) ?? 0;
   return stacksMap.get(itemName)?.[correctTier] ?? 0;
+}
+
+function isAgeableCraft(itemName: string): boolean {
+  if (AGEABLE_CRAFT_ITEMS.has(itemName)) return true;
+  return getItemCategory(itemName) === 'Wine';
+}
+
+function getDependencyInventoryCount(
+  itemName: string,
+  inventoryMap: Map<string, number>,
+  stacksMap: Map<string, number[]>,
+  quality: Quality,
+): number {
+  if (quality === 'highest' && isAgeableCraft(itemName)) {
+    return inventoryMap.get(itemName) ?? 0;
+  }
+  return getProgressInventoryCount(itemName, inventoryMap, stacksMap, quality);
+}
+
+function usesQualitySensitiveIngredients(craftedItemName: string): boolean {
+  return isQualityPreservingCraft(craftedItemName);
 }
 
 function getRecipeIngredientAvailability(

@@ -1,7 +1,11 @@
 export interface Item {
   name: string;
   required: number;
+  requiredStrict?: number;
+  requiredFlexible?: number;
   total: number;
+  totalStrict?: number;
+  totalFlexible?: number;
   raw: number;
   rawStacks?: number[]; // [normal, silver, gold, unused, iridium]
   hasWrongQuality?: boolean; // Has stacks but not in the correct quality tier
@@ -15,6 +19,21 @@ export interface ItemWithCalculations extends Item {
 
 export function calculateObtainedCount(item: Item): number {
   if (item.correctQualityCount !== undefined) {
+    if (item.requiredStrict !== undefined || item.requiredFlexible !== undefined) {
+      const requiredStrict = item.requiredStrict ?? 0;
+      const requiredFlexible = item.requiredFlexible ?? 0;
+      const totalStrict = item.totalStrict ?? 0;
+      const totalFlexible = item.totalFlexible ?? 0;
+      const baseRequired = Math.max(0, item.required - requiredStrict - requiredFlexible);
+      const baseCovered = Math.min(item.correctQualityCount, baseRequired);
+      const correctSurplus = Math.max(0, item.correctQualityCount - baseRequired);
+      const strictRemaining = Math.max(0, requiredStrict - totalStrict);
+      const strictRawCovered = Math.min(correctSurplus, strictRemaining);
+      const anySurplus = Math.max(0, item.raw - baseRequired);
+      const flexibleRemaining = Math.max(0, requiredFlexible - totalFlexible);
+      const flexibleRawCovered = Math.min(Math.max(0, anySurplus - strictRawCovered), flexibleRemaining);
+      return baseCovered + totalStrict + strictRawCovered + totalFlexible + flexibleRawCovered;
+    }
     return item.correctQualityCount + item.total;
   }
   return item.raw + item.total;
