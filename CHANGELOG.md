@@ -9,17 +9,12 @@
 - Have plan to add images
 - You can use / to search for items and jump to the tab where it is.
 
-## [Unreleased]
-
-### Added
+### Changes
 - Overview category columns for `Gold spend` and `Qi spend`.
-
-### Changed
 - Overview gold and Qi coverage now use owned stacks for spend/remaining math, even when the current quality target is still incomplete.
 - Footer build info now includes the full build timestamp and git commit short SHA so each production deploy is identifiable.
-
-### Fixed
 - Price metadata corrections in `prices.json`, which also removed several downstream overview and tooltip pricing mistakes.
 - Metadata fixes for `Hops`, and removal of invalid generated entries like `Daffodil Juice` and `Pickles` where they are not real item targets.
 - `Statue Of Endless Fortune` now contributes its 1,000,000g value in overview totals through a local price override until the generated price data is corrected.
 - Shop tooltips now show `Casino` prices as `Qi coins` instead of gold when the generated entry has no explicit currency.
+- Highest-quality ingredient accounting now treats ageable artisan goods correctly, so fruits like `Cherry` and `Pineapple` can be complete while their normal-quality wines still show as aging-needed blue rows.
