@@ -16,6 +16,7 @@
 
 ### Changed
 - Overview gold and Qi coverage now use owned stacks for spend/remaining math, even when the current quality target is still incomplete.
+- Footer build info now includes the full build timestamp and git commit short SHA so each production deploy is identifiable.
 
 ### Fixed
 - Price metadata corrections in `prices.json`, which also removed several downstream overview and tooltip pricing mistakes.

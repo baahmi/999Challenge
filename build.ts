@@ -111,6 +111,15 @@ console.log("\n🚀 Starting build process...\n");
 const cliConfig = parseArgs();
 const outdir = cliConfig.outdir || path.join(process.cwd(), "dist");
 const changelogMarkdown = readFileSync(path.join(process.cwd(), "CHANGELOG.md"), "utf8");
+const buildTimestamp = new Date().toISOString().replace(/\.\d{3}Z$/, "Z");
+const gitSha = (() => {
+  const result = Bun.spawnSync(["git", "rev-parse", "--short", "HEAD"], {
+    cwd: process.cwd(),
+    stderr: "ignore",
+  });
+  if (result.exitCode !== 0) return "unknown";
+  return result.stdout.toString().trim() || "unknown";
+})();
 writeFileSync(
   path.join(process.cwd(), "src", "app", "generatedChangelog.ts"),
   `export const CHANGELOG_MARKDOWN = ${JSON.stringify(changelogMarkdown)};\n`
@@ -138,7 +147,8 @@ const result = await Bun.build({
   define: {
     "process.env.NODE_ENV": JSON.stringify("production"),
     "__APP_VERSION__": JSON.stringify(packageJson.version),
-    "__BUILD_DATE__": JSON.stringify(new Date().toISOString().slice(0, 10)),
+    "__BUILD_DATE__": JSON.stringify(buildTimestamp),
+    "__GIT_SHA__": JSON.stringify(gitSha),
   },
   ...cliConfig,
 });

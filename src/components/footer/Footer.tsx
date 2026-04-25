@@ -1,7 +1,7 @@
 import './Footer.css'
 import React, { useState } from 'react';
 import {Copyright} from "./Copyright.tsx";
-import { APP_VERSION, BUILD_DATE } from "../../app/version";
+import { APP_VERSION, BUILD_DATE, GIT_SHA } from "../../app/version";
 import { ChangelogDialog } from "../changelog/ChangelogDialog";
 
 export function Footer() {
@@ -12,7 +12,7 @@ export function Footer() {
             <div className="container">
                 <Copyright/>
                 <span className="footer-version">
-                    v{APP_VERSION} · build {BUILD_DATE}
+                    v{APP_VERSION} · build {BUILD_DATE} · {GIT_SHA}
                     {' · '}
                     <button className="footer-link-button" onClick={() => setChangelogOpen(true)}>
                         changelog
