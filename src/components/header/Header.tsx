@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import './Header.css';
-import {Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Tooltip} from "@mui/material";
+import {Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, LinearProgress, Tooltip, Typography} from "@mui/material";
 import {Upload, ViewWeekOutlined, Settings, FileDownload, CompareArrows, Category, Timeline, BarChart, HelpOutline, East} from "@mui/icons-material";
 import {ThemeToggle} from "@/components/theme/ThemeToggle.tsx";
 import {ConfigDialog} from "@/components/config/ConfigDialog.tsx";
@@ -10,7 +10,14 @@ import {HistoryDialog} from "../history/HistoryDialog.tsx";
 import {StatsDialog} from "../stats/StatsDialog.tsx";
 import {HelpDialog} from "../help/HelpDialog.tsx";
 import {Config} from "../../config/Config.ts";
-import {AppData} from "../../app/AppData.ts";
+import {AppData, type ImportStatus} from "../../app/AppData.ts";
+
+const IMPORT_PHASE_LABELS: Record<ImportStatus['phase'], string> = {
+    reading: 'Reading save files',
+    sorting: 'Sorting save history',
+    parsing: 'Parsing save file',
+    importing: 'Importing save history',
+};
 
 export function Header() {
     const [configOpen, setConfigOpen] = useState(false);
@@ -25,6 +32,7 @@ export function Header() {
     const [statsOpen, setStatsOpen] = useState(false);
     const [helpOpen, setHelpOpen] = useState(false);
     const [showGettingStarted, setShowGettingStarted] = useState(false);
+    const [importStatus, setImportStatus] = useState<ImportStatus | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const headerRef = useRef<HTMLElement>(null);
     const hasLoadedData = daysPlayed !== null || qiGems !== null || journalDays > 0;
@@ -57,6 +65,7 @@ export function Header() {
             setDaysPlayed(AppData.getDaysPlayed());
             setPastKids(AppData.getChildrenTurnedToDoves());
             setJournalDays(AppData.getJournalDayCount());
+            setImportStatus(AppData.getState().importStatus);
         };
         const unsubscribe = AppData.subscribe(handleAppDataChange);
         return unsubscribe;
@@ -84,23 +93,28 @@ export function Header() {
     };
 
     const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
-        if (file) {
-            if (file.name.endsWith('.json')) {
+        const files = Array.from(event.target.files ?? []);
+        if (files.length > 0) {
+            const jsonFiles = files.filter(file => file.name.endsWith('.json'));
+            const saveFiles = files.filter(file => !file.name.endsWith('.json'));
+
+            if (jsonFiles.length === 1 && saveFiles.length === 0) {
                 try {
-                    const text = await file.text();
+                    const text = await jsonFiles[0]!.text();
                     const data = JSON.parse(text) as unknown;
                     const ok = AppData.loadJournalFromData(data);
                     if (!ok) console.error('Not a valid journal file');
                 } catch (err) {
                     console.error('Failed to load journal file:', err);
                 }
+            } else if (jsonFiles.length > 0) {
+                console.error('Upload either one journal .json file or one or more save files, not both.');
             } else {
                 try {
-                    await AppData.loadXmlFile(file);
+                    await AppData.loadXmlFiles(saveFiles);
                     setDiffOpen(true);
                 } catch (err) {
-                    console.error('Failed to load XML file:', err);
+                    console.error('Failed to load save file(s):', err);
                 }
             }
         }
@@ -181,6 +195,7 @@ export function Header() {
                         <IconButton 
                             size="small" 
                             onClick={handleUploadClick}
+                            disabled={importStatus !== null}
                         >
                             <Upload />
                         </IconButton>
@@ -205,6 +220,7 @@ export function Header() {
                         ref={fileInputRef}
                         type="file"
                         accept="*"
+                        multiple
                         onChange={handleFileChange}
                         style={{ display: 'none' }}
                     />
@@ -216,6 +232,27 @@ export function Header() {
             <HistoryDialog open={historyOpen} onClose={() => setHistoryOpen(false)} journal={AppData.getJournal()} />
             <StatsDialog open={statsOpen} onClose={() => setStatsOpen(false)} stats={AppData.getStats()} journal={AppData.getJournal()} />
             <HelpDialog open={helpOpen} onClose={() => setHelpOpen(false)} />
+            <Dialog open={importStatus !== null} maxWidth="sm" fullWidth>
+                <DialogTitle>
+                    {importStatus ? IMPORT_PHASE_LABELS[importStatus.phase] : 'Importing'}
+                </DialogTitle>
+                <DialogContent dividers>
+                    <Typography variant="body2" sx={{ mb: 1 }}>
+                        {importStatus
+                            ? `${importStatus.current} of ${importStatus.total}: ${importStatus.fileName || 'Preparing...'}`
+                            : 'Preparing...'}
+                    </Typography>
+                    {importStatus?.daysPlayed !== undefined && (
+                        <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 1.5 }}>
+                            Day {importStatus.daysPlayed}
+                        </Typography>
+                    )}
+                    <LinearProgress
+                        variant={importStatus && importStatus.total > 0 ? 'determinate' : 'indeterminate'}
+                        value={importStatus && importStatus.total > 0 ? (importStatus.current / importStatus.total) * 100 : 0}
+                    />
+                </DialogContent>
+            </Dialog>
             <Dialog open={showGettingStarted} onClose={() => setShowGettingStarted(false)} maxWidth="sm" fullWidth>
                 <DialogTitle>To get started, upload your save file</DialogTitle>
                 <DialogContent dividers>

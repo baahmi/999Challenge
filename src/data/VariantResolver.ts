@@ -8,30 +8,52 @@ interface ColorRGBA {
   A: number;
 }
 
-interface VariantDefinition {
-  baseItemId: string;
-  variantType: 'color' | 'itemId';
-  variants?: Array<{
-    itemId?: string;
-    displayName: string;
-    color?: string;
-    colorRGBA?: ColorRGBA;
-  }>;
-}
-
 interface VariantData {
-  variantDefinitions: Record<string, VariantDefinition>;
+  itemIdNames: Record<string, string>;
+  colorVariantItems: string[];
   nameAliases: Record<string, string>;
 }
 
 const data = variantDefinitions as VariantData;
 const FLOWER_COLOR_NAMES = flowerColorNames as Record<string, Record<string, string>>;
+const COLOR_VARIANT_ITEMS = new Set(data.colorVariantItems);
 
 const FLOWER_VARIANT_DISPLAY_NAMES = new Map<string, string>();
+const ITEM_ID_VARIANT_BASE_NAMES = new Map<string, string>();
 
 for (const [baseName, variants] of Object.entries(FLOWER_COLOR_NAMES)) {
   for (const displayName of Object.values(variants)) {
     FLOWER_VARIANT_DISPLAY_NAMES.set(displayName, baseName);
+  }
+}
+
+function inferBaseName(displayName: string): string {
+  if (displayName.startsWith('Egg: ') && displayName.endsWith(', Large')) {
+    return 'Large Egg';
+  }
+
+  const parentheticalMatch = displayName.match(/^(.+?)\s*\([^)]+\)$/);
+  if (parentheticalMatch?.[1]) {
+    return parentheticalMatch[1];
+  }
+
+  const colonMatch = displayName.match(/^(.+?):/);
+  if (colonMatch?.[1]) {
+    return colonMatch[1];
+  }
+
+  const numberedMatch = displayName.match(/^(.+?)\s+\d+$/);
+  if (numberedMatch?.[1]) {
+    return numberedMatch[1];
+  }
+
+  return displayName;
+}
+
+for (const displayName of Object.values(data.itemIdNames)) {
+  const baseName = inferBaseName(displayName);
+  if (displayName !== baseName) {
+    ITEM_ID_VARIANT_BASE_NAMES.set(displayName, baseName);
   }
 }
 
@@ -43,11 +65,17 @@ function getNamedFlowerVariant(itemName: string, colorData: ColorRGBA): string |
   return FLOWER_COLOR_NAMES[itemName]?.[getColorKey(colorData)];
 }
 
+function getItemIdName(itemName: string, itemId?: string): string | undefined {
+  if (!itemId) return undefined;
+
+  return data.itemIdNames[itemId] ?? data.itemIdNames[`(O)${itemId}`];
+}
+
 /**
  * Resolves item variants from save file data.
  * Handles:
  * - Flower color variants (Blue Jazz, Tulip, etc.)
- * - Strange Doll variants (Green vs Yellow)
+ * - Item id name variants like Strange Doll
  * - Name aliases (Wild Seeds (Sp) -> Spring Seeds)
  */
 export class VariantResolver {
@@ -62,24 +90,20 @@ export class VariantResolver {
     itemId?: string,
     colorData?: ColorRGBA
   ): string {
-    // Check name aliases first
+    const itemIdName = getItemIdName(itemName, itemId);
+    if (itemIdName) {
+      return itemIdName;
+    }
+
+    // Check name aliases after item id mappings, because item id is the save file's
+    // most specific identity for non-color variants.
     if (data.nameAliases[itemName]) {
       return data.nameAliases[itemName];
     }
     
-    const variantDef = data.variantDefinitions[itemName];
-    
-    // Handle itemId-based variants (Strange Doll)
-    if (variantDef && variantDef.variantType === 'itemId' && itemId && variantDef.variants) {
-      const variant = variantDef.variants.find(v => v.itemId === itemId);
-      if (variant) {
-        return variant.displayName;
-      }
-    }
-    
     // Handle color-based variants (flowers)
     // Use friendly names for known save colors and fall back to RGB for unseen colors.
-    if (variantDef && variantDef.variantType === 'color' && colorData) {
+    if (COLOR_VARIANT_ITEMS.has(itemName) && colorData) {
       const namedVariant = getNamedFlowerVariant(itemName, colorData);
       if (namedVariant) {
         return namedVariant;
@@ -107,15 +131,18 @@ export class VariantResolver {
    * Check if an item has variants defined
    */
   static hasVariants(itemName: string): boolean {
-    return itemName in data.variantDefinitions;
+    return this.hasColorVariants(itemName) || this.hasItemIdVariants(itemName);
   }
   
   /**
    * Check if an item has color variants (returns true for flowers with color data)
    */
   static hasColorVariants(itemName: string): boolean {
-    const variantDef = data.variantDefinitions[itemName];
-    return variantDef?.variantType === 'color';
+    return COLOR_VARIANT_ITEMS.has(itemName);
+  }
+
+  static hasItemIdVariants(itemName: string): boolean {
+    return [...ITEM_ID_VARIANT_BASE_NAMES.values()].includes(itemName);
   }
   
   /**
@@ -148,15 +175,9 @@ export class VariantResolver {
       return extraMatch[1];
     }
     
-    // Check if it's a Strange Doll variant
-    for (const [baseName, variantDef] of Object.entries(data.variantDefinitions)) {
-      if (variantDef.variantType === 'itemId' && variantDef.variants) {
-        for (const variant of variantDef.variants) {
-          if (variant.displayName === displayName) {
-            return baseName;
-          }
-        }
-      }
+    const itemIdVariantBaseName = ITEM_ID_VARIANT_BASE_NAMES.get(displayName);
+    if (itemIdVariantBaseName) {
+      return itemIdVariantBaseName;
     }
     
     // Check aliases

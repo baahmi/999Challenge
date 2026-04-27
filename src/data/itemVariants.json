@@ -1,40 +1,30 @@
 {
-  "variantDefinitions": {
-    "Strange Doll": {
-      "baseItemId": "126",
-      "variantType": "itemId",
-      "variants": [
-        {
-          "itemId": "126",
-          "displayName": "Strange Doll (Green)"
-        },
-        {
-          "itemId": "127",
-          "displayName": "Strange Doll (Pink)"
-        }
-      ]
-    },
-    "Blue Jazz": {
-      "baseItemId": "597",
-      "variantType": "color"
-    },
-    "Tulip": {
-      "baseItemId": "591",
-      "variantType": "color"
-    },
-    "Summer Spangle": {
-      "baseItemId": "593",
-      "variantType": "color"
-    },
-    "Fairy Rose": {
-      "baseItemId": "595",
-      "variantType": "color"
-    },
-    "Poppy": {
-      "baseItemId": "376",
-      "variantType": "color"
-    }
+  "itemIdNames": {
+    "(O)126": "Strange Doll (Green)",
+    "(O)127": "Strange Doll (Pink)",
+    "(O)176": "Egg: White",
+    "(O)174": "Egg: White, Large",
+    "(O)180": "Egg: Brown",
+    "(O)182": "Egg: Brown, Large",
+    "(BC)2": "House Plant 1",
+    "(BC)54": "Stone Owl",
+    "(BC)95": "Stone Owl(Spawn)",
+    "(BC)110": "Rarecrow: 1",
+    "(BC)113": "Rarecrow: 2",
+    "(BC)126": "Rarecrow: 3",
+    "(BC)136": "Rarecrow: 4",
+    "(BC)137": "Rarecrow: 5",
+    "(BC)138": "Rarecrow: 6",
+    "(BC)139": "Rarecrow: 7",
+    "(BC)140": "Rarecrow: 8"
   },
+  "colorVariantItems": [
+    "Blue Jazz",
+    "Tulip",
+    "Summer Spangle",
+    "Fairy Rose",
+    "Poppy"
+  ],
   "nameAliases": {
     "Wild Seeds (Sp)": "Wild Seeds: Spring",
     "Wild Seeds (Su)": "Wild Seeds: Summer",

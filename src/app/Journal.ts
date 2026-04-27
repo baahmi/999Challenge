@@ -5,13 +5,13 @@ const STORAGE_KEY = 'stardew-journal';
 export type QualityStacks = [number, number, number, number, number];
 
 export interface JournalItem {
-  id: number;
+  itemId: string;
   cat: number;
   q: QualityStacks;
 }
 
 export interface JournalDelta {
-  id?: number;
+  itemId?: string;
   cat?: number;
   q: QualityStacks;
 }
@@ -34,7 +34,7 @@ export interface JournalMain {
 }
 
 export interface Journal {
-  v: 1;
+  v: 2;
   main: JournalMain;
   days: Record<string, DayEntry>;
 }
@@ -50,7 +50,7 @@ export interface ImportDiff {
 
 export interface CompactedItem {
   name: string;
-  itemId: number;
+  itemId: string;
   category: number;
   stack: number;
   quality: number[];
@@ -60,7 +60,7 @@ function isJournal(obj: unknown): obj is Journal {
   return (
     typeof obj === 'object' &&
     obj !== null &&
-    (obj as Record<string, unknown>).v === 1 &&
+    (obj as Record<string, unknown>).v === 2 &&
     typeof (obj as Record<string, unknown>).main === 'object' &&
     typeof (obj as Record<string, unknown>).days === 'object'
   );
@@ -117,7 +117,7 @@ export class JournalStore {
         raw[3] ?? 0,
         raw[4] ?? 0,
       ];
-      result[item.name] = { id: item.itemId, cat: item.category, q };
+      result[item.name] = { itemId: item.itemId, cat: item.category, q };
     }
     return result;
   }
@@ -127,7 +127,7 @@ export class JournalStore {
       .filter(([, item]) => !ignoredCategories.includes(item.cat))
       .map(([name, item]) => ({
         name: VariantResolver.normalizeDisplayName(name),
-        itemId: item.id,
+        itemId: item.itemId,
         category: item.cat,
         stack: item.q.reduce((s, v) => s + v, 0),
         quality: [...item.q],
@@ -143,7 +143,7 @@ export class JournalStore {
     for (const [name, item] of Object.entries(current)) {
       const prev = previous[name];
       if (!prev) {
-        delta[name] = { id: item.id, cat: item.cat, q: [...item.q] as QualityStacks };
+        delta[name] = { itemId: item.itemId, cat: item.cat, q: [...item.q] as QualityStacks };
       } else {
         const dq = item.q.map((v, i) => v - (prev.q[i] ?? 0)) as QualityStacks;
         if (dq.some(v => v !== 0)) {
@@ -181,7 +181,7 @@ export class JournalStore {
           delete items[name];
         } else {
           items[name] = {
-            id: cur?.id ?? delta.id ?? 0,
+            itemId: cur?.itemId ?? delta.itemId ?? '',
             cat: cur?.cat ?? delta.cat ?? 0,
             q: prevQ,
           };
@@ -226,7 +226,7 @@ export class JournalStore {
     const changes = JournalStore.computeDelta(prevItems, currentItems);
 
     return {
-      v: 1,
+      v: 2,
       main: { day, qiGems, mysteryBoxesOpened, ticketPrizesClaimed, childrenTurnedToDoves, items: currentItems },
       days: {
         ...(existing?.days ?? {}),

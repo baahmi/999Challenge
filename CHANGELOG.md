@@ -12,6 +12,8 @@
 ### Changes
 #### 0.1.2
 - Squid Ink and Sea Urchin cannot be smoked or made into bait.
+- Now storing items based on id, instead of name, since they are clashing. Side effect is that it now shows eg Stone Owl and Stone Owl (Spawned) and the eggs correctly (all normal chicken eggs have the name "Egg", just another Id for color and size)
+- Since uploaded metadata is not compatible anymore, you need to reupload the data. You can select multiple files. The test with 125 save files takes time, but with progress it at least shows what it is doing
 #### 0.1.1
 - Deploy commits now bump the app version, so the footer version is tied to what is actually running in production.
 - Overview category columns for `Gold spend` and `Qi spend`.

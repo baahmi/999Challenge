@@ -2,6 +2,17 @@ import { describe, expect, it } from 'bun:test';
 import { VariantResolver } from '../VariantResolver';
 
 describe('VariantResolver flower colors', () => {
+  it('uses item id names before base names or aliases', () => {
+    expect(VariantResolver.resolveDisplayName('Strange Doll', '(O)126')).toBe('Strange Doll (Green)');
+    expect(VariantResolver.resolveDisplayName('Strange Doll', '(O)127')).toBe('Strange Doll (Pink)');
+    expect(VariantResolver.resolveDisplayName('Strange Doll', '126')).toBe('Strange Doll (Green)');
+    expect(VariantResolver.resolveDisplayName('Rarecrow', '(BC)126')).toBe('Rarecrow: 3');
+    expect(VariantResolver.resolveDisplayName('Large Egg', '(O)174')).toBe('Egg: White, Large');
+    expect(VariantResolver.getBaseName('Strange Doll (Green)')).toBe('Strange Doll');
+    expect(VariantResolver.getBaseName('Egg: White, Large')).toBe('Large Egg');
+    expect(VariantResolver.hasItemIdVariants('Strange Doll')).toBe(true);
+  });
+
   it('uses readable names for known flower colors from the save file', () => {
     expect(
       VariantResolver.resolveDisplayName('Blue Jazz', '597', { R: 109, G: 131, B: 255, A: 255 })

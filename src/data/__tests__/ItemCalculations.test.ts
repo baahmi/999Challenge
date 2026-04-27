@@ -198,6 +198,37 @@ describe('computeCategoryItems', () => {
         }
     });
 
+    it('shows item-id variants without also showing their base placeholder rows', () => {
+        CustomDataStore.troveItems = ['Missing Artifact']
+        CustomDataStore.data.categoryNames = ['Animal Products', 'Artifacts']
+        CustomDataStore.data.items = [
+            { category: 'Animal Products', name: 'Egg', displayName: null },
+            { category: 'Animal Products', name: 'Large Egg', displayName: null },
+            { category: 'Artifacts', name: 'Strange Doll', displayName: null },
+        ];
+        CustomDataStore.partsData = [] as PartsEntry[]
+
+        CustomDataStore.addVariantsFromInventory([
+            { name: 'Egg: White', category: -5 },
+            { name: 'Egg: White, Large', category: -5 },
+            { name: 'Strange Doll (Green)', category: 0 },
+        ]);
+
+        const animalRows = computeCategoryItems('Animal Products', [
+            { name: 'Egg: White', stack: 12, category: 'Animal Products', quality: [12,0,0,0,0] },
+            { name: 'Egg: White, Large', stack: 34, category: 'Animal Products', quality: [34,0,0,0,0] },
+        ]);
+        const artifactRows = computeCategoryItems('Artifacts', [
+            { name: 'Strange Doll (Green)', stack: 1, category: 'Artifacts', quality: [1,0,0,0,0] },
+        ]);
+
+        expect(animalRows.map(row => row.name)).toContain('Egg: White');
+        expect(animalRows.map(row => row.name)).toContain('Egg: White, Large');
+        expect(animalRows.map(row => row.name)).not.toContain('Egg');
+        expect(animalRows.map(row => row.name)).not.toContain('Large Egg');
+        expect(artifactRows.map(row => row.name)).toEqual(['Strange Doll (Green)']);
+    });
+
     it('does not count wrong-quality flower variants toward highest quality progress', () => {
         CustomDataStore.troveItems = ['Missing Artifact']
         CustomDataStore.data.categoryNames = ['Flowers']

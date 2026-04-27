@@ -4,9 +4,18 @@ import { VariantResolver, CustomDataStore } from '@/data/CustomDataStore';
 
 type Listener = () => void;
 
+export type ImportStatus = {
+  phase: 'reading' | 'sorting' | 'parsing' | 'importing';
+  current: number;
+  total: number;
+  fileName: string;
+  daysPlayed?: number;
+};
+
 export interface AppDataState {
   xmlData: Record<string, any> | null;
   isLoading: boolean;
+  importStatus: ImportStatus | null;
   error: string | null;
   daysPlayed: number | null;
   qiGems: number | null;
@@ -21,7 +30,7 @@ export interface AppDataState {
 
 export type extractedItem = {
   name: string;
-  itemId: number;
+  itemId: string;
   category: number;
   stack: number;
   quality: number;
@@ -32,6 +41,7 @@ class AppDataManager {
   private state: AppDataState = {
     xmlData: null,
     isLoading: false,
+    importStatus: null,
     error: null,
     daysPlayed: null,
     qiGems: null,
@@ -67,6 +77,10 @@ class AppDataManager {
 
   private notifyListeners(): void {
     this.listeners.forEach((listener) => listener());
+  }
+
+  private async yieldToUi(): Promise<void> {
+    await new Promise<void>(resolve => window.setTimeout(resolve, 0));
   }
 
   getState(): AppDataState {
@@ -142,13 +156,117 @@ class AppDataManager {
 
       this.processData(xmlDoc.documentElement);
       this.state.isLoading = false;
+      this.state.importStatus = null;
       this.notifyListeners();
     } catch (err) {
       this.state.error = err instanceof Error ? err.message : 'Unknown error occurred';
       this.state.isLoading = false;
+      this.state.importStatus = null;
       this.notifyListeners();
       throw err;
     }
+  }
+
+  async loadXmlFiles(files: File[]): Promise<void> {
+    if (files.length === 0) return;
+
+    this.state.isLoading = true;
+    this.state.importStatus = {
+      phase: 'reading',
+      current: 0,
+      total: files.length,
+      fileName: '',
+    };
+    this.state.error = null;
+    this.notifyListeners();
+
+    try {
+      const saves: Array<{ file: File; index: number; text: string; daysPlayed: number }> = [];
+
+      for (const [index, file] of files.entries()) {
+        this.state.importStatus = {
+          phase: 'reading',
+          current: index + 1,
+          total: files.length,
+          fileName: file.name,
+        };
+        this.notifyListeners();
+        await this.yieldToUi();
+
+        const text = await file.text();
+
+        saves.push({
+          file,
+          index,
+          text,
+          daysPlayed: this.getDaysPlayedFromText(text),
+        });
+      }
+
+      this.state.importStatus = {
+        phase: 'sorting',
+        current: saves.length,
+        total: saves.length,
+        fileName: 'Sorting by save day',
+      };
+      this.notifyListeners();
+      await this.yieldToUi();
+
+      saves.sort((a, b) => (a.daysPlayed - b.daysPlayed) || a.file.name.localeCompare(b.file.name) || (a.index - b.index));
+
+      const parser = new DOMParser();
+
+      for (const [index, save] of saves.entries()) {
+        this.state.importStatus = {
+          phase: 'parsing',
+          current: index + 1,
+          total: saves.length,
+          fileName: save.file.name,
+          daysPlayed: save.daysPlayed,
+        };
+        this.notifyListeners();
+        await this.yieldToUi();
+
+        const xmlDoc = parser.parseFromString(save.text, 'application/xml');
+
+        if (xmlDoc.getElementsByTagName('parsererror').length > 0) {
+          throw new Error(`Invalid XML file: ${save.file.name}`);
+        }
+
+        this.state.importStatus = {
+          phase: 'importing',
+          current: index + 1,
+          total: saves.length,
+          fileName: save.file.name,
+          daysPlayed: save.daysPlayed,
+        };
+        this.notifyListeners();
+        await this.yieldToUi();
+
+        this.processData(xmlDoc.documentElement);
+        save.text = '';
+      }
+
+      this.state.isLoading = false;
+      this.state.importStatus = null;
+      this.notifyListeners();
+    } catch (err) {
+      this.state.error = err instanceof Error ? err.message : 'Unknown error occurred';
+      this.state.isLoading = false;
+      this.state.importStatus = null;
+      this.notifyListeners();
+      throw err;
+    }
+  }
+
+  private getDaysPlayedFromText(text: string): number {
+    const itemMatch = text.match(/<item><key><string>daysPlayed<\/string><\/key><value><[^>]+>(\d+)<\/[^>]+><\/value><\/item>/);
+    if (itemMatch?.[1]) return Number(itemMatch[1]);
+
+    const statsMatch = text.match(/<daysPlayed>(\d+)<\/daysPlayed>/);
+    if (statsMatch?.[1]) return Number(statsMatch[1]);
+
+    return 0;
   }
 
   private processData(root: Element) {
@@ -219,7 +337,7 @@ class AppDataManager {
 
   private saveToJournal(): void {
     const prevMain = this.journal?.main ?? null;
-    const compacted = this.state.compacted as unknown as Array<{ name: string; itemId: number; category: number; stack: number; quality: number[] }>;
+    const compacted = this.state.compacted as unknown as Array<{ name: string; itemId: string; category: number; stack: number; quality: number[] }>;
     const currentDay = this.state.daysPlayed ?? 0;
     const currentQiGems = this.state.qiGems ?? 0;
     this.journal = JournalStore.upsertJournal(
@@ -296,7 +414,7 @@ class AppDataManager {
   }
 
   private compactItems() {
-    const compacted: Record<string, { itemId: number; category: number; stacks: number[] }> = {};
+    const compacted: Record<string, { itemId: string; category: number; stacks: number[] }> = {};
 
     for (const item of this.state.items) {
       // Keep variants as separate items (e.g., "Blue Jazz (35,127,255)" stays separate)
@@ -330,6 +448,26 @@ private getInt(node: ParentNode, selector: string): number {
   return Number.isFinite(n) ? n : 0;
 }
 
+private getBool(node: ParentNode, selector: string): boolean {
+  return this.getText(node, selector) === "true";
+}
+
+private getItemId(node: ParentNode, itemIdText: string | undefined): string {
+  if (!itemIdText) return '';
+  if (itemIdText.startsWith("(")) return itemIdText;
+  if (!Number.isFinite(Number(itemIdText))) return itemIdText;
+
+  if (this.getBool(node, "bigCraftable")) return `(BC)${itemIdText}`;
+
+  const element = node instanceof Element ? node : undefined;
+  const type = element?.getAttribute("xsi:type");
+  if (element?.tagName === "Object" || type === "Object" || type === "ColoredObject") {
+    return `(O)${itemIdText}`;
+  }
+
+  return itemIdText;
+}
+
 private extractItems(node: Element, out: extractedItem[]): void {
   const tag = node.tagName;
 
@@ -337,7 +475,8 @@ private extractItems(node: Element, out: extractedItem[]): void {
     const name = this.getText(node, "name");
     const category = this.getInt(node, "category");
     if (name && !Config.getIgnoredCategories().includes(category)) {
-      const itemId = this.getInt(node, "itemId");
+      const itemIdText = this.getText(node, "itemId");
+      const itemId = this.getItemId(node, itemIdText);
       let stack = this.getInt(node, "stack");
       if (stack === 0) stack = 1;
 
@@ -359,7 +498,7 @@ private extractItems(node: Element, out: extractedItem[]): void {
       // Resolve variant display name
       const displayName = VariantResolver.resolveDisplayName(
         name,
-        itemId.toString(),
+        itemId,
         colorData
       );
 
@@ -377,6 +516,7 @@ private extractItems(node: Element, out: extractedItem[]): void {
     this.state.xmlData = null;
     this.state.error = null;
     this.state.isLoading = false;
+    this.state.importStatus = null;
     this.state.items = [];
     this.state.daysPlayed = 0;
     this.state.qiGems = 0;

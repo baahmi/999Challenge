@@ -463,12 +463,12 @@ function computeAllItems(
     let isExtraVariant = false;
     
     // For items with displayName that are NOT variants (like "Bouquet: Wilted"), use base name for lookup
-    if (item.displayName !== null && !VariantResolver.hasColorVariants(item.name) && item.name !== 'Strange Doll') {
+    if (item.displayName !== null && !VariantResolver.hasColorVariants(item.name) && !VariantResolver.hasItemIdVariants(item.name)) {
       lookupKey = item.name;
     }
     
     // For base items with variants, check if base name exists in inventory
-    if (item.displayName === null && (VariantResolver.hasColorVariants(item.name) || item.name === 'Strange Doll')) {
+    if (item.displayName === null && VariantResolver.hasColorVariants(item.name)) {
       if (inventoryMap.has(item.name)) {
         // Base item has inventory - show as (Cart) variant
         itemKey = `${item.name} (Cart)`;
@@ -477,6 +477,10 @@ function computeAllItems(
         // No inventory for base item - skip it
         continue;
       }
+    }
+
+    if (item.displayName === null && VariantResolver.hasItemIdVariants(item.name) && !inventoryMap.has(item.name)) {
+      continue;
     }
     
     // Track by display name to allow multiple variants of same base item
@@ -1032,7 +1036,7 @@ export function computeCategoryItemsUncached(
     let lookupKey = itemKey;
     
     // For base items with variants, check if base name exists in inventory
-    if (item.displayName === null && (VariantResolver.hasColorVariants(item.name) || item.name === 'Strange Doll')) {
+    if (item.displayName === null && VariantResolver.hasColorVariants(item.name)) {
       if (inventoryMap.has(item.name)) {
         // Base item has inventory - show as (Cart) variant
         itemKey = `${item.name} (Cart)`;
@@ -1041,6 +1045,10 @@ export function computeCategoryItemsUncached(
         // No inventory for base item - skip it
         continue;
       }
+    }
+
+    if (item.displayName === null && VariantResolver.hasItemIdVariants(item.name) && !inventoryMap.has(item.name)) {
+      continue;
     }
     
     // Track by display name to allow multiple variants of same base item
