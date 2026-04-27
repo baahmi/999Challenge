@@ -10,6 +10,9 @@
 - You can use / to search for items and jump to the tab where it is.
 
 ### Changes
+#### 0.1.2
+- Squid Ink and Sea Urchin cannot be smoked or made into bait.
+#### 0.1.1
 - Deploy commits now bump the app version, so the footer version is tied to what is actually running in production.
 - Overview category columns for `Gold spend` and `Qi spend`.
 - Overview gold and Qi coverage now use owned stacks for spend/remaining math, even when the current quality target is still incomplete.

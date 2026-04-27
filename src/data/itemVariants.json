@@ -6,13 +6,11 @@
       "variants": [
         {
           "itemId": "126",
-          "displayName": "Strange Doll (Green)",
-          "distinguisher": "green"
+          "displayName": "Strange Doll (Green)"
         },
         {
           "itemId": "127",
-          "displayName": "Strange Doll (Pink)",
-          "distinguisher": "pink"
+          "displayName": "Strange Doll (Pink)"
         }
       ]
     },

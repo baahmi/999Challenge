@@ -16,7 +16,6 @@ interface VariantDefinition {
     displayName: string;
     color?: string;
     colorRGBA?: ColorRGBA;
-    distinguisher?: string;
   }>;
 }
 

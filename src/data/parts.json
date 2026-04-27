@@ -786,8 +786,6 @@
 "165": ["Scorpion Carp",1]
 },[5,10]],["Clam Bait",{
 "372": ["Clam",1]
-},[5,10]],["Sea Urchin Bait",{
-"397": ["Sea Urchin",1]
 },[5,10]],["Sturgeon Bait",{
 "698": ["Sturgeon",1]
 },[5,10]],["Tiger Trout Bait",{
@@ -838,8 +836,6 @@
 "799": ["Spook Fish",1]
 },[5,10]],["Blobfish Bait",{
 "800": ["Blobfish",1]
-},[5,10]],["Squid Ink Bait",{
-"814": ["Squid Ink",1]
 },[5,10]],["Flounder Bait",{
 "267": ["Flounder",1]
 },[5,10]],["Midnight Carp Bait",{
@@ -922,8 +918,6 @@
 "165": ["Scorpion Carp",1]
 },1],["Smoked Clam",{
 "372": ["Clam",1]
-},1],["Smoked Sea Urchin",{
-"397": ["Sea Urchin",1]
 },1],["Smoked Sturgeon",{
 "698": ["Sturgeon",1]
 },1],["Smoked Tiger Trout",{
@@ -974,8 +968,6 @@
 "799": ["Spook Fish",1]
 },1],["Smoked Blobfish",{
 "800": ["Blobfish",1]
-},1],["Smoked Squid Ink",{
-"814": ["Squid Ink",1]
 },1],["Smoked Flounder",{
 "267": ["Flounder",1]
 },1],["Smoked Midnight Carp",{
@@ -1058,8 +1050,6 @@
 "": ["Scorpion Carp Roe",1]
 },1],["Aged Clam Roe",{
 "": ["Clam Roe",1]
-},1],["Aged Sea Urchin Roe",{
-"": ["Sea Urchin Roe",1]
 },1],["Aged Tiger Trout Roe",{
 "": ["Tiger Trout Roe",1]
 },1],["Aged Bullhead Roe",{
@@ -1108,8 +1098,6 @@
 "": ["Spook Fish Roe",1]
 },1],["Aged Blobfish Roe",{
 "": ["Blobfish Roe",1]
-},1],["Aged Squid Ink Roe",{
-"": ["Squid Ink Roe",1]
 },1],["Aged Flounder Roe",{
 "": ["Flounder Roe",1]
 },1],["Aged Midnight Carp Roe",{

@@ -1002,7 +1002,7 @@ null
 [
 "Animal Products",
 "Void Egg",
-null
+"Egg: Void"
 ],
 [
 "Artisan Goods (Other)",
@@ -1442,7 +1442,7 @@ null
 [
 "Animal Products",
 "Duck Egg",
-null
+"Egg: Duck"
 ],
 [
 "Animal Products",
@@ -2487,7 +2487,7 @@ null
 [
 "Animal Products",
 "Ostrich Egg",
-null
+"Egg: Ostrich"
 ],
 [
 "Seeds",
@@ -2807,7 +2807,7 @@ null
 [
 "Animal Products",
 "Golden Egg",
-null
+"Egg: Golden"
 ],
 [
 "Gifts/Rewards",
@@ -4166,11 +4166,6 @@ null
 ],
 [
 "Roe",
-"Sea Urchin Roe",
-null
-],
-[
-"Roe",
 "Sturgeon Roe",
 null
 ],
@@ -4292,11 +4287,6 @@ null
 [
 "Roe",
 "Blobfish Roe",
-null
-],
-[
-"Roe",
-"Squid Ink Roe",
 null
 ],
 [
@@ -4531,11 +4521,6 @@ null
 ],
 [
 "Aged Roe",
-"Aged Sea Urchin Roe",
-null
-],
-[
-"Aged Roe",
 "Aged Tiger Trout Roe",
 null
 ],
@@ -4652,11 +4637,6 @@ null
 [
 "Aged Roe",
 "Aged Blobfish Roe",
-null
-],
-[
-"Aged Roe",
-"Aged Squid Ink Roe",
 null
 ],
 [
@@ -4891,11 +4871,6 @@ null
 ],
 [
 "Smoked Fish",
-"Smoked Sea Urchin",
-null
-],
-[
-"Smoked Fish",
 "Smoked Sturgeon",
 null
 ],
@@ -5017,11 +4992,6 @@ null
 [
 "Smoked Fish",
 "Smoked Blobfish",
-null
-],
-[
-"Smoked Fish",
-"Smoked Squid Ink",
 null
 ],
 [
