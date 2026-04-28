@@ -10,6 +10,7 @@ interface ColorRGBA {
 
 interface VariantData {
   itemIdNames: Record<string, string>;
+  ambiguousItemNames: Record<string, string[]>;
   colorVariantItems: string[];
   nameAliases: Record<string, string>;
 }
@@ -17,6 +18,10 @@ interface VariantData {
 const data = variantDefinitions as VariantData;
 const FLOWER_COLOR_NAMES = flowerColorNames as Record<string, Record<string, string>>;
 const COLOR_VARIANT_ITEMS = new Set(data.colorVariantItems);
+const AMBIGUOUS_ITEM_NAMES = new Map(
+  Object.entries(data.ambiguousItemNames ?? {}).map(([name, ids]) => [name, new Set(ids)])
+);
+const loggedAmbiguousFallbacks = new Set<string>();
 
 const FLOWER_VARIANT_DISPLAY_NAMES = new Map<string, string>();
 const ITEM_ID_VARIANT_BASE_NAMES = new Map<string, string>();
@@ -71,6 +76,22 @@ function getItemIdName(itemName: string, itemId?: string): string | undefined {
   return data.itemIdNames[itemId] ?? data.itemIdNames[`(O)${itemId}`];
 }
 
+function getAmbiguousFallbackName(itemName: string, itemId?: string): string | undefined {
+  if (!itemId) return undefined;
+
+  const ambiguousIds = AMBIGUOUS_ITEM_NAMES.get(itemName);
+  if (!ambiguousIds?.has(itemId)) return undefined;
+
+  const displayName = `${itemName} [${itemId}]`;
+  const logKey = `${itemName}|${itemId}`;
+  if (!loggedAmbiguousFallbacks.has(logKey)) {
+    loggedAmbiguousFallbacks.add(logKey);
+    console.warn(`Missing item-id display mapping for duplicate save name: ${displayName}`);
+  }
+
+  return displayName;
+}
+
 /**
  * Resolves item variants from save file data.
  * Handles:
@@ -93,6 +114,11 @@ export class VariantResolver {
     const itemIdName = getItemIdName(itemName, itemId);
     if (itemIdName) {
       return itemIdName;
+    }
+
+    const fallbackName = getAmbiguousFallbackName(itemName, itemId);
+    if (fallbackName) {
+      return fallbackName;
     }
 
     // Check name aliases after item id mappings, because item id is the save file's
@@ -142,7 +168,7 @@ export class VariantResolver {
   }
 
   static hasItemIdVariants(itemName: string): boolean {
-    return [...ITEM_ID_VARIANT_BASE_NAMES.values()].includes(itemName);
+    return [...ITEM_ID_VARIANT_BASE_NAMES.values()].includes(itemName) || AMBIGUOUS_ITEM_NAMES.has(itemName);
   }
   
   /**
@@ -173,6 +199,11 @@ export class VariantResolver {
     const extraMatch = displayName.match(/^(.+?)\s+Extra$/);
     if (extraMatch && extraMatch[1]) {
       return extraMatch[1];
+    }
+
+    const ambiguousIdMatch = displayName.match(/^(.+?)\s+\[\((?:O|BC)\).+\]$/);
+    if (ambiguousIdMatch && ambiguousIdMatch[1]) {
+      return ambiguousIdMatch[1];
     }
     
     const itemIdVariantBaseName = ITEM_ID_VARIANT_BASE_NAMES.get(displayName);

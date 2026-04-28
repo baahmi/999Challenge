@@ -11,6 +11,9 @@ export function Footer() {
         <footer className="footer">
             <div className="container">
                 <Copyright/>
+                <span className="footer-attribution">
+                    Stardew Valley assets © ConcernedApe.
+                </span>
                 <span className="footer-version">
                     v{APP_VERSION} · build {BUILD_DATE} · {GIT_SHA}
                     {' · '}

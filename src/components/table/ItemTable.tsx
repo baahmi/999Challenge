@@ -4,6 +4,7 @@ import { calculateNeededCount, calculateObtainedCount, enrichItemsWithCalculatio
 import type { ItemWithCalculations } from '../../types/Item';
 import type { ItemRow, ItemTooltipData } from '../../data/itemCalculations';
 import { hasTooltipContent } from '../../data/itemCalculations';
+import { ItemSprite } from './ItemSprite';
 import './ItemTable.css';
 
 interface ItemTableProps {
@@ -151,6 +152,7 @@ function getNameCellProgressStyle(
 
 const COLUMNS: Array<{ key: string; label: string; minW: number }> = [
   { key: 'checkbox',    label: '✓',         minW: 20 },
+  { key: 'image',       label: '',          minW: 42 },
   { key: 'percentage',  label: '%',         minW: 40 },
   { key: 'name',        label: 'Name',      minW: 60 },
   { key: 'required',    label: 'Required',  minW: 40 },
@@ -172,6 +174,7 @@ export function ItemTable({ items }: ItemTableProps) {
   const isDark = mode === 'dark';
   const [columnWidths, setColumnWidths] = React.useState<Record<string, number>>({
     checkbox: 30,
+    image: 42,
     percentage: 56,
     name: 200,
     required: 90,
@@ -255,6 +258,7 @@ export function ItemTable({ items }: ItemTableProps) {
       const done = !isTotal && row.percentage >= 100;
       switch (column) {
         case 'checkbox':   return isTotal ? '—' : (done ? '☑' : '☐');
+        case 'image':      return isTotal ? '' : <ItemSprite name={row.name} />;
         case 'percentage': return `${Math.floor(row.percentage)}%`;
         case 'name':       return isTotal ? 'Total' : row.name;
         case 'required':   return fmtNumber(row.required);
@@ -402,7 +406,7 @@ export function ItemTable({ items }: ItemTableProps) {
                       border: `1px solid ${isDark ? '#555' : '#ccc'}`, padding: '4px 6px', fontSize: '13px',
                       width: colW(col.key), maxWidth: colW(col.key),
                       overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
-                      textAlign: col.key === 'checkbox' ? 'center' : COST_KEYS.has(col.key) ? 'right' : undefined,
+                      textAlign: col.key === 'checkbox' || col.key === 'image' ? 'center' : COST_KEYS.has(col.key) ? 'right' : undefined,
                       color: col.key === 'gold_needed' ? (isDark ? '#ffd54f' : '#9a7000') : col.key === 'qi_needed' ? (isDark ? '#ce93d8' : '#8b44ac') : undefined,
                       ...(col.key === 'name' ? getNameCellProgressStyle(row.percentage, isDark, rowBg, showNameProgress) : { backgroundColor: rowBg }),
                       ...stickyStyle,

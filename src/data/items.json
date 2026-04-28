@@ -3077,7 +3077,7 @@ null
 [
 "Books",
 "Book_Artifact",
-"Treasures Appraisal Guide"
+"Treasure Appraisal Guide"
 ],
 [
 "Books",
@@ -5906,18 +5906,22 @@ null
 ],
 [
 "Decoration (Other)",
-"CursedMannequinFemale"
+"CursedMannequinFemale",
+"Cursed Mannequin (F)"
 ],
 [
 "Decoration (Other)",
-"CursedMannequinMale"
+"CursedMannequinMale",
+"Cursed Mannequin (M)"
 ],
 [
 "Decoration (Other)",
-"MannequinFemale"
+"MannequinFemale",
+"Mannequin (F)"
 ],
 [
 "Decoration (Other)",
-"MannequinMale"
+"MannequinMale",
+"Mannequin (M)"
 ]
 ]

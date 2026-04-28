@@ -1,0 +1,6892 @@
+{
+  "itemIds": {
+    "(O)0": {
+      "sheet": "springobjects",
+      "spriteIndex": 0,
+      "width": 16,
+      "height": 16
+    },
+    "(O)2": {
+      "sheet": "springobjects",
+      "spriteIndex": 2,
+      "width": 16,
+      "height": 16
+    },
+    "(O)4": {
+      "sheet": "springobjects",
+      "spriteIndex": 4,
+      "width": 16,
+      "height": 16
+    },
+    "(O)6": {
+      "sheet": "springobjects",
+      "spriteIndex": 6,
+      "width": 16,
+      "height": 16
+    },
+    "(O)8": {
+      "sheet": "springobjects",
+      "spriteIndex": 8,
+      "width": 16,
+      "height": 16
+    },
+    "(O)10": {
+      "sheet": "springobjects",
+      "spriteIndex": 10,
+      "width": 16,
+      "height": 16
+    },
+    "(O)12": {
+      "sheet": "springobjects",
+      "spriteIndex": 12,
+      "width": 16,
+      "height": 16
+    },
+    "(O)14": {
+      "sheet": "springobjects",
+      "spriteIndex": 14,
+      "width": 16,
+      "height": 16
+    },
+    "(O)16": {
+      "sheet": "springobjects",
+      "spriteIndex": 16,
+      "width": 16,
+      "height": 16
+    },
+    "(O)18": {
+      "sheet": "springobjects",
+      "spriteIndex": 18,
+      "width": 16,
+      "height": 16
+    },
+    "(O)20": {
+      "sheet": "springobjects",
+      "spriteIndex": 20,
+      "width": 16,
+      "height": 16
+    },
+    "(O)22": {
+      "sheet": "springobjects",
+      "spriteIndex": 22,
+      "width": 16,
+      "height": 16
+    },
+    "(O)24": {
+      "sheet": "springobjects",
+      "spriteIndex": 24,
+      "width": 16,
+      "height": 16
+    },
+    "(O)30": {
+      "sheet": "springobjects",
+      "spriteIndex": 30,
+      "width": 16,
+      "height": 16
+    },
+    "(O)32": {
+      "sheet": "springobjects",
+      "spriteIndex": 32,
+      "width": 16,
+      "height": 16
+    },
+    "(O)34": {
+      "sheet": "springobjects",
+      "spriteIndex": 34,
+      "width": 16,
+      "height": 16
+    },
+    "(O)36": {
+      "sheet": "springobjects",
+      "spriteIndex": 36,
+      "width": 16,
+      "height": 16
+    },
+    "(O)38": {
+      "sheet": "springobjects",
+      "spriteIndex": 38,
+      "width": 16,
+      "height": 16
+    },
+    "(O)40": {
+      "sheet": "springobjects",
+      "spriteIndex": 40,
+      "width": 16,
+      "height": 16
+    },
+    "(O)42": {
+      "sheet": "springobjects",
+      "spriteIndex": 42,
+      "width": 16,
+      "height": 16
+    },
+    "(O)44": {
+      "sheet": "springobjects",
+      "spriteIndex": 44,
+      "width": 16,
+      "height": 16
+    },
+    "(O)46": {
+      "sheet": "springobjects",
+      "spriteIndex": 46,
+      "width": 16,
+      "height": 16
+    },
+    "(O)48": {
+      "sheet": "springobjects",
+      "spriteIndex": 48,
+      "width": 16,
+      "height": 16
+    },
+    "(O)50": {
+      "sheet": "springobjects",
+      "spriteIndex": 50,
+      "width": 16,
+      "height": 16
+    },
+    "(O)52": {
+      "sheet": "springobjects",
+      "spriteIndex": 52,
+      "width": 16,
+      "height": 16
+    },
+    "(O)54": {
+      "sheet": "springobjects",
+      "spriteIndex": 54,
+      "width": 16,
+      "height": 16
+    },
+    "(O)56": {
+      "sheet": "springobjects",
+      "spriteIndex": 56,
+      "width": 16,
+      "height": 16
+    },
+    "(O)58": {
+      "sheet": "springobjects",
+      "spriteIndex": 58,
+      "width": 16,
+      "height": 16
+    },
+    "(O)60": {
+      "sheet": "springobjects",
+      "spriteIndex": 60,
+      "width": 16,
+      "height": 16
+    },
+    "(O)62": {
+      "sheet": "springobjects",
+      "spriteIndex": 62,
+      "width": 16,
+      "height": 16
+    },
+    "(O)64": {
+      "sheet": "springobjects",
+      "spriteIndex": 64,
+      "width": 16,
+      "height": 16
+    },
+    "(O)66": {
+      "sheet": "springobjects",
+      "spriteIndex": 66,
+      "width": 16,
+      "height": 16
+    },
+    "(O)68": {
+      "sheet": "springobjects",
+      "spriteIndex": 68,
+      "width": 16,
+      "height": 16
+    },
+    "(O)70": {
+      "sheet": "springobjects",
+      "spriteIndex": 70,
+      "width": 16,
+      "height": 16
+    },
+    "(O)71": {
+      "sheet": "springobjects",
+      "spriteIndex": 71,
+      "width": 16,
+      "height": 16
+    },
+    "(O)72": {
+      "sheet": "springobjects",
+      "spriteIndex": 72,
+      "width": 16,
+      "height": 16
+    },
+    "(O)74": {
+      "sheet": "springobjects",
+      "spriteIndex": 74,
+      "width": 16,
+      "height": 16
+    },
+    "(O)75": {
+      "sheet": "springobjects",
+      "spriteIndex": 75,
+      "width": 16,
+      "height": 16
+    },
+    "(O)76": {
+      "sheet": "springobjects",
+      "spriteIndex": 76,
+      "width": 16,
+      "height": 16
+    },
+    "(O)77": {
+      "sheet": "springobjects",
+      "spriteIndex": 77,
+      "width": 16,
+      "height": 16
+    },
+    "(O)78": {
+      "sheet": "springobjects",
+      "spriteIndex": 78,
+      "width": 16,
+      "height": 16
+    },
+    "(O)79": {
+      "sheet": "springobjects",
+      "spriteIndex": 79,
+      "width": 16,
+      "height": 16
+    },
+    "(O)80": {
+      "sheet": "springobjects",
+      "spriteIndex": 80,
+      "width": 16,
+      "height": 16
+    },
+    "(O)82": {
+      "sheet": "springobjects",
+      "spriteIndex": 82,
+      "width": 16,
+      "height": 16
+    },
+    "(O)84": {
+      "sheet": "springobjects",
+      "spriteIndex": 84,
+      "width": 16,
+      "height": 16
+    },
+    "(O)86": {
+      "sheet": "springobjects",
+      "spriteIndex": 86,
+      "width": 16,
+      "height": 16
+    },
+    "(O)88": {
+      "sheet": "springobjects",
+      "spriteIndex": 88,
+      "width": 16,
+      "height": 16
+    },
+    "(O)90": {
+      "sheet": "springobjects",
+      "spriteIndex": 90,
+      "width": 16,
+      "height": 16
+    },
+    "(O)92": {
+      "sheet": "springobjects",
+      "spriteIndex": 92,
+      "width": 16,
+      "height": 16
+    },
+    "(O)93": {
+      "sheet": "springobjects",
+      "spriteIndex": 93,
+      "width": 16,
+      "height": 16
+    },
+    "(O)94": {
+      "sheet": "springobjects",
+      "spriteIndex": 94,
+      "width": 16,
+      "height": 16
+    },
+    "(O)95": {
+      "sheet": "springobjects",
+      "spriteIndex": 95,
+      "width": 16,
+      "height": 16
+    },
+    "(O)96": {
+      "sheet": "springobjects",
+      "spriteIndex": 96,
+      "width": 16,
+      "height": 16
+    },
+    "(O)97": {
+      "sheet": "springobjects",
+      "spriteIndex": 97,
+      "width": 16,
+      "height": 16
+    },
+    "(O)98": {
+      "sheet": "springobjects",
+      "spriteIndex": 98,
+      "width": 16,
+      "height": 16
+    },
+    "(O)99": {
+      "sheet": "springobjects",
+      "spriteIndex": 99,
+      "width": 16,
+      "height": 16
+    },
+    "(O)100": {
+      "sheet": "springobjects",
+      "spriteIndex": 100,
+      "width": 16,
+      "height": 16
+    },
+    "(O)101": {
+      "sheet": "springobjects",
+      "spriteIndex": 101,
+      "width": 16,
+      "height": 16
+    },
+    "(O)102": {
+      "sheet": "springobjects",
+      "spriteIndex": 102,
+      "width": 16,
+      "height": 16
+    },
+    "(O)103": {
+      "sheet": "springobjects",
+      "spriteIndex": 103,
+      "width": 16,
+      "height": 16
+    },
+    "(O)104": {
+      "sheet": "springobjects",
+      "spriteIndex": 104,
+      "width": 16,
+      "height": 16
+    },
+    "(O)105": {
+      "sheet": "springobjects",
+      "spriteIndex": 105,
+      "width": 16,
+      "height": 16
+    },
+    "(O)106": {
+      "sheet": "springobjects",
+      "spriteIndex": 106,
+      "width": 16,
+      "height": 16
+    },
+    "(O)107": {
+      "sheet": "springobjects",
+      "spriteIndex": 107,
+      "width": 16,
+      "height": 16
+    },
+    "(O)108": {
+      "sheet": "springobjects",
+      "spriteIndex": 108,
+      "width": 16,
+      "height": 16
+    },
+    "(O)109": {
+      "sheet": "springobjects",
+      "spriteIndex": 109,
+      "width": 16,
+      "height": 16
+    },
+    "(O)110": {
+      "sheet": "springobjects",
+      "spriteIndex": 110,
+      "width": 16,
+      "height": 16
+    },
+    "(O)111": {
+      "sheet": "springobjects",
+      "spriteIndex": 111,
+      "width": 16,
+      "height": 16
+    },
+    "(O)112": {
+      "sheet": "springobjects",
+      "spriteIndex": 112,
+      "width": 16,
+      "height": 16
+    },
+    "(O)113": {
+      "sheet": "springobjects",
+      "spriteIndex": 113,
+      "width": 16,
+      "height": 16
+    },
+    "(O)114": {
+      "sheet": "springobjects",
+      "spriteIndex": 114,
+      "width": 16,
+      "height": 16
+    },
+    "(O)115": {
+      "sheet": "springobjects",
+      "spriteIndex": 115,
+      "width": 16,
+      "height": 16
+    },
+    "(O)116": {
+      "sheet": "springobjects",
+      "spriteIndex": 116,
+      "width": 16,
+      "height": 16
+    },
+    "(O)117": {
+      "sheet": "springobjects",
+      "spriteIndex": 117,
+      "width": 16,
+      "height": 16
+    },
+    "(O)118": {
+      "sheet": "springobjects",
+      "spriteIndex": 118,
+      "width": 16,
+      "height": 16
+    },
+    "(O)119": {
+      "sheet": "springobjects",
+      "spriteIndex": 119,
+      "width": 16,
+      "height": 16
+    },
+    "(O)120": {
+      "sheet": "springobjects",
+      "spriteIndex": 120,
+      "width": 16,
+      "height": 16
+    },
+    "(O)121": {
+      "sheet": "springobjects",
+      "spriteIndex": 121,
+      "width": 16,
+      "height": 16
+    },
+    "(O)122": {
+      "sheet": "springobjects",
+      "spriteIndex": 122,
+      "width": 16,
+      "height": 16
+    },
+    "(O)123": {
+      "sheet": "springobjects",
+      "spriteIndex": 123,
+      "width": 16,
+      "height": 16
+    },
+    "(O)124": {
+      "sheet": "springobjects",
+      "spriteIndex": 124,
+      "width": 16,
+      "height": 16
+    },
+    "(O)125": {
+      "sheet": "springobjects",
+      "spriteIndex": 125,
+      "width": 16,
+      "height": 16
+    },
+    "(O)126": {
+      "sheet": "springobjects",
+      "spriteIndex": 126,
+      "width": 16,
+      "height": 16
+    },
+    "(O)127": {
+      "sheet": "springobjects",
+      "spriteIndex": 127,
+      "width": 16,
+      "height": 16
+    },
+    "(O)128": {
+      "sheet": "springobjects",
+      "spriteIndex": 128,
+      "width": 16,
+      "height": 16
+    },
+    "(O)129": {
+      "sheet": "springobjects",
+      "spriteIndex": 129,
+      "width": 16,
+      "height": 16
+    },
+    "(O)130": {
+      "sheet": "springobjects",
+      "spriteIndex": 130,
+      "width": 16,
+      "height": 16
+    },
+    "(O)131": {
+      "sheet": "springobjects",
+      "spriteIndex": 131,
+      "width": 16,
+      "height": 16
+    },
+    "(O)132": {
+      "sheet": "springobjects",
+      "spriteIndex": 132,
+      "width": 16,
+      "height": 16
+    },
+    "(O)136": {
+      "sheet": "springobjects",
+      "spriteIndex": 136,
+      "width": 16,
+      "height": 16
+    },
+    "(O)137": {
+      "sheet": "springobjects",
+      "spriteIndex": 137,
+      "width": 16,
+      "height": 16
+    },
+    "(O)138": {
+      "sheet": "springobjects",
+      "spriteIndex": 138,
+      "width": 16,
+      "height": 16
+    },
+    "(O)139": {
+      "sheet": "springobjects",
+      "spriteIndex": 139,
+      "width": 16,
+      "height": 16
+    },
+    "(O)140": {
+      "sheet": "springobjects",
+      "spriteIndex": 140,
+      "width": 16,
+      "height": 16
+    },
+    "(O)141": {
+      "sheet": "springobjects",
+      "spriteIndex": 141,
+      "width": 16,
+      "height": 16
+    },
+    "(O)142": {
+      "sheet": "springobjects",
+      "spriteIndex": 142,
+      "width": 16,
+      "height": 16
+    },
+    "(O)143": {
+      "sheet": "springobjects",
+      "spriteIndex": 143,
+      "width": 16,
+      "height": 16
+    },
+    "(O)144": {
+      "sheet": "springobjects",
+      "spriteIndex": 144,
+      "width": 16,
+      "height": 16
+    },
+    "(O)145": {
+      "sheet": "springobjects",
+      "spriteIndex": 145,
+      "width": 16,
+      "height": 16
+    },
+    "(O)146": {
+      "sheet": "springobjects",
+      "spriteIndex": 146,
+      "width": 16,
+      "height": 16
+    },
+    "(O)147": {
+      "sheet": "springobjects",
+      "spriteIndex": 147,
+      "width": 16,
+      "height": 16
+    },
+    "(O)148": {
+      "sheet": "springobjects",
+      "spriteIndex": 148,
+      "width": 16,
+      "height": 16
+    },
+    "(O)149": {
+      "sheet": "springobjects",
+      "spriteIndex": 149,
+      "width": 16,
+      "height": 16
+    },
+    "(O)150": {
+      "sheet": "springobjects",
+      "spriteIndex": 150,
+      "width": 16,
+      "height": 16
+    },
+    "(O)151": {
+      "sheet": "springobjects",
+      "spriteIndex": 151,
+      "width": 16,
+      "height": 16
+    },
+    "(O)152": {
+      "sheet": "springobjects",
+      "spriteIndex": 152,
+      "width": 16,
+      "height": 16
+    },
+    "(O)153": {
+      "sheet": "springobjects",
+      "spriteIndex": 153,
+      "width": 16,
+      "height": 16
+    },
+    "(O)154": {
+      "sheet": "springobjects",
+      "spriteIndex": 154,
+      "width": 16,
+      "height": 16
+    },
+    "(O)155": {
+      "sheet": "springobjects",
+      "spriteIndex": 155,
+      "width": 16,
+      "height": 16
+    },
+    "(O)156": {
+      "sheet": "springobjects",
+      "spriteIndex": 156,
+      "width": 16,
+      "height": 16
+    },
+    "(O)157": {
+      "sheet": "springobjects",
+      "spriteIndex": 157,
+      "width": 16,
+      "height": 16
+    },
+    "(O)158": {
+      "sheet": "springobjects",
+      "spriteIndex": 158,
+      "width": 16,
+      "height": 16
+    },
+    "(O)159": {
+      "sheet": "springobjects",
+      "spriteIndex": 159,
+      "width": 16,
+      "height": 16
+    },
+    "(O)160": {
+      "sheet": "springobjects",
+      "spriteIndex": 160,
+      "width": 16,
+      "height": 16
+    },
+    "(O)161": {
+      "sheet": "springobjects",
+      "spriteIndex": 161,
+      "width": 16,
+      "height": 16
+    },
+    "(O)162": {
+      "sheet": "springobjects",
+      "spriteIndex": 162,
+      "width": 16,
+      "height": 16
+    },
+    "(O)163": {
+      "sheet": "springobjects",
+      "spriteIndex": 163,
+      "width": 16,
+      "height": 16
+    },
+    "(O)164": {
+      "sheet": "springobjects",
+      "spriteIndex": 164,
+      "width": 16,
+      "height": 16
+    },
+    "(O)165": {
+      "sheet": "springobjects",
+      "spriteIndex": 165,
+      "width": 16,
+      "height": 16
+    },
+    "(O)166": {
+      "sheet": "springobjects",
+      "spriteIndex": 166,
+      "width": 16,
+      "height": 16
+    },
+    "(O)167": {
+      "sheet": "springobjects",
+      "spriteIndex": 167,
+      "width": 16,
+      "height": 16
+    },
+    "(O)168": {
+      "sheet": "springobjects",
+      "spriteIndex": 168,
+      "width": 16,
+      "height": 16
+    },
+    "(O)169": {
+      "sheet": "springobjects",
+      "spriteIndex": 169,
+      "width": 16,
+      "height": 16
+    },
+    "(O)170": {
+      "sheet": "springobjects",
+      "spriteIndex": 170,
+      "width": 16,
+      "height": 16
+    },
+    "(O)171": {
+      "sheet": "springobjects",
+      "spriteIndex": 171,
+      "width": 16,
+      "height": 16
+    },
+    "(O)172": {
+      "sheet": "springobjects",
+      "spriteIndex": 172,
+      "width": 16,
+      "height": 16
+    },
+    "(O)176": {
+      "sheet": "springobjects",
+      "spriteIndex": 176,
+      "width": 16,
+      "height": 16
+    },
+    "(O)174": {
+      "sheet": "springobjects",
+      "spriteIndex": 174,
+      "width": 16,
+      "height": 16
+    },
+    "(O)178": {
+      "sheet": "springobjects",
+      "spriteIndex": 178,
+      "width": 16,
+      "height": 16
+    },
+    "(O)180": {
+      "sheet": "springobjects",
+      "spriteIndex": 180,
+      "width": 16,
+      "height": 16
+    },
+    "(O)182": {
+      "sheet": "springobjects",
+      "spriteIndex": 182,
+      "width": 16,
+      "height": 16
+    },
+    "(O)184": {
+      "sheet": "springobjects",
+      "spriteIndex": 184,
+      "width": 16,
+      "height": 16
+    },
+    "(O)186": {
+      "sheet": "springobjects",
+      "spriteIndex": 186,
+      "width": 16,
+      "height": 16
+    },
+    "(O)188": {
+      "sheet": "springobjects",
+      "spriteIndex": 188,
+      "width": 16,
+      "height": 16
+    },
+    "(O)190": {
+      "sheet": "springobjects",
+      "spriteIndex": 190,
+      "width": 16,
+      "height": 16
+    },
+    "(O)191": {
+      "sheet": "springobjects",
+      "spriteIndex": 191,
+      "width": 16,
+      "height": 16
+    },
+    "(O)192": {
+      "sheet": "springobjects",
+      "spriteIndex": 192,
+      "width": 16,
+      "height": 16
+    },
+    "(O)194": {
+      "sheet": "springobjects",
+      "spriteIndex": 194,
+      "width": 16,
+      "height": 16
+    },
+    "(O)195": {
+      "sheet": "springobjects",
+      "spriteIndex": 195,
+      "width": 16,
+      "height": 16
+    },
+    "(O)196": {
+      "sheet": "springobjects",
+      "spriteIndex": 196,
+      "width": 16,
+      "height": 16
+    },
+    "(O)197": {
+      "sheet": "springobjects",
+      "spriteIndex": 197,
+      "width": 16,
+      "height": 16
+    },
+    "(O)198": {
+      "sheet": "springobjects",
+      "spriteIndex": 198,
+      "width": 16,
+      "height": 16
+    },
+    "(O)199": {
+      "sheet": "springobjects",
+      "spriteIndex": 199,
+      "width": 16,
+      "height": 16
+    },
+    "(O)200": {
+      "sheet": "springobjects",
+      "spriteIndex": 200,
+      "width": 16,
+      "height": 16
+    },
+    "(O)201": {
+      "sheet": "springobjects",
+      "spriteIndex": 201,
+      "width": 16,
+      "height": 16
+    },
+    "(O)202": {
+      "sheet": "springobjects",
+      "spriteIndex": 202,
+      "width": 16,
+      "height": 16
+    },
+    "(O)203": {
+      "sheet": "springobjects",
+      "spriteIndex": 203,
+      "width": 16,
+      "height": 16
+    },
+    "(O)204": {
+      "sheet": "springobjects",
+      "spriteIndex": 204,
+      "width": 16,
+      "height": 16
+    },
+    "(O)205": {
+      "sheet": "springobjects",
+      "spriteIndex": 205,
+      "width": 16,
+      "height": 16
+    },
+    "(O)206": {
+      "sheet": "springobjects",
+      "spriteIndex": 206,
+      "width": 16,
+      "height": 16
+    },
+    "(O)207": {
+      "sheet": "springobjects",
+      "spriteIndex": 207,
+      "width": 16,
+      "height": 16
+    },
+    "(O)208": {
+      "sheet": "springobjects",
+      "spriteIndex": 208,
+      "width": 16,
+      "height": 16
+    },
+    "(O)209": {
+      "sheet": "springobjects",
+      "spriteIndex": 209,
+      "width": 16,
+      "height": 16
+    },
+    "(O)210": {
+      "sheet": "springobjects",
+      "spriteIndex": 210,
+      "width": 16,
+      "height": 16
+    },
+    "(O)211": {
+      "sheet": "springobjects",
+      "spriteIndex": 211,
+      "width": 16,
+      "height": 16
+    },
+    "(O)212": {
+      "sheet": "springobjects",
+      "spriteIndex": 212,
+      "width": 16,
+      "height": 16
+    },
+    "(O)213": {
+      "sheet": "springobjects",
+      "spriteIndex": 213,
+      "width": 16,
+      "height": 16
+    },
+    "(O)214": {
+      "sheet": "springobjects",
+      "spriteIndex": 214,
+      "width": 16,
+      "height": 16
+    },
+    "(O)215": {
+      "sheet": "springobjects",
+      "spriteIndex": 215,
+      "width": 16,
+      "height": 16
+    },
+    "(O)216": {
+      "sheet": "springobjects",
+      "spriteIndex": 216,
+      "width": 16,
+      "height": 16
+    },
+    "(O)218": {
+      "sheet": "springobjects",
+      "spriteIndex": 218,
+      "width": 16,
+      "height": 16
+    },
+    "(O)219": {
+      "sheet": "springobjects",
+      "spriteIndex": 219,
+      "width": 16,
+      "height": 16
+    },
+    "(O)220": {
+      "sheet": "springobjects",
+      "spriteIndex": 220,
+      "width": 16,
+      "height": 16
+    },
+    "(O)221": {
+      "sheet": "springobjects",
+      "spriteIndex": 221,
+      "width": 16,
+      "height": 16
+    },
+    "(O)222": {
+      "sheet": "springobjects",
+      "spriteIndex": 222,
+      "width": 16,
+      "height": 16
+    },
+    "(O)223": {
+      "sheet": "springobjects",
+      "spriteIndex": 223,
+      "width": 16,
+      "height": 16
+    },
+    "(O)224": {
+      "sheet": "springobjects",
+      "spriteIndex": 224,
+      "width": 16,
+      "height": 16
+    },
+    "(O)225": {
+      "sheet": "springobjects",
+      "spriteIndex": 225,
+      "width": 16,
+      "height": 16
+    },
+    "(O)226": {
+      "sheet": "springobjects",
+      "spriteIndex": 226,
+      "width": 16,
+      "height": 16
+    },
+    "(O)227": {
+      "sheet": "springobjects",
+      "spriteIndex": 227,
+      "width": 16,
+      "height": 16
+    },
+    "(O)228": {
+      "sheet": "springobjects",
+      "spriteIndex": 228,
+      "width": 16,
+      "height": 16
+    },
+    "(O)229": {
+      "sheet": "springobjects",
+      "spriteIndex": 229,
+      "width": 16,
+      "height": 16
+    },
+    "(O)230": {
+      "sheet": "springobjects",
+      "spriteIndex": 230,
+      "width": 16,
+      "height": 16
+    },
+    "(O)231": {
+      "sheet": "springobjects",
+      "spriteIndex": 231,
+      "width": 16,
+      "height": 16
+    },
+    "(O)232": {
+      "sheet": "springobjects",
+      "spriteIndex": 232,
+      "width": 16,
+      "height": 16
+    },
+    "(O)233": {
+      "sheet": "springobjects",
+      "spriteIndex": 233,
+      "width": 16,
+      "height": 16
+    },
+    "(O)234": {
+      "sheet": "springobjects",
+      "spriteIndex": 234,
+      "width": 16,
+      "height": 16
+    },
+    "(O)235": {
+      "sheet": "springobjects",
+      "spriteIndex": 235,
+      "width": 16,
+      "height": 16
+    },
+    "(O)236": {
+      "sheet": "springobjects",
+      "spriteIndex": 236,
+      "width": 16,
+      "height": 16
+    },
+    "(O)237": {
+      "sheet": "springobjects",
+      "spriteIndex": 237,
+      "width": 16,
+      "height": 16
+    },
+    "(O)238": {
+      "sheet": "springobjects",
+      "spriteIndex": 238,
+      "width": 16,
+      "height": 16
+    },
+    "(O)239": {
+      "sheet": "springobjects",
+      "spriteIndex": 239,
+      "width": 16,
+      "height": 16
+    },
+    "(O)240": {
+      "sheet": "springobjects",
+      "spriteIndex": 240,
+      "width": 16,
+      "height": 16
+    },
+    "(O)241": {
+      "sheet": "springobjects",
+      "spriteIndex": 241,
+      "width": 16,
+      "height": 16
+    },
+    "(O)242": {
+      "sheet": "springobjects",
+      "spriteIndex": 242,
+      "width": 16,
+      "height": 16
+    },
+    "(O)243": {
+      "sheet": "springobjects",
+      "spriteIndex": 243,
+      "width": 16,
+      "height": 16
+    },
+    "(O)244": {
+      "sheet": "springobjects",
+      "spriteIndex": 244,
+      "width": 16,
+      "height": 16
+    },
+    "(O)245": {
+      "sheet": "springobjects",
+      "spriteIndex": 245,
+      "width": 16,
+      "height": 16
+    },
+    "(O)246": {
+      "sheet": "springobjects",
+      "spriteIndex": 246,
+      "width": 16,
+      "height": 16
+    },
+    "(O)247": {
+      "sheet": "springobjects",
+      "spriteIndex": 247,
+      "width": 16,
+      "height": 16
+    },
+    "(O)248": {
+      "sheet": "springobjects",
+      "spriteIndex": 248,
+      "width": 16,
+      "height": 16
+    },
+    "(O)250": {
+      "sheet": "springobjects",
+      "spriteIndex": 250,
+      "width": 16,
+      "height": 16
+    },
+    "(O)251": {
+      "sheet": "springobjects",
+      "spriteIndex": 251,
+      "width": 16,
+      "height": 16
+    },
+    "(O)252": {
+      "sheet": "springobjects",
+      "spriteIndex": 252,
+      "width": 16,
+      "height": 16
+    },
+    "(O)253": {
+      "sheet": "springobjects",
+      "spriteIndex": 253,
+      "width": 16,
+      "height": 16
+    },
+    "(O)254": {
+      "sheet": "springobjects",
+      "spriteIndex": 254,
+      "width": 16,
+      "height": 16
+    },
+    "(O)256": {
+      "sheet": "springobjects",
+      "spriteIndex": 256,
+      "width": 16,
+      "height": 16
+    },
+    "(O)257": {
+      "sheet": "springobjects",
+      "spriteIndex": 257,
+      "width": 16,
+      "height": 16
+    },
+    "(O)258": {
+      "sheet": "springobjects",
+      "spriteIndex": 258,
+      "width": 16,
+      "height": 16
+    },
+    "(O)259": {
+      "sheet": "springobjects",
+      "spriteIndex": 259,
+      "width": 16,
+      "height": 16
+    },
+    "(O)260": {
+      "sheet": "springobjects",
+      "spriteIndex": 260,
+      "width": 16,
+      "height": 16
+    },
+    "(O)261": {
+      "sheet": "springobjects",
+      "spriteIndex": 261,
+      "width": 16,
+      "height": 16
+    },
+    "(O)262": {
+      "sheet": "springobjects",
+      "spriteIndex": 262,
+      "width": 16,
+      "height": 16
+    },
+    "(O)264": {
+      "sheet": "springobjects",
+      "spriteIndex": 264,
+      "width": 16,
+      "height": 16
+    },
+    "(O)266": {
+      "sheet": "springobjects",
+      "spriteIndex": 266,
+      "width": 16,
+      "height": 16
+    },
+    "(O)268": {
+      "sheet": "springobjects",
+      "spriteIndex": 268,
+      "width": 16,
+      "height": 16
+    },
+    "(O)270": {
+      "sheet": "springobjects",
+      "spriteIndex": 270,
+      "width": 16,
+      "height": 16
+    },
+    "(O)271": {
+      "sheet": "springobjects",
+      "spriteIndex": 271,
+      "width": 16,
+      "height": 16
+    },
+    "(O)272": {
+      "sheet": "springobjects",
+      "spriteIndex": 272,
+      "width": 16,
+      "height": 16
+    },
+    "(O)273": {
+      "sheet": "springobjects",
+      "spriteIndex": 273,
+      "width": 16,
+      "height": 16
+    },
+    "(O)274": {
+      "sheet": "springobjects",
+      "spriteIndex": 274,
+      "width": 16,
+      "height": 16
+    },
+    "(O)275": {
+      "sheet": "springobjects",
+      "spriteIndex": 275,
+      "width": 16,
+      "height": 16
+    },
+    "(O)276": {
+      "sheet": "springobjects",
+      "spriteIndex": 276,
+      "width": 16,
+      "height": 16
+    },
+    "(O)277": {
+      "sheet": "springobjects",
+      "spriteIndex": 277,
+      "width": 16,
+      "height": 16
+    },
+    "(O)278": {
+      "sheet": "springobjects",
+      "spriteIndex": 278,
+      "width": 16,
+      "height": 16
+    },
+    "(O)279": {
+      "sheet": "springobjects",
+      "spriteIndex": 279,
+      "width": 16,
+      "height": 16
+    },
+    "(O)280": {
+      "sheet": "springobjects",
+      "spriteIndex": 280,
+      "width": 16,
+      "height": 16
+    },
+    "(O)281": {
+      "sheet": "springobjects",
+      "spriteIndex": 281,
+      "width": 16,
+      "height": 16
+    },
+    "(O)282": {
+      "sheet": "springobjects",
+      "spriteIndex": 282,
+      "width": 16,
+      "height": 16
+    },
+    "(O)283": {
+      "sheet": "springobjects",
+      "spriteIndex": 283,
+      "width": 16,
+      "height": 16
+    },
+    "(O)284": {
+      "sheet": "springobjects",
+      "spriteIndex": 284,
+      "width": 16,
+      "height": 16
+    },
+    "(O)286": {
+      "sheet": "springobjects",
+      "spriteIndex": 286,
+      "width": 16,
+      "height": 16
+    },
+    "(O)287": {
+      "sheet": "springobjects",
+      "spriteIndex": 287,
+      "width": 16,
+      "height": 16
+    },
+    "(O)288": {
+      "sheet": "springobjects",
+      "spriteIndex": 288,
+      "width": 16,
+      "height": 16
+    },
+    "(O)290": {
+      "sheet": "springobjects",
+      "spriteIndex": 290,
+      "width": 16,
+      "height": 16
+    },
+    "(O)293": {
+      "sheet": "springobjects",
+      "spriteIndex": 293,
+      "width": 16,
+      "height": 16
+    },
+    "(O)294": {
+      "sheet": "springobjects",
+      "spriteIndex": 294,
+      "width": 16,
+      "height": 16
+    },
+    "(O)295": {
+      "sheet": "springobjects",
+      "spriteIndex": 295,
+      "width": 16,
+      "height": 16
+    },
+    "(O)296": {
+      "sheet": "springobjects",
+      "spriteIndex": 296,
+      "width": 16,
+      "height": 16
+    },
+    "(O)297": {
+      "sheet": "springobjects",
+      "spriteIndex": 297,
+      "width": 16,
+      "height": 16
+    },
+    "(O)298": {
+      "sheet": "springobjects",
+      "spriteIndex": 298,
+      "width": 16,
+      "height": 16
+    },
+    "(O)299": {
+      "sheet": "springobjects",
+      "spriteIndex": 299,
+      "width": 16,
+      "height": 16
+    },
+    "(O)300": {
+      "sheet": "springobjects",
+      "spriteIndex": 300,
+      "width": 16,
+      "height": 16
+    },
+    "(O)301": {
+      "sheet": "springobjects",
+      "spriteIndex": 301,
+      "width": 16,
+      "height": 16
+    },
+    "(O)302": {
+      "sheet": "springobjects",
+      "spriteIndex": 302,
+      "width": 16,
+      "height": 16
+    },
+    "(O)303": {
+      "sheet": "springobjects",
+      "spriteIndex": 303,
+      "width": 16,
+      "height": 16
+    },
+    "(O)304": {
+      "sheet": "springobjects",
+      "spriteIndex": 304,
+      "width": 16,
+      "height": 16
+    },
+    "(O)305": {
+      "sheet": "springobjects",
+      "spriteIndex": 305,
+      "width": 16,
+      "height": 16
+    },
+    "(O)306": {
+      "sheet": "springobjects",
+      "spriteIndex": 306,
+      "width": 16,
+      "height": 16
+    },
+    "(O)307": {
+      "sheet": "springobjects",
+      "spriteIndex": 307,
+      "width": 16,
+      "height": 16
+    },
+    "(O)308": {
+      "sheet": "springobjects",
+      "spriteIndex": 308,
+      "width": 16,
+      "height": 16
+    },
+    "(O)309": {
+      "sheet": "springobjects",
+      "spriteIndex": 309,
+      "width": 16,
+      "height": 16
+    },
+    "(O)310": {
+      "sheet": "springobjects",
+      "spriteIndex": 310,
+      "width": 16,
+      "height": 16
+    },
+    "(O)311": {
+      "sheet": "springobjects",
+      "spriteIndex": 311,
+      "width": 16,
+      "height": 16
+    },
+    "(O)313": {
+      "sheet": "springobjects",
+      "spriteIndex": 313,
+      "width": 16,
+      "height": 16
+    },
+    "(O)314": {
+      "sheet": "springobjects",
+      "spriteIndex": 314,
+      "width": 16,
+      "height": 16
+    },
+    "(O)315": {
+      "sheet": "springobjects",
+      "spriteIndex": 315,
+      "width": 16,
+      "height": 16
+    },
+    "(O)316": {
+      "sheet": "springobjects",
+      "spriteIndex": 316,
+      "width": 16,
+      "height": 16
+    },
+    "(O)317": {
+      "sheet": "springobjects",
+      "spriteIndex": 317,
+      "width": 16,
+      "height": 16
+    },
+    "(O)318": {
+      "sheet": "springobjects",
+      "spriteIndex": 318,
+      "width": 16,
+      "height": 16
+    },
+    "(O)319": {
+      "sheet": "springobjects",
+      "spriteIndex": 319,
+      "width": 16,
+      "height": 16
+    },
+    "(O)320": {
+      "sheet": "springobjects",
+      "spriteIndex": 320,
+      "width": 16,
+      "height": 16
+    },
+    "(O)321": {
+      "sheet": "springobjects",
+      "spriteIndex": 321,
+      "width": 16,
+      "height": 16
+    },
+    "(O)322": {
+      "sheet": "springobjects",
+      "spriteIndex": 322,
+      "width": 16,
+      "height": 16
+    },
+    "(O)323": {
+      "sheet": "springobjects",
+      "spriteIndex": 323,
+      "width": 16,
+      "height": 16
+    },
+    "(O)324": {
+      "sheet": "springobjects",
+      "spriteIndex": 324,
+      "width": 16,
+      "height": 16
+    },
+    "(O)325": {
+      "sheet": "springobjects",
+      "spriteIndex": 325,
+      "width": 16,
+      "height": 16
+    },
+    "(O)326": {
+      "sheet": "springobjects",
+      "spriteIndex": 326,
+      "width": 16,
+      "height": 16
+    },
+    "(O)328": {
+      "sheet": "springobjects",
+      "spriteIndex": 328,
+      "width": 16,
+      "height": 16
+    },
+    "(O)329": {
+      "sheet": "springobjects",
+      "spriteIndex": 329,
+      "width": 16,
+      "height": 16
+    },
+    "(O)330": {
+      "sheet": "springobjects",
+      "spriteIndex": 330,
+      "width": 16,
+      "height": 16
+    },
+    "(O)331": {
+      "sheet": "springobjects",
+      "spriteIndex": 331,
+      "width": 16,
+      "height": 16
+    },
+    "(O)333": {
+      "sheet": "springobjects",
+      "spriteIndex": 333,
+      "width": 16,
+      "height": 16
+    },
+    "(O)334": {
+      "sheet": "springobjects",
+      "spriteIndex": 334,
+      "width": 16,
+      "height": 16
+    },
+    "(O)335": {
+      "sheet": "springobjects",
+      "spriteIndex": 335,
+      "width": 16,
+      "height": 16
+    },
+    "(O)336": {
+      "sheet": "springobjects",
+      "spriteIndex": 336,
+      "width": 16,
+      "height": 16
+    },
+    "(O)337": {
+      "sheet": "springobjects",
+      "spriteIndex": 337,
+      "width": 16,
+      "height": 16
+    },
+    "(O)338": {
+      "sheet": "springobjects",
+      "spriteIndex": 338,
+      "width": 16,
+      "height": 16
+    },
+    "(O)340": {
+      "sheet": "springobjects",
+      "spriteIndex": 340,
+      "width": 16,
+      "height": 16
+    },
+    "(O)341": {
+      "sheet": "springobjects",
+      "spriteIndex": 341,
+      "width": 16,
+      "height": 16
+    },
+    "(O)342": {
+      "sheet": "objects2",
+      "spriteIndex": 128,
+      "width": 16,
+      "height": 16
+    },
+    "(O)343": {
+      "sheet": "springobjects",
+      "spriteIndex": 343,
+      "width": 16,
+      "height": 16
+    },
+    "(O)344": {
+      "sheet": "objects2",
+      "spriteIndex": 130,
+      "width": 16,
+      "height": 16
+    },
+    "(O)346": {
+      "sheet": "springobjects",
+      "spriteIndex": 346,
+      "width": 16,
+      "height": 16
+    },
+    "(O)347": {
+      "sheet": "springobjects",
+      "spriteIndex": 347,
+      "width": 16,
+      "height": 16
+    },
+    "(O)348": {
+      "sheet": "objects2",
+      "spriteIndex": 123,
+      "width": 16,
+      "height": 16
+    },
+    "(O)349": {
+      "sheet": "springobjects",
+      "spriteIndex": 349,
+      "width": 16,
+      "height": 16
+    },
+    "(O)350": {
+      "sheet": "objects2",
+      "spriteIndex": 125,
+      "width": 16,
+      "height": 16
+    },
+    "(O)351": {
+      "sheet": "springobjects",
+      "spriteIndex": 351,
+      "width": 16,
+      "height": 16
+    },
+    "(O)368": {
+      "sheet": "springobjects",
+      "spriteIndex": 368,
+      "width": 16,
+      "height": 16
+    },
+    "(O)369": {
+      "sheet": "springobjects",
+      "spriteIndex": 369,
+      "width": 16,
+      "height": 16
+    },
+    "(O)370": {
+      "sheet": "springobjects",
+      "spriteIndex": 370,
+      "width": 16,
+      "height": 16
+    },
+    "(O)371": {
+      "sheet": "springobjects",
+      "spriteIndex": 371,
+      "width": 16,
+      "height": 16
+    },
+    "(O)372": {
+      "sheet": "springobjects",
+      "spriteIndex": 372,
+      "width": 16,
+      "height": 16
+    },
+    "(O)373": {
+      "sheet": "springobjects",
+      "spriteIndex": 373,
+      "width": 16,
+      "height": 16
+    },
+    "(O)378": {
+      "sheet": "springobjects",
+      "spriteIndex": 378,
+      "width": 16,
+      "height": 16
+    },
+    "(O)380": {
+      "sheet": "springobjects",
+      "spriteIndex": 380,
+      "width": 16,
+      "height": 16
+    },
+    "(O)382": {
+      "sheet": "springobjects",
+      "spriteIndex": 382,
+      "width": 16,
+      "height": 16
+    },
+    "(O)384": {
+      "sheet": "springobjects",
+      "spriteIndex": 384,
+      "width": 16,
+      "height": 16
+    },
+    "(O)386": {
+      "sheet": "springobjects",
+      "spriteIndex": 386,
+      "width": 16,
+      "height": 16
+    },
+    "(O)388": {
+      "sheet": "springobjects",
+      "spriteIndex": 388,
+      "width": 16,
+      "height": 16
+    },
+    "(O)390": {
+      "sheet": "springobjects",
+      "spriteIndex": 390,
+      "width": 16,
+      "height": 16
+    },
+    "(O)392": {
+      "sheet": "springobjects",
+      "spriteIndex": 392,
+      "width": 16,
+      "height": 16
+    },
+    "(O)393": {
+      "sheet": "springobjects",
+      "spriteIndex": 393,
+      "width": 16,
+      "height": 16
+    },
+    "(O)394": {
+      "sheet": "springobjects",
+      "spriteIndex": 394,
+      "width": 16,
+      "height": 16
+    },
+    "(O)395": {
+      "sheet": "springobjects",
+      "spriteIndex": 395,
+      "width": 16,
+      "height": 16
+    },
+    "(O)396": {
+      "sheet": "springobjects",
+      "spriteIndex": 396,
+      "width": 16,
+      "height": 16
+    },
+    "(O)397": {
+      "sheet": "springobjects",
+      "spriteIndex": 397,
+      "width": 16,
+      "height": 16
+    },
+    "(O)398": {
+      "sheet": "springobjects",
+      "spriteIndex": 398,
+      "width": 16,
+      "height": 16
+    },
+    "(O)399": {
+      "sheet": "springobjects",
+      "spriteIndex": 399,
+      "width": 16,
+      "height": 16
+    },
+    "(O)400": {
+      "sheet": "springobjects",
+      "spriteIndex": 400,
+      "width": 16,
+      "height": 16
+    },
+    "(O)401": {
+      "sheet": "springobjects",
+      "spriteIndex": 401,
+      "width": 16,
+      "height": 16
+    },
+    "(O)402": {
+      "sheet": "springobjects",
+      "spriteIndex": 402,
+      "width": 16,
+      "height": 16
+    },
+    "(O)403": {
+      "sheet": "springobjects",
+      "spriteIndex": 403,
+      "width": 16,
+      "height": 16
+    },
+    "(O)404": {
+      "sheet": "springobjects",
+      "spriteIndex": 404,
+      "width": 16,
+      "height": 16
+    },
+    "(O)405": {
+      "sheet": "springobjects",
+      "spriteIndex": 405,
+      "width": 16,
+      "height": 16
+    },
+    "(O)406": {
+      "sheet": "springobjects",
+      "spriteIndex": 406,
+      "width": 16,
+      "height": 16
+    },
+    "(O)407": {
+      "sheet": "springobjects",
+      "spriteIndex": 407,
+      "width": 16,
+      "height": 16
+    },
+    "(O)408": {
+      "sheet": "springobjects",
+      "spriteIndex": 408,
+      "width": 16,
+      "height": 16
+    },
+    "(O)409": {
+      "sheet": "springobjects",
+      "spriteIndex": 409,
+      "width": 16,
+      "height": 16
+    },
+    "(O)410": {
+      "sheet": "springobjects",
+      "spriteIndex": 410,
+      "width": 16,
+      "height": 16
+    },
+    "(O)411": {
+      "sheet": "springobjects",
+      "spriteIndex": 411,
+      "width": 16,
+      "height": 16
+    },
+    "(O)412": {
+      "sheet": "springobjects",
+      "spriteIndex": 412,
+      "width": 16,
+      "height": 16
+    },
+    "(O)413": {
+      "sheet": "springobjects",
+      "spriteIndex": 413,
+      "width": 16,
+      "height": 16
+    },
+    "(O)414": {
+      "sheet": "springobjects",
+      "spriteIndex": 414,
+      "width": 16,
+      "height": 16
+    },
+    "(O)415": {
+      "sheet": "springobjects",
+      "spriteIndex": 415,
+      "width": 16,
+      "height": 16
+    },
+    "(O)416": {
+      "sheet": "springobjects",
+      "spriteIndex": 416,
+      "width": 16,
+      "height": 16
+    },
+    "(O)417": {
+      "sheet": "springobjects",
+      "spriteIndex": 417,
+      "width": 16,
+      "height": 16
+    },
+    "(O)418": {
+      "sheet": "springobjects",
+      "spriteIndex": 418,
+      "width": 16,
+      "height": 16
+    },
+    "(O)419": {
+      "sheet": "springobjects",
+      "spriteIndex": 419,
+      "width": 16,
+      "height": 16
+    },
+    "(O)420": {
+      "sheet": "springobjects",
+      "spriteIndex": 420,
+      "width": 16,
+      "height": 16
+    },
+    "(O)421": {
+      "sheet": "springobjects",
+      "spriteIndex": 421,
+      "width": 16,
+      "height": 16
+    },
+    "(O)422": {
+      "sheet": "springobjects",
+      "spriteIndex": 422,
+      "width": 16,
+      "height": 16
+    },
+    "(O)423": {
+      "sheet": "springobjects",
+      "spriteIndex": 423,
+      "width": 16,
+      "height": 16
+    },
+    "(O)424": {
+      "sheet": "springobjects",
+      "spriteIndex": 424,
+      "width": 16,
+      "height": 16
+    },
+    "(O)426": {
+      "sheet": "springobjects",
+      "spriteIndex": 426,
+      "width": 16,
+      "height": 16
+    },
+    "(O)428": {
+      "sheet": "springobjects",
+      "spriteIndex": 428,
+      "width": 16,
+      "height": 16
+    },
+    "(O)430": {
+      "sheet": "springobjects",
+      "spriteIndex": 430,
+      "width": 16,
+      "height": 16
+    },
+    "(O)432": {
+      "sheet": "springobjects",
+      "spriteIndex": 432,
+      "width": 16,
+      "height": 16
+    },
+    "(O)433": {
+      "sheet": "springobjects",
+      "spriteIndex": 433,
+      "width": 16,
+      "height": 16
+    },
+    "(O)434": {
+      "sheet": "springobjects",
+      "spriteIndex": 434,
+      "width": 16,
+      "height": 16
+    },
+    "(O)436": {
+      "sheet": "springobjects",
+      "spriteIndex": 436,
+      "width": 16,
+      "height": 16
+    },
+    "(O)437": {
+      "sheet": "springobjects",
+      "spriteIndex": 437,
+      "width": 16,
+      "height": 16
+    },
+    "(O)438": {
+      "sheet": "springobjects",
+      "spriteIndex": 438,
+      "width": 16,
+      "height": 16
+    },
+    "(O)439": {
+      "sheet": "springobjects",
+      "spriteIndex": 439,
+      "width": 16,
+      "height": 16
+    },
+    "(O)440": {
+      "sheet": "springobjects",
+      "spriteIndex": 440,
+      "width": 16,
+      "height": 16
+    },
+    "(O)441": {
+      "sheet": "springobjects",
+      "spriteIndex": 441,
+      "width": 16,
+      "height": 16
+    },
+    "(O)442": {
+      "sheet": "springobjects",
+      "spriteIndex": 442,
+      "width": 16,
+      "height": 16
+    },
+    "(O)444": {
+      "sheet": "springobjects",
+      "spriteIndex": 444,
+      "width": 16,
+      "height": 16
+    },
+    "(O)446": {
+      "sheet": "springobjects",
+      "spriteIndex": 446,
+      "width": 16,
+      "height": 16
+    },
+    "(O)447": {
+      "sheet": "springobjects",
+      "spriteIndex": 447,
+      "width": 16,
+      "height": 16
+    },
+    "(O)449": {
+      "sheet": "springobjects",
+      "spriteIndex": 449,
+      "width": 16,
+      "height": 16
+    },
+    "(O)450": {
+      "sheet": "springobjects",
+      "spriteIndex": 450,
+      "width": 16,
+      "height": 16
+    },
+    "(O)452": {
+      "sheet": "springobjects",
+      "spriteIndex": 452,
+      "width": 16,
+      "height": 16
+    },
+    "(O)454": {
+      "sheet": "springobjects",
+      "spriteIndex": 454,
+      "width": 16,
+      "height": 16
+    },
+    "(O)456": {
+      "sheet": "springobjects",
+      "spriteIndex": 456,
+      "width": 16,
+      "height": 16
+    },
+    "(O)457": {
+      "sheet": "springobjects",
+      "spriteIndex": 457,
+      "width": 16,
+      "height": 16
+    },
+    "(O)458": {
+      "sheet": "springobjects",
+      "spriteIndex": 458,
+      "width": 16,
+      "height": 16
+    },
+    "(O)459": {
+      "sheet": "springobjects",
+      "spriteIndex": 459,
+      "width": 16,
+      "height": 16
+    },
+    "(O)460": {
+      "sheet": "springobjects",
+      "spriteIndex": 460,
+      "width": 16,
+      "height": 16
+    },
+    "(O)461": {
+      "sheet": "springobjects",
+      "spriteIndex": 461,
+      "width": 16,
+      "height": 16
+    },
+    "(O)463": {
+      "sheet": "springobjects",
+      "spriteIndex": 463,
+      "width": 16,
+      "height": 16
+    },
+    "(O)464": {
+      "sheet": "springobjects",
+      "spriteIndex": 464,
+      "width": 16,
+      "height": 16
+    },
+    "(O)465": {
+      "sheet": "springobjects",
+      "spriteIndex": 465,
+      "width": 16,
+      "height": 16
+    },
+    "(O)466": {
+      "sheet": "springobjects",
+      "spriteIndex": 466,
+      "width": 16,
+      "height": 16
+    },
+    "(O)472": {
+      "sheet": "springobjects",
+      "spriteIndex": 472,
+      "width": 16,
+      "height": 16
+    },
+    "(O)473": {
+      "sheet": "springobjects",
+      "spriteIndex": 473,
+      "width": 16,
+      "height": 16
+    },
+    "(O)474": {
+      "sheet": "springobjects",
+      "spriteIndex": 474,
+      "width": 16,
+      "height": 16
+    },
+    "(O)475": {
+      "sheet": "springobjects",
+      "spriteIndex": 475,
+      "width": 16,
+      "height": 16
+    },
+    "(O)476": {
+      "sheet": "springobjects",
+      "spriteIndex": 476,
+      "width": 16,
+      "height": 16
+    },
+    "(O)477": {
+      "sheet": "springobjects",
+      "spriteIndex": 477,
+      "width": 16,
+      "height": 16
+    },
+    "(O)478": {
+      "sheet": "springobjects",
+      "spriteIndex": 478,
+      "width": 16,
+      "height": 16
+    },
+    "(O)479": {
+      "sheet": "springobjects",
+      "spriteIndex": 479,
+      "width": 16,
+      "height": 16
+    },
+    "(O)480": {
+      "sheet": "springobjects",
+      "spriteIndex": 480,
+      "width": 16,
+      "height": 16
+    },
+    "(O)481": {
+      "sheet": "springobjects",
+      "spriteIndex": 481,
+      "width": 16,
+      "height": 16
+    },
+    "(O)482": {
+      "sheet": "springobjects",
+      "spriteIndex": 482,
+      "width": 16,
+      "height": 16
+    },
+    "(O)483": {
+      "sheet": "springobjects",
+      "spriteIndex": 483,
+      "width": 16,
+      "height": 16
+    },
+    "(O)484": {
+      "sheet": "springobjects",
+      "spriteIndex": 484,
+      "width": 16,
+      "height": 16
+    },
+    "(O)485": {
+      "sheet": "springobjects",
+      "spriteIndex": 485,
+      "width": 16,
+      "height": 16
+    },
+    "(O)486": {
+      "sheet": "springobjects",
+      "spriteIndex": 486,
+      "width": 16,
+      "height": 16
+    },
+    "(O)487": {
+      "sheet": "springobjects",
+      "spriteIndex": 487,
+      "width": 16,
+      "height": 16
+    },
+    "(O)488": {
+      "sheet": "springobjects",
+      "spriteIndex": 488,
+      "width": 16,
+      "height": 16
+    },
+    "(O)489": {
+      "sheet": "springobjects",
+      "spriteIndex": 489,
+      "width": 16,
+      "height": 16
+    },
+    "(O)490": {
+      "sheet": "springobjects",
+      "spriteIndex": 490,
+      "width": 16,
+      "height": 16
+    },
+    "(O)491": {
+      "sheet": "springobjects",
+      "spriteIndex": 491,
+      "width": 16,
+      "height": 16
+    },
+    "(O)492": {
+      "sheet": "springobjects",
+      "spriteIndex": 492,
+      "width": 16,
+      "height": 16
+    },
+    "(O)493": {
+      "sheet": "springobjects",
+      "spriteIndex": 493,
+      "width": 16,
+      "height": 16
+    },
+    "(O)494": {
+      "sheet": "springobjects",
+      "spriteIndex": 494,
+      "width": 16,
+      "height": 16
+    },
+    "(O)495": {
+      "sheet": "springobjects",
+      "spriteIndex": 495,
+      "width": 16,
+      "height": 16
+    },
+    "(O)496": {
+      "sheet": "springobjects",
+      "spriteIndex": 496,
+      "width": 16,
+      "height": 16
+    },
+    "(O)497": {
+      "sheet": "springobjects",
+      "spriteIndex": 497,
+      "width": 16,
+      "height": 16
+    },
+    "(O)498": {
+      "sheet": "springobjects",
+      "spriteIndex": 498,
+      "width": 16,
+      "height": 16
+    },
+    "(O)499": {
+      "sheet": "springobjects",
+      "spriteIndex": 499,
+      "width": 16,
+      "height": 16
+    },
+    "(O)427": {
+      "sheet": "springobjects",
+      "spriteIndex": 427,
+      "width": 16,
+      "height": 16
+    },
+    "(O)429": {
+      "sheet": "springobjects",
+      "spriteIndex": 429,
+      "width": 16,
+      "height": 16
+    },
+    "(O)453": {
+      "sheet": "springobjects",
+      "spriteIndex": 453,
+      "width": 16,
+      "height": 16
+    },
+    "(O)455": {
+      "sheet": "springobjects",
+      "spriteIndex": 455,
+      "width": 16,
+      "height": 16
+    },
+    "(O)431": {
+      "sheet": "springobjects",
+      "spriteIndex": 431,
+      "width": 16,
+      "height": 16
+    },
+    "(O)425": {
+      "sheet": "springobjects",
+      "spriteIndex": 425,
+      "width": 16,
+      "height": 16
+    },
+    "(O)516": {
+      "sheet": "springobjects",
+      "spriteIndex": 516,
+      "width": 16,
+      "height": 16
+    },
+    "(O)517": {
+      "sheet": "springobjects",
+      "spriteIndex": 517,
+      "width": 16,
+      "height": 16
+    },
+    "(O)518": {
+      "sheet": "springobjects",
+      "spriteIndex": 518,
+      "width": 16,
+      "height": 16
+    },
+    "(O)519": {
+      "sheet": "springobjects",
+      "spriteIndex": 519,
+      "width": 16,
+      "height": 16
+    },
+    "(O)520": {
+      "sheet": "springobjects",
+      "spriteIndex": 520,
+      "width": 16,
+      "height": 16
+    },
+    "(O)521": {
+      "sheet": "springobjects",
+      "spriteIndex": 521,
+      "width": 16,
+      "height": 16
+    },
+    "(O)522": {
+      "sheet": "springobjects",
+      "spriteIndex": 522,
+      "width": 16,
+      "height": 16
+    },
+    "(O)523": {
+      "sheet": "springobjects",
+      "spriteIndex": 523,
+      "width": 16,
+      "height": 16
+    },
+    "(O)524": {
+      "sheet": "springobjects",
+      "spriteIndex": 524,
+      "width": 16,
+      "height": 16
+    },
+    "(O)525": {
+      "sheet": "springobjects",
+      "spriteIndex": 525,
+      "width": 16,
+      "height": 16
+    },
+    "(O)526": {
+      "sheet": "springobjects",
+      "spriteIndex": 526,
+      "width": 16,
+      "height": 16
+    },
+    "(O)527": {
+      "sheet": "springobjects",
+      "spriteIndex": 527,
+      "width": 16,
+      "height": 16
+    },
+    "(O)528": {
+      "sheet": "springobjects",
+      "spriteIndex": 528,
+      "width": 16,
+      "height": 16
+    },
+    "(O)529": {
+      "sheet": "springobjects",
+      "spriteIndex": 529,
+      "width": 16,
+      "height": 16
+    },
+    "(O)530": {
+      "sheet": "springobjects",
+      "spriteIndex": 530,
+      "width": 16,
+      "height": 16
+    },
+    "(O)531": {
+      "sheet": "springobjects",
+      "spriteIndex": 531,
+      "width": 16,
+      "height": 16
+    },
+    "(O)532": {
+      "sheet": "springobjects",
+      "spriteIndex": 532,
+      "width": 16,
+      "height": 16
+    },
+    "(O)533": {
+      "sheet": "springobjects",
+      "spriteIndex": 533,
+      "width": 16,
+      "height": 16
+    },
+    "(O)534": {
+      "sheet": "springobjects",
+      "spriteIndex": 534,
+      "width": 16,
+      "height": 16
+    },
+    "(O)535": {
+      "sheet": "springobjects",
+      "spriteIndex": 535,
+      "width": 16,
+      "height": 16
+    },
+    "(O)536": {
+      "sheet": "springobjects",
+      "spriteIndex": 536,
+      "width": 16,
+      "height": 16
+    },
+    "(O)537": {
+      "sheet": "springobjects",
+      "spriteIndex": 537,
+      "width": 16,
+      "height": 16
+    },
+    "(O)538": {
+      "sheet": "springobjects",
+      "spriteIndex": 538,
+      "width": 16,
+      "height": 16
+    },
+    "(O)539": {
+      "sheet": "springobjects",
+      "spriteIndex": 539,
+      "width": 16,
+      "height": 16
+    },
+    "(O)540": {
+      "sheet": "springobjects",
+      "spriteIndex": 540,
+      "width": 16,
+      "height": 16
+    },
+    "(O)541": {
+      "sheet": "springobjects",
+      "spriteIndex": 541,
+      "width": 16,
+      "height": 16
+    },
+    "(O)542": {
+      "sheet": "springobjects",
+      "spriteIndex": 542,
+      "width": 16,
+      "height": 16
+    },
+    "(O)543": {
+      "sheet": "springobjects",
+      "spriteIndex": 543,
+      "width": 16,
+      "height": 16
+    },
+    "(O)544": {
+      "sheet": "springobjects",
+      "spriteIndex": 544,
+      "width": 16,
+      "height": 16
+    },
+    "(O)545": {
+      "sheet": "springobjects",
+      "spriteIndex": 545,
+      "width": 16,
+      "height": 16
+    },
+    "(O)546": {
+      "sheet": "springobjects",
+      "spriteIndex": 546,
+      "width": 16,
+      "height": 16
+    },
+    "(O)547": {
+      "sheet": "springobjects",
+      "spriteIndex": 547,
+      "width": 16,
+      "height": 16
+    },
+    "(O)548": {
+      "sheet": "springobjects",
+      "spriteIndex": 548,
+      "width": 16,
+      "height": 16
+    },
+    "(O)549": {
+      "sheet": "springobjects",
+      "spriteIndex": 549,
+      "width": 16,
+      "height": 16
+    },
+    "(O)550": {
+      "sheet": "springobjects",
+      "spriteIndex": 550,
+      "width": 16,
+      "height": 16
+    },
+    "(O)551": {
+      "sheet": "springobjects",
+      "spriteIndex": 551,
+      "width": 16,
+      "height": 16
+    },
+    "(O)552": {
+      "sheet": "springobjects",
+      "spriteIndex": 552,
+      "width": 16,
+      "height": 16
+    },
+    "(O)553": {
+      "sheet": "springobjects",
+      "spriteIndex": 553,
+      "width": 16,
+      "height": 16
+    },
+    "(O)554": {
+      "sheet": "springobjects",
+      "spriteIndex": 554,
+      "width": 16,
+      "height": 16
+    },
+    "(O)555": {
+      "sheet": "springobjects",
+      "spriteIndex": 555,
+      "width": 16,
+      "height": 16
+    },
+    "(O)556": {
+      "sheet": "springobjects",
+      "spriteIndex": 556,
+      "width": 16,
+      "height": 16
+    },
+    "(O)557": {
+      "sheet": "springobjects",
+      "spriteIndex": 557,
+      "width": 16,
+      "height": 16
+    },
+    "(O)558": {
+      "sheet": "springobjects",
+      "spriteIndex": 558,
+      "width": 16,
+      "height": 16
+    },
+    "(O)559": {
+      "sheet": "springobjects",
+      "spriteIndex": 559,
+      "width": 16,
+      "height": 16
+    },
+    "(O)560": {
+      "sheet": "springobjects",
+      "spriteIndex": 560,
+      "width": 16,
+      "height": 16
+    },
+    "(O)561": {
+      "sheet": "springobjects",
+      "spriteIndex": 561,
+      "width": 16,
+      "height": 16
+    },
+    "(O)562": {
+      "sheet": "springobjects",
+      "spriteIndex": 562,
+      "width": 16,
+      "height": 16
+    },
+    "(O)563": {
+      "sheet": "springobjects",
+      "spriteIndex": 563,
+      "width": 16,
+      "height": 16
+    },
+    "(O)564": {
+      "sheet": "springobjects",
+      "spriteIndex": 564,
+      "width": 16,
+      "height": 16
+    },
+    "(O)565": {
+      "sheet": "springobjects",
+      "spriteIndex": 565,
+      "width": 16,
+      "height": 16
+    },
+    "(O)566": {
+      "sheet": "springobjects",
+      "spriteIndex": 566,
+      "width": 16,
+      "height": 16
+    },
+    "(O)567": {
+      "sheet": "springobjects",
+      "spriteIndex": 567,
+      "width": 16,
+      "height": 16
+    },
+    "(O)568": {
+      "sheet": "springobjects",
+      "spriteIndex": 568,
+      "width": 16,
+      "height": 16
+    },
+    "(O)569": {
+      "sheet": "springobjects",
+      "spriteIndex": 569,
+      "width": 16,
+      "height": 16
+    },
+    "(O)570": {
+      "sheet": "springobjects",
+      "spriteIndex": 570,
+      "width": 16,
+      "height": 16
+    },
+    "(O)571": {
+      "sheet": "springobjects",
+      "spriteIndex": 571,
+      "width": 16,
+      "height": 16
+    },
+    "(O)572": {
+      "sheet": "springobjects",
+      "spriteIndex": 572,
+      "width": 16,
+      "height": 16
+    },
+    "(O)573": {
+      "sheet": "springobjects",
+      "spriteIndex": 573,
+      "width": 16,
+      "height": 16
+    },
+    "(O)574": {
+      "sheet": "springobjects",
+      "spriteIndex": 574,
+      "width": 16,
+      "height": 16
+    },
+    "(O)575": {
+      "sheet": "springobjects",
+      "spriteIndex": 575,
+      "width": 16,
+      "height": 16
+    },
+    "(O)576": {
+      "sheet": "springobjects",
+      "spriteIndex": 576,
+      "width": 16,
+      "height": 16
+    },
+    "(O)577": {
+      "sheet": "springobjects",
+      "spriteIndex": 577,
+      "width": 16,
+      "height": 16
+    },
+    "(O)578": {
+      "sheet": "springobjects",
+      "spriteIndex": 578,
+      "width": 16,
+      "height": 16
+    },
+    "(O)579": {
+      "sheet": "springobjects",
+      "spriteIndex": 579,
+      "width": 16,
+      "height": 16
+    },
+    "(O)580": {
+      "sheet": "springobjects",
+      "spriteIndex": 580,
+      "width": 16,
+      "height": 16
+    },
+    "(O)581": {
+      "sheet": "springobjects",
+      "spriteIndex": 581,
+      "width": 16,
+      "height": 16
+    },
+    "(O)582": {
+      "sheet": "springobjects",
+      "spriteIndex": 582,
+      "width": 16,
+      "height": 16
+    },
+    "(O)583": {
+      "sheet": "springobjects",
+      "spriteIndex": 583,
+      "width": 16,
+      "height": 16
+    },
+    "(O)584": {
+      "sheet": "springobjects",
+      "spriteIndex": 584,
+      "width": 16,
+      "height": 16
+    },
+    "(O)585": {
+      "sheet": "springobjects",
+      "spriteIndex": 585,
+      "width": 16,
+      "height": 16
+    },
+    "(O)586": {
+      "sheet": "springobjects",
+      "spriteIndex": 586,
+      "width": 16,
+      "height": 16
+    },
+    "(O)587": {
+      "sheet": "springobjects",
+      "spriteIndex": 587,
+      "width": 16,
+      "height": 16
+    },
+    "(O)588": {
+      "sheet": "springobjects",
+      "spriteIndex": 588,
+      "width": 16,
+      "height": 16
+    },
+    "(O)589": {
+      "sheet": "springobjects",
+      "spriteIndex": 589,
+      "width": 16,
+      "height": 16
+    },
+    "(O)590": {
+      "sheet": "springobjects",
+      "spriteIndex": 590,
+      "width": 16,
+      "height": 16
+    },
+    "(O)591": {
+      "sheet": "springobjects",
+      "spriteIndex": 591,
+      "width": 16,
+      "height": 16
+    },
+    "(O)593": {
+      "sheet": "springobjects",
+      "spriteIndex": 593,
+      "width": 16,
+      "height": 16
+    },
+    "(O)595": {
+      "sheet": "springobjects",
+      "spriteIndex": 595,
+      "width": 16,
+      "height": 16
+    },
+    "(O)597": {
+      "sheet": "springobjects",
+      "spriteIndex": 597,
+      "width": 16,
+      "height": 16
+    },
+    "(O)599": {
+      "sheet": "springobjects",
+      "spriteIndex": 599,
+      "width": 16,
+      "height": 16
+    },
+    "(O)376": {
+      "sheet": "springobjects",
+      "spriteIndex": 376,
+      "width": 16,
+      "height": 16
+    },
+    "(O)604": {
+      "sheet": "springobjects",
+      "spriteIndex": 604,
+      "width": 16,
+      "height": 16
+    },
+    "(O)605": {
+      "sheet": "springobjects",
+      "spriteIndex": 605,
+      "width": 16,
+      "height": 16
+    },
+    "(O)606": {
+      "sheet": "springobjects",
+      "spriteIndex": 606,
+      "width": 16,
+      "height": 16
+    },
+    "(O)607": {
+      "sheet": "springobjects",
+      "spriteIndex": 607,
+      "width": 16,
+      "height": 16
+    },
+    "(O)608": {
+      "sheet": "springobjects",
+      "spriteIndex": 608,
+      "width": 16,
+      "height": 16
+    },
+    "(O)609": {
+      "sheet": "springobjects",
+      "spriteIndex": 609,
+      "width": 16,
+      "height": 16
+    },
+    "(O)610": {
+      "sheet": "springobjects",
+      "spriteIndex": 610,
+      "width": 16,
+      "height": 16
+    },
+    "(O)611": {
+      "sheet": "springobjects",
+      "spriteIndex": 611,
+      "width": 16,
+      "height": 16
+    },
+    "(O)612": {
+      "sheet": "springobjects",
+      "spriteIndex": 612,
+      "width": 16,
+      "height": 16
+    },
+    "(O)613": {
+      "sheet": "springobjects",
+      "spriteIndex": 613,
+      "width": 16,
+      "height": 16
+    },
+    "(O)614": {
+      "sheet": "springobjects",
+      "spriteIndex": 614,
+      "width": 16,
+      "height": 16
+    },
+    "(O)618": {
+      "sheet": "springobjects",
+      "spriteIndex": 618,
+      "width": 16,
+      "height": 16
+    },
+    "(O)621": {
+      "sheet": "springobjects",
+      "spriteIndex": 621,
+      "width": 16,
+      "height": 16
+    },
+    "(O)645": {
+      "sheet": "springobjects",
+      "spriteIndex": 645,
+      "width": 16,
+      "height": 16
+    },
+    "(O)648": {
+      "sheet": "springobjects",
+      "spriteIndex": 648,
+      "width": 16,
+      "height": 16
+    },
+    "(O)649": {
+      "sheet": "springobjects",
+      "spriteIndex": 649,
+      "width": 16,
+      "height": 16
+    },
+    "(O)651": {
+      "sheet": "springobjects",
+      "spriteIndex": 651,
+      "width": 16,
+      "height": 16
+    },
+    "(O)628": {
+      "sheet": "springobjects",
+      "spriteIndex": 628,
+      "width": 16,
+      "height": 16
+    },
+    "(O)629": {
+      "sheet": "springobjects",
+      "spriteIndex": 629,
+      "width": 16,
+      "height": 16
+    },
+    "(O)630": {
+      "sheet": "springobjects",
+      "spriteIndex": 630,
+      "width": 16,
+      "height": 16
+    },
+    "(O)631": {
+      "sheet": "springobjects",
+      "spriteIndex": 631,
+      "width": 16,
+      "height": 16
+    },
+    "(O)632": {
+      "sheet": "springobjects",
+      "spriteIndex": 632,
+      "width": 16,
+      "height": 16
+    },
+    "(O)633": {
+      "sheet": "springobjects",
+      "spriteIndex": 633,
+      "width": 16,
+      "height": 16
+    },
+    "(O)634": {
+      "sheet": "springobjects",
+      "spriteIndex": 634,
+      "width": 16,
+      "height": 16
+    },
+    "(O)635": {
+      "sheet": "springobjects",
+      "spriteIndex": 635,
+      "width": 16,
+      "height": 16
+    },
+    "(O)636": {
+      "sheet": "springobjects",
+      "spriteIndex": 636,
+      "width": 16,
+      "height": 16
+    },
+    "(O)637": {
+      "sheet": "springobjects",
+      "spriteIndex": 637,
+      "width": 16,
+      "height": 16
+    },
+    "(O)638": {
+      "sheet": "springobjects",
+      "spriteIndex": 638,
+      "width": 16,
+      "height": 16
+    },
+    "(O)668": {
+      "sheet": "springobjects",
+      "spriteIndex": 668,
+      "width": 16,
+      "height": 16
+    },
+    "(O)670": {
+      "sheet": "springobjects",
+      "spriteIndex": 670,
+      "width": 16,
+      "height": 16
+    },
+    "(O)674": {
+      "sheet": "springobjects",
+      "spriteIndex": 674,
+      "width": 16,
+      "height": 16
+    },
+    "(O)675": {
+      "sheet": "springobjects",
+      "spriteIndex": 675,
+      "width": 16,
+      "height": 16
+    },
+    "(O)676": {
+      "sheet": "springobjects",
+      "spriteIndex": 676,
+      "width": 16,
+      "height": 16
+    },
+    "(O)677": {
+      "sheet": "springobjects",
+      "spriteIndex": 677,
+      "width": 16,
+      "height": 16
+    },
+    "(O)678": {
+      "sheet": "springobjects",
+      "spriteIndex": 678,
+      "width": 16,
+      "height": 16
+    },
+    "(O)679": {
+      "sheet": "springobjects",
+      "spriteIndex": 679,
+      "width": 16,
+      "height": 16
+    },
+    "(O)680": {
+      "sheet": "springobjects",
+      "spriteIndex": 680,
+      "width": 16,
+      "height": 16
+    },
+    "(O)681": {
+      "sheet": "springobjects",
+      "spriteIndex": 681,
+      "width": 16,
+      "height": 16
+    },
+    "(O)682": {
+      "sheet": "springobjects",
+      "spriteIndex": 682,
+      "width": 16,
+      "height": 16
+    },
+    "(O)684": {
+      "sheet": "springobjects",
+      "spriteIndex": 684,
+      "width": 16,
+      "height": 16
+    },
+    "(O)685": {
+      "sheet": "springobjects",
+      "spriteIndex": 685,
+      "width": 16,
+      "height": 16
+    },
+    "(O)686": {
+      "sheet": "springobjects",
+      "spriteIndex": 686,
+      "width": 16,
+      "height": 16
+    },
+    "(O)687": {
+      "sheet": "springobjects",
+      "spriteIndex": 687,
+      "width": 16,
+      "height": 16
+    },
+    "(O)688": {
+      "sheet": "springobjects",
+      "spriteIndex": 688,
+      "width": 16,
+      "height": 16
+    },
+    "(O)689": {
+      "sheet": "springobjects",
+      "spriteIndex": 689,
+      "width": 16,
+      "height": 16
+    },
+    "(O)690": {
+      "sheet": "springobjects",
+      "spriteIndex": 690,
+      "width": 16,
+      "height": 16
+    },
+    "(O)691": {
+      "sheet": "springobjects",
+      "spriteIndex": 691,
+      "width": 16,
+      "height": 16
+    },
+    "(O)692": {
+      "sheet": "springobjects",
+      "spriteIndex": 692,
+      "width": 16,
+      "height": 16
+    },
+    "(O)693": {
+      "sheet": "springobjects",
+      "spriteIndex": 693,
+      "width": 16,
+      "height": 16
+    },
+    "(O)694": {
+      "sheet": "springobjects",
+      "spriteIndex": 694,
+      "width": 16,
+      "height": 16
+    },
+    "(O)695": {
+      "sheet": "springobjects",
+      "spriteIndex": 695,
+      "width": 16,
+      "height": 16
+    },
+    "(O)698": {
+      "sheet": "springobjects",
+      "spriteIndex": 698,
+      "width": 16,
+      "height": 16
+    },
+    "(O)699": {
+      "sheet": "springobjects",
+      "spriteIndex": 699,
+      "width": 16,
+      "height": 16
+    },
+    "(O)700": {
+      "sheet": "springobjects",
+      "spriteIndex": 700,
+      "width": 16,
+      "height": 16
+    },
+    "(O)701": {
+      "sheet": "springobjects",
+      "spriteIndex": 701,
+      "width": 16,
+      "height": 16
+    },
+    "(O)702": {
+      "sheet": "springobjects",
+      "spriteIndex": 702,
+      "width": 16,
+      "height": 16
+    },
+    "(O)703": {
+      "sheet": "springobjects",
+      "spriteIndex": 703,
+      "width": 16,
+      "height": 16
+    },
+    "(O)704": {
+      "sheet": "springobjects",
+      "spriteIndex": 704,
+      "width": 16,
+      "height": 16
+    },
+    "(O)705": {
+      "sheet": "springobjects",
+      "spriteIndex": 705,
+      "width": 16,
+      "height": 16
+    },
+    "(O)706": {
+      "sheet": "springobjects",
+      "spriteIndex": 706,
+      "width": 16,
+      "height": 16
+    },
+    "(O)707": {
+      "sheet": "springobjects",
+      "spriteIndex": 707,
+      "width": 16,
+      "height": 16
+    },
+    "(O)708": {
+      "sheet": "springobjects",
+      "spriteIndex": 708,
+      "width": 16,
+      "height": 16
+    },
+    "(O)709": {
+      "sheet": "springobjects",
+      "spriteIndex": 709,
+      "width": 16,
+      "height": 16
+    },
+    "(O)710": {
+      "sheet": "springobjects",
+      "spriteIndex": 710,
+      "width": 16,
+      "height": 16
+    },
+    "(O)715": {
+      "sheet": "springobjects",
+      "spriteIndex": 715,
+      "width": 16,
+      "height": 16
+    },
+    "(O)716": {
+      "sheet": "springobjects",
+      "spriteIndex": 716,
+      "width": 16,
+      "height": 16
+    },
+    "(O)717": {
+      "sheet": "springobjects",
+      "spriteIndex": 717,
+      "width": 16,
+      "height": 16
+    },
+    "(O)718": {
+      "sheet": "springobjects",
+      "spriteIndex": 718,
+      "width": 16,
+      "height": 16
+    },
+    "(O)719": {
+      "sheet": "springobjects",
+      "spriteIndex": 719,
+      "width": 16,
+      "height": 16
+    },
+    "(O)720": {
+      "sheet": "springobjects",
+      "spriteIndex": 720,
+      "width": 16,
+      "height": 16
+    },
+    "(O)721": {
+      "sheet": "springobjects",
+      "spriteIndex": 721,
+      "width": 16,
+      "height": 16
+    },
+    "(O)722": {
+      "sheet": "springobjects",
+      "spriteIndex": 722,
+      "width": 16,
+      "height": 16
+    },
+    "(O)723": {
+      "sheet": "springobjects",
+      "spriteIndex": 723,
+      "width": 16,
+      "height": 16
+    },
+    "(O)724": {
+      "sheet": "springobjects",
+      "spriteIndex": 724,
+      "width": 16,
+      "height": 16
+    },
+    "(O)725": {
+      "sheet": "springobjects",
+      "spriteIndex": 725,
+      "width": 16,
+      "height": 16
+    },
+    "(O)726": {
+      "sheet": "springobjects",
+      "spriteIndex": 726,
+      "width": 16,
+      "height": 16
+    },
+    "(O)727": {
+      "sheet": "springobjects",
+      "spriteIndex": 727,
+      "width": 16,
+      "height": 16
+    },
+    "(O)730": {
+      "sheet": "springobjects",
+      "spriteIndex": 730,
+      "width": 16,
+      "height": 16
+    },
+    "(O)728": {
+      "sheet": "springobjects",
+      "spriteIndex": 728,
+      "width": 16,
+      "height": 16
+    },
+    "(O)729": {
+      "sheet": "springobjects",
+      "spriteIndex": 729,
+      "width": 16,
+      "height": 16
+    },
+    "(O)731": {
+      "sheet": "springobjects",
+      "spriteIndex": 731,
+      "width": 16,
+      "height": 16
+    },
+    "(O)732": {
+      "sheet": "springobjects",
+      "spriteIndex": 732,
+      "width": 16,
+      "height": 16
+    },
+    "(O)733": {
+      "sheet": "springobjects",
+      "spriteIndex": 733,
+      "width": 16,
+      "height": 16
+    },
+    "(O)734": {
+      "sheet": "springobjects",
+      "spriteIndex": 734,
+      "width": 16,
+      "height": 16
+    },
+    "(O)742": {
+      "sheet": "springobjects",
+      "spriteIndex": 742,
+      "width": 16,
+      "height": 16
+    },
+    "(O)745": {
+      "sheet": "springobjects",
+      "spriteIndex": 745,
+      "width": 16,
+      "height": 16
+    },
+    "(O)746": {
+      "sheet": "springobjects",
+      "spriteIndex": 746,
+      "width": 16,
+      "height": 16
+    },
+    "(O)747": {
+      "sheet": "springobjects",
+      "spriteIndex": 747,
+      "width": 16,
+      "height": 16
+    },
+    "(O)748": {
+      "sheet": "springobjects",
+      "spriteIndex": 748,
+      "width": 16,
+      "height": 16
+    },
+    "(O)749": {
+      "sheet": "springobjects",
+      "spriteIndex": 749,
+      "width": 16,
+      "height": 16
+    },
+    "(O)750": {
+      "sheet": "springobjects",
+      "spriteIndex": 750,
+      "width": 16,
+      "height": 16
+    },
+    "(O)751": {
+      "sheet": "springobjects",
+      "spriteIndex": 751,
+      "width": 16,
+      "height": 16
+    },
+    "(O)760": {
+      "sheet": "springobjects",
+      "spriteIndex": 760,
+      "width": 16,
+      "height": 16
+    },
+    "(O)762": {
+      "sheet": "springobjects",
+      "spriteIndex": 762,
+      "width": 16,
+      "height": 16
+    },
+    "(O)764": {
+      "sheet": "springobjects",
+      "spriteIndex": 764,
+      "width": 16,
+      "height": 16
+    },
+    "(O)765": {
+      "sheet": "springobjects",
+      "spriteIndex": 765,
+      "width": 16,
+      "height": 16
+    },
+    "(O)766": {
+      "sheet": "springobjects",
+      "spriteIndex": 766,
+      "width": 16,
+      "height": 16
+    },
+    "(O)767": {
+      "sheet": "springobjects",
+      "spriteIndex": 767,
+      "width": 16,
+      "height": 16
+    },
+    "(O)768": {
+      "sheet": "springobjects",
+      "spriteIndex": 768,
+      "width": 16,
+      "height": 16
+    },
+    "(O)769": {
+      "sheet": "springobjects",
+      "spriteIndex": 769,
+      "width": 16,
+      "height": 16
+    },
+    "(O)770": {
+      "sheet": "springobjects",
+      "spriteIndex": 770,
+      "width": 16,
+      "height": 16
+    },
+    "(O)771": {
+      "sheet": "springobjects",
+      "spriteIndex": 771,
+      "width": 16,
+      "height": 16
+    },
+    "(O)772": {
+      "sheet": "springobjects",
+      "spriteIndex": 772,
+      "width": 16,
+      "height": 16
+    },
+    "(O)773": {
+      "sheet": "springobjects",
+      "spriteIndex": 773,
+      "width": 16,
+      "height": 16
+    },
+    "(O)774": {
+      "sheet": "springobjects",
+      "spriteIndex": 774,
+      "width": 16,
+      "height": 16
+    },
+    "(O)775": {
+      "sheet": "springobjects",
+      "spriteIndex": 775,
+      "width": 16,
+      "height": 16
+    },
+    "(O)784": {
+      "sheet": "springobjects",
+      "spriteIndex": 784,
+      "width": 16,
+      "height": 16
+    },
+    "(O)785": {
+      "sheet": "springobjects",
+      "spriteIndex": 785,
+      "width": 16,
+      "height": 16
+    },
+    "(O)786": {
+      "sheet": "springobjects",
+      "spriteIndex": 786,
+      "width": 16,
+      "height": 16
+    },
+    "(O)787": {
+      "sheet": "springobjects",
+      "spriteIndex": 787,
+      "width": 16,
+      "height": 16
+    },
+    "(O)788": {
+      "sheet": "springobjects",
+      "spriteIndex": 788,
+      "width": 16,
+      "height": 16
+    },
+    "(O)789": {
+      "sheet": "springobjects",
+      "spriteIndex": 789,
+      "width": 16,
+      "height": 16
+    },
+    "(O)790": {
+      "sheet": "springobjects",
+      "spriteIndex": 790,
+      "width": 16,
+      "height": 16
+    },
+    "(O)792": {
+      "sheet": "springobjects",
+      "spriteIndex": 792,
+      "width": 16,
+      "height": 16
+    },
+    "(O)793": {
+      "sheet": "springobjects",
+      "spriteIndex": 793,
+      "width": 16,
+      "height": 16
+    },
+    "(O)794": {
+      "sheet": "springobjects",
+      "spriteIndex": 794,
+      "width": 16,
+      "height": 16
+    },
+    "(O)795": {
+      "sheet": "springobjects",
+      "spriteIndex": 795,
+      "width": 16,
+      "height": 16
+    },
+    "(O)796": {
+      "sheet": "springobjects",
+      "spriteIndex": 796,
+      "width": 16,
+      "height": 16
+    },
+    "(O)797": {
+      "sheet": "springobjects",
+      "spriteIndex": 797,
+      "width": 16,
+      "height": 16
+    },
+    "(O)798": {
+      "sheet": "springobjects",
+      "spriteIndex": 798,
+      "width": 16,
+      "height": 16
+    },
+    "(O)799": {
+      "sheet": "springobjects",
+      "spriteIndex": 799,
+      "width": 16,
+      "height": 16
+    },
+    "(O)800": {
+      "sheet": "springobjects",
+      "spriteIndex": 800,
+      "width": 16,
+      "height": 16
+    },
+    "(O)801": {
+      "sheet": "springobjects",
+      "spriteIndex": 801,
+      "width": 16,
+      "height": 16
+    },
+    "(O)802": {
+      "sheet": "springobjects",
+      "spriteIndex": 802,
+      "width": 16,
+      "height": 16
+    },
+    "(O)803": {
+      "sheet": "springobjects",
+      "spriteIndex": 803,
+      "width": 16,
+      "height": 16
+    },
+    "(O)805": {
+      "sheet": "springobjects",
+      "spriteIndex": 805,
+      "width": 16,
+      "height": 16
+    },
+    "(O)807": {
+      "sheet": "springobjects",
+      "spriteIndex": 807,
+      "width": 16,
+      "height": 16
+    },
+    "(O)808": {
+      "sheet": "springobjects",
+      "spriteIndex": 808,
+      "width": 16,
+      "height": 16
+    },
+    "(O)809": {
+      "sheet": "springobjects",
+      "spriteIndex": 809,
+      "width": 16,
+      "height": 16
+    },
+    "(O)810": {
+      "sheet": "springobjects",
+      "spriteIndex": 810,
+      "width": 16,
+      "height": 16
+    },
+    "(O)811": {
+      "sheet": "springobjects",
+      "spriteIndex": 811,
+      "width": 16,
+      "height": 16
+    },
+    "(O)812": {
+      "sheet": "springobjects",
+      "spriteIndex": 812,
+      "width": 16,
+      "height": 16
+    },
+    "(O)445": {
+      "sheet": "springobjects",
+      "spriteIndex": 445,
+      "width": 16,
+      "height": 16
+    },
+    "(O)814": {
+      "sheet": "springobjects",
+      "spriteIndex": 814,
+      "width": 16,
+      "height": 16
+    },
+    "(O)815": {
+      "sheet": "springobjects",
+      "spriteIndex": 815,
+      "width": 16,
+      "height": 16
+    },
+    "(O)267": {
+      "sheet": "springobjects",
+      "spriteIndex": 267,
+      "width": 16,
+      "height": 16
+    },
+    "(O)265": {
+      "sheet": "springobjects",
+      "spriteIndex": 265,
+      "width": 16,
+      "height": 16
+    },
+    "(O)269": {
+      "sheet": "springobjects",
+      "spriteIndex": 269,
+      "width": 16,
+      "height": 16
+    },
+    "(O)292": {
+      "sheet": "springobjects",
+      "spriteIndex": 292,
+      "width": 16,
+      "height": 16
+    },
+    "(O)289": {
+      "sheet": "springobjects",
+      "spriteIndex": 289,
+      "width": 16,
+      "height": 16
+    },
+    "(O)25": {
+      "sheet": "springobjects",
+      "spriteIndex": 25,
+      "width": 16,
+      "height": 16
+    },
+    "(O)73": {
+      "sheet": "springobjects",
+      "spriteIndex": 73,
+      "width": 16,
+      "height": 16
+    },
+    "(O)69": {
+      "sheet": "springobjects",
+      "spriteIndex": 69,
+      "width": 16,
+      "height": 16
+    },
+    "(O)91": {
+      "sheet": "springobjects",
+      "spriteIndex": 91,
+      "width": 16,
+      "height": 16
+    },
+    "(O)791": {
+      "sheet": "springobjects",
+      "spriteIndex": 791,
+      "width": 16,
+      "height": 16
+    },
+    "(O)816": {
+      "sheet": "springobjects",
+      "spriteIndex": 816,
+      "width": 16,
+      "height": 16
+    },
+    "(O)817": {
+      "sheet": "springobjects",
+      "spriteIndex": 817,
+      "width": 16,
+      "height": 16
+    },
+    "(O)818": {
+      "sheet": "springobjects",
+      "spriteIndex": 818,
+      "width": 16,
+      "height": 16
+    },
+    "(O)819": {
+      "sheet": "springobjects",
+      "spriteIndex": 819,
+      "width": 16,
+      "height": 16
+    },
+    "(O)820": {
+      "sheet": "springobjects",
+      "spriteIndex": 820,
+      "width": 16,
+      "height": 16
+    },
+    "(O)821": {
+      "sheet": "springobjects",
+      "spriteIndex": 821,
+      "width": 16,
+      "height": 16
+    },
+    "(O)822": {
+      "sheet": "springobjects",
+      "spriteIndex": 822,
+      "width": 16,
+      "height": 16
+    },
+    "(O)823": {
+      "sheet": "springobjects",
+      "spriteIndex": 823,
+      "width": 16,
+      "height": 16
+    },
+    "(O)824": {
+      "sheet": "springobjects",
+      "spriteIndex": 824,
+      "width": 16,
+      "height": 16
+    },
+    "(O)825": {
+      "sheet": "springobjects",
+      "spriteIndex": 825,
+      "width": 16,
+      "height": 16
+    },
+    "(O)826": {
+      "sheet": "springobjects",
+      "spriteIndex": 826,
+      "width": 16,
+      "height": 16
+    },
+    "(O)827": {
+      "sheet": "springobjects",
+      "spriteIndex": 827,
+      "width": 16,
+      "height": 16
+    },
+    "(O)828": {
+      "sheet": "springobjects",
+      "spriteIndex": 828,
+      "width": 16,
+      "height": 16
+    },
+    "(O)829": {
+      "sheet": "springobjects",
+      "spriteIndex": 829,
+      "width": 16,
+      "height": 16
+    },
+    "(O)830": {
+      "sheet": "springobjects",
+      "spriteIndex": 830,
+      "width": 16,
+      "height": 16
+    },
+    "(O)831": {
+      "sheet": "springobjects",
+      "spriteIndex": 831,
+      "width": 16,
+      "height": 16
+    },
+    "(O)832": {
+      "sheet": "springobjects",
+      "spriteIndex": 832,
+      "width": 16,
+      "height": 16
+    },
+    "(O)833": {
+      "sheet": "springobjects",
+      "spriteIndex": 833,
+      "width": 16,
+      "height": 16
+    },
+    "(O)834": {
+      "sheet": "springobjects",
+      "spriteIndex": 834,
+      "width": 16,
+      "height": 16
+    },
+    "(O)835": {
+      "sheet": "springobjects",
+      "spriteIndex": 835,
+      "width": 16,
+      "height": 16
+    },
+    "(O)836": {
+      "sheet": "springobjects",
+      "spriteIndex": 836,
+      "width": 16,
+      "height": 16
+    },
+    "(O)837": {
+      "sheet": "springobjects",
+      "spriteIndex": 837,
+      "width": 16,
+      "height": 16
+    },
+    "(O)838": {
+      "sheet": "springobjects",
+      "spriteIndex": 838,
+      "width": 16,
+      "height": 16
+    },
+    "(O)839": {
+      "sheet": "springobjects",
+      "spriteIndex": 839,
+      "width": 16,
+      "height": 16
+    },
+    "(O)840": {
+      "sheet": "springobjects",
+      "spriteIndex": 840,
+      "width": 16,
+      "height": 16
+    },
+    "(O)841": {
+      "sheet": "springobjects",
+      "spriteIndex": 841,
+      "width": 16,
+      "height": 16
+    },
+    "(O)842": {
+      "sheet": "springobjects",
+      "spriteIndex": 842,
+      "width": 16,
+      "height": 16
+    },
+    "(O)843": {
+      "sheet": "springobjects",
+      "spriteIndex": 843,
+      "width": 16,
+      "height": 16
+    },
+    "(O)844": {
+      "sheet": "springobjects",
+      "spriteIndex": 844,
+      "width": 16,
+      "height": 16
+    },
+    "(O)845": {
+      "sheet": "springobjects",
+      "spriteIndex": 845,
+      "width": 16,
+      "height": 16
+    },
+    "(O)846": {
+      "sheet": "springobjects",
+      "spriteIndex": 846,
+      "width": 16,
+      "height": 16
+    },
+    "(O)847": {
+      "sheet": "springobjects",
+      "spriteIndex": 847,
+      "width": 16,
+      "height": 16
+    },
+    "(O)848": {
+      "sheet": "springobjects",
+      "spriteIndex": 848,
+      "width": 16,
+      "height": 16
+    },
+    "(O)849": {
+      "sheet": "springobjects",
+      "spriteIndex": 849,
+      "width": 16,
+      "height": 16
+    },
+    "(O)850": {
+      "sheet": "springobjects",
+      "spriteIndex": 850,
+      "width": 16,
+      "height": 16
+    },
+    "(O)851": {
+      "sheet": "springobjects",
+      "spriteIndex": 851,
+      "width": 16,
+      "height": 16
+    },
+    "(O)852": {
+      "sheet": "springobjects",
+      "spriteIndex": 852,
+      "width": 16,
+      "height": 16
+    },
+    "(O)856": {
+      "sheet": "springobjects",
+      "spriteIndex": 856,
+      "width": 16,
+      "height": 16
+    },
+    "(O)857": {
+      "sheet": "springobjects",
+      "spriteIndex": 857,
+      "width": 16,
+      "height": 16
+    },
+    "(O)858": {
+      "sheet": "springobjects",
+      "spriteIndex": 858,
+      "width": 16,
+      "height": 16
+    },
+    "(O)859": {
+      "sheet": "springobjects",
+      "spriteIndex": 859,
+      "width": 16,
+      "height": 16
+    },
+    "(O)860": {
+      "sheet": "springobjects",
+      "spriteIndex": 860,
+      "width": 16,
+      "height": 16
+    },
+    "(O)861": {
+      "sheet": "springobjects",
+      "spriteIndex": 861,
+      "width": 16,
+      "height": 16
+    },
+    "(O)862": {
+      "sheet": "springobjects",
+      "spriteIndex": 862,
+      "width": 16,
+      "height": 16
+    },
+    "(O)863": {
+      "sheet": "springobjects",
+      "spriteIndex": 863,
+      "width": 16,
+      "height": 16
+    },
+    "(O)864": {
+      "sheet": "springobjects",
+      "spriteIndex": 864,
+      "width": 16,
+      "height": 16
+    },
+    "(O)865": {
+      "sheet": "springobjects",
+      "spriteIndex": 865,
+      "width": 16,
+      "height": 16
+    },
+    "(O)866": {
+      "sheet": "springobjects",
+      "spriteIndex": 866,
+      "width": 16,
+      "height": 16
+    },
+    "(O)867": {
+      "sheet": "springobjects",
+      "spriteIndex": 867,
+      "width": 16,
+      "height": 16
+    },
+    "(O)868": {
+      "sheet": "springobjects",
+      "spriteIndex": 868,
+      "width": 16,
+      "height": 16
+    },
+    "(O)869": {
+      "sheet": "springobjects",
+      "spriteIndex": 869,
+      "width": 16,
+      "height": 16
+    },
+    "(O)870": {
+      "sheet": "springobjects",
+      "spriteIndex": 870,
+      "width": 16,
+      "height": 16
+    },
+    "(O)872": {
+      "sheet": "springobjects",
+      "spriteIndex": 872,
+      "width": 16,
+      "height": 16
+    },
+    "(O)873": {
+      "sheet": "springobjects",
+      "spriteIndex": 873,
+      "width": 16,
+      "height": 16
+    },
+    "(O)874": {
+      "sheet": "springobjects",
+      "spriteIndex": 874,
+      "width": 16,
+      "height": 16
+    },
+    "(O)875": {
+      "sheet": "springobjects",
+      "spriteIndex": 875,
+      "width": 16,
+      "height": 16
+    },
+    "(O)876": {
+      "sheet": "springobjects",
+      "spriteIndex": 876,
+      "width": 16,
+      "height": 16
+    },
+    "(O)877": {
+      "sheet": "springobjects",
+      "spriteIndex": 877,
+      "width": 16,
+      "height": 16
+    },
+    "(O)879": {
+      "sheet": "springobjects",
+      "spriteIndex": 879,
+      "width": 16,
+      "height": 16
+    },
+    "(O)880": {
+      "sheet": "springobjects",
+      "spriteIndex": 880,
+      "width": 16,
+      "height": 16
+    },
+    "(O)881": {
+      "sheet": "springobjects",
+      "spriteIndex": 881,
+      "width": 16,
+      "height": 16
+    },
+    "(O)882": {
+      "sheet": "springobjects",
+      "spriteIndex": 882,
+      "width": 16,
+      "height": 16
+    },
+    "(O)883": {
+      "sheet": "springobjects",
+      "spriteIndex": 883,
+      "width": 16,
+      "height": 16
+    },
+    "(O)884": {
+      "sheet": "springobjects",
+      "spriteIndex": 884,
+      "width": 16,
+      "height": 16
+    },
+    "(O)885": {
+      "sheet": "springobjects",
+      "spriteIndex": 885,
+      "width": 16,
+      "height": 16
+    },
+    "(O)886": {
+      "sheet": "springobjects",
+      "spriteIndex": 886,
+      "width": 16,
+      "height": 16
+    },
+    "(O)887": {
+      "sheet": "springobjects",
+      "spriteIndex": 887,
+      "width": 16,
+      "height": 16
+    },
+    "(O)888": {
+      "sheet": "springobjects",
+      "spriteIndex": 888,
+      "width": 16,
+      "height": 16
+    },
+    "(O)889": {
+      "sheet": "springobjects",
+      "spriteIndex": 889,
+      "width": 16,
+      "height": 16
+    },
+    "(O)890": {
+      "sheet": "springobjects",
+      "spriteIndex": 890,
+      "width": 16,
+      "height": 16
+    },
+    "(O)891": {
+      "sheet": "springobjects",
+      "spriteIndex": 891,
+      "width": 16,
+      "height": 16
+    },
+    "(O)892": {
+      "sheet": "springobjects",
+      "spriteIndex": 892,
+      "width": 16,
+      "height": 16
+    },
+    "(O)893": {
+      "sheet": "springobjects",
+      "spriteIndex": 893,
+      "width": 16,
+      "height": 16
+    },
+    "(O)894": {
+      "sheet": "springobjects",
+      "spriteIndex": 894,
+      "width": 16,
+      "height": 16
+    },
+    "(O)895": {
+      "sheet": "springobjects",
+      "spriteIndex": 895,
+      "width": 16,
+      "height": 16
+    },
+    "(O)896": {
+      "sheet": "springobjects",
+      "spriteIndex": 896,
+      "width": 16,
+      "height": 16
+    },
+    "(O)897": {
+      "sheet": "springobjects",
+      "spriteIndex": 897,
+      "width": 16,
+      "height": 16
+    },
+    "(O)898": {
+      "sheet": "springobjects",
+      "spriteIndex": 898,
+      "width": 16,
+      "height": 16
+    },
+    "(O)899": {
+      "sheet": "springobjects",
+      "spriteIndex": 899,
+      "width": 16,
+      "height": 16
+    },
+    "(O)900": {
+      "sheet": "springobjects",
+      "spriteIndex": 900,
+      "width": 16,
+      "height": 16
+    },
+    "(O)901": {
+      "sheet": "springobjects",
+      "spriteIndex": 901,
+      "width": 16,
+      "height": 16
+    },
+    "(O)902": {
+      "sheet": "springobjects",
+      "spriteIndex": 902,
+      "width": 16,
+      "height": 16
+    },
+    "(O)903": {
+      "sheet": "springobjects",
+      "spriteIndex": 903,
+      "width": 16,
+      "height": 16
+    },
+    "(O)904": {
+      "sheet": "springobjects",
+      "spriteIndex": 904,
+      "width": 16,
+      "height": 16
+    },
+    "(O)905": {
+      "sheet": "springobjects",
+      "spriteIndex": 905,
+      "width": 16,
+      "height": 16
+    },
+    "(O)906": {
+      "sheet": "springobjects",
+      "spriteIndex": 906,
+      "width": 16,
+      "height": 16
+    },
+    "(O)907": {
+      "sheet": "springobjects",
+      "spriteIndex": 907,
+      "width": 16,
+      "height": 16
+    },
+    "(O)908": {
+      "sheet": "springobjects",
+      "spriteIndex": 908,
+      "width": 16,
+      "height": 16
+    },
+    "(O)909": {
+      "sheet": "springobjects",
+      "spriteIndex": 909,
+      "width": 16,
+      "height": 16
+    },
+    "(O)910": {
+      "sheet": "springobjects",
+      "spriteIndex": 910,
+      "width": 16,
+      "height": 16
+    },
+    "(O)911": {
+      "sheet": "springobjects",
+      "spriteIndex": 911,
+      "width": 16,
+      "height": 16
+    },
+    "(O)913": {
+      "sheet": "springobjects",
+      "spriteIndex": 913,
+      "width": 16,
+      "height": 16
+    },
+    "(O)915": {
+      "sheet": "springobjects",
+      "spriteIndex": 915,
+      "width": 16,
+      "height": 16
+    },
+    "(O)917": {
+      "sheet": "springobjects",
+      "spriteIndex": 917,
+      "width": 16,
+      "height": 16
+    },
+    "(O)918": {
+      "sheet": "springobjects",
+      "spriteIndex": 918,
+      "width": 16,
+      "height": 16
+    },
+    "(O)919": {
+      "sheet": "springobjects",
+      "spriteIndex": 919,
+      "width": 16,
+      "height": 16
+    },
+    "(O)920": {
+      "sheet": "springobjects",
+      "spriteIndex": 920,
+      "width": 16,
+      "height": 16
+    },
+    "(O)921": {
+      "sheet": "springobjects",
+      "spriteIndex": 921,
+      "width": 16,
+      "height": 16
+    },
+    "(O)922": {
+      "sheet": "springobjects",
+      "spriteIndex": 922,
+      "width": 16,
+      "height": 16
+    },
+    "(O)923": {
+      "sheet": "springobjects",
+      "spriteIndex": 923,
+      "width": 16,
+      "height": 16
+    },
+    "(O)924": {
+      "sheet": "springobjects",
+      "spriteIndex": 924,
+      "width": 16,
+      "height": 16
+    },
+    "(O)925": {
+      "sheet": "springobjects",
+      "spriteIndex": 925,
+      "width": 16,
+      "height": 16
+    },
+    "(O)926": {
+      "sheet": "springobjects",
+      "spriteIndex": 926,
+      "width": 16,
+      "height": 16
+    },
+    "(O)927": {
+      "sheet": "springobjects",
+      "spriteIndex": 927,
+      "width": 16,
+      "height": 16
+    },
+    "(O)928": {
+      "sheet": "springobjects",
+      "spriteIndex": 928,
+      "width": 16,
+      "height": 16
+    },
+    "(O)929": {
+      "sheet": "springobjects",
+      "spriteIndex": 929,
+      "width": 16,
+      "height": 16
+    },
+    "(O)930": {
+      "sheet": "springobjects",
+      "spriteIndex": 930,
+      "width": 16,
+      "height": 16
+    },
+    "(O)FarAwayStone": {
+      "sheet": "objects2",
+      "spriteIndex": 0,
+      "width": 16,
+      "height": 16
+    },
+    "(O)CalicoEgg": {
+      "sheet": "objects2",
+      "spriteIndex": 7,
+      "width": 16,
+      "height": 16
+    },
+    "(O)MixedFlowerSeeds": {
+      "sheet": "objects2",
+      "spriteIndex": 8,
+      "width": 16,
+      "height": 16
+    },
+    "(O)GoldenBobber": {
+      "sheet": "objects2",
+      "spriteIndex": 9,
+      "width": 16,
+      "height": 16
+    },
+    "(O)CalicoEggStone_0": {
+      "sheet": "objects2",
+      "spriteIndex": 10,
+      "width": 16,
+      "height": 16
+    },
+    "(O)CalicoEggStone_1": {
+      "sheet": "objects2",
+      "spriteIndex": 11,
+      "width": 16,
+      "height": 16
+    },
+    "(O)CalicoEggStone_2": {
+      "sheet": "objects2",
+      "spriteIndex": 12,
+      "width": 16,
+      "height": 16
+    },
+    "(O)MysteryBox": {
+      "sheet": "objects2",
+      "spriteIndex": 37,
+      "width": 16,
+      "height": 16
+    },
+    "(O)TroutDerbyTag": {
+      "sheet": "objects2",
+      "spriteIndex": 13,
+      "width": 16,
+      "height": 16
+    },
+    "(O)DeluxeBait": {
+      "sheet": "objects2",
+      "spriteIndex": 14,
+      "width": 16,
+      "height": 16
+    },
+    "(O)Moss": {
+      "sheet": "objects2",
+      "spriteIndex": 38,
+      "width": 16,
+      "height": 16
+    },
+    "(O)MossySeed": {
+      "sheet": "objects2",
+      "spriteIndex": 39,
+      "width": 16,
+      "height": 16
+    },
+    "(O)GreenRainWeeds0": {
+      "sheet": "objects2",
+      "spriteIndex": 40,
+      "width": 16,
+      "height": 16
+    },
+    "(O)GreenRainWeeds1": {
+      "sheet": "objects2",
+      "spriteIndex": 41,
+      "width": 16,
+      "height": 16
+    },
+    "(O)GreenRainWeeds2": {
+      "sheet": "objects2",
+      "spriteIndex": 42,
+      "width": 16,
+      "height": 16
+    },
+    "(O)GreenRainWeeds3": {
+      "sheet": "objects2",
+      "spriteIndex": 43,
+      "width": 16,
+      "height": 16
+    },
+    "(O)GreenRainWeeds4": {
+      "sheet": "objects2",
+      "spriteIndex": 48,
+      "width": 16,
+      "height": 16
+    },
+    "(O)GreenRainWeeds5": {
+      "sheet": "objects2",
+      "spriteIndex": 49,
+      "width": 16,
+      "height": 16
+    },
+    "(O)GreenRainWeeds6": {
+      "sheet": "objects2",
+      "spriteIndex": 50,
+      "width": 16,
+      "height": 16
+    },
+    "(O)GreenRainWeeds7": {
+      "sheet": "objects2",
+      "spriteIndex": 51,
+      "width": 16,
+      "height": 16
+    },
+    "(O)SonarBobber": {
+      "sheet": "objects2",
+      "spriteIndex": 56,
+      "width": 16,
+      "height": 16
+    },
+    "(O)SpecificBait": {
+      "sheet": "objects2",
+      "spriteIndex": 57,
+      "width": 16,
+      "height": 16
+    },
+    "(O)TentKit": {
+      "sheet": "objects2",
+      "spriteIndex": 59,
+      "width": 16,
+      "height": 16
+    },
+    "(O)VolcanoGoldNode": {
+      "sheet": "objects2",
+      "spriteIndex": 60,
+      "width": 16,
+      "height": 16
+    },
+    "(O)MysticTreeSeed": {
+      "sheet": "objects2",
+      "spriteIndex": 61,
+      "width": 16,
+      "height": 16
+    },
+    "(O)MysticSyrup": {
+      "sheet": "objects2",
+      "spriteIndex": 62,
+      "width": 16,
+      "height": 16
+    },
+    "(O)Raisins": {
+      "sheet": "objects2",
+      "spriteIndex": 63,
+      "width": 16,
+      "height": 16
+    },
+    "(O)DriedFruit": {
+      "sheet": "objects2",
+      "spriteIndex": 64,
+      "width": 16,
+      "height": 16
+    },
+    "(O)DriedMushrooms": {
+      "sheet": "objects2",
+      "spriteIndex": 66,
+      "width": 16,
+      "height": 16
+    },
+    "(O)StardropTea": {
+      "sheet": "objects2",
+      "spriteIndex": 68,
+      "width": 16,
+      "height": 16
+    },
+    "(O)PrizeTicket": {
+      "sheet": "objects2",
+      "spriteIndex": 69,
+      "width": 16,
+      "height": 16
+    },
+    "(O)GoldCoin": {
+      "sheet": "objects2",
+      "spriteIndex": 70,
+      "width": 16,
+      "height": 16
+    },
+    "(O)TreasureTotem": {
+      "sheet": "objects2",
+      "spriteIndex": 71,
+      "width": 16,
+      "height": 16
+    },
+    "(O)ChallengeBait": {
+      "sheet": "objects2",
+      "spriteIndex": 72,
+      "width": 16,
+      "height": 16
+    },
+    "(O)CarrotSeeds": {
+      "sheet": "objects2",
+      "spriteIndex": 84,
+      "width": 16,
+      "height": 16
+    },
+    "(O)Carrot": {
+      "sheet": "objects2",
+      "spriteIndex": 80,
+      "width": 16,
+      "height": 16
+    },
+    "(O)SummerSquashSeeds": {
+      "sheet": "objects2",
+      "spriteIndex": 85,
+      "width": 16,
+      "height": 16
+    },
+    "(O)SummerSquash": {
+      "sheet": "objects2",
+      "spriteIndex": 81,
+      "width": 16,
+      "height": 16
+    },
+    "(O)BroccoliSeeds": {
+      "sheet": "objects2",
+      "spriteIndex": 86,
+      "width": 16,
+      "height": 16
+    },
+    "(O)Broccoli": {
+      "sheet": "objects2",
+      "spriteIndex": 82,
+      "width": 16,
+      "height": 16
+    },
+    "(O)PowdermelonSeeds": {
+      "sheet": "objects2",
+      "spriteIndex": 87,
+      "width": 16,
+      "height": 16
+    },
+    "(O)Powdermelon": {
+      "sheet": "objects2",
+      "spriteIndex": 83,
+      "width": 16,
+      "height": 16
+    },
+    "(O)SeedSpot": {
+      "sheet": "objects2",
+      "spriteIndex": 88,
+      "width": 16,
+      "height": 16
+    },
+    "(O)SmokedFish": {
+      "sheet": "objects2",
+      "spriteIndex": 15,
+      "width": 16,
+      "height": 16
+    },
+    "(O)PurpleBook": {
+      "sheet": "objects2",
+      "spriteIndex": 89,
+      "width": 16,
+      "height": 16
+    },
+    "(O)SkillBook_0": {
+      "sheet": "objects2",
+      "spriteIndex": 90,
+      "width": 16,
+      "height": 16
+    },
+    "(O)SkillBook_2": {
+      "sheet": "objects2",
+      "spriteIndex": 91,
+      "width": 16,
+      "height": 16
+    },
+    "(O)SkillBook_1": {
+      "sheet": "objects2",
+      "spriteIndex": 92,
+      "width": 16,
+      "height": 16
+    },
+    "(O)SkillBook_3": {
+      "sheet": "objects2",
+      "spriteIndex": 93,
+      "width": 16,
+      "height": 16
+    },
+    "(O)SkillBook_4": {
+      "sheet": "objects2",
+      "spriteIndex": 94,
+      "width": 16,
+      "height": 16
+    },
+    "(O)Book_Trash": {
+      "sheet": "objects2",
+      "spriteIndex": 102,
+      "width": 16,
+      "height": 16
+    },
+    "(O)Book_Crabbing": {
+      "sheet": "objects2",
+      "spriteIndex": 103,
+      "width": 16,
+      "height": 16
+    },
+    "(O)Book_Bombs": {
+      "sheet": "objects2",
+      "spriteIndex": 104,
+      "width": 16,
+      "height": 16
+    },
+    "(O)Book_Roe": {
+      "sheet": "objects2",
+      "spriteIndex": 105,
+      "width": 16,
+      "height": 16
+    },
+    "(O)Book_WildSeeds": {
+      "sheet": "objects2",
+      "spriteIndex": 106,
+      "width": 16,
+      "height": 16
+    },
+    "(O)Book_Woodcutting": {
+      "sheet": "objects2",
+      "spriteIndex": 107,
+      "width": 16,
+      "height": 16
+    },
+    "(O)Book_Defense": {
+      "sheet": "objects2",
+      "spriteIndex": 108,
+      "width": 16,
+      "height": 16
+    },
+    "(O)Book_Friendship": {
+      "sheet": "objects2",
+      "spriteIndex": 109,
+      "width": 16,
+      "height": 16
+    },
+    "(O)Book_Void": {
+      "sheet": "objects2",
+      "spriteIndex": 110,
+      "width": 16,
+      "height": 16
+    },
+    "(O)Book_Speed": {
+      "sheet": "objects2",
+      "spriteIndex": 111,
+      "width": 16,
+      "height": 16
+    },
+    "(O)Book_Marlon": {
+      "sheet": "objects2",
+      "spriteIndex": 112,
+      "width": 16,
+      "height": 16
+    },
+    "(O)Book_PriceCatalogue": {
+      "sheet": "objects2",
+      "spriteIndex": 114,
+      "width": 16,
+      "height": 16
+    },
+    "(O)Book_QueenOfSauce": {
+      "sheet": "objects2",
+      "spriteIndex": 115,
+      "width": 16,
+      "height": 16
+    },
+    "(O)Book_Diamonds": {
+      "sheet": "objects2",
+      "spriteIndex": 116,
+      "width": 16,
+      "height": 16
+    },
+    "(O)Book_Mystery": {
+      "sheet": "objects2",
+      "spriteIndex": 117,
+      "width": 16,
+      "height": 16
+    },
+    "(O)Book_AnimalCatalogue": {
+      "sheet": "objects2",
+      "spriteIndex": 118,
+      "width": 16,
+      "height": 16
+    },
+    "(O)Book_Speed2": {
+      "sheet": "objects2",
+      "spriteIndex": 119,
+      "width": 16,
+      "height": 16
+    },
+    "(O)GoldenAnimalCracker": {
+      "sheet": "objects2",
+      "spriteIndex": 121,
+      "width": 16,
+      "height": 16
+    },
+    "(O)GoldenMysteryBox": {
+      "sheet": "objects2",
+      "spriteIndex": 122,
+      "width": 16,
+      "height": 16
+    },
+    "(O)SeaJelly": {
+      "sheet": "objects2",
+      "spriteIndex": 134,
+      "width": 16,
+      "height": 16
+    },
+    "(O)CaveJelly": {
+      "sheet": "objects2",
+      "spriteIndex": 133,
+      "width": 16,
+      "height": 16
+    },
+    "(O)RiverJelly": {
+      "sheet": "objects2",
+      "spriteIndex": 132,
+      "width": 16,
+      "height": 16
+    },
+    "(O)Goby": {
+      "sheet": "objects2",
+      "spriteIndex": 135,
+      "width": 16,
+      "height": 16
+    },
+    "(O)VolcanoCoalNode0": {
+      "sheet": "objects2",
+      "spriteIndex": 136,
+      "width": 16,
+      "height": 16
+    },
+    "(O)VolcanoCoalNode1": {
+      "sheet": "objects2",
+      "spriteIndex": 137,
+      "width": 16,
+      "height": 16
+    },
+    "(O)PotOfGold": {
+      "sheet": "objects2",
+      "spriteIndex": 139,
+      "width": 16,
+      "height": 16
+    },
+    "(O)Book_Artifact": {
+      "sheet": "objects2",
+      "spriteIndex": 140,
+      "width": 16,
+      "height": 16
+    },
+    "(O)Book_Horse": {
+      "sheet": "objects2",
+      "spriteIndex": 141,
+      "width": 16,
+      "height": 16
+    },
+    "(O)ButterflyPowder": {
+      "sheet": "objects2",
+      "spriteIndex": 142,
+      "width": 16,
+      "height": 16
+    },
+    "(O)PetLicense": {
+      "sheet": "objects2",
+      "spriteIndex": 138,
+      "width": 16,
+      "height": 16
+    },
+    "(O)BlueGrassStarter": {
+      "sheet": "objects2",
+      "spriteIndex": 143,
+      "width": 16,
+      "height": 16
+    },
+    "(O)MossSoup": {
+      "sheet": "objects2",
+      "spriteIndex": 144,
+      "width": 16,
+      "height": 16
+    },
+    "(O)Book_Grass": {
+      "sheet": "objects2",
+      "spriteIndex": 145,
+      "width": 16,
+      "height": 16
+    },
+    "(O)BasicCoalNode0": {
+      "sheet": "objects2",
+      "spriteIndex": 146,
+      "width": 16,
+      "height": 16
+    },
+    "(O)BasicCoalNode1": {
+      "sheet": "objects2",
+      "spriteIndex": 147,
+      "width": 16,
+      "height": 16
+    },
+    "(BC)0": {
+      "sheet": "craftables",
+      "spriteIndex": 0,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)1": {
+      "sheet": "craftables",
+      "spriteIndex": 1,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)2": {
+      "sheet": "craftables",
+      "spriteIndex": 2,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)3": {
+      "sheet": "craftables",
+      "spriteIndex": 3,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)4": {
+      "sheet": "craftables",
+      "spriteIndex": 4,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)5": {
+      "sheet": "craftables",
+      "spriteIndex": 5,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)6": {
+      "sheet": "craftables",
+      "spriteIndex": 6,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)7": {
+      "sheet": "craftables",
+      "spriteIndex": 7,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)8": {
+      "sheet": "craftables",
+      "spriteIndex": 8,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)9": {
+      "sheet": "craftables",
+      "spriteIndex": 9,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)10": {
+      "sheet": "craftables",
+      "spriteIndex": 10,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)12": {
+      "sheet": "craftables",
+      "spriteIndex": 12,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)13": {
+      "sheet": "craftables",
+      "spriteIndex": 13,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)15": {
+      "sheet": "craftables",
+      "spriteIndex": 15,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)16": {
+      "sheet": "craftables",
+      "spriteIndex": 16,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)17": {
+      "sheet": "craftables",
+      "spriteIndex": 17,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)19": {
+      "sheet": "craftables",
+      "spriteIndex": 19,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)20": {
+      "sheet": "craftables",
+      "spriteIndex": 20,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)21": {
+      "sheet": "craftables",
+      "spriteIndex": 21,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)22": {
+      "sheet": "craftables",
+      "spriteIndex": 22,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)23": {
+      "sheet": "craftables",
+      "spriteIndex": 23,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)24": {
+      "sheet": "craftables",
+      "spriteIndex": 24,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)25": {
+      "sheet": "craftables",
+      "spriteIndex": 25,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)26": {
+      "sheet": "craftables",
+      "spriteIndex": 26,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)27": {
+      "sheet": "craftables",
+      "spriteIndex": 27,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)28": {
+      "sheet": "craftables",
+      "spriteIndex": 28,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)29": {
+      "sheet": "craftables",
+      "spriteIndex": 29,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)31": {
+      "sheet": "craftables",
+      "spriteIndex": 31,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)32": {
+      "sheet": "craftables",
+      "spriteIndex": 32,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)33": {
+      "sheet": "craftables",
+      "spriteIndex": 33,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)34": {
+      "sheet": "craftables",
+      "spriteIndex": 34,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)35": {
+      "sheet": "craftables",
+      "spriteIndex": 35,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)36": {
+      "sheet": "craftables",
+      "spriteIndex": 36,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)37": {
+      "sheet": "craftables",
+      "spriteIndex": 37,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)38": {
+      "sheet": "craftables",
+      "spriteIndex": 38,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)39": {
+      "sheet": "craftables",
+      "spriteIndex": 39,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)40": {
+      "sheet": "craftables",
+      "spriteIndex": 40,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)41": {
+      "sheet": "craftables",
+      "spriteIndex": 41,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)42": {
+      "sheet": "craftables",
+      "spriteIndex": 42,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)43": {
+      "sheet": "craftables",
+      "spriteIndex": 43,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)44": {
+      "sheet": "craftables",
+      "spriteIndex": 44,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)45": {
+      "sheet": "craftables",
+      "spriteIndex": 45,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)46": {
+      "sheet": "craftables",
+      "spriteIndex": 46,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)47": {
+      "sheet": "craftables",
+      "spriteIndex": 47,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)48": {
+      "sheet": "craftables",
+      "spriteIndex": 48,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)52": {
+      "sheet": "craftables",
+      "spriteIndex": 52,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)53": {
+      "sheet": "craftables",
+      "spriteIndex": 53,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)54": {
+      "sheet": "craftables",
+      "spriteIndex": 54,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)55": {
+      "sheet": "craftables",
+      "spriteIndex": 55,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)56": {
+      "sheet": "craftables",
+      "spriteIndex": 56,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)62": {
+      "sheet": "craftables",
+      "spriteIndex": 62,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)64": {
+      "sheet": "craftables",
+      "spriteIndex": 64,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)65": {
+      "sheet": "craftables",
+      "spriteIndex": 65,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)66": {
+      "sheet": "craftables",
+      "spriteIndex": 66,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)67": {
+      "sheet": "craftables",
+      "spriteIndex": 67,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)68": {
+      "sheet": "craftables",
+      "spriteIndex": 68,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)69": {
+      "sheet": "craftables",
+      "spriteIndex": 69,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)70": {
+      "sheet": "craftables",
+      "spriteIndex": 70,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)71": {
+      "sheet": "craftables",
+      "spriteIndex": 71,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)72": {
+      "sheet": "craftables",
+      "spriteIndex": 72,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)73": {
+      "sheet": "craftables",
+      "spriteIndex": 73,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)74": {
+      "sheet": "craftables",
+      "spriteIndex": 74,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)75": {
+      "sheet": "craftables",
+      "spriteIndex": 75,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)76": {
+      "sheet": "craftables",
+      "spriteIndex": 76,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)78": {
+      "sheet": "craftables",
+      "spriteIndex": 78,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)79": {
+      "sheet": "craftables",
+      "spriteIndex": 79,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)80": {
+      "sheet": "craftables",
+      "spriteIndex": 80,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)81": {
+      "sheet": "craftables",
+      "spriteIndex": 81,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)82": {
+      "sheet": "craftables",
+      "spriteIndex": 82,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)83": {
+      "sheet": "craftables",
+      "spriteIndex": 83,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)84": {
+      "sheet": "craftables",
+      "spriteIndex": 84,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)85": {
+      "sheet": "craftables",
+      "spriteIndex": 85,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)86": {
+      "sheet": "craftables",
+      "spriteIndex": 86,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)87": {
+      "sheet": "craftables",
+      "spriteIndex": 87,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)88": {
+      "sheet": "craftables",
+      "spriteIndex": 88,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)89": {
+      "sheet": "craftables",
+      "spriteIndex": 89,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)94": {
+      "sheet": "craftables",
+      "spriteIndex": 94,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)95": {
+      "sheet": "craftables",
+      "spriteIndex": 95,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)96": {
+      "sheet": "craftables",
+      "spriteIndex": 96,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)98": {
+      "sheet": "craftables",
+      "spriteIndex": 98,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)99": {
+      "sheet": "craftables",
+      "spriteIndex": 99,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)101": {
+      "sheet": "craftables",
+      "spriteIndex": 101,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)104": {
+      "sheet": "craftables",
+      "spriteIndex": 104,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)105": {
+      "sheet": "craftables",
+      "spriteIndex": 105,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)106": {
+      "sheet": "craftables",
+      "spriteIndex": 106,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)107": {
+      "sheet": "craftables",
+      "spriteIndex": 107,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)108": {
+      "sheet": "craftables",
+      "spriteIndex": 108,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)110": {
+      "sheet": "craftables",
+      "spriteIndex": 110,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)111": {
+      "sheet": "craftables",
+      "spriteIndex": 111,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)112": {
+      "sheet": "craftables",
+      "spriteIndex": 112,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)113": {
+      "sheet": "craftables",
+      "spriteIndex": 113,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)114": {
+      "sheet": "craftables",
+      "spriteIndex": 114,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)116": {
+      "sheet": "craftables",
+      "spriteIndex": 116,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)117": {
+      "sheet": "craftables",
+      "spriteIndex": 117,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)118": {
+      "sheet": "craftables",
+      "spriteIndex": 118,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)119": {
+      "sheet": "craftables",
+      "spriteIndex": 119,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)120": {
+      "sheet": "craftables",
+      "spriteIndex": 120,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)121": {
+      "sheet": "craftables",
+      "spriteIndex": 121,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)122": {
+      "sheet": "craftables",
+      "spriteIndex": 122,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)123": {
+      "sheet": "craftables",
+      "spriteIndex": 123,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)124": {
+      "sheet": "craftables",
+      "spriteIndex": 124,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)125": {
+      "sheet": "craftables",
+      "spriteIndex": 125,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)126": {
+      "sheet": "craftables",
+      "spriteIndex": 126,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)127": {
+      "sheet": "craftables",
+      "spriteIndex": 127,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)128": {
+      "sheet": "craftables",
+      "spriteIndex": 128,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)130": {
+      "sheet": "craftables",
+      "spriteIndex": 130,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)136": {
+      "sheet": "craftables",
+      "spriteIndex": 136,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)137": {
+      "sheet": "craftables",
+      "spriteIndex": 137,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)138": {
+      "sheet": "craftables",
+      "spriteIndex": 138,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)139": {
+      "sheet": "craftables",
+      "spriteIndex": 139,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)140": {
+      "sheet": "craftables",
+      "spriteIndex": 140,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)141": {
+      "sheet": "craftables",
+      "spriteIndex": 141,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)143": {
+      "sheet": "craftables",
+      "spriteIndex": 143,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)144": {
+      "sheet": "craftables",
+      "spriteIndex": 144,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)145": {
+      "sheet": "craftables",
+      "spriteIndex": 145,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)146": {
+      "sheet": "craftables",
+      "spriteIndex": 146,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)147": {
+      "sheet": "craftables",
+      "spriteIndex": 147,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)148": {
+      "sheet": "craftables",
+      "spriteIndex": 148,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)149": {
+      "sheet": "craftables",
+      "spriteIndex": 149,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)150": {
+      "sheet": "craftables",
+      "spriteIndex": 150,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)151": {
+      "sheet": "craftables",
+      "spriteIndex": 151,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)152": {
+      "sheet": "craftables",
+      "spriteIndex": 152,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)153": {
+      "sheet": "craftables",
+      "spriteIndex": 153,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)154": {
+      "sheet": "craftables",
+      "spriteIndex": 154,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)155": {
+      "sheet": "craftables",
+      "spriteIndex": 155,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)156": {
+      "sheet": "craftables",
+      "spriteIndex": 156,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)158": {
+      "sheet": "craftables",
+      "spriteIndex": 158,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)159": {
+      "sheet": "craftables",
+      "spriteIndex": 159,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)160": {
+      "sheet": "craftables",
+      "spriteIndex": 160,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)161": {
+      "sheet": "craftables",
+      "spriteIndex": 161,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)162": {
+      "sheet": "craftables",
+      "spriteIndex": 162,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)163": {
+      "sheet": "craftables",
+      "spriteIndex": 163,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)164": {
+      "sheet": "craftables",
+      "spriteIndex": 164,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)165": {
+      "sheet": "craftables",
+      "spriteIndex": 165,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)167": {
+      "sheet": "craftables",
+      "spriteIndex": 167,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)174": {
+      "sheet": "craftables",
+      "spriteIndex": 174,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)175": {
+      "sheet": "craftables",
+      "spriteIndex": 175,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)184": {
+      "sheet": "craftables",
+      "spriteIndex": 184,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)188": {
+      "sheet": "craftables",
+      "spriteIndex": 188,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)192": {
+      "sheet": "craftables",
+      "spriteIndex": 192,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)196": {
+      "sheet": "craftables",
+      "spriteIndex": 196,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)200": {
+      "sheet": "craftables",
+      "spriteIndex": 200,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)204": {
+      "sheet": "craftables",
+      "spriteIndex": 204,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)208": {
+      "sheet": "craftables",
+      "spriteIndex": 208,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)209": {
+      "sheet": "craftables",
+      "spriteIndex": 209,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)211": {
+      "sheet": "craftables",
+      "spriteIndex": 211,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)214": {
+      "sheet": "craftables",
+      "spriteIndex": 214,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)216": {
+      "sheet": "craftables",
+      "spriteIndex": 216,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)219": {
+      "sheet": "craftables",
+      "spriteIndex": 219,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)221": {
+      "sheet": "craftables",
+      "spriteIndex": 221,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)232": {
+      "sheet": "craftables",
+      "spriteIndex": 232,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)238": {
+      "sheet": "craftables",
+      "spriteIndex": 238,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)239": {
+      "sheet": "craftables",
+      "spriteIndex": 239,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)248": {
+      "sheet": "craftables",
+      "spriteIndex": 248,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)254": {
+      "sheet": "craftables",
+      "spriteIndex": 254,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)182": {
+      "sheet": "craftables",
+      "spriteIndex": 182,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)246": {
+      "sheet": "craftables",
+      "spriteIndex": 246,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)247": {
+      "sheet": "craftables",
+      "spriteIndex": 247,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)231": {
+      "sheet": "craftables",
+      "spriteIndex": 231,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)90": {
+      "sheet": "craftables",
+      "spriteIndex": 90,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)256": {
+      "sheet": "craftables",
+      "spriteIndex": 256,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)262": {
+      "sheet": "craftables",
+      "spriteIndex": 262,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)263": {
+      "sheet": "craftables",
+      "spriteIndex": 263,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)264": {
+      "sheet": "craftables",
+      "spriteIndex": 264,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)265": {
+      "sheet": "craftables",
+      "spriteIndex": 265,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)272": {
+      "sheet": "craftables",
+      "spriteIndex": 272,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)275": {
+      "sheet": "craftables",
+      "spriteIndex": 275,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)278": {
+      "sheet": "craftables",
+      "spriteIndex": 278,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)280": {
+      "sheet": "craftables",
+      "spriteIndex": 280,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)TextSign": {
+      "sheet": "craftables",
+      "spriteIndex": 281,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)MushroomLog": {
+      "sheet": "craftables",
+      "spriteIndex": 283,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)BaitMaker": {
+      "sheet": "craftables",
+      "spriteIndex": 285,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)Dehydrator": {
+      "sheet": "craftables",
+      "spriteIndex": 286,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)HeavyFurnace": {
+      "sheet": "craftables",
+      "spriteIndex": 288,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)StatueOfBlessings": {
+      "sheet": "craftables",
+      "spriteIndex": 290,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)StatueOfTheDwarfKing": {
+      "sheet": "craftables",
+      "spriteIndex": 292,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)Anvil": {
+      "sheet": "craftables",
+      "spriteIndex": 293,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)MiniForge": {
+      "sheet": "craftables",
+      "spriteIndex": 294,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)FishSmoker": {
+      "sheet": "craftables",
+      "spriteIndex": 296,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)DeluxeWormBin": {
+      "sheet": "craftables",
+      "spriteIndex": 298,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)BigChest": {
+      "sheet": "craftables",
+      "spriteIndex": 304,
+      "width": 16,
+      "height": 32
+    },
+    "(BC)BigStoneChest": {
+      "sheet": "craftables",
+      "spriteIndex": 328,
+      "width": 16,
+      "height": 32
+    },
+    "(M)MannequinMale": {
+      "sheet": "mannequins",
+      "spriteIndex": 0,
+      "width": 16,
+      "height": 32,
+      "columns": 8
+    },
+    "(M)MannequinFemale": {
+      "sheet": "mannequins",
+      "spriteIndex": 4,
+      "width": 16,
+      "height": 32,
+      "columns": 8
+    },
+    "(M)CursedMannequinMale": {
+      "sheet": "mannequins",
+      "spriteIndex": 8,
+      "width": 16,
+      "height": 32,
+      "columns": 8
+    },
+    "(M)CursedMannequinFemale": {
+      "sheet": "mannequins",
+      "spriteIndex": 12,
+      "width": 16,
+      "height": 32,
+      "columns": 8
+    }
+  },
+  "byName": {
+    "Wild Horseradish": "(O)16",
+    "Daffodil": "(O)18",
+    "Leek": "(O)20",
+    "Dandelion": "(O)22",
+    "Parsnip": "(O)24",
+    "Lumber": "(O)30",
+    "Emerald": "(O)60",
+    "Aquamarine": "(O)62",
+    "Ruby": "(O)64",
+    "Amethyst": "(O)66",
+    "Topaz": "(O)68",
+    "Jade": "(O)70",
+    "Trimmed Lucky Purple Shorts": "(O)71",
+    "Diamond": "(O)72",
+    "Prismatic Shard": "(O)74",
+    "Cave Carrot": "(O)78",
+    "Secret Note": "(O)79",
+    "Quartz": "(O)80",
+    "Fire Quartz": "(O)82",
+    "Frozen Tear": "(O)84",
+    "Earth Crystal": "(O)86",
+    "Coconut": "(O)88",
+    "Cactus Fruit": "(O)90",
+    "Sap": "(O)92",
+    "Torch": "(O)93",
+    "Spirit Torch": "(O)94",
+    "Dwarf Scroll I": "(O)96",
+    "Dwarf Scroll II": "(O)97",
+    "Dwarf Scroll III": "(O)98",
+    "Dwarf Scroll IV": "(O)99",
+    "Chipped Amphora": "(O)100",
+    "Arrowhead": "(O)101",
+    "Lost Book": "(O)102",
+    "Ancient Doll": "(O)103",
+    "Elvish Jewelry": "(O)104",
+    "Chewing Stick": "(O)105",
+    "Ornamental Fan": "(O)106",
+    "Dinosaur Egg": "(O)107",
+    "Rare Disc": "(O)108",
+    "Ancient Sword": "(O)109",
+    "Rusty Spoon": "(O)110",
+    "Rusty Spur": "(O)111",
+    "Rusty Cog": "(O)112",
+    "Ancient Seed": "(O)114",
+    "Prehistoric Tool": "(O)115",
+    "Dried Starfish": "(O)116",
+    "Anchor": "(O)117",
+    "Glass Shards": "(O)118",
+    "Bone Flute": "(O)119",
+    "Prehistoric Handaxe": "(O)120",
+    "Dwarvish Helm": "(O)121",
+    "Dwarf Gadget": "(O)122",
+    "Ancient Drum": "(O)123",
+    "Golden Mask": "(O)124",
+    "Golden Relic": "(O)125",
+    "Pufferfish": "(O)128",
+    "Anchovy": "(O)129",
+    "Tuna": "(O)130",
+    "Sardine": "(O)131",
+    "Bream": "(O)132",
+    "Largemouth Bass": "(O)136",
+    "Smallmouth Bass": "(O)137",
+    "Rainbow Trout": "(O)138",
+    "Salmon": "(O)139",
+    "Walleye": "(O)140",
+    "Perch": "(O)141",
+    "Carp": "(O)142",
+    "Catfish": "(O)143",
+    "Pike": "(O)144",
+    "Sunfish": "(O)145",
+    "Red Mullet": "(O)146",
+    "Herring": "(O)147",
+    "Eel": "(O)148",
+    "Octopus": "(O)149",
+    "Red Snapper": "(O)150",
+    "Squid": "(O)151",
+    "Seaweed": "(O)152",
+    "Green Algae": "(O)153",
+    "Sea Cucumber": "(O)154",
+    "Super Cucumber": "(O)155",
+    "Ghostfish": "(O)156",
+    "White Algae": "(O)157",
+    "Stonefish": "(O)158",
+    "Crimsonfish": "(O)159",
+    "Angler": "(O)160",
+    "Ice Pip": "(O)161",
+    "Lava Eel": "(O)162",
+    "Legend": "(O)163",
+    "Sandfish": "(O)164",
+    "Scorpion Carp": "(O)165",
+    "Treasure Chest": "(O)166",
+    "Joja Cola": "(O)167",
+    "Trash": "(O)168",
+    "Driftwood": "(O)169",
+    "Broken Glasses": "(O)170",
+    "Broken CD": "(O)171",
+    "Soggy Newspaper": "(O)172",
+    "Hay": "(O)178",
+    "Milk": "(O)184",
+    "Large Milk": "(O)186",
+    "Green Bean": "(O)188",
+    "Cauliflower": "(O)190",
+    "Ornate Necklace": "(O)191",
+    "Potato": "(O)192",
+    "Fried Egg": "(O)194",
+    "Omelet": "(O)195",
+    "Salad": "(O)196",
+    "Cheese Cauliflower": "(O)197",
+    "Baked Fish": "(O)198",
+    "Parsnip Soup": "(O)199",
+    "Vegetable Medley": "(O)200",
+    "Complete Breakfast": "(O)201",
+    "Fried Calamari": "(O)202",
+    "Strange Bun": "(O)203",
+    "Lucky Lunch": "(O)204",
+    "Fried Mushroom": "(O)205",
+    "Pizza": "(O)206",
+    "Bean Hotpot": "(O)207",
+    "Glazed Yams": "(O)208",
+    "Carp Surprise": "(O)209",
+    "Hashbrowns": "(O)210",
+    "Pancakes": "(O)211",
+    "Salmon Dinner": "(O)212",
+    "Fish Taco": "(O)213",
+    "Crispy Bass": "(O)214",
+    "Pepper Poppers": "(O)215",
+    "Bread": "(O)216",
+    "Tom Kha Soup": "(O)218",
+    "Trout Soup": "(O)219",
+    "Chocolate Cake": "(O)220",
+    "Pink Cake": "(O)221",
+    "Rhubarb Pie": "(O)222",
+    "Cookie": "(O)223",
+    "Spaghetti": "(O)224",
+    "Fried Eel": "(O)225",
+    "Spicy Eel": "(O)226",
+    "Sashimi": "(O)227",
+    "Maki Roll": "(O)228",
+    "Tortilla": "(O)229",
+    "Red Plate": "(O)230",
+    "Eggplant Parmesan": "(O)231",
+    "Rice Pudding": "(O)232",
+    "Ice Cream": "(O)233",
+    "Blueberry Tart": "(O)234",
+    "Autumn's Bounty": "(O)235",
+    "Pumpkin Soup": "(O)236",
+    "Super Meal": "(O)237",
+    "Cranberry Sauce": "(O)238",
+    "Stuffing": "(O)239",
+    "Farmer's Lunch": "(O)240",
+    "Survival Burger": "(O)241",
+    "Dish O' The Sea": "(O)242",
+    "Miner's Treat": "(O)243",
+    "Roots Platter": "(O)244",
+    "Sugar": "(O)245",
+    "Wheat Flour": "(O)246",
+    "Oil": "(O)247",
+    "Garlic": "(O)248",
+    "Kale": "(O)250",
+    "Tea Sapling": "(O)251",
+    "Rhubarb": "(O)252",
+    "Triple Shot Espresso": "(O)253",
+    "Melon": "(O)254",
+    "Tomato": "(O)256",
+    "Morel": "(O)257",
+    "Blueberry": "(O)258",
+    "Fiddlehead Fern": "(O)259",
+    "Hot Pepper": "(O)260",
+    "Warp Totem: Desert": "(O)261",
+    "Wheat": "(O)262",
+    "Radish": "(O)264",
+    "Red Cabbage": "(O)266",
+    "Starfruit": "(O)268",
+    "Corn": "(O)270",
+    "Unmilled Rice": "(O)271",
+    "Eggplant": "(O)272",
+    "Rice Shoot": "(O)273",
+    "Artichoke": "(O)274",
+    "Artifact Trove": "(O)275",
+    "Pumpkin": "(O)276",
+    "Wilted Bouquet": "(O)277",
+    "Bok Choy": "(O)278",
+    "Magic Rock Candy": "(O)279",
+    "Yam": "(O)280",
+    "Chanterelle": "(O)281",
+    "Cranberries": "(O)282",
+    "Holly": "(O)283",
+    "Beet": "(O)284",
+    "Cherry Bomb": "(O)286",
+    "Bomb": "(O)287",
+    "Mega Bomb": "(O)288",
+    "Brick Floor": "(O)293",
+    "Salmonberry": "(O)296",
+    "Grass Starter": "(O)297",
+    "Hardwood Fence": "(O)298",
+    "Amaranth Seeds": "(O)299",
+    "Amaranth": "(O)300",
+    "Grape Starter": "(O)301",
+    "Hops Starter": "(O)302",
+    "Pale Ale": "(O)303",
+    "Hops": "(O)304",
+    "Void Egg": "(O)305",
+    "Mayonnaise": "(O)306",
+    "Duck Mayonnaise": "(O)307",
+    "Void Mayonnaise": "(O)308",
+    "Acorn": "(O)309",
+    "Maple Seed": "(O)310",
+    "Pine Cone": "(O)311",
+    "Wood Fence": "(O)322",
+    "Stone Fence": "(O)323",
+    "Iron Fence": "(O)324",
+    "Gate": "(O)325",
+    "Dwarvish Translation Guide": "(O)326",
+    "Wood Floor": "(O)328",
+    "Stone Floor": "(O)329",
+    "Clay": "(O)330",
+    "Weathered Floor": "(O)331",
+    "Crystal Floor": "(O)333",
+    "Copper Bar": "(O)334",
+    "Iron Bar": "(O)335",
+    "Gold Bar": "(O)336",
+    "Iridium Bar": "(O)337",
+    "Refined Quartz": "(O)338",
+    "Honey": "(O)340",
+    "Tea Set": "(O)341",
+    "Pickles": "(O)342",
+    "Jelly": "(O)344",
+    "Beer": "(O)346",
+    "Rare Seed": "(O)347",
+    "Wine": "(O)348",
+    "Energy Tonic": "(O)349",
+    "Juice": "(O)350",
+    "Muscle Remedy": "(O)351",
+    "Basic Fertilizer": "(O)368",
+    "Quality Fertilizer": "(O)369",
+    "Basic Retaining Soil": "(O)370",
+    "Quality Retaining Soil": "(O)371",
+    "Clam": "(O)372",
+    "Golden Pumpkin": "(O)373",
+    "Copper Ore": "(O)378",
+    "Iron Ore": "(O)380",
+    "Coal": "(O)382",
+    "Gold Ore": "(O)384",
+    "Iridium Ore": "(O)386",
+    "Wood": "(O)388",
+    "Nautilus Shell": "(O)392",
+    "Coral": "(O)393",
+    "Rainbow Shell": "(O)394",
+    "Coffee": "(O)395",
+    "Spice Berry": "(O)396",
+    "Sea Urchin": "(O)397",
+    "Grape": "(O)398",
+    "Spring Onion": "(O)399",
+    "Strawberry": "(O)400",
+    "Straw Floor": "(O)401",
+    "Sweet Pea": "(O)402",
+    "Field Snack": "(O)403",
+    "Common Mushroom": "(O)404",
+    "Wood Path": "(O)405",
+    "Wild Plum": "(O)406",
+    "Gravel Path": "(O)407",
+    "Hazelnut": "(O)408",
+    "Crystal Path": "(O)409",
+    "Blackberry": "(O)410",
+    "Cobblestone Path": "(O)411",
+    "Winter Root": "(O)412",
+    "Blue Slime Egg": "(O)413",
+    "Crystal Fruit": "(O)414",
+    "Stepping Stone Path": "(O)415",
+    "Snow Yam": "(O)416",
+    "Sweet Gem Berry": "(O)417",
+    "Crocus": "(O)418",
+    "Vinegar": "(O)419",
+    "Red Mushroom": "(O)420",
+    "Sunflower": "(O)421",
+    "Purple Mushroom": "(O)422",
+    "Rice": "(O)423",
+    "Cheese": "(O)424",
+    "Goat Cheese": "(O)426",
+    "Cloth": "(O)428",
+    "Truffle": "(O)430",
+    "Truffle Oil": "(O)432",
+    "Coffee Bean": "(O)433",
+    "Stardrop": "(O)434",
+    "Goat Milk": "(O)436",
+    "Red Slime Egg": "(O)437",
+    "L. Goat Milk": "(O)438",
+    "Purple Slime Egg": "(O)439",
+    "Wool": "(O)440",
+    "Explosive Ammo": "(O)441",
+    "Duck Egg": "(O)442",
+    "Duck Feather": "(O)444",
+    "Rabbit's Foot": "(O)446",
+    "Aged Roe": "(O)447",
+    "Stone Base": "(O)449",
+    "Ancient Fruit": "(O)454",
+    "Algae Soup": "(O)456",
+    "Pale Broth": "(O)457",
+    "Bouquet": "(O)458",
+    "Mead": "(O)459",
+    "Mermaid's Pendant": "(O)460",
+    "Decorative Pot": "(O)461",
+    "Drum Block": "(O)463",
+    "Flute Block": "(O)464",
+    "Speed-Gro": "(O)465",
+    "Deluxe Speed-Gro": "(O)466",
+    "Parsnip Seeds": "(O)472",
+    "Bean Starter": "(O)473",
+    "Cauliflower Seeds": "(O)474",
+    "Potato Seeds": "(O)475",
+    "Garlic Seeds": "(O)476",
+    "Kale Seeds": "(O)477",
+    "Rhubarb Seeds": "(O)478",
+    "Melon Seeds": "(O)479",
+    "Tomato Seeds": "(O)480",
+    "Blueberry Seeds": "(O)481",
+    "Pepper Seeds": "(O)482",
+    "Wheat Seeds": "(O)483",
+    "Radish Seeds": "(O)484",
+    "Red Cabbage Seeds": "(O)485",
+    "Starfruit Seeds": "(O)486",
+    "Corn Seeds": "(O)487",
+    "Eggplant Seeds": "(O)488",
+    "Artichoke Seeds": "(O)489",
+    "Pumpkin Seeds": "(O)490",
+    "Bok Choy Seeds": "(O)491",
+    "Yam Seeds": "(O)492",
+    "Cranberry Seeds": "(O)493",
+    "Beet Seeds": "(O)494",
+    "Spring Seeds": "(O)495",
+    "Summer Seeds": "(O)496",
+    "Fall Seeds": "(O)497",
+    "Winter Seeds": "(O)498",
+    "Ancient Seeds": "(O)499",
+    "Tulip Bulb": "(O)427",
+    "Jazz Seeds": "(O)429",
+    "Poppy Seeds": "(O)453",
+    "Spangle Seeds": "(O)455",
+    "Sunflower Seeds": "(O)431",
+    "Fairy Seeds": "(O)425",
+    "Small Glow Ring": "(O)516",
+    "Glow Ring": "(O)517",
+    "Small Magnet Ring": "(O)518",
+    "Magnet Ring": "(O)519",
+    "Slime Charmer Ring": "(O)520",
+    "Warrior Ring": "(O)521",
+    "Vampire Ring": "(O)522",
+    "Savage Ring": "(O)523",
+    "Ring of Yoba": "(O)524",
+    "Sturdy Ring": "(O)525",
+    "Burglar's Ring": "(O)526",
+    "Iridium Band": "(O)527",
+    "Jukebox Ring": "(O)528",
+    "Amethyst Ring": "(O)529",
+    "Topaz Ring": "(O)530",
+    "Aquamarine Ring": "(O)531",
+    "Jade Ring": "(O)532",
+    "Emerald Ring": "(O)533",
+    "Ruby Ring": "(O)534",
+    "Geode": "(O)535",
+    "Frozen Geode": "(O)536",
+    "Magma Geode": "(O)537",
+    "Alamite": "(O)538",
+    "Bixite": "(O)539",
+    "Baryte": "(O)540",
+    "Aerinite": "(O)541",
+    "Calcite": "(O)542",
+    "Dolomite": "(O)543",
+    "Esperite": "(O)544",
+    "Fluorapatite": "(O)545",
+    "Geminite": "(O)546",
+    "Helvite": "(O)547",
+    "Jamborite": "(O)548",
+    "Jagoite": "(O)549",
+    "Kyanite": "(O)550",
+    "Lunarite": "(O)551",
+    "Malachite": "(O)552",
+    "Neptunite": "(O)553",
+    "Lemon Stone": "(O)554",
+    "Nekoite": "(O)555",
+    "Orpiment": "(O)556",
+    "Petrified Slime": "(O)557",
+    "Thunder Egg": "(O)558",
+    "Pyrite": "(O)559",
+    "Ocean Stone": "(O)560",
+    "Ghost Crystal": "(O)561",
+    "Tigerseye": "(O)562",
+    "Jasper": "(O)563",
+    "Opal": "(O)564",
+    "Fire Opal": "(O)565",
+    "Celestine": "(O)566",
+    "Marble": "(O)567",
+    "Sandstone": "(O)568",
+    "Granite": "(O)569",
+    "Basalt": "(O)570",
+    "Limestone": "(O)571",
+    "Soapstone": "(O)572",
+    "Hematite": "(O)573",
+    "Mudstone": "(O)574",
+    "Obsidian": "(O)575",
+    "Slate": "(O)576",
+    "Fairy Stone": "(O)577",
+    "Star Shards": "(O)578",
+    "Prehistoric Scapula": "(O)579",
+    "Prehistoric Tibia": "(O)580",
+    "Prehistoric Skull": "(O)581",
+    "Skeletal Hand": "(O)582",
+    "Prehistoric Rib": "(O)583",
+    "Prehistoric Vertebra": "(O)584",
+    "Skeletal Tail": "(O)585",
+    "Nautilus Fossil": "(O)586",
+    "Amphibian Fossil": "(O)587",
+    "Palm Fossil": "(O)588",
+    "Trilobite": "(O)589",
+    "Artifact Spot": "(O)590",
+    "Tulip": "(O)591",
+    "Summer Spangle": "(O)593",
+    "Fairy Rose": "(O)595",
+    "Blue Jazz": "(O)597",
+    "Sprinkler": "(O)599",
+    "Poppy": "(O)376",
+    "Plum Pudding": "(O)604",
+    "Artichoke Dip": "(O)605",
+    "Stir Fry": "(O)606",
+    "Roasted Hazelnuts": "(O)607",
+    "Pumpkin Pie": "(O)608",
+    "Radish Salad": "(O)609",
+    "Fruit Salad": "(O)610",
+    "Blackberry Cobbler": "(O)611",
+    "Cranberry Candy": "(O)612",
+    "Apple": "(O)613",
+    "Green Tea": "(O)614",
+    "Bruschetta": "(O)618",
+    "Quality Sprinkler": "(O)621",
+    "Iridium Sprinkler": "(O)645",
+    "Coleslaw": "(O)648",
+    "Fiddlehead Risotto": "(O)649",
+    "Poppyseed Muffin": "(O)651",
+    "Cherry Sapling": "(O)628",
+    "Apricot Sapling": "(O)629",
+    "Orange Sapling": "(O)630",
+    "Peach Sapling": "(O)631",
+    "Pomegranate Sapling": "(O)632",
+    "Apple Sapling": "(O)633",
+    "Apricot": "(O)634",
+    "Orange": "(O)635",
+    "Peach": "(O)636",
+    "Pomegranate": "(O)637",
+    "Cherry": "(O)638",
+    "Green Slime Egg": "(O)680",
+    "Rain Totem": "(O)681",
+    "Mutant Carp": "(O)682",
+    "Bug Meat": "(O)684",
+    "Spinner": "(O)686",
+    "Dressed Spinner": "(O)687",
+    "Warp Totem: Farm": "(O)688",
+    "Warp Totem: Mountains": "(O)689",
+    "Warp Totem: Beach": "(O)690",
+    "Barbed Hook": "(O)691",
+    "Lead Bobber": "(O)692",
+    "Treasure Hunter": "(O)693",
+    "Trap Bobber": "(O)694",
+    "Cork Bobber": "(O)695",
+    "Sturgeon": "(O)698",
+    "Tiger Trout": "(O)699",
+    "Bullhead": "(O)700",
+    "Tilapia": "(O)701",
+    "Chub": "(O)702",
+    "Magnet": "(O)703",
+    "Dorado": "(O)704",
+    "Albacore": "(O)705",
+    "Shad": "(O)706",
+    "Lingcod": "(O)707",
+    "Halibut": "(O)708",
+    "Hardwood": "(O)709",
+    "Crab Pot": "(O)710",
+    "Lobster": "(O)715",
+    "Crayfish": "(O)716",
+    "Crab": "(O)717",
+    "Cockle": "(O)718",
+    "Mussel": "(O)719",
+    "Shrimp": "(O)720",
+    "Snail": "(O)721",
+    "Periwinkle": "(O)722",
+    "Oyster": "(O)723",
+    "Maple Syrup": "(O)724",
+    "Oak Resin": "(O)725",
+    "Pine Tar": "(O)726",
+    "Chowder": "(O)727",
+    "Lobster Bisque": "(O)730",
+    "Fish Stew": "(O)728",
+    "Escargot": "(O)729",
+    "Maple Bar": "(O)731",
+    "Crab Cakes": "(O)732",
+    "Shrimp Cocktail": "(O)733",
+    "Woodskip": "(O)734",
+    "Haley's Lost Bracelet": "(O)742",
+    "Strawberry Seeds": "(O)745",
+    "Jack-O-Lantern": "(O)746",
+    "Omni Geode": "(O)749",
+    "Slime": "(O)766",
+    "Bat Wing": "(O)767",
+    "Solar Essence": "(O)768",
+    "Void Essence": "(O)769",
+    "Mixed Seeds": "(O)770",
+    "Fiber": "(O)771",
+    "Oil of Garlic": "(O)772",
+    "Life Elixir": "(O)773",
+    "Wild Bait": "(O)774",
+    "Glacierfish": "(O)775",
+    "Battery Pack": "(O)787",
+    "Lost Axe": "(O)788",
+    "Lucky Purple Shorts": "(O)789",
+    "Berry Basket": "(O)790",
+    "Void Salmon": "(O)795",
+    "Slimejack": "(O)796",
+    "Pearl": "(O)797",
+    "Midnight Squid": "(O)798",
+    "Spook Fish": "(O)799",
+    "Blobfish": "(O)800",
+    "Wedding Ring": "(O)801",
+    "Cactus Seeds": "(O)802",
+    "Iridium Milk": "(O)803",
+    "Tree Fertilizer": "(O)805",
+    "Dinosaur Mayonnaise": "(O)807",
+    "Void Ghost Pendant": "(O)808",
+    "Movie Ticket": "(O)809",
+    "Crabshell Ring": "(O)810",
+    "Napalm Ring": "(O)811",
+    "Roe": "(O)812",
+    "Caviar": "(O)445",
+    "Squid Ink": "(O)814",
+    "Tea Leaves": "(O)815",
+    "Flounder": "(O)267",
+    "Seafoam Pudding": "(O)265",
+    "Midnight Carp": "(O)269",
+    "Mahogany Seed": "(O)292",
+    "Ostrich Egg": "(O)289",
+    "Golden Walnut": "(O)73",
+    "Banana Sapling": "(O)69",
+    "Banana": "(O)91",
+    "Golden Coconut": "(O)791",
+    "Fossilized Skull": "(O)820",
+    "Fossilized Spine": "(O)821",
+    "Fossilized Tail": "(O)822",
+    "Fossilized Leg": "(O)823",
+    "Fossilized Ribs": "(O)824",
+    "Snake Skull": "(O)825",
+    "Snake Vertebrae": "(O)826",
+    "Mummified Bat": "(O)827",
+    "Mummified Frog": "(O)828",
+    "Ginger": "(O)829",
+    "Taro Root": "(O)830",
+    "Taro Tuber": "(O)831",
+    "Pineapple": "(O)832",
+    "Pineapple Seeds": "(O)833",
+    "Mango": "(O)834",
+    "Mango Sapling": "(O)835",
+    "Stingray": "(O)836",
+    "Lionfish": "(O)837",
+    "Blue Discus": "(O)838",
+    "Thorns Ring": "(O)839",
+    "Rustic Plank Floor": "(O)840",
+    "Stone Walkway Floor": "(O)841",
+    "Journal Scrap": "(O)842",
+    "Cinder Shard": "(O)848",
+    "Magma Cap": "(O)851",
+    "Dragon Tooth": "(O)852",
+    "Curiosity Lure": "(O)856",
+    "Tiger Slime Egg": "(O)857",
+    "Qi Gem": "(O)858",
+    "Lucky Ring": "(O)859",
+    "Hot Java Ring": "(O)860",
+    "Protection Ring": "(O)861",
+    "Soul Sapper Ring": "(O)862",
+    "Phoenix Ring": "(O)863",
+    "War Memento": "(O)864",
+    "Gourmet Tomato Salt": "(O)865",
+    "Stardew Valley Rose": "(O)866",
+    "Advanced TV Remote": "(O)867",
+    "Arctic Shard": "(O)868",
+    "Wriggling Worm": "(O)869",
+    "Pirate's Locket": "(O)870",
+    "Fairy Dust": "(O)872",
+    "Piña Colada": "(O)873",
+    "Bug Steak": "(O)874",
+    "Ectoplasm": "(O)875",
+    "Prismatic Jelly": "(O)876",
+    "Quality Bobber": "(O)877",
+    "Monster Musk": "(O)879",
+    "Combined Ring": "(O)880",
+    "Bone Fragment": "(O)881",
+    "Fiber Seeds": "(O)885",
+    "Warp Totem: Island": "(O)886",
+    "Immunity Band": "(O)887",
+    "Glowstone Ring": "(O)888",
+    "Qi Fruit": "(O)889",
+    "Qi Bean": "(O)890",
+    "Mushroom Tree Seed": "(O)891",
+    "Warp Totem: Qi's Arena": "(O)892",
+    "Fireworks (Red)": "(O)893",
+    "Fireworks (Purple)": "(O)894",
+    "Fireworks (Green)": "(O)895",
+    "Galaxy Soul": "(O)896",
+    "Pierre's Missing Stocklist": "(O)897",
+    "Son of Crimsonfish": "(O)898",
+    "Ms. Angler": "(O)899",
+    "Legend II": "(O)900",
+    "Radioactive Carp": "(O)901",
+    "Glacierfish Jr.": "(O)902",
+    "Ginger Ale": "(O)903",
+    "Banana Pudding": "(O)904",
+    "Mango Sticky Rice": "(O)905",
+    "Poi": "(O)906",
+    "Tropical Curry": "(O)907",
+    "Magic Bait": "(O)908",
+    "Radioactive Ore": "(O)909",
+    "Radioactive Bar": "(O)910",
+    "Horse Flute": "(O)911",
+    "Enricher": "(O)913",
+    "Pressure Nozzle": "(O)915",
+    "Qi Seasoning": "(O)917",
+    "Hyper Speed-Gro": "(O)918",
+    "Deluxe Fertilizer": "(O)919",
+    "Deluxe Retaining Soil": "(O)920",
+    "Squid Ink Ravioli": "(O)921",
+    "Slime Crate": "(O)925",
+    "Cookout Kit": "(O)926",
+    "Camping Stove": "(O)927",
+    "Golden Egg": "(O)928",
+    "Hedge": "(O)929",
+    "???": "(O)930",
+    "Far Away Stone": "(O)FarAwayStone",
+    "Calico Egg": "(O)CalicoEgg",
+    "Mixed Flower Seeds": "(O)MixedFlowerSeeds",
+    "Golden Bobber": "(O)GoldenBobber",
+    "Mystery Box": "(O)MysteryBox",
+    "Golden Tag": "(O)TroutDerbyTag",
+    "Deluxe Bait": "(O)DeluxeBait",
+    "Moss": "(O)Moss",
+    "Mossy Seed": "(O)MossySeed",
+    "GreenRainWeeds0": "(O)GreenRainWeeds0",
+    "GreenRainWeeds1": "(O)GreenRainWeeds1",
+    "GreenRainWeeds2": "(O)GreenRainWeeds2",
+    "GreenRainWeeds3": "(O)GreenRainWeeds3",
+    "GreenRainWeeds4": "(O)GreenRainWeeds4",
+    "GreenRainWeeds5": "(O)GreenRainWeeds5",
+    "GreenRainWeeds6": "(O)GreenRainWeeds6",
+    "GreenRainWeeds7": "(O)GreenRainWeeds7",
+    "Sonar Bobber": "(O)SonarBobber",
+    "Tent Kit": "(O)TentKit",
+    "Mystic Tree Seed": "(O)MysticTreeSeed",
+    "Mystic Syrup": "(O)MysticSyrup",
+    "Raisins": "(O)Raisins",
+    "Stardrop Tea": "(O)StardropTea",
+    "Prize Ticket": "(O)PrizeTicket",
+    "Gold Coin": "(O)GoldCoin",
+    "Treasure Totem": "(O)TreasureTotem",
+    "Challenge Bait": "(O)ChallengeBait",
+    "Carrot Seeds": "(O)CarrotSeeds",
+    "Carrot": "(O)Carrot",
+    "Summer Squash Seeds": "(O)SummerSquashSeeds",
+    "Summer Squash": "(O)SummerSquash",
+    "Broccoli Seeds": "(O)BroccoliSeeds",
+    "Broccoli": "(O)Broccoli",
+    "Powdermelon Seeds": "(O)PowdermelonSeeds",
+    "Powdermelon": "(O)Powdermelon",
+    "Seed Spot": "(O)SeedSpot",
+    "Smoked": "(O)SmokedFish",
+    "Book Of Stars": "(O)PurpleBook",
+    "Stardew Valley Almanac": "(O)SkillBook_0",
+    "Woodcutter's Weekly": "(O)SkillBook_2",
+    "Bait And Bobber": "(O)SkillBook_1",
+    "Mining Monthly": "(O)SkillBook_3",
+    "Combat Quarterly": "(O)SkillBook_4",
+    "The Alleyway Buffet": "(O)Book_Trash",
+    "The Art O' Crabbing": "(O)Book_Crabbing",
+    "Dwarvish Safety Manual": "(O)Book_Bombs",
+    "Jewels Of The Sea": "(O)Book_Roe",
+    "Ways Of The Wild": "(O)Book_WildSeeds",
+    "Woody's Secret": "(O)Book_Woodcutting",
+    "Jack Be Nimble, Jack Be Thick": "(O)Book_Defense",
+    "Friendship 101": "(O)Book_Friendship",
+    "Monster Compendium": "(O)Book_Void",
+    "Way Of The Wind pt. 1": "(O)Book_Speed",
+    "Mapping Cave Systems": "(O)Book_Marlon",
+    "Price Catalogue": "(O)Book_PriceCatalogue",
+    "Queen Of Sauce Cookbook": "(O)Book_QueenOfSauce",
+    "The Diamond Hunter": "(O)Book_Diamonds",
+    "Book of Mysteries": "(O)Book_Mystery",
+    "Animal Catalogue": "(O)Book_AnimalCatalogue",
+    "Way Of The Wind pt. 2": "(O)Book_Speed2",
+    "Golden Animal Cracker": "(O)GoldenAnimalCracker",
+    "Golden Mystery Box": "(O)GoldenMysteryBox",
+    "Sea Jelly": "(O)SeaJelly",
+    "Cave Jelly": "(O)CaveJelly",
+    "River Jelly": "(O)RiverJelly",
+    "Goby": "(O)Goby",
+    "PotOfGold": "(O)PotOfGold",
+    "Book_Artifact": "(O)Book_Artifact",
+    "Book_Horse": "(O)Book_Horse",
+    "Butterfly Powder": "(O)ButterflyPowder",
+    "Pet License": "(O)PetLicense",
+    "Blue Grass Starter": "(O)BlueGrassStarter",
+    "Moss Soup": "(O)MossSoup",
+    "Book_Grass": "(O)Book_Grass",
+    "Scarecrow": "(BC)8",
+    "Lightning Rod": "(BC)9",
+    "Bee House": "(BC)10",
+    "Keg": "(BC)12",
+    "Furnace": "(BC)13",
+    "Preserves Jar": "(BC)15",
+    "Cheese Press": "(BC)16",
+    "Loom": "(BC)17",
+    "Oil Maker": "(BC)19",
+    "Recycling Machine": "(BC)20",
+    "Crystalarium": "(BC)21",
+    "Table Piece L": "(BC)22",
+    "Table Piece R": "(BC)23",
+    "Mayonnaise Machine": "(BC)24",
+    "Seed Maker": "(BC)25",
+    "Skeleton Model": "(BC)28",
+    "Obelisk": "(BC)29",
+    "Stone Cairn": "(BC)32",
+    "Suit Of Armor": "(BC)33",
+    "Sign Of The Vessel": "(BC)34",
+    "Basic Log": "(BC)35",
+    "Lawn Flamingo": "(BC)36",
+    "Wood Sign": "(BC)37",
+    "Stone Sign": "(BC)38",
+    "Dark Sign": "(BC)39",
+    "Big Green Cane": "(BC)40",
+    "Green Canes": "(BC)41",
+    "Mixed Cane": "(BC)42",
+    "Red Canes": "(BC)43",
+    "Big Red Cane": "(BC)44",
+    "Ornamental Hay Bale": "(BC)45",
+    "Log Section": "(BC)46",
+    "Grave Stone": "(BC)47",
+    "Seasonal Decor": "(BC)48",
+    "Stone Frog": "(BC)52",
+    "Stone Parrot": "(BC)53",
+    "Stone Junimo": "(BC)55",
+    "Slime Ball": "(BC)56",
+    "Garden Pot": "(BC)62",
+    "Bookcase": "(BC)64",
+    "Fancy Table": "(BC)65",
+    "Ancient Table": "(BC)66",
+    "Ancient Stool": "(BC)67",
+    "Grandfather Clock": "(BC)68",
+    "Teddy Timer": "(BC)69",
+    "Dead Tree": "(BC)70",
+    "Staircase": "(BC)71",
+    "Tall Torch": "(BC)72",
+    "Ritual Mask": "(BC)73",
+    "Bonfire": "(BC)74",
+    "Bongo": "(BC)75",
+    "Decorative Spears": "(BC)76",
+    "Boulder": "(BC)78",
+    "Sloth Skeleton L": "(BC)85",
+    "Sloth Skeleton M": "(BC)86",
+    "Sloth Skeleton R": "(BC)87",
+    "Standing Geode": "(BC)88",
+    "Obsidian Vase": "(BC)89",
+    "Singing Stone": "(BC)94",
+    "Strange Capsule": "(BC)96",
+    "Empty Capsule": "(BC)98",
+    "Feed Hopper": "(BC)99",
+    "Incubator": "(BC)101",
+    "Heater": "(BC)104",
+    "Tapper": "(BC)105",
+    "Camera": "(BC)106",
+    "Plush Bunny": "(BC)107",
+    "Tub o' Flowers": "(BC)108",
+    "Decorative Pitcher": "(BC)111",
+    "Dried Sunflowers": "(BC)112",
+    "Charcoal Kiln": "(BC)114",
+    "Stardew Hero Trophy": "(BC)116",
+    "Soda Machine": "(BC)117",
+    "Statue Of Endless Fortune": "(BC)127",
+    "Mushroom Box": "(BC)128",
+    "Chest": "(BC)130",
+    "Prairie King Arcade System": "(BC)141",
+    "Wooden Brazier": "(BC)143",
+    "Stone Brazier": "(BC)144",
+    "Gold Brazier": "(BC)145",
+    "Stump Brazier": "(BC)147",
+    "Carved Brazier": "(BC)148",
+    "Skull Brazier": "(BC)149",
+    "Barrel Brazier": "(BC)150",
+    "Marble Brazier": "(BC)151",
+    "Wood Lamp-post": "(BC)152",
+    "Iron Lamp-post": "(BC)153",
+    "Worm Bin": "(BC)154",
+    "??HMTGF??": "(BC)155",
+    "Slime Incubator": "(BC)156",
+    "Slime Egg-Press": "(BC)158",
+    "Junimo Kart Arcade System": "(BC)159",
+    "Statue Of Perfection": "(BC)160",
+    "??Pinky Lemon??": "(BC)161",
+    "??Foroguemon??": "(BC)162",
+    "Cask": "(BC)163",
+    "Solid Gold Lewis": "(BC)164",
+    "Auto-Grabber": "(BC)165",
+    "Deluxe Scarecrow": "(BC)167",
+    "Workbench": "(BC)208",
+    "Mini-Jukebox": "(BC)209",
+    "Wood Chipper": "(BC)211",
+    "Telephone": "(BC)214",
+    "Mini-Fridge": "(BC)216",
+    "Cursed P.K. Arcade System": "(BC)219",
+    "Item Pedestal": "(BC)221",
+    "Stone Chest": "(BC)232",
+    "Mini-Obelisk": "(BC)238",
+    "Farm Computer": "(BC)239",
+    "Mini-Shipping Bin": "(BC)248",
+    "Ostrich Incubator": "(BC)254",
+    "Geode Crusher": "(BC)182",
+    "Coffee Maker": "(BC)246",
+    "Sewing Machine": "(BC)247",
+    "Solar Panel": "(BC)231",
+    "Bone Mill": "(BC)90",
+    "Junimo Chest": "(BC)256",
+    "Heavy Tapper": "(BC)264",
+    "Deconstructor": "(BC)265",
+    "Auto-Petter": "(BC)272",
+    "Hopper": "(BC)275",
+    "Statue Of True Perfection": "(BC)280",
+    "Text Sign": "(BC)TextSign",
+    "Mushroom Log": "(BC)MushroomLog",
+    "Bait Maker": "(BC)BaitMaker",
+    "Dehydrator": "(BC)Dehydrator",
+    "Heavy Furnace": "(BC)HeavyFurnace",
+    "Statue Of Blessings": "(BC)StatueOfBlessings",
+    "Statue Of The Dwarf King": "(BC)StatueOfTheDwarfKing",
+    "Anvil": "(BC)Anvil",
+    "Mini-Forge": "(BC)MiniForge",
+    "Fish Smoker": "(BC)FishSmoker",
+    "Deluxe Worm Bin": "(BC)DeluxeWormBin",
+    "Big Chest": "(BC)BigChest",
+    "Big Stone Chest": "(BC)BigStoneChest",
+    "MannequinMale": "(M)MannequinMale",
+    "Mannequin (M)": "(M)MannequinMale",
+    "MannequinFemale": "(M)MannequinFemale",
+    "Mannequin (F)": "(M)MannequinFemale",
+    "CursedMannequinMale": "(M)CursedMannequinMale",
+    "Cursed Mannequin (M)": "(M)CursedMannequinMale",
+    "CursedMannequinFemale": "(M)CursedMannequinFemale",
+    "Cursed Mannequin (F)": "(M)CursedMannequinFemale"
+  },
+  "byDisplayName": {
+    "Strange Doll (Green)": "(O)126",
+    "Strange Doll (Pink)": "(O)127",
+    "Egg: White": "(O)176",
+    "Egg: White, Large": "(O)174",
+    "Egg: Brown": "(O)180",
+    "Egg: Brown, Large": "(O)182",
+    "House Plant 1": "(BC)2",
+    "Stone Owl": "(BC)54",
+    "Stone Owl(Spawn)": "(BC)95",
+    "Rarecrow: 1": "(BC)110",
+    "Rarecrow: 2": "(BC)113",
+    "Rarecrow: 3": "(BC)126",
+    "Rarecrow: 4": "(BC)136",
+    "Rarecrow: 5": "(BC)137",
+    "Rarecrow: 6": "(BC)138",
+    "Rarecrow: 7": "(BC)139",
+    "Rarecrow: 8": "(BC)140",
+    "Seasonal Plant (EF 1)": "(BC)184",
+    "Seasonal Plant (EF 2)": "(BC)188",
+    "Seasonal Plant (FD 1)": "(BC)192",
+    "Seasonal Plant (FD 2)": "(BC)196",
+    "Seasonal Plant (Sandy)": "(BC)200",
+    "Seasonal Plant (Robin)": "(BC)204",
+    "Egg: Dinosaur": "(O)107",
+    "Mushroom: Morel": "(O)257",
+    "Totem: Desert": "(O)261",
+    "Bouquet: Wilted": "(O)277",
+    "Mushroom: Chanterelle": "(O)281",
+    "Bomb: Cherry": "(O)286",
+    "Bomb: Bomb": "(O)287",
+    "Bomb: Mega": "(O)288",
+    "Egg: Void": "(O)305",
+    "Mayonnaise: Duck": "(O)307",
+    "Mayonnaise: Void": "(O)308",
+    "Mushroom: Common": "(O)404",
+    "Slime Egg: Blue": "(O)413",
+    "Mushroom: Red": "(O)420",
+    "Mushroom: Purple": "(O)422",
+    "Slime Egg: Red": "(O)437",
+    "Slime Egg: Purple": "(O)439",
+    "Bomb: Explosive Ammo": "(O)441",
+    "Egg: Duck": "(O)442",
+    "Wild Seeds: Spring": "(O)495",
+    "Wild Seeds: Summer": "(O)496",
+    "Wild Seeds: Fall": "(O)497",
+    "Wild Seeds: Winter": "(O)498",
+    "Sprinkler: Basic": "(O)599",
+    "Sprinkler: Quality": "(O)621",
+    "Sprinkler: Iridium": "(O)645",
+    "Slime Egg: Green": "(O)680",
+    "Totem: Rain": "(O)681",
+    "Totem: Farm": "(O)688",
+    "Totem: Mountains": "(O)689",
+    "Totem: Beach": "(O)690",
+    "Mayonnaise: Dino": "(O)807",
+    "Egg: Ostrich": "(O)289",
+    "Mushroom: Magma Cap": "(O)851",
+    "Slime Egg: Tiger": "(O)857",
+    "Totem: Island": "(O)886",
+    "Egg: Golden": "(O)928",
+    "Totem: Treasure": "(O)TreasureTotem",
+    "Raccoon Journal": "(O)Book_WildSeeds",
+    "Jelly: Sea": "(O)SeaJelly",
+    "Jelly: Cave": "(O)CaveJelly",
+    "Jelly: River": "(O)RiverJelly",
+    "Treasure Appraisal Guide": "(O)Book_Artifact",
+    "Horse: The Book": "(O)Book_Horse",
+    "Ol' Slitherlegs": "(O)Book_Grass",
+    "Scarecrow: Deluxe": "(BC)167",
+    "Mannequin (M)": "(M)MannequinMale",
+    "Mannequin (F)": "(M)MannequinFemale",
+    "Cursed Mannequin (M)": "(M)CursedMannequinMale",
+    "Cursed Mannequin (F)": "(M)CursedMannequinFemale"
+  }
+}

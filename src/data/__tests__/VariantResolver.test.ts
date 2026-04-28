@@ -13,6 +13,21 @@ describe('VariantResolver flower colors', () => {
     expect(VariantResolver.hasItemIdVariants('Strange Doll')).toBe(true);
   });
 
+  it('uses readable names for Seasonal Plant item id variants', () => {
+    expect(VariantResolver.resolveDisplayName('Seasonal Plant', '(BC)184')).toBe('Seasonal Plant (EF 1)');
+    expect(VariantResolver.resolveDisplayName('Seasonal Plant', '(BC)188')).toBe('Seasonal Plant (EF 2)');
+    expect(VariantResolver.resolveDisplayName('Seasonal Plant', '(BC)204')).toBe('Seasonal Plant (Robin)');
+    expect(VariantResolver.getBaseName('Seasonal Plant (EF 1)')).toBe('Seasonal Plant');
+    expect(VariantResolver.hasItemIdVariants('Seasonal Plant')).toBe(true);
+  });
+
+  it('uses readable names for mannequin item ids', () => {
+    expect(VariantResolver.resolveDisplayName('MannequinMale', '(M)MannequinMale')).toBe('Mannequin (M)');
+    expect(VariantResolver.resolveDisplayName('MannequinFemale', 'MannequinFemale')).toBe('Mannequin (F)');
+    expect(VariantResolver.resolveDisplayName('CursedMannequinMale', '(M)CursedMannequinMale')).toBe('Cursed Mannequin (M)');
+    expect(VariantResolver.resolveDisplayName('CursedMannequinFemale', 'CursedMannequinFemale')).toBe('Cursed Mannequin (F)');
+  });
+
   it('uses readable names for known flower colors from the save file', () => {
     expect(
       VariantResolver.resolveDisplayName('Blue Jazz', '597', { R: 109, G: 131, B: 255, A: 255 })

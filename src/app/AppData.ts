@@ -2,6 +2,13 @@ import { Config } from "@/config/Config";
 import { JournalStore, type Journal, type ImportDiff } from './Journal';
 import { VariantResolver, CustomDataStore } from '@/data/CustomDataStore';
 
+const MANNEQUIN_ITEM_IDS = new Set([
+  "MannequinMale",
+  "MannequinFemale",
+  "CursedMannequinMale",
+  "CursedMannequinFemale",
+]);
+
 type Listener = () => void;
 
 export type ImportStatus = {
@@ -455,6 +462,7 @@ private getBool(node: ParentNode, selector: string): boolean {
 private getItemId(node: ParentNode, itemIdText: string | undefined): string {
   if (!itemIdText) return '';
   if (itemIdText.startsWith("(")) return itemIdText;
+  if (MANNEQUIN_ITEM_IDS.has(itemIdText)) return `(M)${itemIdText}`;
   if (!Number.isFinite(Number(itemIdText))) return itemIdText;
 
   if (this.getBool(node, "bigCraftable")) return `(BC)${itemIdText}`;

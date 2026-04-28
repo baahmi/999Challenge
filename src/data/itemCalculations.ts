@@ -76,6 +76,40 @@ function avgYieldOf(spec: YieldSpec | undefined): number {
   return spec;
 }
 
+function applyArtifactTroveRequirements(
+  troveItems: string[],
+  inventoryMap: Map<string, number>,
+  addPartRequirement: (name: string, requiredCount: number, totalCount: number, strict: boolean) => void
+): void {
+  if (troveItems.length === 0) {
+    console.info('[trove] No trove items configured');
+    return;
+  }
+
+  // Need TARGET opened troves per possible trove item. The lowest completed
+  // trove-item count is the only defensible estimate of already opened troves.
+  const troveCounts = troveItems.map(itemName => ({
+    itemName,
+    count: inventoryMap.get(itemName) ?? 0,
+    hasInventoryKey: inventoryMap.has(itemName),
+  }));
+  const minTroveCount = Math.min(...troveCounts.map(item => item.count));
+  const troveRequired = TARGET * troveItems.length;
+  const troveTotal = minTroveCount * troveItems.length;
+
+  console.info('[trove] Artifact Trove requirement calculation', {
+    troveItemCount: troveItems.length,
+    troveRequired,
+    minTroveCount,
+    troveTotal,
+    missingItems: troveCounts.filter(item => !item.hasInventoryKey).map(item => item.itemName),
+    zeroCountItems: troveCounts.filter(item => item.count === 0).map(item => item.itemName),
+    troveCounts,
+  });
+
+  addPartRequirement("Artifact Trove", troveRequired, troveTotal, false);
+}
+
 const yieldMap = new Map<string, number>();
 (function buildYieldMap() {
   for (const entry of CustomDataStore.getPartsData()) {
@@ -324,17 +358,7 @@ function computeAllItems(
     totalFromParts.set(name, (totalFromParts.get(name) ?? 0) + totalCount);
   };
 
-  {
-    // add trove to the requireds
-    // Need 999 artifact troves in inventory + 999*length to open for all trove items
-    // (opening a trove destroys it and gives 1 random item from the 28 possible)
-    const length = CustomDataStore.getTroveItems().length;
-    const minTroveCount: number = Math.min(...CustomDataStore.getTroveItems().map(itemName => inventoryMap.get(itemName) ?? 0));
-    const troveRequired = TARGET * length;
-    requiredFromParts.set("Artifact Trove", troveRequired);
-    // Total is just what you've already opened (consumed)
-    totalFromParts.set("Artifact Trove", minTroveCount*length);
-  }
+  applyArtifactTroveRequirements(CustomDataStore.getTroveItems(), inventoryMap, addPartRequirement);
 
   for (const [craftedItemName, ingredients] of getPartsDataConsumersFirst()) {
     const craftedCount = getDependencyInventoryCount(craftedItemName, inventoryMap, stacksMap, quality);
@@ -971,13 +995,14 @@ export function computeCategoryItemsUncached(
   const requiredFromParts = new Map<string, number>();
   const totalFromParts = new Map<string, number>();
 
-  {
-    // Need 999 artifact troves in inventory + 999*length to open for all trove items
-    const length = CustomDataStore.getTroveItems().length;
-    const minTroveCount: number = Math.min(...CustomDataStore.getTroveItems().map(itemName => inventoryMap.get(itemName) ?? 0));
-    requiredFromParts.set("Artifact Trove", TARGET * length);
-    totalFromParts.set("Artifact Trove", minTroveCount * length);
-  }
+  applyArtifactTroveRequirements(
+    CustomDataStore.getTroveItems(),
+    inventoryMap,
+    (name, requiredCount, totalCount) => {
+      requiredFromParts.set(name, (requiredFromParts.get(name) ?? 0) + requiredCount);
+      totalFromParts.set(name, (totalFromParts.get(name) ?? 0) + totalCount);
+    }
+  );
 
   for (const [craftedItemName, ingredients] of getPartsDataConsumersFirst()) {
     const craftedCount = getProgressInventoryCount(craftedItemName, inventoryMap, stacksMap, quality);
@@ -1190,6 +1215,7 @@ export const __test = {
   getCookingItems,
   getCrabpotItems,
   avgYieldOf,
+  applyArtifactTroveRequirements,
   recipeMap,
   reverseMap,
   yieldMap,

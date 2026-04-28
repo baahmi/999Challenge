@@ -4,6 +4,29 @@ import {  computeCategoryItems,  __test } from '../itemCalculations';
 import { calculateNeededCount, calculatePercentage } from '../../types/Item';
 
 describe('computeCategoryItems', () => {
+    it('uses bundled trove item names to estimate opened artifact troves', () => {
+        expect(CustomDataStore.getTroveItems()).toContain('Book_Artifact');
+        expect(CustomDataStore.getTroveItems()).toContain('Chicken Statue [(O)113]');
+        expect(CustomDataStore.getTroveItems()).not.toContain('Treasure Appraisal Guide');
+        expect(CustomDataStore.getTroveItems()).not.toContain('Chicken Statue');
+
+        const requiredFromParts = new Map<string, number>();
+        const totalFromParts = new Map<string, number>();
+        const inventory = new Map<string, number>(CustomDataStore.getTroveItems().map(itemName => [itemName, 11]));
+
+        __test.applyArtifactTroveRequirements(
+            CustomDataStore.getTroveItems(),
+            inventory,
+            (name: string, requiredCount: number, totalCount: number) => {
+                requiredFromParts.set(name, (requiredFromParts.get(name) ?? 0) + requiredCount);
+                totalFromParts.set(name, (totalFromParts.get(name) ?? 0) + totalCount);
+            }
+        );
+
+        expect(requiredFromParts.get('Artifact Trove')).toBe(999 * CustomDataStore.getTroveItems().length);
+        expect(totalFromParts.get('Artifact Trove')).toBe(11 * CustomDataStore.getTroveItems().length);
+    });
+
     it('propagates required counts through dependencies even when parts data is unordered', () => {
         CustomDataStore.troveItems = ['Missing Artifact']
         CustomDataStore.data.categoryNames = ['Test']
@@ -199,19 +222,22 @@ describe('computeCategoryItems', () => {
     });
 
     it('shows item-id variants without also showing their base placeholder rows', () => {
-        CustomDataStore.troveItems = ['Missing Artifact']
-        CustomDataStore.data.categoryNames = ['Animal Products', 'Artifacts']
+        CustomDataStore.troveItems = ['Missing Artifact'];
+        CustomDataStore.data.categoryNames = ['Animal Products', 'Artifacts', 'Decoration (Other)'];
         CustomDataStore.data.items = [
             { category: 'Animal Products', name: 'Egg', displayName: null },
             { category: 'Animal Products', name: 'Large Egg', displayName: null },
             { category: 'Artifacts', name: 'Strange Doll', displayName: null },
+            { category: 'Decoration (Other)', name: 'Seasonal Plant', displayName: null },
         ];
-        CustomDataStore.partsData = [] as PartsEntry[]
+        CustomDataStore.partsData = [] as PartsEntry[];
 
         CustomDataStore.addVariantsFromInventory([
             { name: 'Egg: White', category: -5 },
             { name: 'Egg: White, Large', category: -5 },
             { name: 'Strange Doll (Green)', category: 0 },
+            { name: 'Seasonal Plant (EF 1)', category: -9 },
+            { name: 'Seasonal Plant (EF 2)', category: -9 },
         ]);
 
         const animalRows = computeCategoryItems('Animal Products', [
@@ -221,12 +247,19 @@ describe('computeCategoryItems', () => {
         const artifactRows = computeCategoryItems('Artifacts', [
             { name: 'Strange Doll (Green)', stack: 1, category: 'Artifacts', quality: [1,0,0,0,0] },
         ]);
+        const decorationRows = computeCategoryItems('Decoration (Other)', [
+            { name: 'Seasonal Plant (EF 1)', stack: 1000, category: 'Decoration (Other)', quality: [1000,0,0,0,0] },
+            { name: 'Seasonal Plant (EF 2)', stack: 2000, category: 'Decoration (Other)', quality: [2000,0,0,0,0] },
+        ]);
 
         expect(animalRows.map(row => row.name)).toContain('Egg: White');
         expect(animalRows.map(row => row.name)).toContain('Egg: White, Large');
         expect(animalRows.map(row => row.name)).not.toContain('Egg');
         expect(animalRows.map(row => row.name)).not.toContain('Large Egg');
         expect(artifactRows.map(row => row.name)).toEqual(['Strange Doll (Green)']);
+        expect(decorationRows.map(row => row.name)).toContain('Seasonal Plant (EF 1)');
+        expect(decorationRows.map(row => row.name)).toContain('Seasonal Plant (EF 2)');
+        expect(decorationRows.map(row => row.name)).not.toContain('Seasonal Plant');
     });
 
     it('does not count wrong-quality flower variants toward highest quality progress', () => {

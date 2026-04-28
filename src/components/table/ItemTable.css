@@ -80,3 +80,15 @@
 .resizer.isResizing {
   background: rgba(0, 0, 0, 0.5);
 }
+
+.item-sprite {
+  display: inline-block;
+  image-rendering: pixelated;
+  background-repeat: no-repeat;
+  vertical-align: middle;
+}
+
+.item-sprite-empty {
+  width: 32px;
+  height: 32px;
+}

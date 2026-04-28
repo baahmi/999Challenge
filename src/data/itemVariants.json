@@ -16,7 +16,21 @@
     "(BC)137": "Rarecrow: 5",
     "(BC)138": "Rarecrow: 6",
     "(BC)139": "Rarecrow: 7",
-    "(BC)140": "Rarecrow: 8"
+    "(BC)140": "Rarecrow: 8",
+    "(BC)184": "Seasonal Plant (EF 1)",
+    "(BC)188": "Seasonal Plant (EF 2)",
+    "(BC)192": "Seasonal Plant (FD 1)",
+    "(BC)196": "Seasonal Plant (FD 2)",
+    "(BC)200": "Seasonal Plant (Sandy)",
+    "(BC)204": "Seasonal Plant (Robin)",
+    "MannequinMale": "Mannequin (M)",
+    "(M)MannequinMale": "Mannequin (M)",
+    "MannequinFemale": "Mannequin (F)",
+    "(M)MannequinFemale": "Mannequin (F)",
+    "CursedMannequinMale": "Cursed Mannequin (M)",
+    "(M)CursedMannequinMale": "Cursed Mannequin (M)",
+    "CursedMannequinFemale": "Cursed Mannequin (F)",
+    "(M)CursedMannequinFemale": "Cursed Mannequin (F)"
   },
   "colorVariantItems": [
     "Blue Jazz",
@@ -30,5 +44,57 @@
     "Wild Seeds (Su)": "Wild Seeds: Summer",
     "Wild Seeds (Fa)": "Wild Seeds: Fall",
     "Wild Seeds (Wi)": "Wild Seeds: Winter"
+  },
+  "ambiguousItemNames": {
+    "Campfire": [
+      "(BC)146",
+      "(BC)278"
+    ],
+    "Chicken Statue": [
+      "(O)113",
+      "(BC)31"
+    ],
+    "Egg": [
+      "(O)176",
+      "(O)180"
+    ],
+    "Large Egg": [
+      "(O)174",
+      "(O)182"
+    ],
+    "Rarecrow": [
+      "(BC)110",
+      "(BC)113",
+      "(BC)126",
+      "(BC)136",
+      "(BC)137",
+      "(BC)138",
+      "(BC)139",
+      "(BC)140"
+    ],
+    "Rotten Plant": [
+      "(O)747",
+      "(O)748"
+    ],
+    "Seasonal Plant": [
+      "(BC)184",
+      "(BC)188",
+      "(BC)192",
+      "(BC)196",
+      "(BC)200",
+      "(BC)204"
+    ],
+    "Stone Owl": [
+      "(BC)54",
+      "(BC)95"
+    ],
+    "Strange Doll": [
+      "(O)126",
+      "(O)127"
+    ],
+    "Wicked Statue": [
+      "(BC)83",
+      "(BC)84"
+    ]
   }
 }

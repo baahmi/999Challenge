@@ -18,6 +18,11 @@
     white-space: nowrap;
 }
 
+.footer-attribution {
+    opacity: 0.75;
+    white-space: nowrap;
+}
+
 .footer-link-button {
     border: 0;
     padding: 0;
