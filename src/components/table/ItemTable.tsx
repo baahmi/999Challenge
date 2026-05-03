@@ -1,6 +1,12 @@
 import React from 'react';
 import { Tooltip, useColorScheme } from '@mui/material';
-import { calculateNeededCount, calculateObtainedCount, enrichItemsWithCalculations } from '../../types/Item';
+import {
+  calculateNeededCount,
+  calculateObtainedCount,
+  calculateCappedObtainedCount,
+  calculateTotalNeededCount,
+  enrichItemsWithCalculations
+} from '../../types/Item';
 import type { ItemWithCalculations } from '../../types/Item';
 import type { ItemRow, ItemTooltipData } from '../../data/itemCalculations';
 import { hasTooltipContent } from '../../data/itemCalculations';
@@ -232,7 +238,8 @@ export function ItemTable({ items }: ItemTableProps) {
     const totalRequired = enrichedItems.reduce((sum, item) => sum + item.required, 0);
     const totalRaw = enrichedItems.reduce((sum, item) => sum + (item.excludeFromTotals ? 0 : item.raw), 0);
     const totalUsed = enrichedItems.reduce((sum, item) => sum + (item.excludeFromTotals ? 0 : item.total), 0);
-    const cappedHave = enrichedItems.reduce((sum, item) => sum + Math.min(calculateObtainedCount(item), item.required), 0);
+    const cappedHave = enrichedItems.reduce((sum, item) => sum + calculateCappedObtainedCount(item), 0);
+    const totalNeeded = calculateTotalNeededCount(enrichedItems);
     const totalGoldNeeded = enrichedItems.reduce((sum, item) => {
       const needed = calculateNeededCount(item);
       const bp = (item as unknown as ItemRow).buyPrice;
@@ -262,8 +269,8 @@ export function ItemTable({ items }: ItemTableProps) {
         case 'percentage': return `${Math.floor(row.percentage)}%`;
         case 'name':       return isTotal ? 'Total' : row.name;
         case 'required':   return fmtNumber(row.required);
-        case 'needed':     return fmtNumber(calculateNeededCount(row));
-        case 'total':      return fmtNumber(calculateObtainedCount(row));
+        case 'needed':     return fmtNumber(isTotal ? totalNeeded : calculateNeededCount(row));
+        case 'total':      return fmtNumber(isTotal ? cappedHave : calculateObtainedCount(row));
         case 'raw':        return fmtNumber(row.raw);
         case 'raw_N':      return fmtNumber(isTotal ? '' : (row.rawStacks?.[0] ?? 0));
         case 'raw_S':      return fmtNumber(isTotal ? '' : (row.rawStacks?.[1] ?? 0));

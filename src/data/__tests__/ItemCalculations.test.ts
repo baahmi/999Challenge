@@ -1,9 +1,27 @@
 import { describe, it, expect, beforeEach } from 'bun:test';
 import {CustomDataStore, type PartsEntry} from '../CustomDataStore';
 import {  computeCategoryItems,  __test } from '../itemCalculations';
-import { calculateNeededCount, calculatePercentage } from '../../types/Item';
+import {
+    calculateCappedObtainedCount,
+    calculateNeededCount,
+    calculatePercentage,
+    calculateTotalNeededCount
+} from '../../types/Item';
 
 describe('computeCategoryItems', () => {
+    it('does not let surplus on one row offset needed on another row in totals', () => {
+        const rows = [
+            { name: 'Over', required: 999, raw: 0, total: 1200 },
+            { name: 'Short', required: 999, raw: 0, total: 100 },
+        ];
+
+        expect(calculateCappedObtainedCount(rows[0]!)).toBe(999);
+        expect(calculateCappedObtainedCount(rows[1]!)).toBe(100);
+        expect(calculateNeededCount(rows[0]!)).toBe(0);
+        expect(calculateNeededCount(rows[1]!)).toBe(899);
+        expect(calculateTotalNeededCount(rows)).toBe(899);
+    });
+
     it('uses bundled trove item names to estimate opened artifact troves', () => {
         expect(CustomDataStore.getTroveItems()).toContain('Book_Artifact');
         expect(CustomDataStore.getTroveItems()).toContain('Chicken Statue');

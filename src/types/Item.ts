@@ -39,8 +39,16 @@ export function calculateObtainedCount(item: Item): number {
   return item.raw + item.total;
 }
 
+export function calculateCappedObtainedCount(item: Item): number {
+  return Math.min(item.required, calculateObtainedCount(item));
+}
+
 export function calculateNeededCount(item: Item): number {
-  return Math.max(0, item.required - calculateObtainedCount(item));
+  return Math.max(0, item.required - calculateCappedObtainedCount(item));
+}
+
+export function calculateTotalNeededCount(items: Item[]): number {
+  return items.reduce((sum, item) => sum + calculateNeededCount(item), 0);
 }
 
 export function calculatePercentage(item: Item): number {
