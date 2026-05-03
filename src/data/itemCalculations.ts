@@ -110,6 +110,18 @@ function applyArtifactTroveRequirements(
   addPartRequirement("Artifact Trove", troveRequired, troveTotal, false);
 }
 
+function getArtifactTroveOpenedCount(
+  troveItems: string[],
+  inventoryMap: Map<string, number>,
+  totalFromParts: Map<string, number>
+): number {
+  if (troveItems.length === 0) return 0;
+
+  return Math.min(
+    ...troveItems.map(itemName => Math.min(TARGET, (inventoryMap.get(itemName) ?? 0) + (totalFromParts.get(itemName) ?? 0)))
+  );
+}
+
 const yieldMap = new Map<string, number>();
 (function buildYieldMap() {
   for (const entry of CustomDataStore.getPartsData()) {
@@ -195,6 +207,7 @@ const IRIDIUM_QUALITY_ITEMS = new Set([
   'Cockle',
   'Mussel',
   'Oyster',
+  'Mayonnaise'
 ]);
 
 const NO_QUALITY_ITEMS = new Set([
@@ -202,6 +215,7 @@ const NO_QUALITY_ITEMS = new Set([
   'Ginger',
 ]);
 
+// not sure I want golden eggs in there. maybe make it configurable ?
 const ANY_INGREDIENTS: Record<string, { name: string; category: string; candidates: string[] }> = {
   '-4': {
     name: 'Fish: Extra',
@@ -388,6 +402,35 @@ function computeAllItems(
       // Calculate ingredients already used (for what we have)
       const totalCount = Math.round((qty * totalHave) / avgYield);
       addPartRequirement(name, requiredCount, totalCount, strictIngredients);
+    }
+  }
+
+  const troveItems = CustomDataStore.getTroveItems();
+  if (troveItems.length > 0) {
+    const previousTroveTotal = totalFromParts.get("Artifact Trove") ?? 0;
+    const troveOpenedCount = getArtifactTroveOpenedCount(troveItems, inventoryMap, totalFromParts);
+    const nextTroveTotal = troveOpenedCount * troveItems.length;
+
+    if (nextTroveTotal !== previousTroveTotal) {
+      totalFromParts.set("Artifact Trove", nextTroveTotal);
+      totalFromPartsFlexible.set("Artifact Trove", nextTroveTotal);
+
+      const artifactTroveRecipe = recipeMap.get("Artifact Trove");
+      const craftedCount = getDependencyInventoryCount("Artifact Trove", inventoryMap, stacksMap, quality);
+      const targetAmount = TARGET + (requiredFromParts.get("Artifact Trove") ?? 0);
+      const avgYield = yieldMap.get("Artifact Trove") ?? 1;
+      const previousTotalHave = Math.min(craftedCount + previousTroveTotal, targetAmount);
+      const nextTotalHave = Math.min(craftedCount + nextTroveTotal, targetAmount);
+
+      for (const [ingredientName, qty] of artifactTroveRecipe ?? []) {
+        const previousIngredientTotal = Math.round((qty * previousTotalHave) / avgYield);
+        const nextIngredientTotal = Math.round((qty * nextTotalHave) / avgYield);
+        const delta = nextIngredientTotal - previousIngredientTotal;
+        if (delta === 0) continue;
+
+        totalFromParts.set(ingredientName, (totalFromParts.get(ingredientName) ?? 0) + delta);
+        totalFromPartsFlexible.set(ingredientName, (totalFromPartsFlexible.get(ingredientName) ?? 0) + delta);
+      }
     }
   }
 
@@ -1036,6 +1079,33 @@ export function computeCategoryItemsUncached(
     }
   }
 
+  const troveItems = CustomDataStore.getTroveItems();
+  if (troveItems.length > 0) {
+    const previousTroveTotal = totalFromParts.get("Artifact Trove") ?? 0;
+    const troveOpenedCount = getArtifactTroveOpenedCount(troveItems, inventoryMap, totalFromParts);
+    const nextTroveTotal = troveOpenedCount * troveItems.length;
+
+    if (nextTroveTotal !== previousTroveTotal) {
+      totalFromParts.set("Artifact Trove", nextTroveTotal);
+
+      const artifactTroveRecipe = recipeMap.get("Artifact Trove");
+      const craftedCount = getProgressInventoryCount("Artifact Trove", inventoryMap, stacksMap, quality);
+      const targetAmount = TARGET + (requiredFromParts.get("Artifact Trove") ?? 0);
+      const avgYield = yieldMap.get("Artifact Trove") ?? 1;
+      const previousTotalHave = Math.min(craftedCount + previousTroveTotal, targetAmount);
+      const nextTotalHave = Math.min(craftedCount + nextTroveTotal, targetAmount);
+
+      for (const [ingredientName, qty] of artifactTroveRecipe ?? []) {
+        const previousIngredientTotal = Math.round((qty * previousTotalHave) / avgYield);
+        const nextIngredientTotal = Math.round((qty * nextTotalHave) / avgYield);
+        const delta = nextIngredientTotal - previousIngredientTotal;
+        if (delta === 0) continue;
+
+        totalFromParts.set(ingredientName, (totalFromParts.get(ingredientName) ?? 0) + delta);
+      }
+    }
+  }
+
   if (quality === 'highest') {
     const seen = new Set<string>();
     for (const item of CustomDataStore.getItemsData()) {
@@ -1197,11 +1267,11 @@ export function logDataIssues(
     }
   }
 
-  for (const invName of inventoryNames) {
-    if (!knownItemNames.has(invName)) {
-      console.info(`[inventory] "${invName}" is in the save file but not listed in items.json`);
-    }
-  }
+  // for (const invName of inventoryNames) {
+  //   if (!knownItemNames.has(invName)) {
+  //     console.info(`[inventory] "${invName}" is in the save file but not listed in items.json`);
+  //   }
+  // }
 }
 
 // -----------------------------------------

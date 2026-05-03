@@ -2,6 +2,7 @@ import rawItemsData from './items.json';
 import defaultCategoriesData from './categories.json';
 import rawTroveItems from './trove.json';
 import rawPartsData from './parts.json';
+import variantDefinitions from './itemVariants.json' assert { type: 'json' };
 import { VariantResolver } from './VariantResolver';
 
 const STORAGE_KEY = 'stardew-custom-data';
@@ -27,6 +28,10 @@ interface StoredCustomData {
   categoryNames?: string[];
 }
 
+interface VariantData {
+  itemIdNames: Record<string, string>;
+}
+
 type Listener = () => void;
 
 class CustomDataManager {
@@ -40,7 +45,7 @@ class CustomDataManager {
     const defaults = this.buildDefaults();
     const cached = this.loadFromStorage();
     this.data = {
-      categoryNames: cached?.categoryNames ?? defaults.categoryNames,
+      categoryNames: this.applyStoredCategoryOrder(defaults.categoryNames, cached?.categoryNames),
       items: defaults.items,
     };
     this.partsData = rawPartsData as PartsEntry[];
@@ -87,11 +92,54 @@ class CustomDataManager {
       name,
       displayName
     }));
+
+    const variantData = variantDefinitions as VariantData;
+    const knownKeys = new Set(defaultItemsData.map(item => `${item.name}|${item.displayName ?? ''}`));
+    const baseItemsByName = new Map<string, ItemEntry>();
+
+    for (const item of defaultItemsData) {
+      if (item.displayName === null && !baseItemsByName.has(item.name)) {
+        baseItemsByName.set(item.name, item);
+      }
+    }
+
+    const seededVariants: ItemEntry[] = [];
+    for (const displayName of Object.values(variantData.itemIdNames)) {
+      const baseName = VariantResolver.getBaseName(displayName);
+      if (displayName === baseName) continue;
+
+      const baseItem = baseItemsByName.get(baseName);
+      if (!baseItem) continue;
+
+      const key = `${baseName}|${displayName}`;
+      if (knownKeys.has(key)) continue;
+
+      seededVariants.push({
+        category: baseItem.category,
+        name: baseName,
+        displayName,
+      });
+      knownKeys.add(key);
+    }
     
     return {
       categoryNames: (defaultCategoriesData as { names: string[] }).names,
-      items: defaultItemsData as ItemEntry[],
+      items: [...defaultItemsData, ...seededVariants] as ItemEntry[],
     };
+  }
+
+  private applyStoredCategoryOrder(defaultCategoryNames: string[], storedCategoryNames?: string[]): string[] {
+    if (!storedCategoryNames?.length) {
+      return defaultCategoryNames;
+    }
+
+    const defaultSet = new Set(defaultCategoryNames);
+    const orderedKnownCategories = storedCategoryNames.filter((name, index) =>
+      defaultSet.has(name) && storedCategoryNames.indexOf(name) === index
+    );
+    const missingDefaultCategories = defaultCategoryNames.filter(name => !orderedKnownCategories.includes(name));
+
+    return [...orderedKnownCategories, ...missingDefaultCategories];
   }
   
   /**
@@ -179,7 +227,7 @@ class CustomDataManager {
   setData(data: CustomData): void {
     const defaults = this.buildDefaults();
     this.data = {
-      categoryNames: data.categoryNames,
+      categoryNames: this.applyStoredCategoryOrder(defaults.categoryNames, data.categoryNames),
       items: this.withExistingVariants(defaults.items),
     };
     this.saveToStorage();

@@ -13,4 +13,13 @@ describe('ItemSprites', () => {
     expect(getItemSprite('Magic Bait')).toEqual(getItemSprite('Magic Bait'));
     expect(getItemSprite('Magic Bait')).not.toEqual(getItemSprite('Magic'));
   });
+
+  it('resolves sprites for seeded item-id variant display names', () => {
+    expect(getItemSprite('Rotten Plant 1')).toBeDefined();
+    expect(getItemSprite('Rotten Plant 2')).toBeDefined();
+  });
+
+  it('uses the real craftable sprite for Campfire', () => {
+    expect(getItemSprite('Campfire')).toBeDefined();
+  });
 });

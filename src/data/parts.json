@@ -452,7 +452,7 @@
 "20": ["Leek",1],
 "22": ["Dandelion",1],
 "419": ["Vinegar",1]
-},1],["Cheese Cauli.",{
+},1],["Cheese Cauliflower",{
 "190": ["Cauliflower",1],
 "424": ["Cheese",1]
 },1],["Baked Fish",{
@@ -463,7 +463,7 @@
 "24": ["Parsnip",1],
 "-6": [null,1],
 "419": ["Vinegar",1]
-},1],["Vegetable Stew",{
+},1],["Vegetable Medley",{
 "256": ["Tomato",1],
 "284": ["Beet",1]
 },1],["Complete Breakfast",{
@@ -542,7 +542,7 @@
 "252": ["Rhubarb",1],
 "246": ["Wheat Flour",1],
 "245": ["Sugar",1]
-},1],["Cookies",{
+},1],["Cookie",{
 "246": ["Wheat Flour",1],
 "245": ["Sugar",1],
 "-5": [null,1]
@@ -566,7 +566,7 @@
 },1],["Red Plate",{
 "266": ["Red Cabbage",1],
 "264": ["Radish",1]
-},1],["Eggplant Parm.",{
+},1],["Eggplant Parmesan",{
 "272": ["Eggplant",1],
 "256": ["Tomato",1]
 },1],["Rice Pudding",{
@@ -591,7 +591,7 @@
 "278": ["Bok Choy",1],
 "282": ["Cranberries",1],
 "274": ["Artichoke",1]
-},1],["Cran. Sauce",{
+},1],["Cranberry Sauce",{
 "282": ["Cranberries",1],
 "245": ["Sugar",1]
 },1],["Stuffing",{
@@ -605,7 +605,7 @@
 "216": ["Bread",1],
 "78": ["Cave Carrot",1],
 "272": ["Eggplant",1]
-},1],["Dish o' The Sea",{
+},1],["Dish O' The Sea",{
 "131": ["Sardine",2],
 "210": ["Hashbrowns",1]
 },1],["Miner's Treat",{
@@ -726,139 +726,7 @@
 "256": ["Tomato",1]
 },1],["Moss Soup",{
 "Moss": ["Moss",20]
-},1],["Pufferfish Bait",{
-"128": ["Pufferfish",1]
-},[5,10]],["Anchovy Bait",{
-"129": ["Anchovy",1]
-},[5,10]],["Tuna Bait",{
-"130": ["Tuna",1]
-},[5,10]],["Sardine Bait",{
-"131": ["Sardine",1]
-},[5,10]],["Bream Bait",{
-"132": ["Bream",1]
-},[5,10]],["Largemouth Bass Bait",{
-"136": ["Largemouth Bass",1]
-},[5,10]],["Smallmouth Bass Bait",{
-"137": ["Smallmouth Bass",1]
-},[5,10]],["Rainbow Trout Bait",{
-"138": ["Rainbow Trout",1]
-},[5,10]],["Salmon Bait",{
-"139": ["Salmon",1]
-},[5,10]],["Walleye Bait",{
-"140": ["Walleye",1]
-},[5,10]],["Perch Bait",{
-"141": ["Perch",1]
-},[5,10]],["Carp Bait",{
-"142": ["Carp",1]
-},[5,10]],["Catfish Bait",{
-"143": ["Catfish",1]
-},[5,10]],["Pike Bait",{
-"144": ["Pike",1]
-},[5,10]],["Sunfish Bait",{
-"145": ["Sunfish",1]
-},[5,10]],["Red Mullet Bait",{
-"146": ["Red Mullet",1]
-},[5,10]],["Herring Bait",{
-"147": ["Herring",1]
-},[5,10]],["Eel Bait",{
-"148": ["Eel",1]
-},[5,10]],["Octopus Bait",{
-"149": ["Octopus",1]
-},[5,10]],["Red Snapper Bait",{
-"150": ["Red Snapper",1]
-},[5,10]],["Squid Bait",{
-"151": ["Squid",1]
-},[5,10]],["Sea Cucumber Bait",{
-"154": ["Sea Cucumber",1]
-},[5,10]],["Super Cucumber Bait",{
-"155": ["Super Cucumber",1]
-},[5,10]],["Ghostfish Bait",{
-"156": ["Ghostfish",1]
-},[5,10]],["Stonefish Bait",{
-"158": ["Stonefish",1]
-},[5,10]],["Ice Pip Bait",{
-"161": ["Ice Pip",1]
-},[5,10]],["Lava Eel Bait",{
-"162": ["Lava Eel",1]
-},[5,10]],["Sandfish Bait",{
-"164": ["Sandfish",1]
-},[5,10]],["Scorpion Carp Bait",{
-"165": ["Scorpion Carp",1]
-},[5,10]],["Clam Bait",{
-"372": ["Clam",1]
-},[5,10]],["Sturgeon Bait",{
-"698": ["Sturgeon",1]
-},[5,10]],["Tiger Trout Bait",{
-"699": ["Tiger Trout",1]
-},[5,10]],["Bullhead Bait",{
-"700": ["Bullhead",1]
-},[5,10]],["Tilapia Bait",{
-"701": ["Tilapia",1]
-},[5,10]],["Chub Bait",{
-"702": ["Chub",1]
-},[5,10]],["Dorado Bait",{
-"704": ["Dorado",1]
-},[5,10]],["Albacore Bait",{
-"705": ["Albacore",1]
-},[5,10]],["Shad Bait",{
-"706": ["Shad",1]
-},[5,10]],["Lingcod Bait",{
-"707": ["Lingcod",1]
-},[5,10]],["Halibut Bait",{
-"708": ["Halibut",1]
-},[5,10]],["Lobster Bait",{
-"715": ["Lobster",1]
-},[5,10]],["Crayfish Bait",{
-"716": ["Crayfish",1]
-},[5,10]],["Crab Bait",{
-"717": ["Crab",1]
-},[5,10]],["Cockle Bait",{
-"718": ["Cockle",1]
-},[5,10]],["Mussel Bait",{
-"719": ["Mussel",1]
-},[5,10]],["Shrimp Bait",{
-"720": ["Shrimp",1]
-},[5,10]],["Snail Bait",{
-"721": ["Snail",1]
-},[5,10]],["Periwinkle Bait",{
-"722": ["Periwinkle",1]
-},[5,10]],["Oyster Bait",{
-"723": ["Oyster",1]
-},[5,10]],["Woodskip Bait",{
-"734": ["Woodskip",1]
-},[5,10]],["Void Salmon Bait",{
-"795": ["Void Salmon",1]
-},[5,10]],["Slimejack Bait",{
-"796": ["Slimejack",1]
-},[5,10]],["Midnight Squid Bait",{
-"798": ["Midnight Squid",1]
-},[5,10]],["Spook Fish Bait",{
-"799": ["Spook Fish",1]
-},[5,10]],["Blobfish Bait",{
-"800": ["Blobfish",1]
-},[5,10]],["Flounder Bait",{
-"267": ["Flounder",1]
-},[5,10]],["Midnight Carp Bait",{
-"269": ["Midnight Carp",1]
-},[5,10]],["Stingray Bait",{
-"836": ["Stingray",1]
-},[5,10]],["Lionfish Bait",{
-"837": ["Lionfish",1]
-},[5,10]],["Blue Discus Bait",{
-"838": ["Blue Discus",1]
-},[5,10]],["Son of Crimsonfish Bait",{
-"898": ["Son of Crimsonfish",1]
-},[5,10]],["Ms. Angler Bait",{
-"899": ["Ms. Angler",1]
-},[5,10]],["Legend II Bait",{
-"900": ["Legend II",1]
-},[5,10]],["Radioactive Carp Bait",{
-"901": ["Radioactive Carp",1]
-},[5,10]],["Glacierfish Jr. Bait",{
-"902": ["Glacierfish Jr.",1]
-},[5,10]],["Goby Bait",{
-"Goby": ["Goby",1]
-},[5,10]],["Smoked Pufferfish",{
+},1],["Smoked Pufferfish",{
 "128": ["Pufferfish",1]
 },1],["Smoked Anchovy",{
 "129": ["Anchovy",1]
@@ -1050,6 +918,8 @@
 "": ["Scorpion Carp Roe",1]
 },1],["Aged Clam Roe",{
 "": ["Clam Roe",1]
+},1],["Aged Sea Urchin Roe",{
+"": ["Sea Urchin Roe",1]
 },1],["Aged Tiger Trout Roe",{
 "": ["Tiger Trout Roe",1]
 },1],["Aged Bullhead Roe",{
@@ -1132,7 +1002,139 @@
 "": ["Mutant Carp Roe",1]
 },1],["Caviar",{
 "": ["Sturgeon Roe",1]
-},1],["Pickled Parsnip",{
+},1],["Pufferfish Bait",{
+"128": ["Pufferfish",1]
+},[5,10]],["Anchovy Bait",{
+"129": ["Anchovy",1]
+},[5,10]],["Tuna Bait",{
+"130": ["Tuna",1]
+},[5,10]],["Sardine Bait",{
+"131": ["Sardine",1]
+},[5,10]],["Bream Bait",{
+"132": ["Bream",1]
+},[5,10]],["Largemouth Bass Bait",{
+"136": ["Largemouth Bass",1]
+},[5,10]],["Smallmouth Bass Bait",{
+"137": ["Smallmouth Bass",1]
+},[5,10]],["Rainbow Trout Bait",{
+"138": ["Rainbow Trout",1]
+},[5,10]],["Salmon Bait",{
+"139": ["Salmon",1]
+},[5,10]],["Walleye Bait",{
+"140": ["Walleye",1]
+},[5,10]],["Perch Bait",{
+"141": ["Perch",1]
+},[5,10]],["Carp Bait",{
+"142": ["Carp",1]
+},[5,10]],["Catfish Bait",{
+"143": ["Catfish",1]
+},[5,10]],["Pike Bait",{
+"144": ["Pike",1]
+},[5,10]],["Sunfish Bait",{
+"145": ["Sunfish",1]
+},[5,10]],["Red Mullet Bait",{
+"146": ["Red Mullet",1]
+},[5,10]],["Herring Bait",{
+"147": ["Herring",1]
+},[5,10]],["Eel Bait",{
+"148": ["Eel",1]
+},[5,10]],["Octopus Bait",{
+"149": ["Octopus",1]
+},[5,10]],["Red Snapper Bait",{
+"150": ["Red Snapper",1]
+},[5,10]],["Squid Bait",{
+"151": ["Squid",1]
+},[5,10]],["Sea Cucumber Bait",{
+"154": ["Sea Cucumber",1]
+},[5,10]],["Super Cucumber Bait",{
+"155": ["Super Cucumber",1]
+},[5,10]],["Ghostfish Bait",{
+"156": ["Ghostfish",1]
+},[5,10]],["Stonefish Bait",{
+"158": ["Stonefish",1]
+},[5,10]],["Ice Pip Bait",{
+"161": ["Ice Pip",1]
+},[5,10]],["Lava Eel Bait",{
+"162": ["Lava Eel",1]
+},[5,10]],["Sandfish Bait",{
+"164": ["Sandfish",1]
+},[5,10]],["Scorpion Carp Bait",{
+"165": ["Scorpion Carp",1]
+},[5,10]],["Clam Bait",{
+"372": ["Clam",1]
+},[5,10]],["Sturgeon Bait",{
+"698": ["Sturgeon",1]
+},[5,10]],["Tiger Trout Bait",{
+"699": ["Tiger Trout",1]
+},[5,10]],["Bullhead Bait",{
+"700": ["Bullhead",1]
+},[5,10]],["Tilapia Bait",{
+"701": ["Tilapia",1]
+},[5,10]],["Chub Bait",{
+"702": ["Chub",1]
+},[5,10]],["Dorado Bait",{
+"704": ["Dorado",1]
+},[5,10]],["Albacore Bait",{
+"705": ["Albacore",1]
+},[5,10]],["Shad Bait",{
+"706": ["Shad",1]
+},[5,10]],["Lingcod Bait",{
+"707": ["Lingcod",1]
+},[5,10]],["Halibut Bait",{
+"708": ["Halibut",1]
+},[5,10]],["Lobster Bait",{
+"715": ["Lobster",1]
+},[5,10]],["Crayfish Bait",{
+"716": ["Crayfish",1]
+},[5,10]],["Crab Bait",{
+"717": ["Crab",1]
+},[5,10]],["Cockle Bait",{
+"718": ["Cockle",1]
+},[5,10]],["Mussel Bait",{
+"719": ["Mussel",1]
+},[5,10]],["Shrimp Bait",{
+"720": ["Shrimp",1]
+},[5,10]],["Snail Bait",{
+"721": ["Snail",1]
+},[5,10]],["Periwinkle Bait",{
+"722": ["Periwinkle",1]
+},[5,10]],["Oyster Bait",{
+"723": ["Oyster",1]
+},[5,10]],["Woodskip Bait",{
+"734": ["Woodskip",1]
+},[5,10]],["Void Salmon Bait",{
+"795": ["Void Salmon",1]
+},[5,10]],["Slimejack Bait",{
+"796": ["Slimejack",1]
+},[5,10]],["Midnight Squid Bait",{
+"798": ["Midnight Squid",1]
+},[5,10]],["Spook Fish Bait",{
+"799": ["Spook Fish",1]
+},[5,10]],["Blobfish Bait",{
+"800": ["Blobfish",1]
+},[5,10]],["Flounder Bait",{
+"267": ["Flounder",1]
+},[5,10]],["Midnight Carp Bait",{
+"269": ["Midnight Carp",1]
+},[5,10]],["Stingray Bait",{
+"836": ["Stingray",1]
+},[5,10]],["Lionfish Bait",{
+"837": ["Lionfish",1]
+},[5,10]],["Blue Discus Bait",{
+"838": ["Blue Discus",1]
+},[5,10]],["Son of Crimsonfish Bait",{
+"898": ["Son of Crimsonfish",1]
+},[5,10]],["Ms. Angler Bait",{
+"899": ["Ms. Angler",1]
+},[5,10]],["Legend II Bait",{
+"900": ["Legend II",1]
+},[5,10]],["Radioactive Carp Bait",{
+"901": ["Radioactive Carp",1]
+},[5,10]],["Glacierfish Jr. Bait",{
+"902": ["Glacierfish Jr.",1]
+},[5,10]],["Goby Bait",{
+"Goby": ["Goby",1]
+},[5,10]],["Pickled Parsnip",{
 "24": ["Parsnip",1]
 },1],["Pickled Green Bean",{
 "188": ["Green Bean",1]
@@ -1492,4 +1494,7 @@
 "430": ["Truffle",1]
 },1],["Far Away Stone",{
 "103": ["Ancient Doll",1]
+},1],["Trimmed Lucky Purple Shorts",{
+"789": ["Lucky Purple Shorts",1],
+"336": ["Gold Bar",1]
 },1]]

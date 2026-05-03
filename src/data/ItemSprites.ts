@@ -3,6 +3,7 @@ import springObjectsSheet from '../assets/stardew/springobjects.png';
 import objectsSheet from '../assets/stardew/Objects_2.png';
 import craftablesSheet from '../assets/stardew/Craftables.png';
 import mannequinsSheet from '../assets/stardew/Mannequins.png';
+import {getListItemSecondaryActionClassesUtilityClass} from "@mui/material";
 
 type SpriteSheet = 'springobjects' | 'objects2' | 'craftables' | 'mannequins';
 
@@ -30,6 +31,7 @@ export interface ItemSprite {
 }
 
 const data = itemSpriteData as SpriteData;
+const spriteCache = new Map<string, ItemSprite | undefined>();
 
 function getSheetSrc(sheet: SpriteSheet): string {
   if (sheet === 'mannequins') return mannequinsSheet;
@@ -64,22 +66,41 @@ function getItemIdByName(itemName: string): string | undefined {
 }
 
 function getProcessedSourceName(itemName: string): string | undefined {
-  const pickledMatch = itemName.match(/^Pickled (.+)$/);
-  if (pickledMatch?.[1]) return pickledMatch[1];
+  const prefixedMatch = itemName.match(/^(?:Pickled|Smoked|Dried) (.+)$/);
+  if (prefixedMatch?.[1]) {
+    let result = prefixedMatch[1];
+    if (result.endsWith("ies")) {
+      result = result.substring(0, result.length - 3);
+      result+='y';
+    } else if(result === "Peaches") {
+      result = "Peach";
+    } else if(result.endsWith("s")) {
+      result = result.substring(0, result.length - 1);
+    }
+    return result;
+  }
 
-  const smokedMatch = itemName.match(/^Smoked (.+)$/);
-  if (smokedMatch?.[1]) return smokedMatch[1];
+  const agedRoeMatch = itemName.match(/^Aged (.+) Roe$/);
+  if (agedRoeMatch?.[1]) return agedRoeMatch[1];
 
-  const suffixMatch = itemName.match(/^(.+) (?:Wine|Jelly|Juice|Bait)$/);
+  if(itemName.startsWith("Honey")) return "Honey";
+
+  const suffixMatch = itemName.match(/^(.+) (?:Wine|Jelly|Juice|Bait|Roe)$/);
   if (suffixMatch?.[1]) return suffixMatch[1];
 
   return undefined;
 }
 
 export function getItemSprite(itemName: string): ItemSprite | undefined {
+  if (spriteCache.has(itemName)) {
+    return spriteCache.get(itemName);
+  }
+
   const fallbackItemId = itemName.match(/\[((?:\(O\)|\(BC\))[^\]]+)\]$/)?.[1];
   const directItemId = fallbackItemId ?? getItemIdByName(itemName);
   const sourceName = directItemId ? undefined : getProcessedSourceName(itemName);
   const itemId = directItemId ?? (sourceName ? getItemIdByName(sourceName) : undefined);
-  return getSpriteByItemId(itemId);
+  const result = getSpriteByItemId(itemId);
+  spriteCache.set(itemName, result);
+  return result;
 }

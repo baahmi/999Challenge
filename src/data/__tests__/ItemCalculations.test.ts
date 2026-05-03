@@ -6,9 +6,9 @@ import { calculateNeededCount, calculatePercentage } from '../../types/Item';
 describe('computeCategoryItems', () => {
     it('uses bundled trove item names to estimate opened artifact troves', () => {
         expect(CustomDataStore.getTroveItems()).toContain('Book_Artifact');
-        expect(CustomDataStore.getTroveItems()).toContain('Chicken Statue [(O)113]');
+        expect(CustomDataStore.getTroveItems()).toContain('Chicken Statue');
         expect(CustomDataStore.getTroveItems()).not.toContain('Treasure Appraisal Guide');
-        expect(CustomDataStore.getTroveItems()).not.toContain('Chicken Statue');
+        expect(CustomDataStore.getTroveItems()).not.toContain('Chicken Statue [(O)113]');
 
         const requiredFromParts = new Map<string, number>();
         const totalFromParts = new Map<string, number>();
@@ -25,6 +25,34 @@ describe('computeCategoryItems', () => {
 
         expect(requiredFromParts.get('Artifact Trove')).toBe(999 * CustomDataStore.getTroveItems().length);
         expect(totalFromParts.get('Artifact Trove')).toBe(11 * CustomDataStore.getTroveItems().length);
+    });
+
+    it('caps trove progress at 999 per trove item even when recipes need more', () => {
+        CustomDataStore.troveItems = ['Ancient Doll', 'Dwarf Gadget'];
+        CustomDataStore.data.categoryNames = ['Artifacts', 'Machines', 'Geodes', 'Resources'];
+        CustomDataStore.data.items = [
+            { category: 'Artifacts', name: 'Ancient Doll', displayName: null },
+            { category: 'Artifacts', name: 'Dwarf Gadget', displayName: null },
+            { category: 'Machines', name: 'Farm Computer', displayName: null },
+            { category: 'Resources', name: 'Far Away Stone', displayName: null },
+            { category: 'Geodes', name: 'Artifact Trove', displayName: null },
+            { category: 'Geodes', name: 'Omni Geode', displayName: null },
+        ];
+        CustomDataStore.partsData = [
+            ["Farm Computer", { "122": ["Dwarf Gadget", 1] }, 1],
+            ["Far Away Stone", { "103": ["Ancient Doll", 1] }, 1],
+            ["Artifact Trove", { "749": ["Omni Geode", 5] }, 1],
+        ] as PartsEntry[];
+
+        const rows = computeCategoryItems('Geodes', [
+            { name: 'Farm Computer', stack: 999, category: 'Machines', quality: [999,0,0,0,0] },
+            { name: 'Far Away Stone', stack: 999, category: 'Resources', quality: [999,0,0,0,0] },
+            { name: 'Omni Geode', stack: 20000, category: 'Geodes', quality: [20000,0,0,0,0] },
+        ]);
+
+        const artifactTrove = rows.find(row => row.name === 'Artifact Trove')!;
+        expect(artifactTrove.required).toBe(999 + 999 * 2);
+        expect(artifactTrove.total).toBe(999 * 2);
     });
 
     it('propagates required counts through dependencies even when parts data is unordered', () => {

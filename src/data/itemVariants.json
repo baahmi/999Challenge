@@ -23,14 +23,8 @@
     "(BC)196": "Seasonal Plant (FD 2)",
     "(BC)200": "Seasonal Plant (Sandy)",
     "(BC)204": "Seasonal Plant (Robin)",
-    "MannequinMale": "Mannequin (M)",
-    "(M)MannequinMale": "Mannequin (M)",
-    "MannequinFemale": "Mannequin (F)",
-    "(M)MannequinFemale": "Mannequin (F)",
-    "CursedMannequinMale": "Cursed Mannequin (M)",
-    "(M)CursedMannequinMale": "Cursed Mannequin (M)",
-    "CursedMannequinFemale": "Cursed Mannequin (F)",
-    "(M)CursedMannequinFemale": "Cursed Mannequin (F)"
+    "(O)747": "Rotten Plant 1",
+    "(O)748": "Rotten Plant 2"
   },
   "colorVariantItems": [
     "Blue Jazz",
@@ -46,14 +40,6 @@
     "Wild Seeds (Wi)": "Wild Seeds: Winter"
   },
   "ambiguousItemNames": {
-    "Campfire": [
-      "(BC)146",
-      "(BC)278"
-    ],
-    "Chicken Statue": [
-      "(O)113",
-      "(BC)31"
-    ],
     "Egg": [
       "(O)176",
       "(O)180"

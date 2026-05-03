@@ -11,6 +11,9 @@
 
 ### Changes
 #### 0.1.2
+- Added Apache-2.0 license for source and documented the permission to use Stardew images.
+- Cheese Cauliflower, Vegetable Medley, Cookie, Eggplan Permasan, Cranberry Sauace and Dish o' the sea are now correctly processed and shows ingredients now on tooltip after a name correction
+- Now shows (Trimmed) Purple Shorts and adds the fact it needs a Golda Bar to creat a trimeed one.
 - Squid Ink and Sea Urchin cannot be smoked or made into bait.
 - Now storing items based on id, instead of name, since they are clashing. Side effect is that it now shows eg Stone Owl and Stone Owl (Spawned) and the eggs correctly (all normal chicken eggs have the name "Egg", just another Id for color and size)
 - Since uploaded metadata is not compatible anymore, you need to reupload the data. You can select multiple files. The test with 125 save files takes time, but with progress it at least shows what it is doing

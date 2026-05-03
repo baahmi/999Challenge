@@ -21,11 +21,11 @@ describe('VariantResolver flower colors', () => {
     expect(VariantResolver.hasItemIdVariants('Seasonal Plant')).toBe(true);
   });
 
-  it('uses readable names for mannequin item ids', () => {
-    expect(VariantResolver.resolveDisplayName('MannequinMale', '(M)MannequinMale')).toBe('Mannequin (M)');
-    expect(VariantResolver.resolveDisplayName('MannequinFemale', 'MannequinFemale')).toBe('Mannequin (F)');
-    expect(VariantResolver.resolveDisplayName('CursedMannequinMale', '(M)CursedMannequinMale')).toBe('Cursed Mannequin (M)');
-    expect(VariantResolver.resolveDisplayName('CursedMannequinFemale', 'CursedMannequinFemale')).toBe('Cursed Mannequin (F)');
+  it('leaves mannequin save names unchanged', () => {
+    expect(VariantResolver.resolveDisplayName('MannequinMale', '(M)MannequinMale')).toBe('MannequinMale');
+    expect(VariantResolver.resolveDisplayName('MannequinFemale', 'MannequinFemale')).toBe('MannequinFemale');
+    expect(VariantResolver.resolveDisplayName('CursedMannequinMale', '(M)CursedMannequinMale')).toBe('CursedMannequinMale');
+    expect(VariantResolver.resolveDisplayName('CursedMannequinFemale', 'CursedMannequinFemale')).toBe('CursedMannequinFemale');
   });
 
   it('uses readable names for known flower colors from the save file', () => {
@@ -59,5 +59,15 @@ describe('VariantResolver flower colors', () => {
     expect(VariantResolver.normalizeDisplayName('Blue Jazz (109,131,255)')).toBe('Blue Jazz (Periwinkle)');
     expect(VariantResolver.normalizeDisplayName('Poppy (255,170,0)')).toBe('Poppy (Orange)');
     expect(VariantResolver.normalizeDisplayName('Blue Jazz (1,2,3)')).toBe('Blue Jazz (1,2,3)');
+  });
+
+  it('normalizes legacy item-id suffixes when they are no longer needed', () => {
+    expect(VariantResolver.normalizeDisplayName('Chicken Statue [(O)113]')).toBe('Chicken Statue');
+    expect(VariantResolver.normalizeDisplayName('Campfire [(BC)146]')).toBe('Campfire');
+  });
+
+  it('does not treat Campfire as an item-id variant family', () => {
+    expect(VariantResolver.hasItemIdVariants('Campfire')).toBe(false);
+    expect(VariantResolver.resolveDisplayName('Campfire', '(BC)146')).toBe('Campfire');
   });
 });

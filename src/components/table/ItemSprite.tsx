@@ -5,7 +5,7 @@ interface ItemSpriteProps {
   name: string;
 }
 
-export function ItemSprite({ name }: ItemSpriteProps) {
+function ItemSpriteInner({ name }: ItemSpriteProps) {
   const sprite = getItemSprite(name);
   if (!sprite) return <span className="item-sprite item-sprite-empty" aria-hidden="true" />;
 
@@ -23,3 +23,5 @@ export function ItemSprite({ name }: ItemSpriteProps) {
     />
   );
 }
+
+export const ItemSprite = React.memo(ItemSpriteInner);

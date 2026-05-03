@@ -1,0 +1,3 @@
+These images are extractions from the Stardew Valley game.
+We received permission from the ConcernedApe company to use these in the 999 Challenge applcation, assuming there is monetization of the application. .
+So even though the main code is under the Apache License 2.0, the excludes the items in this directory

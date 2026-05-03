@@ -4,7 +4,7 @@
     "Artifacts", "Cooking", "Fertilizers","Fish","Flowers","Forage","Bait","Books",
     "Fruits","Gem","Jelly","Juice","Machines","Minerals","Aged Roe",
     "Pickles","Roe","Seeds","Smoked Fish","Trash","Vegetables","Wine",
-    "Artisan Goods (Keg)", "Artisan Goods (Dehydrator)", "Artisan Goods (Other)", "Decoration (Other)"
+    "Artisan Goods (Dehydrator)", "Artisan Goods", "Decoration (Other)", "Decoration (Lighting)"
   ],
   "ignored": [
     -22,
@@ -59,8 +59,8 @@
   "1116" : "Decoration (Lighting)",
   "1117" : "Gifts/Rewards",
   "1118" : "Artifacts",
-  "1119" : "Artisan Goods (Other)",
-  "1120" : "Artisan Goods (Keg)",
+  "1119" : "Artisan Goods",
+  "1120" : "Artisan Goods",
   "1121" : "Artisan Goods (Dehydrator)",
   "1122" : "Artisan Goods (Jar)",
   "1123" : "Decoration (Other)",

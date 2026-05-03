@@ -990,7 +990,7 @@ null
 null
 ],
 [
-"Artisan Goods (Keg)",
+"Artisan Goods",
 "Pale Ale",
 null
 ],
@@ -1005,17 +1005,17 @@ null
 "Egg: Void"
 ],
 [
-"Artisan Goods (Other)",
+"Artisan Goods",
 "Mayonnaise",
 null
 ],
 [
-"Artisan Goods (Other)",
+"Artisan Goods",
 "Duck Mayonnaise",
 "Mayonnaise: Duck"
 ],
 [
-"Artisan Goods (Other)",
+"Artisan Goods",
 "Void Mayonnaise",
 "Mayonnaise: Void"
 ],
@@ -1105,7 +1105,7 @@ null
 null
 ],
 [
-"Artisan Goods (Other)",
+"Artisan Goods",
 "Honey",
 null
 ],
@@ -1115,17 +1115,17 @@ null
 null
 ],
 [
-"Pickles",
+"Artisan Goods",
 "Pickles",
 null
 ],
 [
-"Jelly",
+"Artisan Goods",
 "Jelly",
 null
 ],
 [
-"Artisan Goods (Keg)",
+"Artisan Goods",
 "Beer",
 null
 ],
@@ -1135,7 +1135,7 @@ null
 null
 ],
 [
-"Artisan Goods (Keg)",
+"Artisan Goods",
 "Wine",
 null
 ],
@@ -1145,7 +1145,7 @@ null
 null
 ],
 [
-"Artisan Goods (Keg)",
+"Artisan Goods",
 "Juice",
 null
 ],
@@ -1235,7 +1235,7 @@ null
 null
 ],
 [
-"Artisan Goods (Keg)",
+"Artisan Goods",
 "Coffee",
 null
 ],
@@ -1380,17 +1380,17 @@ null
 null
 ],
 [
-"Artisan Goods (Other)",
+"Artisan Goods",
 "Cheese",
 null
 ],
 [
-"Artisan Goods (Other)",
+"Artisan Goods",
 "Goat Cheese",
 null
 ],
 [
-"Artisan Goods (Other)",
+"Artisan Goods",
 "Cloth",
 null
 ],
@@ -1400,7 +1400,7 @@ null
 null
 ],
 [
-"Artisan Goods (Other)",
+"Artisan Goods",
 "Truffle Oil",
 null
 ],
@@ -1475,7 +1475,7 @@ null
 null
 ],
 [
-"Artisan Goods (Keg)",
+"Artisan Goods",
 "Mead",
 null
 ],
@@ -2025,7 +2025,7 @@ null
 null
 ],
 [
-"Artisan Goods (Keg)",
+"Artisan Goods",
 "Green Tea",
 null
 ],
@@ -2435,7 +2435,7 @@ null
 null
 ],
 [
-"Artisan Goods (Other)",
+"Artisan Goods",
 "Dinosaur Mayonnaise",
 "Mayonnaise: Dino"
 ],
@@ -4166,6 +4166,11 @@ null
 ],
 [
 "Roe",
+"Sea Urchin Roe",
+null
+],
+[
+"Roe",
 "Sturgeon Roe",
 null
 ],
@@ -4517,6 +4522,11 @@ null
 [
 "Aged Roe",
 "Aged Clam Roe",
+null
+],
+[
+"Aged Roe",
+"Aged Sea Urchin Roe",
 null
 ],
 [
@@ -5870,39 +5880,39 @@ null
 null
 ],
 [
-"Artisan Goods (Other)",
+"Artisan Goods",
 "Sunflower Honey",
 "Honey: Sunflower"
 ],
 [
-"Artisan Goods (Other)",
+"Artisan Goods",
 "Tulip Honey",
 "Honey: Tulip"
 ],
 [
-"Artisan Goods (Other)",
+"Artisan Goods",
 "Summer Spangle Honey",
 "Honey: Summer Spangle"
 ],
 [
-"Artisan Goods (Other)",
+"Artisan Goods",
 "Fairy Rose Honey",
 "Honey: Fairy Rose"
 ],
 [
-"Artisan Goods (Other)",
+"Artisan Goods",
 "Blue Jazz Honey",
 "Honey: Blue Jazz"
 ],
 [
-"Artisan Goods (Other)",
+"Artisan Goods",
 "Poppy Honey",
 "Honey: Poppy"
 ],
 [
-"Artisan Goods (Other)",
+"Artisan Goods",
 "Wild Honey",
-"Honey: Wile"
+"Honey: Wild"
 ],
 [
 "Decoration (Other)",

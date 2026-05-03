@@ -92,6 +92,24 @@ function getAmbiguousFallbackName(itemName: string, itemId?: string): string | u
   return displayName;
 }
 
+function normalizeLegacyItemIdDisplayName(displayName: string): string | undefined {
+  const legacyItemIdMatch = displayName.match(/^(.+?)\s+\[((?:\(O\)|\(BC\)|\(M\)).+)\]$/);
+  if (!legacyItemIdMatch) return undefined;
+
+  const [, itemName, itemId] = legacyItemIdMatch;
+  const explicitItemIdName = data.itemIdNames[itemId];
+  if (explicitItemIdName) {
+    return explicitItemIdName;
+  }
+
+  const ambiguousIds = AMBIGUOUS_ITEM_NAMES.get(itemName);
+  if (ambiguousIds?.has(itemId)) {
+    return displayName;
+  }
+
+  return itemName;
+}
+
 /**
  * Resolves item variants from save file data.
  * Handles:
@@ -233,6 +251,11 @@ export class VariantResolver {
    * E.g., "Blue Jazz (109,131,255)" -> "Blue Jazz (Periwinkle)"
    */
   static normalizeDisplayName(displayName: string): string {
+    const normalizedLegacyItemIdName = normalizeLegacyItemIdDisplayName(displayName);
+    if (normalizedLegacyItemIdName) {
+      return normalizedLegacyItemIdName;
+    }
+
     const rgbMatch = displayName.match(/^(.+?)\s*\((\d+),(\d+),(\d+)\)$/);
     if (!rgbMatch) {
       return displayName;
