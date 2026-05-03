@@ -8,7 +8,7 @@ I moved to Codex, which was a lot better. It also created tests without me askin
 
 # License
 The code is under the Apache-2.0 license. 
-The files in src/assets/stardew are (c) ConcernedApe and permission to use them are specific to this project, assuming no monetization (eg ads in on the app, selling thapp). 
+The files in src/assets/stardew are (c) ConcernedApe and permission to use them are specific to this project, assuming no monetization (eg no ads in the app). 
 
 So if you fork this project and host it publicly, you need to get permisison to use these images yourself.  
 
