@@ -10,6 +10,7 @@ export interface UIConfig {
   selectedTab: string;
   theme: Theme;
   tabOrder: string[];
+  showItemIds: boolean;
 }
 
 export interface CategoriesConfig {
@@ -29,7 +30,8 @@ export class Config {
       theme: 'light',
       tabsPosition: 'both',
       selectedTab: 'Resources',
-      tabOrder: []
+      tabOrder: [],
+      showItemIds: false,
     },
     quality: 'highest'
   };
@@ -88,6 +90,10 @@ export class Config {
     return [...this.getInstance().getConfig().ui.tabOrder];
   }
 
+  public static getShowItemIds(): boolean {
+    return this.getInstance().getConfig().ui.showItemIds;
+  }
+
   public static setTabOrder(tabOrder: string[]): void {
     this.getInstance().setTabOrder(tabOrder);
   }
@@ -110,7 +116,10 @@ export class Config {
             ui: {
               ...Config.DEFAULT_CONFIG.ui,
               ...parsed.ui,
-              tabOrder: Array.isArray(parsed.ui?.tabOrder) ? parsed.ui.tabOrder : Config.DEFAULT_CONFIG.ui.tabOrder
+              tabOrder: Array.isArray(parsed.ui?.tabOrder) ? parsed.ui.tabOrder : Config.DEFAULT_CONFIG.ui.tabOrder,
+              showItemIds: typeof parsed.ui?.showItemIds === 'boolean'
+                ? parsed.ui.showItemIds
+                : Config.DEFAULT_CONFIG.ui.showItemIds,
             }
           };
         }
@@ -190,6 +199,13 @@ export class Config {
     }
     this.config.ui.tabOrder = normalized;
     this.saveConfig();
+  }
+
+  public setShowItemIds(showItemIds: boolean): void {
+    if (this.config.ui.showItemIds !== showItemIds) {
+      this.config.ui.showItemIds = showItemIds;
+      this.saveConfig();
+    }
   }
 
   public setQuality(quality: Quality): void {
