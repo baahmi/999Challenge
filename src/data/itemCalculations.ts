@@ -226,7 +226,9 @@ const ANY_INGREDIENTS: Record<string, { name: string; category: string; candidat
   '-5': {
     name: 'Egg: Extra',
     category: 'Animal Products',
-    candidates: ['Dinosaur Egg', 'Egg', 'Large Egg', 'Void Egg', 'Duck Egg', 'Ostrich Egg', 'Golden Egg'],
+    candidates: ['Dinosaur Egg', 'Egg', 'Large Egg', 'Void Egg', 'Duck Egg', 'Ostrich Egg', 'Golden Egg',
+                 'Egg: Dinosaur', 'Egg: Brown', 'Egg: White', 'Egg: Brown, Large', 'Egg: White, Large',
+                 'Egg: Duck', 'Egg: Void', 'Egg: Ostrich'],
   },
   '-6': {
     name: 'Milk: Extra',
