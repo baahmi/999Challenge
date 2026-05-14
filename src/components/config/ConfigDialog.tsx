@@ -10,6 +10,8 @@ import {
   Box,
   Divider,
   Typography,
+  Checkbox,
+  FormControlLabel,
   IconButton,
   List,
   ListItem,
@@ -30,6 +32,7 @@ interface ConfigDialogProps {
 export function ConfigDialog({ open, onClose }: ConfigDialogProps) {
   const [quality, setQuality] = useState<Quality>(Config.getQuality());
   const [tabOrder, setTabOrder] = useState<string[]>(Config.getCategoryNames());
+  const [showItemIds, setShowItemIds] = useState<boolean>(Config.getShowItemIds());
   const [confirmClear, setConfirmClear] = useState(false);
   const [draggedTab, setDraggedTab] = useState<string | null>(null);
 
@@ -37,6 +40,7 @@ export function ConfigDialog({ open, onClose }: ConfigDialogProps) {
     if (!open) return;
     setQuality(Config.getQuality());
     setTabOrder(Config.getCategoryNames());
+    setShowItemIds(Config.getShowItemIds());
     setConfirmClear(false);
     setDraggedTab(null);
   }, [open]);
@@ -66,6 +70,7 @@ export function ConfigDialog({ open, onClose }: ConfigDialogProps) {
   const handleSave = () => {
     Config.getInstance().setQuality(quality);
     Config.getInstance().setTabOrder(tabOrder);
+    Config.getInstance().setShowItemIds(showItemIds);
     onClose();
   };
 
@@ -94,6 +99,18 @@ export function ConfigDialog({ open, onClose }: ConfigDialogProps) {
               </MenuItem>
             ))}
           </Select>
+        </Box>
+        <Divider sx={{ my: 2 }} />
+        <Box>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={showItemIds}
+                onChange={(event) => setShowItemIds(event.target.checked)}
+              />
+            }
+            label="Show item IDs in names"
+          />
         </Box>
         <Divider sx={{ my: 2 }} />
         <Box>

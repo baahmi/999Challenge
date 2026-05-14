@@ -158,6 +158,7 @@ export interface ItemTooltipData {
 
 export interface ItemRow {
   name: string;
+  itemId?: string;
   category?: string;
   required: number;
   requiredStrict?: number;
@@ -565,6 +566,7 @@ function computeAllItems(
     }
       allComputedRows.push({ 
       name: itemKey, 
+      itemId: compacted.find(entry => entry.name === lookupKey || entry.name === itemKey)?.itemId,
       category: item.category,
       required, 
       requiredStrict: requiredFromPartsStrict.get(item.name) ?? 0,
@@ -603,6 +605,7 @@ function computeAllItems(
     if (excessRaw > 0 || recipeReq > 0) {
       allComputedRows.push({
         name: `${baseName} Extra`,
+        itemId: undefined,
         category: source.find(item => item.name === baseName)?.category,
         required: recipeReq, // Only recipe requirements, no 999
         total: Math.min(totalFromParts.get(baseName) ?? 0, recipeReq), // Cap at recipe requirement
@@ -625,6 +628,7 @@ function computeAllItems(
     const raw = extraRawForAnyIngredient(info.candidates, allComputedRows);
     allComputedRows.push({
       name: anyIngredient.name,
+      itemId: undefined,
       category: anyIngredient.category,
       required: recipeReq,
       total,
@@ -1155,6 +1159,7 @@ export function computeCategoryItemsUncached(
     const total = totalFromParts.get(item.name) ?? 0;
     rows.push({ 
       name: itemKey, 
+      itemId: compacted.find(entry => entry.name === lookupKey || entry.name === itemKey)?.itemId,
       category: item.category,
       required, 
       total, 
@@ -1173,6 +1178,7 @@ export function computeCategoryItemsUncached(
     const raw = extraRawForAnyIngredient(info.candidates, rows);
     rows.push({
       name: anyIngredient.name,
+      itemId: undefined,
       category: anyIngredient.category,
       required: recipeReq,
       total,

@@ -10,6 +10,7 @@ import { JournalStore } from '../../app/Journal';
 import type { Journal } from '../../app/Journal';
 import { CustomDataStore } from '../../data/CustomDataStore';
 import { computeCategoryItemsUncached } from '../../data/itemCalculations';
+import { VariantResolver } from '../../data/CustomDataStore';
 import { Config } from '../../config/Config';
 
 export interface HistoryDialogProps {
@@ -22,6 +23,39 @@ interface DataPoint { x: number; y: number; }
 interface ChartSeries { label: string; color: string; data: DataPoint[]; }
 
 const PALETTE = ['#4ade80', '#60a5fa', '#f97316', '#a78bfa', '#f43f5e', '#facc15', '#2dd4bf', '#fb923c'];
+
+function getHistoricalItemCount(
+  journal: Journal,
+  day: number,
+  selectedItem: string,
+): number {
+  const items = JournalStore.reconstructItemsAtDay(journal, day);
+  const compacted = JournalStore.toCompactedItems(items, Config.getIgnoredCategories());
+  const rows = computeCategoryItemsUncached('All', compacted);
+
+  const exactRow = rows.find(r => r.name === selectedItem);
+  if (exactRow) {
+    return exactRow.raw + exactRow.total;
+  }
+
+  const selectedBaseName = VariantResolver.getBaseName(selectedItem);
+  const matchingRows = rows.filter(r =>
+    r.name === selectedItem ||
+    VariantResolver.getBaseName(r.name) === selectedBaseName
+  );
+  if (matchingRows.length > 0) {
+    return matchingRows.reduce((sum, row) => sum + row.raw + row.total, 0);
+  }
+
+  const directCount = compacted
+    .filter(item =>
+      item.name === selectedItem ||
+      VariantResolver.getBaseName(item.name) === selectedBaseName
+    )
+    .reduce((sum, item) => sum + item.stack, 0);
+
+  return directCount;
+}
 
 function niceYTicks(max: number, n = 5): number[] {
   if (max <= 0) return Array.from({ length: n + 1 }, (_, i) => i * 20);
@@ -212,10 +246,7 @@ export function HistoryDialog({ open, onClose, journal }: HistoryDialogProps) {
       return;
     }
     const data = days.map(day => {
-      const items = JournalStore.reconstructItemsAtDay(journal, day);
-      const compacted = JournalStore.toCompactedItems(items, Config.getIgnoredCategories());
-      const row = computeCategoryItemsUncached('All', compacted).find(r => r.name === selectedItem);
-      return { x: day, y: row ? row.raw + row.total : 0 };
+      return { x: day, y: getHistoricalItemCount(journal, day, selectedItem) };
     });
     setItemSeries([{ label: selectedItem, color: PALETTE[0]!, data }]);
   }, [open, journal, selectedItem]);

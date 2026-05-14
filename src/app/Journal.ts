@@ -222,16 +222,54 @@ export class JournalStore {
     stats?: Record<string, string>,
   ): Journal {
     const currentItems = JournalStore.toJournalItems(compacted);
-    const prevItems = existing?.main.items ?? {};
-    const changes = JournalStore.computeDelta(prevItems, currentItems);
+    const snapshotsByDay = new Map<number, Record<string, JournalItem>>();
+    const dayEntries: Record<string, DayEntry> = { ...(existing?.days ?? {}) };
+
+    if (existing) {
+      for (const existingDay of Object.keys(existing.days).map(Number)) {
+        snapshotsByDay.set(existingDay, JournalStore.reconstructItemsAtDay(existing, existingDay));
+      }
+    }
+
+    snapshotsByDay.set(day, currentItems);
+    dayEntries[String(day)] = { qiGems, mysteryBoxesOpened, ticketPrizesClaimed, changes: {}, stats };
+
+    const sortedDays = [...snapshotsByDay.keys()].sort((a, b) => a - b);
+    const rebuiltDays: Record<string, DayEntry> = {};
+
+    let previousItems: Record<string, JournalItem> = {};
+    for (const currentDay of sortedDays) {
+      const snapshot = snapshotsByDay.get(currentDay) ?? {};
+      const existingEntry = dayEntries[String(currentDay)];
+      rebuiltDays[String(currentDay)] = {
+        qiGems: existingEntry?.qiGems ?? 0,
+        mysteryBoxesOpened: existingEntry?.mysteryBoxesOpened ?? 0,
+        ticketPrizesClaimed: existingEntry?.ticketPrizesClaimed ?? 0,
+        changes: JournalStore.computeDelta(previousItems, snapshot),
+        stats: existingEntry?.stats,
+      };
+      previousItems = snapshot;
+    }
+
+    const latestDay = sortedDays[sortedDays.length - 1] ?? day;
+    const latestItems = snapshotsByDay.get(latestDay) ?? currentItems;
+    const latestEntry = rebuiltDays[String(latestDay)];
+    const latestChildrenTurnedToDoves =
+      latestDay === day
+        ? childrenTurnedToDoves
+        : (existing?.main.childrenTurnedToDoves ?? childrenTurnedToDoves);
 
     return {
       v: 2,
-      main: { day, qiGems, mysteryBoxesOpened, ticketPrizesClaimed, childrenTurnedToDoves, items: currentItems },
-      days: {
-        ...(existing?.days ?? {}),
-        [day]: { qiGems, mysteryBoxesOpened, ticketPrizesClaimed, changes, stats },
+      main: {
+        day: latestDay,
+        qiGems: latestEntry?.qiGems ?? qiGems,
+        mysteryBoxesOpened: latestEntry?.mysteryBoxesOpened ?? mysteryBoxesOpened,
+        ticketPrizesClaimed: latestEntry?.ticketPrizesClaimed ?? ticketPrizesClaimed,
+        childrenTurnedToDoves: latestChildrenTurnedToDoves,
+        items: latestItems,
       },
+      days: rebuiltDays,
     };
   }
 }

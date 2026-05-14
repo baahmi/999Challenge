@@ -258,6 +258,7 @@ export function Header() {
                 <DialogContent dividers>
                     <div className="getting-started-copy">
                         <p>This app needs a Stardew Valley save file before it can show your progress.</p>
+                        <p>The save file is in the format JonSnow_01234567890 (player name and game seed). The SaveGameInfo file is not used.</p>
                         <p>Common save locations:</p>
                         <ul>
                             <li>Windows: <code>%AppData%\StardewValley\Saves</code></li>

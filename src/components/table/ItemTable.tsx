@@ -6,12 +6,13 @@ import {
   calculateCappedObtainedCount,
   calculateTotalNeededCount,
   enrichItemsWithCalculations
-} from '../../types/Item';
-import type { ItemWithCalculations } from '../../types/Item';
-import type { ItemRow, ItemTooltipData } from '../../data/itemCalculations';
-import { hasTooltipContent } from '../../data/itemCalculations';
+} from '@/types/Item';
+import type { ItemWithCalculations } from '@/types/Item';
+import type { ItemRow, ItemTooltipData } from '@/data/itemCalculations';
+import { hasTooltipContent } from '@/data/itemCalculations';
 import { ItemSprite } from './ItemSprite';
 import './ItemTable.css';
+import {Config} from '@/config/Config';
 
 interface ItemTableProps {
   items: ItemRow[];
@@ -178,6 +179,7 @@ const COST_KEYS = new Set(['gold_needed', 'qi_needed']);
 export function ItemTable({ items }: ItemTableProps) {
   const { mode } = useColorScheme();
   const isDark = mode === 'dark';
+  const [showItemIds, setShowItemIds] = React.useState<boolean>(Config.getShowItemIds());
   const [columnWidths, setColumnWidths] = React.useState<Record<string, number>>({
     checkbox: 30,
     image: 42,
@@ -197,6 +199,13 @@ export function ItemTable({ items }: ItemTableProps) {
   const [hover, setHover] = React.useState<{ name: string; data: ItemTooltipData; x: number; y: number } | null>(null);
   const theadRef = React.useRef<HTMLTableSectionElement>(null);
   const [theadHeight, setTheadHeight] = React.useState(34);
+
+  React.useEffect(() => {
+    const unsubscribe = Config.getInstance().subscribe(() => {
+      setShowItemIds(Config.getShowItemIds());
+    });
+    return unsubscribe;
+  }, []);
 
   React.useEffect(() => {
     if (!theadRef.current) return;
@@ -267,7 +276,12 @@ export function ItemTable({ items }: ItemTableProps) {
         case 'checkbox':   return isTotal ? '—' : (done ? '☑' : '☐');
         case 'image':      return isTotal ? '' : <ItemSprite name={row.name} />;
         case 'percentage': return `${Math.floor(row.percentage)}%`;
-        case 'name':       return isTotal ? 'Total' : row.name;
+        case 'name': {
+          if (isTotal) return 'Total';
+          const itemRow = row as ItemRow;
+          if (!showItemIds || !itemRow.itemId) return row.name;
+          return `${row.name} [${itemRow.itemId}]`;
+        }
         case 'required':   return fmtNumber(row.required);
         case 'needed':     return fmtNumber(isTotal ? totalNeeded : calculateNeededCount(row));
         case 'total':      return fmtNumber(isTotal ? cappedHave : calculateObtainedCount(row));
