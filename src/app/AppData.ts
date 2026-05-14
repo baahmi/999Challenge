@@ -266,6 +266,10 @@ class AppDataManager {
     }
   }
 
+  /**
+   * don't like this code. it duplicates stuff in processData
+   * refactoring is for another time
+  */
   private getDaysPlayedFromText(text: string): number {
     const itemMatch = text.match(/<item><key><string>daysPlayed<\/string><\/key><value><[^>]+>(\d+)<\/[^>]+><\/value><\/item>/);
     if (itemMatch?.[1]) return Number(itemMatch[1]);
@@ -518,20 +522,6 @@ private extractItems(node: Element, out: extractedItem[]): void {
     this.extractItems(node.children[i] as Element, out);
   }
 }
-
-
-  clearData(): void {
-    this.state.xmlData = null;
-    this.state.error = null;
-    this.state.isLoading = false;
-    this.state.importStatus = null;
-    this.state.items = [];
-    this.state.daysPlayed = 0;
-    this.state.qiGems = 0;
-    this.state.mysteryBoxesOpened = 0;
-    this.state.ticketPrizesClaimed = 0;
-    this.notifyListeners();
-  }
 }
 
 export const AppData = AppDataManager.getInstance();
