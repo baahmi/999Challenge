@@ -487,8 +487,9 @@ private getItemId(node: ParentNode, itemIdText: string | undefined): string {
 
 private extractItems(node: Element, out: extractedItem[]): void {
   const tag = node.tagName;
+  const xsiType = node.getAttribute("xsi:type");
 
-  if (tag === "Object" || tag === "Item") {
+  if ((tag === "Object" || tag === "Item") && xsiType !== "Furniture") {
     const name = this.getText(node, "name");
     const category = this.getInt(node, "category");
     if (name && !Config.getIgnoredCategories().includes(category)) {
