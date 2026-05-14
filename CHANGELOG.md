@@ -15,7 +15,8 @@
 - Add optione to show item ids as in the game (mainly used for making debugging easier)
 - Fix needed count in total row.
 - Removed Incubator (the fixed egg incubator in coops) and Feed Hopper (the fixed hay feeder in deluxe coops and barns)
-- Filter out furniture items called "House Plant"
+- Filter out furniture items that have known name like "House Plant"
+- Egg extra's now correctly shows the egg count that is in surplus
 
 #### 0.1.2
 - Added Apache-2.0 license for source and documented the permission to use Stardew images.
