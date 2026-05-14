@@ -316,17 +316,8 @@ class AppDataManager {
   private loadFromJournal(): void {
     this.journal = JournalStore.load();
     if (!this.journal) return;
-    const { main, days } = this.journal;
-    this.state.daysPlayed = main.day;
-    this.state.qiGems = main.qiGems;
-    this.state.mysteryBoxesOpened = main.mysteryBoxesOpened;
-    this.state.ticketPrizesClaimed = main.ticketPrizesClaimed;
-    this.state.childrenTurnedToDoves = main.childrenTurnedToDoves ?? null;
-    
-    // Add variants from stored journal data
-    CustomDataStore.addVariantsFromInventory(main.items as any);
-    
-    this.state.compacted = JournalStore.toCompactedItems(main.items, Config.getIgnoredCategories()) as unknown as Record<string, extractedItem>;
+    const { days } = this.journal;
+    this.syncStateFromJournalMain();
 
     const sortedDays = Object.keys(days).map(Number).sort((a, b) => a - b);
     const latestDay = sortedDays[sortedDays.length - 1];
@@ -341,7 +332,7 @@ class AppDataManager {
         previousQiGems: prevQiGems,
         currentQiGems: dayEntry.qiGems,
         changes: dayEntry.changes,
-        currentItems: main.items,
+        currentItems: this.journal.main.items,
       };
     }
   }
@@ -361,6 +352,7 @@ class AppDataManager {
       compacted,
       Object.keys(this.state.rawStats).length > 0 ? this.state.rawStats : undefined,
     );
+    this.syncStateFromJournalMain();
     JournalStore.save(this.journal);
     this.state.lastDiff = {
       previousDay: prevMain?.day ?? null,
@@ -414,14 +406,27 @@ class AppDataManager {
     if (!journal) return false;
     this.journal = journal;
     JournalStore.save(journal);
-    const { main } = journal;
+    this.syncStateFromJournalMain();
+    this.notifyListeners();
+    return true;
+  }
+
+  private syncStateFromJournalMain(): void {
+    const main = this.journal?.main;
+    if (!main) return;
+
     this.state.daysPlayed = main.day;
     this.state.qiGems = main.qiGems;
     this.state.mysteryBoxesOpened = main.mysteryBoxesOpened;
     this.state.ticketPrizesClaimed = main.ticketPrizesClaimed;
-    this.state.compacted = JournalStore.toCompactedItems(main.items, Config.getIgnoredCategories()) as unknown as Record<string, extractedItem>;
-    this.notifyListeners();
-    return true;
+    this.state.childrenTurnedToDoves = main.childrenTurnedToDoves ?? null;
+
+    // Keep visible rows anchored to the latest known snapshot, not the last imported file.
+    CustomDataStore.addVariantsFromInventory(main.items as any);
+    this.state.compacted = JournalStore.toCompactedItems(
+      main.items,
+      Config.getIgnoredCategories()
+    ) as unknown as Record<string, extractedItem>;
   }
 
   private compactItems() {
