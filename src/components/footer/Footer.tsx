@@ -20,6 +20,7 @@ export function Footer() {
                     <button className="footer-link-button" onClick={() => setChangelogOpen(true)}>
                         changelog
                     </button>
+                    &nbsp;<a href="/mousey-stardew-predictor" target="_blank" rel="noopener noreferrer">MouseyPounds 999 Edition</a>
                 </span>
             </div>
             <ChangelogDialog open={changelogOpen} onClose={() => setChangelogOpen(false)} />
