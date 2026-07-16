@@ -2,6 +2,7 @@
 import plugin from "bun-plugin-tailwind";
 import { existsSync, readFileSync, writeFileSync } from "fs";
 import { rm } from "fs/promises";
+import { cp } from "fs/promises";
 import path from "path";
 import packageJson from "./package.json" assert { type: "json" };
 
@@ -152,6 +153,12 @@ const result = await Bun.build({
   },
   ...cliConfig,
 });
+
+await cp(
+  path.join(process.cwd(), "mousey-stardew-predictor"),
+  path.join(outdir, "mousey-stardew-predictor"),
+  { recursive: true }
+);
 
 const end = performance.now();
 
