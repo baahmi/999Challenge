@@ -423,6 +423,17 @@ Search Range: <select id="mystery-search-range">
 <button id="mystery-next" type="button" class="browse">Next 20 &gt;</button>
 <button id="mystery-next-100" type="button" class="browse">Next 100 &gt;&gt;</button>
 </div></fieldset>
+<fieldset id="mystery-overview-fieldset"><legend>999 Challenge overviews</legend><div class="overview-controls">
+<button id="mystery-target-generate" type="button" class="mystery-overview">Boxes to Reach Target</button>
+<label for="mystery-overview-item">Item: <input type="text" id="mystery-overview-item" value="Book of Mysteries"></label>
+<label for="mystery-overview-target">Target: <input type="number" id="mystery-overview-target" min="1" value="999"></label>
+<label for="mystery-overview-have">Have: <input type="number" id="mystery-overview-have" min="0" value="0"></label>
+<span class="overview-sep">&bull;</span>
+<button id="mystery-count-generate" type="button" class="mystery-overview">Open N Boxes</button>
+<label for="mystery-overview-count">Boxes: <input type="number" id="mystery-overview-count" min="1" value="100"></label>
+<span class="overview-sep">&bull;</span>
+<label for="mystery-overview-start">Start box: <input type="number" id="mystery-overview-start" min="1" placeholder="current"></label>
+</div></fieldset>
 <output id="out-mystery"> </output>
 </section>
 <section id="sec-night" class="tab-panel">
@@ -594,6 +605,11 @@ Search Range: <select id="raccoon-search-range">
 <button id="special-gem-generate" type="button" class="special-overview">Qi Gems 999</button>
 <label for="special-gem-target">Qi gems target:
 <input type="number" id="special-gem-target" min="1" value="999"></label>
+<span class="overview-sources">Gem quests used:
+<label><input type="checkbox" class="special-gem-source" value="QiChallenge4" checked> Four Precious Stones (40)</label>
+<label><input type="checkbox" class="special-gem-source" value="QiChallenge12" checked> Qi's Prismatic Grange (35)</label>
+<label><input type="checkbox" class="special-gem-source" value="QiChallenge6" checked> Qi's Cuisine (25)</label>
+</span>
 </div></fieldset>
 <fieldset id="special-buttons"><div class="buttons">
 <button id="special-prev-year" type="button" class="browse">&lt;&lt; Previous Year</button>
@@ -921,6 +937,28 @@ Some images are cropped from in-game screenshots and their copyright is held by 
 <button id="special-gem-bottom" type="button" class="modal-jump">&darr; Bottom</button>
 </div>
 <div id="special-gem-modal-body" class="modal-body"></div>
+</div>
+</div>
+
+<div id="mystery-target-modal" class="modal-overlay">
+<div class="modal-box">
+<div class="modal-header"><span class="modal-title">Mystery Box 999 Challenge &mdash; Boxes to Reach Target</span><button id="mystery-target-modal-close" type="button" class="modal-close" aria-label="Close">&times;</button></div>
+<div class="modal-toolbar">
+<button id="mystery-target-top" type="button" class="modal-jump">&uarr; Top</button>
+<button id="mystery-target-bottom" type="button" class="modal-jump">&darr; Bottom</button>
+</div>
+<div id="mystery-target-modal-body" class="modal-body"></div>
+</div>
+</div>
+
+<div id="mystery-count-modal" class="modal-overlay">
+<div class="modal-box">
+<div class="modal-header"><span class="modal-title">Mystery Box 999 Challenge &mdash; Open N Boxes</span><button id="mystery-count-modal-close" type="button" class="modal-close" aria-label="Close">&times;</button></div>
+<div class="modal-toolbar">
+<button id="mystery-count-top" type="button" class="modal-jump">&uarr; Top</button>
+<button id="mystery-count-bottom" type="button" class="modal-jump">&darr; Bottom</button>
+</div>
+<div id="mystery-count-modal-body" class="modal-body"></div>
 </div>
 </div>
 </body>

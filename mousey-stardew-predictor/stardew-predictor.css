@@ -598,8 +598,15 @@ img#sea_3 {
 .overview-controls input[type="number"] {
 	width: 6em;
 }
-#night-overview-generate {
+#night-overview-generate,
+.mystery-overview {
 	cursor: pointer;
+}
+.overview-controls input[type="text"] {
+	width: 12em;
+}
+.overview-sep {
+	opacity: .5;
 }
 .overview-sources {
 	display: inline-flex;

@@ -7157,6 +7157,413 @@ window.onload = function () {
 		return output;
 	}
 
+	// --- 999 Challenge Mystery Box overviews -------------------------------------------------
+	// Item obtained from opening mystery box #numOpened, for a given box type (column c):
+	//   c = 0 -> Mystery Box, c = 1 -> Golden Mystery Box (no farming mastery perk),
+	//   c = 2 -> Golden Mystery Box (with farming mastery perk).
+	// Mirrors the per-box/per-column logic inside predictMysteryBoxes() (a port of
+	// StardewValley.Utility.getTreasureFromGeode()); factored out so the overviews can simulate
+	// long forward runs. The browse/search table keeps its own inline copy untouched.
+	// gotBook drives the Book-of-Mysteries pool: while false the book can drop (chance grows with
+	// numOpened); once the farmer owns it the book slot becomes a 50/50 Book / Book Of Stars roll.
+	// Returns { name, qty, noLink, basedOnSkill }.
+	function mysteryBoxItemFor(numOpened, c, whichPlayer, gotBook) {
+		var item = 'None', itemQty = 1, noLink = false, basedOnSkill = false, roll, choices;
+		var rareMod = (c === 0 ? 1 : 2);
+		var extraBookChance = gotBook ? 0 : 0.0004 * numOpened;
+		var rng;
+		if (typeof(save.mp_ids) !== 'undefined') {
+			rng = new CSRandom(getRandomSeed(numOpened, save.gameID/2, bigIntToSigned32(save.mp_ids[whichPlayer])/2));
+		} else {
+			rng = new CSRandom(getRandomSeed(numOpened, save.gameID/2, 0));
+		}
+		var i, j, prewarm_amount2 = rng.Next(1,10);
+		for (j = 0; j < prewarm_amount2; j++) { rng.NextDouble(); }
+		prewarm_amount2 = rng.Next(1,10);
+		for (i = 0; i < prewarm_amount2; i++) { rng.NextDouble(); }
+		if (numOpened > 10 || c > 0) {
+			if (c == 2 && rng.NextDouble() < 0.005) {
+				item = "Golden Animal Cracker";
+			} else if (c > 0 && rng.NextDouble() < 0.005) {
+				item = "Auto-Petter";
+			} else if (rng.NextDouble() < (0.002 * rareMod)) {
+				item = save.objects["_279"].name;
+			} else if (rng.NextDouble() < (0.004 * rareMod)) {
+				item = save.objects["_74"].name;
+			} else if (rng.NextDouble() < (0.008 * rareMod)) {
+				item = save.objects["_166"].name;
+			} else if (rng.NextDouble() < (0.01 * rareMod + extraBookChance)) {
+				if (!gotBook) {
+					item = save.objects["_Book_Mystery"].name;
+				} else {
+					choices = ["_PurpleBook", "_Book_Mystery"];
+					item = save.objects[choices[rng.Next(choices.length)]].name;
+				}
+			} else if (rng.NextDouble() < (0.01 * rareMod)) {
+				choices = ["_797", "_373"];
+				item = save.objects[choices[rng.Next(choices.length)]].name;
+			} else if (rng.NextDouble() < (0.01 * rareMod)) {
+				item = "Mystery Hat";
+			} else if (rng.NextDouble() < (0.01 * rareMod)) {
+				item = "Mystery Shirt";
+			} else if (rng.NextDouble() < (0.01 * rareMod)) {
+				item = "Mystery Wallpaper";
+			} else if (rng.NextDouble() < 0.1 || c > 0) {
+				switch(rng.Next(15)) {
+					case 0: item = save.objects["_288"].name; itemQty = 5; break;
+					case 1: item = save.objects["_253"].name; itemQty = 3; break;
+					case 2:
+						// This only rolls at fishing skill >= 6
+						if (rng.NextDouble() < .5) {
+							choices = ["_687", "_695"];
+							item = save.objects[choices[rng.Next(choices.length)]].name;
+							basedOnSkill = true;
+						} else {
+							item = save.objects["_242"].name; itemQty = 2;
+						}
+						break;
+					case 3: item = save.objects["_204"].name; itemQty = 2; break;
+					case 4: item = save.objects["_369"].name; itemQty = 20; break;
+					case 5: item = save.objects["_466"].name; itemQty = 20; break;
+					case 6: item = save.objects["_773"].name; itemQty = 2; break;
+					case 7: item = save.objects["_688"].name; itemQty = 3; break;
+					case 8: item = save.objects["_" + rng.Next(628,634)].name; break;
+					case 9: item = "Seasonal Seeds"; itemQty = 20; noLink = true; break;
+					case 10:
+						if (rng.NextDouble() < 0.5) {
+							item = "Ossified Blade";
+						} else {
+							choices = ["_533", "_534"];
+							item = save.objects[choices[rng.Next(choices.length)]].name;
+						}
+						break;
+					case 11: item = save.objects["_621"].name; break;
+					case 12: item = "Mystery Box"; itemQty = rng.Next(3,5); break;
+					case 13: item = save.objects["_SkillBook_" + rng.Next(5)].name; break;
+					case 14: item = "Raccoon Seeds"; itemQty = 8; noLink = true; break;
+				}
+			}
+		}
+		// Fall-through for first 10 boxes or no RNG success yet
+		if (item == 'None') {
+			switch(rng.Next(14)) {
+				case 0: item = save.objects["_395"].name; itemQty = 3; break;
+				case 1: item = save.objects["_287"].name; itemQty = 5; break;
+				case 2: item = "Seasonal Seeds"; itemQty = 8; noLink = true; break;
+				case 3: item = save.objects["_" + rng.Next(727,734)].name; break;
+				case 4:
+					roll = 217;
+					while (roll == 217) { roll = rng.Next(194, 240); }
+					item = save.objects["_" + roll].name;
+					break;
+				case 5: item = save.objects["_709"].name; itemQty = 10; break;
+				case 6: item = save.objects["_369"].name; itemQty = 10; break;
+				case 7: item = save.objects["_466"].name; itemQty = 10; break;
+				case 8: item = save.objects["_688"].name; break;
+				case 9: item = save.objects["_689"].name; break;
+				case 10: item = save.objects["_770"].name; itemQty = 10; break;
+				case 11: item = "Mixed Flower Seeds"; itemQty = 10; break;
+				case 12:
+					if (rng.NextDouble() < 0.4) {
+						switch(rng.Next(4)) {
+							case 0: item = save.objects["_525"].name; break;
+							case 1: item = save.objects["_529"].name; break;
+							case 2: item = save.objects["_888"].name; break;
+							default: item = save.objects["_" + rng.Next(531,533)].name;
+						}
+					} else {
+						item = "Mystery Box"; itemQty = 2;
+					}
+					break;
+				case 13: item = save.objects["_690"].name; break;
+				default: item = save.objects["_382"].name; break;
+			}
+		}
+		return { name: item, qty: itemQty, noLink: noLink, basedOnSkill: basedOnSkill };
+	}
+
+	// Column display order/labels for the overviews. c is the box-type index used by
+	// mysteryBoxItemFor: 0 = Mystery Box, 1 = Golden (no farming mastery), 2 = Golden (with mastery).
+	// The 999 challenge is run on golden-with-mastery, so that column leads.
+	var MYSTERY_DISPLAY = [
+		{ c: 2, label: 'Golden' },
+		{ c: 0, label: 'Mystery Box' },
+		{ c: 1, label: 'Golden (no perk)' }
+	];
+
+	// Rare/useful drops pinned to the top of the tally, in this order. The books (the whole point of
+	// the run) lead, then the other high-value rares, then the Mystery Box loot itself, bobbers and
+	// the skill books.
+	var MYSTERY_RARE_ORDER = [
+		"Book of Mysteries", "Book Of Stars", "Prismatic Shard", "Magic Rock Candy",
+		"Golden Animal Cracker", "Auto-Petter", "Mystery Box",
+		"Dressed Spinner", "Cork Bobber",
+		"Stardew Valley Almanac", "Bait And Bobber", "Woodcutter's Weekly", "Mining Monthly", "Combat Quarterly"
+	];
+	// Nice-but-minor drops that sink below the ordinary by-count items (i.e. below the saplings etc.).
+	var MYSTERY_SINK_ORDER = [ "Pearl", "Golden Pumpkin", "Treasure Chest" ];
+	// One-off, non-stacking gear that isn't interesting for a 999 run - dropped from the tally entirely.
+	var MYSTERY_EXCLUDE = {
+		"Ossified Blade": 1, "Mystery Hat": 1, "Mystery Shirt": 1, "Mystery Wallpaper": 1,
+		"Sturdy Ring": 1, "Amethyst Ring": 1, "Aquamarine Ring": 1, "Jade Ring": 1,
+		"Emerald Ring": 1, "Ruby Ring": 1, "Glowstone Ring": 1
+	};
+	function mysteryRareRank(name) {
+		var i = MYSTERY_RARE_ORDER.indexOf(name);
+		if (i >= 0) { return i; }                       // pinned rares, in listed order
+		var j = MYSTERY_SINK_ORDER.indexOf(name);
+		if (j >= 0) { return 20000 + j; }               // sink items, below the by-count block
+		return 10000;                                   // everything else, ordered by count
+	}
+
+	function mysteryOverviewPlayer() {
+		// Reuse the browse tab's player selector when multiplayer; otherwise the host.
+		if (typeof(save.mp_ids) !== 'undefined' && save.mp_ids.length > 1 &&
+				$('#mystery-player-select option').length > 0) {
+			return Number($('#mystery-player-select').val()) || 0;
+		}
+		return 0;
+	}
+
+	function mysteryEscapeHtml(s) {
+		return $('<span>').text(s == null ? '' : String(s)).html();
+	}
+
+	function prefillMysteryHave() {
+		// Fill the "Have" box with how many of the named item the save already holds, so the target
+		// run only counts what's still missing. Runs on load and whenever the item name changes.
+		var term = ($('#mystery-overview-item').val() || '').trim();
+		$('#mystery-overview-have').val(term ? getItemCountByName(term) : 0);
+	}
+
+	// Build the combined "items received" table. cols is an array of { tally: {name:{count,qty,noLink}} };
+	// headers is the matching array of column header HTML. Counts show a total quantity in parentheses
+	// whenever an item stacks (qty != count).
+	function mysteryTallyTable(cols, headers) {
+		var names = {}, c, k;
+		for (c = 0; c < cols.length; c++) {
+			for (k in cols[c].tally) {
+				if (cols[c].tally.hasOwnProperty(k) && !MYSTERY_EXCLUDE[k]) { names[k] = true; }
+			}
+		}
+		var list = Object.keys(names);
+		// combined count per item, used to order everything below the rare tier
+		var total = {};
+		for (var n = 0; n < list.length; n++) {
+			var nm = list[n], sum = 0;
+			for (c = 0; c < cols.length; c++) { if (cols[c].tally[nm]) { sum += cols[c].tally[nm].count; } }
+			total[nm] = sum;
+		}
+		// cols[0] is the primary column (Golden). Items never obtained from it sink to the bottom.
+		list.sort(function (a, b) {
+			var ga = cols[0].tally[a] ? 0 : 1, gb = cols[0].tally[b] ? 0 : 1;
+			if (ga !== gb) { return ga - gb; }            // what you actually get from the Golden box first
+			var ra = mysteryRareRank(a), rb = mysteryRareRank(b);
+			if (ra !== rb) { return ra - rb; }            // rare/useful items first, in fixed order
+			if (total[b] !== total[a]) { return total[b] - total[a]; } // then most-received first
+			return a < b ? -1 : (a > b ? 1 : 0);
+		});
+		var html = '<table class="output"><thead><tr><th class="item">Item</th>';
+		for (var h = 0; h < headers.length; h++) { html += '<th class="mystery-result">' + headers[h] + '</th>'; }
+		html += '</tr></thead><tbody>';
+		if (list.length === 0) {
+			html += '<tr><td colspan="' + (cols.length + 1) + '" class="count">Nothing worth listing received.</td></tr>';
+		}
+		for (var s = 0; s < list.length; s++) {
+			var name = list[s], noLink = false;
+			for (c = 0; c < cols.length; c++) { if (cols[c].tally[name] && cols[c].tally[name].noLink) { noLink = true; } }
+			html += '<tr><td class="item">' + (noLink ? name : wikify(name)) + '</td>';
+			for (c = 0; c < cols.length; c++) {
+				var t = cols[c].tally[name];
+				if (t) {
+					html += '<td>' + addCommas(t.count) + (t.qty !== t.count ? ' <span class="qty">(' + addCommas(t.qty) + ')</span>' : '') + '</td>';
+				} else {
+					html += '<td>&mdash;</td>';
+				}
+			}
+			html += '</tr>';
+		}
+		html += '<tr><td colspan="' + (cols.length + 1) + '" class="legend">Rare items are listed first, then the rest by how many you receive; ' +
+			'items never obtained from the Golden box sink to the bottom. One-off non-stacking gear (rings, weapons, hats, shirts, wallpaper) is omitted.</td></tr>';
+		html += '</tbody></table>';
+		return html;
+	}
+
+	// Safety bound on how far a run scans forward. Set well past any realistic 999 target so the answer
+	// is an exact box count; only a per-column-impossible item (e.g. Golden Animal Cracker on a normal
+	// box) ever hits this.
+	var MYSTERY_OVERVIEW_CAP = 2000000;
+
+	function predictMysteryTargetAll() {
+		$('#mystery-target-modal-body').html('<p class="strong">Calculating&hellip;</p>' +
+			'<p>Opening boxes forward until the target item is reached.</p>');
+		$('#mystery-target-modal').css('display', 'flex');
+		$('#mystery-target-modal-body').scrollTop(0);
+		setTimeout(predictMysteryTargetAllCompute, 30);
+	}
+
+	function predictMysteryTargetAllCompute() {
+		// "How many boxes to obtain <target> copies of <item>?" Each box type is its own independent
+		// forward run from the start box; along the way every item received is tallied so the user can
+		// see the full haul, not just the target. gotBook flips once a Book of Mysteries drops so later
+		// book rolls become the 50/50 Book / Book Of Stars pool, matching the real game.
+		if (save.gameID === null || typeof save.gameID === 'undefined') {
+			$('#mystery-target-modal-body').html('<p class="note">Load a save file first.</p>');
+			return;
+		}
+		var whichPlayer = mysteryOverviewPlayer();
+		var term = ($('#mystery-overview-item').val() || '').trim();
+		if (term === '') {
+			$('#mystery-target-modal-body').html('<p class="note">Type an item name to search for first.</p>');
+			return;
+		}
+		var target = Math.max(1, Number($('#mystery-overview-target').val()) || 1);
+		var have = Number($('#mystery-overview-have').val());
+		if (!have || have < 0) { have = 0; }
+		var need = Math.max(0, target - have);
+		var startBox = Number($('#mystery-overview-start').val());
+		if (!startBox || startBox < 1) { startBox = save.mysteryBoxesOpened[whichPlayer] + 1; }
+		// Case-insensitive literal substring (regex metachars escaped) to match the target item.
+		var matcher = new RegExp(term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
+		var maxBox = startBox + MYSTERY_OVERVIEW_CAP;
+
+		var cols = [], d, c, col;
+		for (d = 0; d < MYSTERY_DISPLAY.length; d++) {
+			c = MYSTERY_DISPLAY[d].c;
+			var gotBook = save.gotMysteryBook;
+			var found = 0, foundQty = 0, boxes = 0, endBox = null, tally = {};
+			for (var n = startBox; need > 0 && n < maxBox && found < need; n++) {
+				var res = mysteryBoxItemFor(n, c, whichPlayer, gotBook);
+				boxes++;
+				if (!tally[res.name]) { tally[res.name] = { count: 0, qty: 0, noLink: res.noLink }; }
+				tally[res.name].count++;
+				tally[res.name].qty += res.qty;
+				if (!gotBook && res.name === save.objects["_Book_Mystery"].name) { gotBook = true; }
+				if (matcher.test(res.name)) {
+					found++;
+					foundQty += res.qty;
+					if (found >= need) { endBox = n; }
+				}
+			}
+			cols.push({ label: MYSTERY_DISPLAY[d].label, found: found, foundQty: foundQty, boxes: boxes, endBox: endBox, tally: tally });
+		}
+
+		var html = '';
+		var haveNote = have > 0 ? ' You already have <span class="strong">' + addCommas(have) +
+			'</span>, so each run stops after <span class="strong">' + addCommas(need) + '</span> more.' : '';
+		html += '<p class="note">Each box type is simulated as its own forward run from box #' + addCommas(startBox) +
+			', counting until <span class="strong">' + addCommas(target) + '&times;</span> &quot;' + mysteryEscapeHtml(term) +
+			'&quot;.' + haveNote + ' The lower table lists everything received along the way (stack size in parentheses).</p>';
+		if (need === 0) {
+			html += '<p class="strong">You already hold ' + addCommas(have) + ' &mdash; the target of ' + addCommas(target) +
+				' is already met, no boxes needed.</p>';
+		}
+		html += '<table class="output"><thead><tr><th class="item">Box type</th><th>Boxes to open</th><th>Ends at box #</th><th>Copies found</th></tr></thead><tbody>';
+		for (d = 0; d < cols.length; d++) {
+			col = cols[d];
+			html += '<tr><td class="item">' + col.label + '</td>';
+			if (need === 0) {
+				html += '<td>0</td><td>&mdash;</td><td>&mdash;</td>';
+			} else if (col.endBox !== null) {
+				html += '<td>' + addCommas(col.boxes) + '</td><td>' + addCommas(col.endBox) + '</td><td>' +
+					addCommas(col.found) + (col.foundQty !== col.found ? ' (' + addCommas(col.foundQty) + ')' : '') + '</td>';
+			} else {
+				html += '<td class="note">not reached in ' + addCommas(col.boxes) + '</td><td class="note">&mdash;</td><td>' + addCommas(col.found) + '</td>';
+			}
+			html += '</tr>';
+		}
+		html += '</tbody></table>';
+
+		// Golden box sourcing: 3 normal Mystery Boxes convert to 1 Golden. Opening Golden boxes drops
+		// normal Mystery Boxes as loot, and any you already hold count too - so the boxes you must
+		// actually *gather* is the total to open minus what conversion (held + loot) can produce.
+		if (need > 0) {
+			var normalHeld = getItemCountByName(save.objects["_MysteryBox"].name);
+			var sourcingRows = '';
+			for (d = 0; d < cols.length; d++) {
+				if (MYSTERY_DISPLAY[d].c === 0) { continue; } // conversion is only relevant for Golden runs
+				col = cols[d];
+				if (col.endBox === null) { continue; }        // target not reached in this column
+				var loot = col.tally['Mystery Box'] ? col.tally['Mystery Box'].qty : 0;
+				var conv = Math.floor((normalHeld + loot) / 3);
+				var gather = Math.max(0, col.boxes - conv);
+				sourcingRows += '<tr><td class="item">' + col.label + '</td><td>' + addCommas(col.boxes) + '</td><td>' +
+					addCommas(normalHeld) + '</td><td>' + addCommas(loot) + '</td><td>' + addCommas(conv) +
+					'</td><td class="strong">' + addCommas(gather) + '</td></tr>';
+			}
+			if (sourcingRows !== '') {
+				html += '<p class="strong" style="margin-bottom:.2em">Golden box sourcing <span class="note">(3 normal Mystery Boxes &rarr; 1 Golden)</span></p>';
+				html += '<table class="output"><thead><tr><th class="item">Box type</th><th>Golden to open</th>' +
+					'<th>Normal held</th><th>Normal loot en&nbsp;route</th><th>Golden from conversion</th><th>Golden to gather</th></tr></thead><tbody>';
+				html += sourcingRows;
+				html += '<tr><td colspan="6" class="legend">&quot;Golden to gather&quot; is what you still need to find yourself: ' +
+					'boxes to open minus the Golden boxes you can craft from converting the normal Mystery Boxes you hold plus those looted during the run.</td></tr>';
+				html += '</tbody></table>';
+			}
+		}
+
+		var headers = [];
+		for (d = 0; d < cols.length; d++) {
+			headers.push(cols[d].label + '<br/>' +
+				(need === 0 ? '0 boxes' : (cols[d].endBox !== null ? addCommas(cols[d].boxes) + ' boxes' : '&ge;' + addCommas(cols[d].boxes) + ' boxes')));
+		}
+		html += mysteryTallyTable(cols, headers);
+		if (typeof(save.mp_ids) === 'undefined') {
+			html = '<p class="note">Note: No players found; predictions may be unreliable for game version &ge; 1.6.</p>' + html;
+		}
+		$('#mystery-target-modal-body').html(html);
+		$('#mystery-target-modal-body').scrollTop(0);
+	}
+
+	function predictMysteryCountAll() {
+		$('#mystery-count-modal-body').html('<p class="strong">Calculating&hellip;</p>' +
+			'<p>Tallying the haul from the requested number of boxes.</p>');
+		$('#mystery-count-modal').css('display', 'flex');
+		$('#mystery-count-modal-body').scrollTop(0);
+		setTimeout(predictMysteryCountAllCompute, 30);
+	}
+
+	function predictMysteryCountAllCompute() {
+		// "If I open N boxes, what do I get?" A straight tally over exactly N boxes from the start box,
+		// one independent run per box type. gotBook flips once a Book of Mysteries drops (see above).
+		if (save.gameID === null || typeof save.gameID === 'undefined') {
+			$('#mystery-count-modal-body').html('<p class="note">Load a save file first.</p>');
+			return;
+		}
+		var whichPlayer = mysteryOverviewPlayer();
+		var count = Math.max(1, Number($('#mystery-overview-count').val()) || 100);
+		var capped = false;
+		if (count > MYSTERY_OVERVIEW_CAP) { count = MYSTERY_OVERVIEW_CAP; capped = true; }
+		var startBox = Number($('#mystery-overview-start').val());
+		if (!startBox || startBox < 1) { startBox = save.mysteryBoxesOpened[whichPlayer] + 1; }
+
+		var cols = [], d;
+		for (d = 0; d < MYSTERY_DISPLAY.length; d++) {
+			var c = MYSTERY_DISPLAY[d].c;
+			var gotBook = save.gotMysteryBook, tally = {};
+			for (var g = 0; g < count; g++) {
+				var n = startBox + g;
+				var res = mysteryBoxItemFor(n, c, whichPlayer, gotBook);
+				if (!tally[res.name]) { tally[res.name] = { count: 0, qty: 0, noLink: res.noLink }; }
+				tally[res.name].count++;
+				tally[res.name].qty += res.qty;
+				if (!gotBook && res.name === save.objects["_Book_Mystery"].name) { gotBook = true; }
+			}
+			cols.push({ label: MYSTERY_DISPLAY[d].label, tally: tally });
+		}
+
+		var html = '';
+		html += '<p class="note">Opening <span class="strong">' + addCommas(count) + '</span> boxes starting at box #' +
+			addCommas(startBox) + ' for each box type' + (capped ? ' (capped at ' + addCommas(MYSTERY_OVERVIEW_CAP) + ')' : '') +
+			'. Stack size in parentheses.</p>';
+		html += mysteryTallyTable(cols, [MYSTERY_DISPLAY[0].label, MYSTERY_DISPLAY[1].label, MYSTERY_DISPLAY[2].label]);
+		if (typeof(save.mp_ids) === 'undefined') {
+			html = '<p class="note">Note: No players found; predictions may be unreliable for game version &ge; 1.6.</p>' + html;
+		}
+		$('#mystery-count-modal-body').html(html);
+		$('#mystery-count-modal-body').scrollTop(0);
+	}
+
 	function predictTrains(isSearch, offset) {
 		// logic from StardewValley.Locations.Railroad.DayUpdate()
 		var output = '',
@@ -9347,6 +9754,13 @@ Object.keys(test).forEach(function(key, index) { if (test[key].s > 0 && test[key
 			return;
 		}
 		var gemTarget = Number($('#special-gem-target').val()) || 999;
+		// Which of the three quests to actually use, so the timeline can be seen with, say, Grange excluded.
+		var useQuest = {};
+		$('.special-gem-source:checked').each(function () { useQuest[$(this).val()] = true; });
+		if ($('.special-gem-source:checked').length === 0) {
+			$('#special-gem-modal-body').html('<p class="note">Select at least one gem quest to use.</p>');
+			return;
+		}
 
 		var ctx = specialOrderContext();
 		var curWeekStart = specialCurrentWeekStart();
@@ -9355,23 +9769,23 @@ Object.keys(test).forEach(function(key, index) { if (test[key].s > 0 && test[key
 		for (var w = 0; w < maxWeeks && gems < gemTarget; w++) {
 			var weekDay = curWeekStart + w * 7;
 			var picks = pickSpecialOrders(weekDay, ctx);
-			// Among the tracked gem quests on the board this week, take the highest-valued one only.
+			// Among the selected gem quests on the board this week, take the highest-valued one only.
 			var best = null;
 			for (var g = 0; g < picks.qi.length; g++) {
-				if (SPECIAL_GEM_QUESTS.hasOwnProperty(picks.qi[g].key)) {
+				if (SPECIAL_GEM_QUESTS.hasOwnProperty(picks.qi[g].key) && useQuest[picks.qi[g].key]) {
 					var val = SPECIAL_GEM_QUESTS[picks.qi[g].key];
-					if (best === null || val > best.gems) { best = { quest: picks.qi[g].desc, gems: val }; }
+					if (best === null || val > best.gems) { best = { key: picks.qi[g].key, quest: picks.qi[g].desc, gems: val }; }
 				}
 			}
 			if (best !== null) {
 				gems += best.gems;
-				rows.push({ day: weekDay, quest: best.quest, gems: best.gems, total: gems });
+				rows.push({ day: weekDay, key: best.key, quest: best.quest, gems: best.gems, total: gems });
 			}
 		}
 
 		var html = '';
-		html += '<p class="note">Tracking the three gem quests: Four Precious Stones (40), Qi\'s Prismatic Grange (35), ' +
-			'Qi\'s Cuisine (25). When more than one is on the board in a week, the highest-valued is taken (one per week).</p>';
+		html += '<p class="note">Using the selected gem quests. When more than one is on the board in a week, ' +
+			'the highest-valued is taken (one per week).</p>';
 		if (rows.length === 0) {
 			html += '<p class="note">None of the tracked gem quests were offered within the scan window.</p>';
 		} else {
@@ -9379,6 +9793,21 @@ Object.keys(test).forEach(function(key, index) { if (test[key].s > 0 && test[key
 			html += '<p>Reaching <span class="strong">' + addCommas(gems) + '</span> Qi gem(s)' +
 				(gems < gemTarget ? ' (target ' + addCommas(gemTarget) + ' not reached in ' + addCommas(maxWeeks) + ' weeks)' : '') +
 				' takes until <span class="strong">' + gp.label + ', Year ' + gp.year + '</span> over ' + addCommas(rows.length) + ' quest(s).</p>';
+
+			// Totals per quest type - how many of each you have to complete (each has very different
+			// effort, e.g. 4 Prismatic Shards vs. filling the Prismatic Grange), and the gems they add up to.
+			var gemTotals = {};
+			for (var key in SPECIAL_GEM_QUESTS) { if (SPECIAL_GEM_QUESTS.hasOwnProperty(key)) { gemTotals[key] = { count: 0, total: 0 }; } }
+			for (var t = 0; t < rows.length; t++) { if (gemTotals[rows[t].key]) { gemTotals[rows[t].key].count++; gemTotals[rows[t].key].total += rows[t].gems; } }
+			html += '<table class="output"><thead><tr><th>Quest</th><th>Gems each</th><th>Times</th><th>Total gems</th></tr></thead><tbody>';
+			for (var key in SPECIAL_GEM_QUESTS) {
+				if (!SPECIAL_GEM_QUESTS.hasOwnProperty(key) || !useQuest[key]) { continue; }
+				var qname = (specialOrderData[key] ? specialOrderData[key].name : key);
+				html += '<tr><td class="item">' + qname + '</td><td>' + SPECIAL_GEM_QUESTS[key] +
+					'</td><td>' + addCommas(gemTotals[key].count) + '</td><td>' + addCommas(gemTotals[key].total) + '</td></tr>';
+			}
+			html += '</tbody></table>';
+
 			html += '<table class="output"><thead><tr><th>Year</th><th>Season</th><th>Day</th><th>Quest</th><th>Gems</th><th>Total</th></tr></thead><tbody>';
 			for (var r = 0; r < rows.length; r++) {
 				var p = specialOrderDayParts(rows[r].day);
@@ -10020,7 +10449,11 @@ Object.keys(test).forEach(function(key, index) { if (test[key].s > 0 && test[key
 				rng[s] = new CSRandom(getRandomSeed(save.gameID, timesFed * 377));
 				for (var i = 0; i < 10; i++) { rng[s].Next(); }
 			}
-			var slots = [ { names: [], qty: 1 }, { names: [], qty: 1 } ];
+			// Each slot records qty and the item requested in each of the 4 seasons (Spring, Summer,
+			// Fall, Winter = indices 0-3). Which one you actually owe depends on the season you feed in,
+			// so keeping them per-season lets the caller weight by season instead of over-counting.
+			// Non-seasonal slots repeat the same item across all four seasons.
+			var slots = [ { qty: 1, bySeason: [] }, { qty: 1, bySeason: [] } ];
 			var choice, index, prevRoll = [];
 			var whichBundle;
 			if (timesFed < 5) {
@@ -10030,7 +10463,7 @@ Object.keys(test).forEach(function(key, index) { if (test[key].s > 0 && test[key
 				for (var s = 1; s < 4; s++) { rng[s].Next(); }
 			}
 			function objName(key) { return (save.objects[key] ? save.objects[key].name : key); }
-			function addDistinct(arr, name) { if (arr.indexOf(name) === -1) { arr.push(name); } }
+			function fill(arr, name) { for (var s = 0; s < 4; s++) { arr[s] = name; } }
 			// Dried items are named "Dried <plural>" (e.g. "Dried Apples", "Dried Peaches",
 			// "Dried Morels"); ported from the game's pluralization so names match the save's <name>.
 			function pluralize(baseWord) {
@@ -10042,7 +10475,7 @@ Object.keys(test).forEach(function(key, index) { if (test[key].s > 0 && test[key
 			switch (whichBundle) {
 				case 0:
 					choice = ["_722", "_721", "_716", "_719", "_723", "_718", "_372"];
-					addDistinct(slots[0].names, objName(choice[rng[0].Next(choice.length)]));
+					fill(slots[0].bySeason, objName(choice[rng[0].Next(choice.length)]));
 					for (var s = 1; s < 4; s++) { rng[s].Next(); }
 					slots[0].qty = 5;
 					choice = [
@@ -10053,7 +10486,7 @@ Object.keys(test).forEach(function(key, index) { if (test[key].s > 0 && test[key
 					];
 					for (var s = 0; s < 4; s++) {
 						index = rng[s].Next(choice[s].length);
-						addDistinct(slots[1].names, "Smoked " + objName(choice[s][index]));
+						slots[1].bySeason[s] = "Smoked " + objName(choice[s][index]);
 					}
 					slots[1].qty = 1;
 					break;
@@ -10066,13 +10499,13 @@ Object.keys(test).forEach(function(key, index) { if (test[key].s > 0 && test[key
 					];
 					for (var s = 0; s < 4; s++) {
 						index = rng[s].Next(choice[s].length);
-						addDistinct(slots[0].names, "Dried " + pluralize(objName(choice[s][index])));
+						slots[0].bySeason[s] = "Dried " + pluralize(objName(choice[s][index]));
 						prevRoll[s] = index;
 					}
 					for (var s = 0; s < 4; s++) {
 						index = prevRoll[s];
 						while (index === prevRoll[s]) { index = rng[s].Next(choice[s].length); }
-						addDistinct(slots[1].names, objName(choice[s][index]) + " Jelly");
+						slots[1].bySeason[s] = objName(choice[s][index]) + " Jelly";
 					}
 					break;
 				case 2:
@@ -10084,11 +10517,11 @@ Object.keys(test).forEach(function(key, index) { if (test[key].s > 0 && test[key
 					];
 					for (var s = 0; s < 4; s++) {
 						index = rng[s].Next(choice[s].length);
-						addDistinct(slots[0].names, "Dried " + pluralize(objName(choice[s][index])));
+						slots[0].bySeason[s] = "Dried " + pluralize(objName(choice[s][index]));
 						prevRoll[s] = index;
 					}
 					var eggChoice = ["Egg (Any)", "Cave Carrot", "White Algae"];
-					addDistinct(slots[1].names, eggChoice[rng[0].Next(eggChoice.length)]);
+					fill(slots[1].bySeason, eggChoice[rng[0].Next(eggChoice.length)]);
 					slots[1].qty = 5;
 					break;
 				case 3:
@@ -10100,25 +10533,25 @@ Object.keys(test).forEach(function(key, index) { if (test[key].s > 0 && test[key
 					];
 					for (var s = 0; s < 4; s++) {
 						index = rng[s].Next(choice[s].length);
-						addDistinct(slots[0].names, objName(choice[s][index]) + " Juice");
+						slots[0].bySeason[s] = objName(choice[s][index]) + " Juice";
 						prevRoll[s] = index;
 					}
 					for (var s = 0; s < 4; s++) {
 						index = prevRoll[s];
 						while (index === prevRoll[s]) { index = rng[s].Next(choice[s].length); }
-						addDistinct(slots[1].names, "Pickled " + objName(choice[s][index]));
+						slots[1].bySeason[s] = "Pickled " + objName(choice[s][index]);
 					}
 					break;
 				case 4:
 					choice = ["Moss_10", "110_1", "168_5", "766_99", "767_20", "535_8", "536_5", "537_3", "393_4", "397_2", "684_20", "72_1", "68_3", "156_3"];
 					index = rng[0].Next(choice.length);
 					var piece = choice[index].split('_');
-					slots[0].names = [ objName('_' + piece[0]) ];
+					fill(slots[0].bySeason, objName('_' + piece[0]));
 					slots[0].qty = Number(piece[1]);
 					prevRoll[0] = index;
 					while (index === prevRoll[0]) { index = rng[0].Next(choice.length); }
 					piece = choice[index].split('_');
-					slots[1].names = [ objName('_' + piece[0]) ];
+					fill(slots[1].bySeason, objName('_' + piece[0]));
 					slots[1].qty = Number(piece[1]);
 					break;
 			}
@@ -10153,7 +10586,13 @@ Object.keys(test).forEach(function(key, index) { if (test[key].s > 0 && test[key
 		var owned = targetId ? getItemCount(targetId) : 0;
 		var need = target - owned;
 
-		var itemsNeeded = {}; // ingredient name -> total qty across all feedings scanned
+		// Per ingredient: expected qty (weighted by how many of the 4 seasons request it, so a 1-season
+		// item costs qty/4 per feeding), an upper-bound qty (counted once per feeding it can appear at
+		// all), and the set of seasons it is ever requested in.
+		var itemExpected = {}; // name -> expected qty assuming feedings spread evenly across seasons
+		var itemMax = {};      // name -> upper bound (once per feeding it appears, any season)
+		var itemSeasons = {};  // name -> { seasonIndex: true }
+		var rewardsGained = {}; // reward name -> total qty received across all feedings scanned
 		var gained = 0;
 		var feedings = 0;
 		var tableRow = current;
@@ -10162,11 +10601,16 @@ Object.keys(test).forEach(function(key, index) { if (test[key].s > 0 && test[key
 			feedings++;
 			var rw = getRaccoonReward(tableRow);
 			if (rw.name === reward) { gained += rw.qty; }
+			rewardsGained[rw.name] = (rewardsGained[rw.name] || 0) + rw.qty;
 			var slots = getRaccoonRequests(tableRow - 1);
 			for (var si = 0; si < slots.length; si++) {
-				for (var ni = 0; ni < slots[si].names.length; ni++) {
-					var nm = slots[si].names[ni];
-					itemsNeeded[nm] = (itemsNeeded[nm] || 0) + slots[si].qty;
+				var seenThisSlot = {};
+				for (var s = 0; s < 4; s++) {
+					var nm = slots[si].bySeason[s];
+					itemExpected[nm] = (itemExpected[nm] || 0) + slots[si].qty / 4;
+					if (!itemSeasons[nm]) { itemSeasons[nm] = {}; }
+					itemSeasons[nm][s] = true;
+					if (!seenThisSlot[nm]) { seenThisSlot[nm] = true; itemMax[nm] = (itemMax[nm] || 0) + slots[si].qty; }
 				}
 			}
 		}
@@ -10182,21 +10626,45 @@ Object.keys(test).forEach(function(key, index) { if (test[key].s > 0 && test[key
 				(feedings >= maxFeedings ? ' <span class="strong">(safety cap hit &mdash; this reward may be too rare)</span>' : '') + '.</p>';
 			html += '<p>You currently have ' + addCommas(owned) + ' ' + reward + ' and have fed the raccoon ' +
 				addCommas(current) + ' time(s).</p>';
-			var keys = Object.keys(itemsNeeded);
-			keys.sort(function (a, b) { return itemsNeeded[b] - itemsNeeded[a]; });
-			html += '<p>Ingredients requested across those feedings (seasonal options are alternatives &mdash; ' +
-				'each distinct option counted once per feeding):</p>';
-			html += '<table class="output"><thead><tr><th>Need</th><th>Have</th><th>Item</th></tr></thead><tbody>';
+			// Every feeding hands out a reward, not just the one you're targeting - list the full haul.
+			var rkeys = Object.keys(rewardsGained);
+			rkeys.sort(function (a, b) {
+				if (a === reward) { return -1; }        // target reward first
+				if (b === reward) { return 1; }
+				return rewardsGained[b] - rewardsGained[a];
+			});
+			html += '<p>Rewards received across those feedings:</p>';
+			html += '<table class="output"><thead><tr><th>Received</th><th>Have</th><th>Item</th></tr></thead><tbody>';
+			for (var rk = 0; rk < rkeys.length; rk++) {
+				var rid = getItemIdByName(rkeys[rk]);
+				var rhave = rid ? getItemCount(rid) : getItemCountByName(rkeys[rk]);
+				html += '<tr' + (rkeys[rk] === reward ? ' class="current"' : '') + '><td>' + addCommas(rewardsGained[rkeys[rk]]) +
+					'</td><td>' + addCommas(rhave) + '</td><td>' + wikify(rkeys[rk]) + '</td></tr>';
+			}
+			html += '</tbody></table>';
+			var keys = Object.keys(itemExpected);
+			keys.sort(function (a, b) { return itemExpected[b] - itemExpected[a]; });
+			var seasonNames = ["Spring", "Summer", "Fall", "Winter"];
+			function raccoonSeasonLabel(setObj) {
+				var present = [];
+				for (var s = 0; s < 4; s++) { if (setObj[s]) { present.push(seasonNames[s]); } }
+				return present.length === 4 ? "Any" : present.join(", ");
+			}
+			html += '<p>Ingredients requested across those feedings. Many are seasonal &mdash; the raccoon asks for ' +
+				'a different item per season, so <span class="strong">Est.</span> weights each by how many of the four seasons request ' +
+				'it (assuming you feed evenly across the year), while <span class="strong">Max</span> is the upper bound if you always ' +
+				'fed in a season that asks for it. <span class="strong">Season(s)</span> shows when it can be requested.</p>';
+			html += '<table class="output"><thead><tr><th>Est.</th><th>Max</th><th>Season(s)</th><th>Have</th><th>Item</th></tr></thead><tbody>';
 			for (var k = 0; k < keys.length; k++) {
 				var have = getItemCountByName(keys[k]); // match by display name (handles flavored items)
-				html += '<tr><td>' + addCommas(itemsNeeded[keys[k]]) + '</td><td>' + addCommas(have) + '</td><td>' + wikify(keys[k]) + '</td></tr>';
+				html += '<tr><td>' + addCommas(Math.round(itemExpected[keys[k]])) + '</td><td>' + addCommas(itemMax[keys[k]]) +
+					'</td><td>' + raccoonSeasonLabel(itemSeasons[keys[k]]) + '</td><td>' + addCommas(have) + '</td><td>' + wikify(keys[k]) + '</td></tr>';
 			}
 			html += '</tbody></table>';
 		}
 		$('#raccoon-overview-modal-body').html(html);
 		$('#raccoon-overview-modal').css('display', 'flex');
 		$('#raccoon-overview-modal-body').scrollTop(0);
-		return itemsNeeded;
 	}
 
 	function predictRaccoon(isSearch, offset) {
@@ -10569,10 +11037,27 @@ Object.keys(test).forEach(function(key, index) { if (test[key].s > 0 && test[key
 			var b = document.getElementById('special-gem-modal-body');
 			b.scrollTop = b.scrollHeight;
 		});
+		$("#mystery-overview-item").on('change', function () { prefillMysteryHave(); });
+		$("#mystery-target-generate").click(function () { predictMysteryTargetAll(); });
+		$("#mystery-target-modal-close").click(function () { $('#mystery-target-modal').css('display', 'none'); });
+		$("#mystery-target-modal").click(function (e) { if (e.target === this) { $('#mystery-target-modal').css('display', 'none'); } });
+		$("#mystery-target-top").click(function () { $('#mystery-target-modal-body').scrollTop(0); });
+		$("#mystery-target-bottom").click(function () {
+			var b = document.getElementById('mystery-target-modal-body');
+			b.scrollTop = b.scrollHeight;
+		});
+		$("#mystery-count-generate").click(function () { predictMysteryCountAll(); });
+		$("#mystery-count-modal-close").click(function () { $('#mystery-count-modal').css('display', 'none'); });
+		$("#mystery-count-modal").click(function (e) { if (e.target === this) { $('#mystery-count-modal').css('display', 'none'); } });
+		$("#mystery-count-top").click(function () { $('#mystery-count-modal-body').scrollTop(0); });
+		$("#mystery-count-bottom").click(function () {
+			var b = document.getElementById('mystery-count-modal-body');
+			b.scrollTop = b.scrollHeight;
+		});
 		// Escape closes whichever overview popup is open.
 		$(document).keydown(function (e) {
 			if (e.key === 'Escape' || e.keyCode === 27) {
-				$('#book-overview-modal, #night-overview-modal, #prize-overview-modal, #raccoon-overview-modal, #statue-overview-modal, #cart-overview-modal, #special-ticket-modal, #special-gem-modal').css('display', 'none');
+				$('#book-overview-modal, #night-overview-modal, #prize-overview-modal, #raccoon-overview-modal, #statue-overview-modal, #cart-overview-modal, #special-ticket-modal, #special-gem-modal, #mystery-target-modal, #mystery-count-modal').css('display', 'none');
 			}
 		});
 		$("input[class='search']").keyup(function(e) {
@@ -10591,6 +11076,7 @@ Object.keys(test).forEach(function(key, index) { if (test[key].s > 0 && test[key
 			populateBookDropdown(); // rebuild option labels with real counts now that the save is parsed
 			$("#book-overview-book").trigger('change'); // prefill "Already bought" now that counts are known
 			prefillNightFound(); // prefill the Stone Owl "Found" count from the save
+			prefillMysteryHave(); // prefill the Mystery Box "Have" count for the default target item
 			document.getElementById('progress').value = 100;
 			$('#progress-container').hide();
 			$('#output-container').show();
