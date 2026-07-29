@@ -1,4 +1,5 @@
 import itemSpriteData from './itemSprites.json' assert { type: 'json' };
+import { VariantResolver } from './VariantResolver';
 import springObjectsSheet from '../assets/stardew/springobjects.png';
 import objectsSheet from '../assets/stardew/Objects_2.png';
 import craftablesSheet from '../assets/stardew/Craftables.png';
@@ -28,7 +29,21 @@ export interface ItemSprite {
   width: number;
   height: number;
   sheetWidth: number;
+  // Flower color variants: the game draws spriteIndex + 1 tinted with the variant color
+  overlay?: { x: number; y: number; tint: string };
+  // Smoked fish: the game redraws the fish sprite with Color(80,30,10) * 0.6 on top,
+  // which nets out to multiplying the sprite by this color
+  baseTint?: string;
 }
+
+const SMOKED_FISH_TINT = 'rgb(150, 120, 108)';
+
+// Synthetic any-ingredient rows get a representative item's sprite
+const EXTRA_ROW_SOURCES: Record<string, string> = {
+  'Egg: Extra': 'Egg: White',
+  'Milk: Extra': 'Milk',
+  'Fish: Extra': 'Sardine',
+};
 
 const data = itemSpriteData as SpriteData;
 const spriteCache = new Map<string, ItemSprite | undefined>();
@@ -40,6 +55,14 @@ function getSheetSrc(sheet: SpriteSheet): string {
   return springObjectsSheet;
 }
 
+function getSpriteCoords(definition: SpriteDefinition, spriteIndex: number): { x: number; y: number } {
+  const columns = definition.columns ?? (definition.sheet === 'springobjects' ? 24 : 8);
+  return {
+    x: (spriteIndex % columns) * definition.width,
+    y: Math.floor(spriteIndex / columns) * definition.height,
+  };
+}
+
 function getSpriteByItemId(itemId: string | undefined): ItemSprite | undefined {
   if (!itemId) return undefined;
 
@@ -47,8 +70,7 @@ function getSpriteByItemId(itemId: string | undefined): ItemSprite | undefined {
   if (!definition || !Number.isFinite(definition.spriteIndex)) return undefined;
 
   const columns = definition.columns ?? (definition.sheet === 'springobjects' ? 24 : 8);
-  const x = (definition.spriteIndex % columns) * definition.width;
-  const y = Math.floor(definition.spriteIndex / columns) * definition.height;
+  const { x, y } = getSpriteCoords(definition, definition.spriteIndex);
   const sheetWidth = columns * definition.width;
 
   return {
@@ -61,6 +83,30 @@ function getSpriteByItemId(itemId: string | undefined): ItemSprite | undefined {
   };
 }
 
+// Flower color variants ("Summer Spangle (Fuchsia)", "Tulip (255,80,0)", "(Cart)", "Extra"):
+// resolve the base flower sprite; for colored variants add the game's tinted overlay
+// (spriteIndex + 1), matching ColoredObject.drawInMenu.
+function getFlowerVariantSprite(itemName: string): ItemSprite | undefined {
+  const baseName = VariantResolver.getBaseName(itemName);
+  if (baseName === itemName || !VariantResolver.hasColorVariants(baseName)) return undefined;
+
+  const itemId = getItemIdByName(baseName);
+  const definition = itemId ? data.itemIds[itemId] : undefined;
+  const baseSprite = getSpriteByItemId(itemId);
+  if (!definition || !baseSprite) return undefined;
+
+  const color = VariantResolver.getFlowerColor(itemName);
+  if (!color) return baseSprite;
+
+  return {
+    ...baseSprite,
+    overlay: {
+      ...getSpriteCoords(definition, definition.spriteIndex + 1),
+      tint: `rgb(${color[0]}, ${color[1]}, ${color[2]})`,
+    },
+  };
+}
+
 function getItemIdByName(itemName: string): string | undefined {
   return data.byDisplayName[itemName] ?? data.byName[itemName];
 }
@@ -69,6 +115,9 @@ function getProcessedSourceName(itemName: string): string | undefined {
   const prefixedMatch = itemName.match(/^(?:Pickled|Smoked|Dried) (.+)$/);
   if (prefixedMatch?.[1]) {
     let result = prefixedMatch[1];
+    // If the source name exists as-is, use it — de-pluralizing would break
+    // names that just happen to end in "s" (Octopus, Blue Discus, Largemouth Bass)
+    if (getItemIdByName(result)) return result;
     if (result !== "Cranberries") {
       if (result.endsWith("ies")) {
         result = result.substring(0, result.length - 3);
@@ -93,16 +142,34 @@ function getProcessedSourceName(itemName: string): string | undefined {
   return undefined;
 }
 
-export function getItemSprite(itemName: string): ItemSprite | undefined {
-  if (spriteCache.has(itemName)) {
-    return spriteCache.get(itemName);
+export function getItemSprite(itemName: string, saveItemId?: string): ItemSprite | undefined {
+  const cacheKey = saveItemId ? `${itemName}|${saveItemId}` : itemName;
+  if (spriteCache.has(cacheKey)) {
+    return spriteCache.get(cacheKey);
   }
 
-  const fallbackItemId = itemName.match(/\[((?:\(O\)|\(BC\))[^\]]+)\]$/)?.[1];
-  const directItemId = fallbackItemId ?? getItemIdByName(itemName);
-  const sourceName = directItemId ? undefined : getProcessedSourceName(itemName);
+  const lookupName = EXTRA_ROW_SOURCES[itemName] ?? itemName;
+  const fallbackItemId = lookupName.match(/\[((?:\(O\)|\(BC\))[^\]]+)\]$/)?.[1];
+  const directItemId = fallbackItemId ?? getItemIdByName(lookupName);
+  const sourceName = directItemId ? undefined : getProcessedSourceName(lookupName);
   const itemId = directItemId ?? (sourceName ? getItemIdByName(sourceName) : undefined);
-  const result = getSpriteByItemId(itemId);
-  spriteCache.set(itemName, result);
+  let result = getSpriteByItemId(itemId);
+
+  if (!result && !directItemId) {
+    result = getFlowerVariantSprite(lookupName);
+  }
+
+  // Ambiguous names (e.g. "Chicken Statue" artifact vs statue) have no name mapping,
+  // but the save file's item id pinpoints the sprite
+  if (!result && saveItemId) {
+    result = getSpriteByItemId(saveItemId);
+  }
+
+  // Smoked fish resolved from their source fish sprite get the game's dark smoke tint
+  if (result && !directItemId && sourceName && lookupName.startsWith('Smoked ')) {
+    result = { ...result, baseTint: SMOKED_FISH_TINT };
+  }
+
+  spriteCache.set(cacheKey, result);
   return result;
 }

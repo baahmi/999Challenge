@@ -16,7 +16,8 @@ describe('VariantResolver flower colors', () => {
   it('uses readable names for Seasonal Plant item id variants', () => {
     expect(VariantResolver.resolveDisplayName('Seasonal Plant', '(BC)184')).toBe('Seasonal Plant (EF 1)');
     expect(VariantResolver.resolveDisplayName('Seasonal Plant', '(BC)188')).toBe('Seasonal Plant (EF 2)');
-    expect(VariantResolver.resolveDisplayName('Seasonal Plant', '(BC)204')).toBe('Seasonal Plant (Robin)');
+    expect(VariantResolver.resolveDisplayName('Seasonal Plant', '(BC)200')).toBe('Seasonal Plant (Robin)');
+    expect(VariantResolver.resolveDisplayName('Seasonal Plant', '(BC)204')).toBe('Seasonal Plant (FD 2)');
     expect(VariantResolver.getBaseName('Seasonal Plant (EF 1)')).toBe('Seasonal Plant');
     expect(VariantResolver.hasItemIdVariants('Seasonal Plant')).toBe(true);
   });

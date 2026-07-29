@@ -190,6 +190,32 @@ export class VariantResolver {
   }
   
   /**
+   * Get the tint color of a flower color-variant display name.
+   * E.g., "Blue Jazz (Bright Blue)" -> [35, 127, 255]
+   * E.g., "Blue Jazz (35,127,255)" -> [35, 127, 255]
+   * Returns undefined for non-flower-variant names (including "(Cart)" and "Extra" rows).
+   */
+  static getFlowerColor(displayName: string): [number, number, number] | undefined {
+    const mappedBaseName = FLOWER_VARIANT_DISPLAY_NAMES.get(displayName);
+    if (mappedBaseName) {
+      const variants = FLOWER_COLOR_NAMES[mappedBaseName] ?? {};
+      for (const [colorKey, variantName] of Object.entries(variants)) {
+        if (variantName !== displayName) continue;
+        const [r, g, b] = colorKey.split(',').map(Number);
+        return [r!, g!, b!];
+      }
+      return undefined;
+    }
+
+    const rgbMatch = displayName.match(/^(.+?)\s*\((\d+),(\d+),(\d+)\)$/);
+    if (rgbMatch && COLOR_VARIANT_ITEMS.has(rgbMatch[1]!)) {
+      return [Number(rgbMatch[2]), Number(rgbMatch[3]), Number(rgbMatch[4])];
+    }
+
+    return undefined;
+  }
+
+  /**
    * Get base item name from a variant display name
    * E.g., "Blue Jazz (Bright Blue)" -> "Blue Jazz"
    * E.g., "Blue Jazz (35,127,255)" -> "Blue Jazz"

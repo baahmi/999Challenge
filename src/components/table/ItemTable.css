@@ -92,3 +92,32 @@
   width: 32px;
   height: 32px;
 }
+
+.item-sprite-stack {
+  position: relative;
+  /* Keep the multiply tint from blending with the page behind the sprite */
+  isolation: isolate;
+}
+
+.item-sprite-layer {
+  position: absolute;
+  inset: 0;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+}
+
+.item-sprite-tint {
+  mix-blend-mode: multiply;
+}
+
+/* Row highlight after jumping to an item from search */
+tr.row-flash {
+  outline: 3px solid #f9a825;
+  outline-offset: -3px;
+  animation: row-flash-fade 2.5s ease-out forwards;
+}
+
+@keyframes row-flash-fade {
+  0%, 60% { outline-color: #f9a825; }
+  100% { outline-color: transparent; }
+}
