@@ -69,13 +69,15 @@ function getProcessedSourceName(itemName: string): string | undefined {
   const prefixedMatch = itemName.match(/^(?:Pickled|Smoked|Dried) (.+)$/);
   if (prefixedMatch?.[1]) {
     let result = prefixedMatch[1];
-    if (result.endsWith("ies")) {
-      result = result.substring(0, result.length - 3);
-      result+='y';
-    } else if(result === "Peaches") {
-      result = "Peach";
-    } else if(result.endsWith("s")) {
-      result = result.substring(0, result.length - 1);
+    if (result !== "Cranberries") {
+      if (result.endsWith("ies")) {
+        result = result.substring(0, result.length - 3);
+        result += 'y';
+      } else if (result === "Peaches") {
+        result = "Peach";
+      } else if (result.endsWith("s")) {
+        result = result.substring(0, result.length - 1);
+      }
     }
     return result;
   }
