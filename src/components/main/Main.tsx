@@ -56,6 +56,13 @@ export function Main() {
     Config.setSelectedTab(category);
   };
 
+  const [scrollToItem, setScrollToItem] = useState<{ name: string; token: number } | null>(null);
+
+  const handleSearchSelect = (category: string, itemName?: string) => {
+    selectCategory(category);
+    setScrollToItem(itemName ? { name: itemName, token: Date.now() } : null);
+  };
+
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key !== '/' || event.metaKey || event.ctrlKey || event.altKey || isTypingTarget(event.target)) return;
@@ -94,10 +101,10 @@ export function Main() {
       <div className="container">
         <Tabs onCategoryChange={handleCategoryChange}>
           {selectedCategory === OVERVIEW_TAB && (
-            <Overview compacted={compacted} categoryNames={categoryNames} onCategorySelect={selectCategory} />
+            <Overview compacted={compacted} categoryNames={categoryNames} onCategorySelect={handleSearchSelect} />
           )}
           {selectedCategory !== OVERVIEW_TAB && (
-            <ItemTable key={selectedCategory} items={allCategoryData.get(selectedCategory) ?? []} />
+            <ItemTable key={selectedCategory} items={allCategoryData.get(selectedCategory) ?? []} scrollToItem={scrollToItem} />
           )}
         </Tabs>
         <SearchOverlay
@@ -105,7 +112,7 @@ export function Main() {
           categoryNames={[OVERVIEW_TAB, ...categoryNames]}
           categoryData={allCategoryData}
           onClose={() => setSearchOpen(false)}
-          onSelect={selectCategory}
+          onSelect={handleSearchSelect}
         />
       </div>
     </main>

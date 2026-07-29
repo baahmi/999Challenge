@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'bun:test';
 import {CustomDataStore, type PartsEntry} from '../CustomDataStore';
-import {  computeCategoryItems,  __test } from '../itemCalculations';
+import {  computeCategoryItems, computeFinishableItems, __test } from '../itemCalculations';
 import { Config } from '../../config/Config';
 import {
     calculateCappedObtainedCount,
@@ -214,6 +214,7 @@ describe('computeCategoryItems', () => {
             qty: 1,
             available: 501,
             done: true,
+            neededForTarget: 999,
         });
     });
 
@@ -455,6 +456,59 @@ describe('computeCategoryItems', () => {
         expect(calculateNeededCount(wine)).toBe(999);
     });
 
+    it('computes finishable items from surplus with quality reservations', () => {
+        CustomDataStore.troveItems = ['Missing Artifact']
+        CustomDataStore.data.categoryNames = ['Fish', 'Smoked Fish', 'Cooking', 'Resources', 'Fruits', 'Wine']
+        CustomDataStore.data.items = [
+            { category: 'Fish', name: 'Carp', displayName: null },
+            { category: 'Smoked Fish', name: 'Smoked Carp', displayName: null },
+            { category: 'Cooking', name: 'Carp Surprise', displayName: null },
+            { category: 'Resources', name: 'Qi Seasoning', displayName: null },
+            { category: 'Fruits', name: 'Cherry', displayName: null },
+            { category: 'Wine', name: 'Cherry Wine', displayName: null },
+        ];
+        // recipeMap is built once from the real parts.json, so use the real recipes here
+        CustomDataStore.partsData = [
+            ["Smoked Carp", { "142": ["Carp", 1] }, 1],
+            ["Carp Surprise", { "142": ["Carp", 4] }, 1],
+            ["Cherry Wine", { "638": ["Cherry", 1] }, 1],
+        ] as PartsEntry[]
+
+        // 1025 iridium carp: 26 surplus is not enough to finish smoked carp,
+        // and iridium carp never count toward the cooked dish
+        const results = computeFinishableItems([
+            { name: 'Carp', stack: 1025, category: 'Fish', quality: [0,0,0,0,1025] },
+            { name: 'Qi Seasoning', stack: 2000, category: 'Resources', quality: [2000,0,0,0,0] },
+            { name: 'Cherry', stack: 999, category: 'Fruits', quality: [0,0,0,0,999] },
+            { name: 'Cherry Wine', stack: 999, category: 'Wine', quality: [999,0,0,0,0] },
+        ]);
+        const smoked = results.find(r => r.name === 'Smoked Carp')!;
+        expect(smoked.finishable).toBe(false);
+        expect(smoked.producible).toBe(26);
+        const dish = results.find(r => r.name === 'Carp Surprise')!;
+        expect(dish.finishable).toBe(false);
+        expect(dish.producible).toBe(0);
+        // 999 normal wine only needs aging
+        const wine = results.find(r => r.name === 'Cherry Wine')!;
+        expect(wine.finishable).toBe(true);
+        expect(wine.viaAging).toBe(true);
+        expect(wine.needed).toBe(0);
+
+        // Enough iridium surplus finishes smoked carp; normal carp feed the dish,
+        // but the dish is capped by the Qi Seasoning surplus
+        const results2 = computeFinishableItems([
+            { name: 'Carp', stack: 5998, category: 'Fish', quality: [4000,0,0,0,1998] },
+            { name: 'Qi Seasoning', stack: 1500, category: 'Resources', quality: [1500,0,0,0,0] },
+        ]);
+        const smoked2 = results2.find(r => r.name === 'Smoked Carp')!;
+        expect(smoked2.finishable).toBe(true);
+        expect(smoked2.producible).toBe(999);
+        const dish2 = results2.find(r => r.name === 'Carp Surprise')!;
+        expect(dish2.finishable).toBe(false);
+        expect(dish2.producible).toBe(501);
+        expect(dish2.limiting).toBe('Qi Seasoning');
+    });
+
     it('counts any wine quality when the Wine group is quality-exempt', () => {
         CustomDataStore.troveItems = ['Missing Artifact']
         CustomDataStore.data.categoryNames = ['Wine']
@@ -575,8 +629,8 @@ describe('computeCategoryItems', () => {
         expect(calculateNeededCount(mussel)).toBe(1998);
         expect(smoked.correctQualityCount).toBe(0);
         expect(smoked.hasWrongQuality).toBe(true);
-        expect(musselIngredient).toEqual({ name: 'Mussel', qty: 1, available: 0, done: false });
-        expect(usedInSmoked.recipe.find(ing => ing.name === 'Mussel')).toEqual({ name: 'Mussel', qty: 1, available: 0, done: false });
+        expect(musselIngredient).toEqual({ name: 'Mussel', qty: 1, available: 0, done: false, neededForTarget: 999 });
+        expect(usedInSmoked.recipe.find(ing => ing.name === 'Mussel')).toEqual({ name: 'Mussel', qty: 1, available: 0, done: false, neededForTarget: 999 });
         expect(usedInSmoked.craftableCount).toBe(0);
     });
 
@@ -601,7 +655,7 @@ describe('computeCategoryItems', () => {
         expect(smoked.correctQualityCount).toBe(999);
         expect(smoked.hasWrongQuality).toBe(false);
         expect(calculatePercentage(smoked)).toBe(100);
-        expect(snailIngredient).toEqual({ name: 'Snail', qty: 1, available: 999, done: true });
+        expect(snailIngredient).toEqual({ name: 'Snail', qty: 1, available: 999, done: true, neededForTarget: 0 });
     });
 
     it('uses any-quality egg surplus for Egg: Extra after the egg row is complete', () => {

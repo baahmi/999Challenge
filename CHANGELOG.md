@@ -10,6 +10,21 @@
 - You can use / to search for items and jump to the tab where it is.
 
 ### Changes
+#### 0.1.4
+- Lucky shorts now in overview. Forgot the "Lucky" part
+- Cranberries images shows now 
+- Flower color variants now show their sprite with the correct petal color, and smoked fish get their smoked (dark) look
+- Smoked fish whose name ends in "s" (Octopus, Blue Discus, Largemouth Bass, ...) now show their image too
+- Items whose name is ambiguous (Chicken Statue, Bait) now use the save file's item id for their image, and the Egg/Milk/Fish Extra rows show a representative image. Every row has an image now.
+- Header shows the exact in-game date (season, day, year — a year is 112 days), centered on the bar
+- Overview gets a "What can I finish?" section: unfinished craftables you can complete right now from surplus ingredients. It keeps a full stack of every ingredient reserved, only counts target-quality surplus for smoked fish, never feeds iridium fish into cooked dishes, credits wine/cheese that only needs aging, and counts the Qi Seasoning surplus for cooked dishes. Click an item to jump to its row.
+- The ⚠ in recipe tooltips now only appears when an ingredient is actually short of what is needed to finish the item. Before it marked the ingredient limiting further crafting, even on completed items (e.g. Gold Ore on a finished Bomb: Mega).
+- Recipe tooltips now show how many ingredients you still need: each ingredient line gets "have X / need Y" where Y covers the crafts remaining to finish the item (yield-aware, e.g. fish for bait), and the recipe header shows how many of the item are still needed
+- Searching with "/" now scrolls to the item's row and highlights it briefly, instead of just switching tabs
+- Header now shows Pocket money and Total earned (before the Qi Gems). Total earned is stored 32-bit in the save and overflows past ~2.1 billion; a new setting "Money limit reached" says how often you passed the limit so the corrected total can be shown. A negative save value is auto-corrected as passed-once.
+- Add config items to have things on normal quality (eg fish, food, wine)
+- Added function "I am a loser". Some people forget where they have put their weapon or 100.000 of something. I lost something yesterday and that triggered me to add this (next to a request from the public)
+
 #### 0.1.3
 - now also imports of past save files show the right statistics. So if you import day 1000 and import day 500 after that, it shows the progress instead of showing 0 for the imported day 500. Importing in order would not give this problem.
 - Add optione to show item ids as in the game (mainly used for making debugging easier)

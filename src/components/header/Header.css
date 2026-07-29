@@ -3,6 +3,7 @@
 }
 
 .header .container {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -69,4 +70,21 @@
 
 .getting-started-copy li {
     margin-bottom: 6px;
+}
+
+/* Exact in-game date, centered on the icon bar */
+.game-date {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+@media (max-width: 1100px) {
+    .game-date {
+        display: none;
+    }
 }

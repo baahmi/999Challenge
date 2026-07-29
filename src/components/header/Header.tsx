@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import './Header.css';
 import {Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, LinearProgress, Tooltip, Typography} from "@mui/material";
-import {Upload, ViewWeekOutlined, Settings, FileDownload, CompareArrows, Category, Timeline, BarChart, HelpOutline, East} from "@mui/icons-material";
+import {Upload, ViewWeekOutlined, Settings, FileDownload, CompareArrows, Category, Timeline, BarChart, HelpOutline, East, NotListedLocation} from "@mui/icons-material";
 import {ThemeToggle} from "@/components/theme/ThemeToggle.tsx";
 import {ConfigDialog} from "@/components/config/ConfigDialog.tsx";
 import {DiffDialog} from "@/components/diff/DiffDialog.tsx";
@@ -9,8 +9,27 @@ import {CategoryDialog} from "../config/CategoryDialog.tsx";
 import {HistoryDialog} from "../history/HistoryDialog.tsx";
 import {StatsDialog} from "../stats/StatsDialog.tsx";
 import {HelpDialog} from "../help/HelpDialog.tsx";
+import {LoserDialog} from "../loser/LoserDialog.tsx";
 import {Config} from "../../config/Config.ts";
 import {AppData, type ImportStatus} from "../../app/AppData.ts";
+import {correctTotalMoneyEarned} from "../../app/money.ts";
+
+const SEASONS = [
+    { name: 'Spring', emoji: '🌸' },
+    { name: 'Summer', emoji: '☀️' },
+    { name: 'Fall', emoji: '🍂' },
+    { name: 'Winter', emoji: '❄️' },
+] as const;
+
+// daysPlayed 1 = Spring 1, Year 1; a year is 4 seasons of 28 days (112 days)
+function formatGameDate(daysPlayed: number): { text: string; emoji: string } | null {
+    if (daysPlayed < 1) return null;
+    const dayOfYear = (daysPlayed - 1) % 112;
+    const year = Math.floor((daysPlayed - 1) / 112) + 1;
+    const season = SEASONS[Math.floor(dayOfYear / 28)]!;
+    const day = (dayOfYear % 28) + 1;
+    return { text: `${season.name} ${day}, Year ${year}`, emoji: season.emoji };
+}
 
 const IMPORT_PHASE_LABELS: Record<ImportStatus['phase'], string> = {
     reading: 'Reading save files',
@@ -24,6 +43,9 @@ export function Header() {
     const [categoryOpen, setCategoryOpen] = useState(false);
     const [tabsPosition, setTabsPosition] = useState(Config.getTabsPosition());
     const [qiGems, setQiGems] = useState<number | null>(null);
+    const [money, setMoney] = useState<number | null>(null);
+    const [totalMoneyEarned, setTotalMoneyEarned] = useState<number | null>(null);
+    const [moneyOverflowCount, setMoneyOverflowCount] = useState(Config.getMoneyOverflowCount());
     const [daysPlayed, setDaysPlayed] = useState<number | null>(null);
     const [pastKids, setPastKids] = useState<number | null>(null);
     const [journalDays, setJournalDays] = useState(0);
@@ -31,6 +53,7 @@ export function Header() {
     const [historyOpen, setHistoryOpen] = useState(false);
     const [statsOpen, setStatsOpen] = useState(false);
     const [helpOpen, setHelpOpen] = useState(false);
+    const [loserOpen, setLoserOpen] = useState(false);
     const [showGettingStarted, setShowGettingStarted] = useState(false);
     const [importStatus, setImportStatus] = useState<ImportStatus | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -54,6 +77,7 @@ export function Header() {
     React.useEffect(() => {
         const handleConfigChange = () => {
             setTabsPosition(Config.getTabsPosition());
+            setMoneyOverflowCount(Config.getMoneyOverflowCount());
         };
         const unsubscribe = Config.getInstance().subscribe(handleConfigChange);
         return unsubscribe;
@@ -62,6 +86,8 @@ export function Header() {
     React.useEffect(() => {
         const handleAppDataChange = () => {
             setQiGems(AppData.getQiGems());
+            setMoney(AppData.getMoney());
+            setTotalMoneyEarned(AppData.getTotalMoneyEarned());
             setDaysPlayed(AppData.getDaysPlayed());
             setPastKids(AppData.getChildrenTurnedToDoves());
             setJournalDays(AppData.getJournalDayCount());
@@ -128,6 +154,20 @@ export function Header() {
             <div className="container">
                 {/* <div className="brand">999 Challenge</div> */}
                 <div style={{ display: 'flex', gap: '24px', alignItems: 'center', flex: 1, paddingLeft: '24px' }}>
+                    {money !== null && (
+                        <div style={{ fontSize: '14px' }}>
+                            Pocket: <strong>{money.toLocaleString()}g</strong>
+                        </div>
+                    )}
+                    {totalMoneyEarned !== null && (
+                        <Tooltip title={totalMoneyEarned < 0 && moneyOverflowCount === 0
+                            ? 'The save overflowed its 32-bit total; corrected assuming the limit was passed once. Set the count in Settings if it was passed more often.'
+                            : 'Total money earned, corrected for the 32-bit limit using the count in Settings'}>
+                            <div style={{ fontSize: '14px' }}>
+                                Total earned: <strong>{correctTotalMoneyEarned(totalMoneyEarned, moneyOverflowCount).toLocaleString()}g</strong>
+                            </div>
+                        </Tooltip>
+                    )}
                     <div style={{ fontSize: '14px' }}>
                         Qi Gems: <strong>{qiGems !== null ? qiGems : 'Unknown'}</strong>
                     </div>
@@ -145,7 +185,15 @@ export function Header() {
                         </div>
                     )}
                 </div>
-                <nav className="nav" aria-label="Primary" style={{ marginLeft: 'auto', display: 'flex', gap: '8px' }}>
+                <nav className="nav" aria-label="Primary" style={{ position: 'relative', width: '100%', display: 'flex', gap: '8px', justifyContent: 'flex-end', alignItems: 'center' }}>
+                    {daysPlayed !== null && (() => {
+                        const gameDate = formatGameDate(daysPlayed);
+                        return gameDate && (
+                            <div className="game-date" title={`Day ${daysPlayed} — a year is 112 days`}>
+                                {gameDate.emoji} {gameDate.text}
+                            </div>
+                        );
+                    })()}
                     <ThemeToggle/>
                     <Tooltip title="Help">
                         <IconButton size="small" onClick={() => setHelpOpen(true)}>
@@ -160,6 +208,11 @@ export function Header() {
                     <Tooltip title="Item & progress history">
                         <IconButton size="small" onClick={() => setHistoryOpen(true)}>
                             <Timeline />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="I am a loser — find where you left an item">
+                        <IconButton size="small" onClick={() => setLoserOpen(true)}>
+                            <NotListedLocation />
                         </IconButton>
                     </Tooltip>
                     <Tooltip title="Manage categories & items">
@@ -232,6 +285,7 @@ export function Header() {
             <HistoryDialog open={historyOpen} onClose={() => setHistoryOpen(false)} journal={AppData.getJournal()} />
             <StatsDialog open={statsOpen} onClose={() => setStatsOpen(false)} stats={AppData.getStats()} journal={AppData.getJournal()} />
             <HelpDialog open={helpOpen} onClose={() => setHelpOpen(false)} />
+            <LoserDialog open={loserOpen} onClose={() => setLoserOpen(false)} />
             <Dialog open={importStatus !== null} maxWidth="sm" fullWidth>
                 <DialogTitle>
                     {importStatus ? IMPORT_PHASE_LABELS[importStatus.phase] : 'Importing'}

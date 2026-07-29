@@ -15,6 +15,7 @@ import './ItemTable.css';
 import {Config} from '@/config/Config';
 
 interface ItemTableProps {
+  scrollToItem?: { name: string; token: number } | null;
   items: ItemRow[];
 }
 
@@ -77,14 +78,25 @@ function TooltipPanel({ name, data }: { name: string; data: ItemTooltipData }) {
             <span style={{ color: canCraftColor }}>
               can craft: {data.craftableCount}
             </span>
+            {(data.neededCount ?? 0) > 0 && (
+              <span style={{ color: '#f9a825' }}> · need {data.neededCount!.toLocaleString()}</span>
+            )}
           </div>
           {data.recipe.map(ing => {
-            const isLimit = data.limitingIngredient === ing.name;
+            const need = ing.neededForTarget ?? 0;
+            // Warn only when this ingredient actually falls short of finishing the item,
+            // not merely because it is the smallest pool for further crafting
+            const isShort = need > ing.available;
             return (
               <div key={ing.name} style={{ paddingLeft: 10, display: 'flex', gap: 6, alignItems: 'baseline' }}>
                 <span>• {ing.name} ×{ing.qty}</span>
                 <span style={{ color: ing.done ? '#6f6' : '#f66', marginLeft: 'auto', whiteSpace: 'nowrap' }}>
-                  have {ing.available}{isLimit ? ' ⚠' : ''}
+                  have {ing.available}{isShort ? ' ⚠' : ''}
+                  {need > 0 && (
+                    <span style={{ color: ing.available >= need ? '#6f6' : '#f9a825' }}>
+                      {' '}/ need {need.toLocaleString()}
+                    </span>
+                  )}
                 </span>
               </div>
             );
@@ -111,6 +123,11 @@ function TooltipPanel({ name, data }: { name: string; data: ItemTooltipData }) {
                   <span>{ing.name} ×{ing.qty}</span>
                   <span style={{ color: ing.done ? '#6d6' : '#d66', marginLeft: 'auto', whiteSpace: 'nowrap' }}>
                     have {ing.available}
+                    {(ing.neededForTarget ?? 0) > 0 && (
+                      <span style={{ color: ing.available >= ing.neededForTarget! ? '#6d6' : '#d5a021' }}>
+                        {' '}/ need {ing.neededForTarget!.toLocaleString()}
+                      </span>
+                    )}
                   </span>
                 </div>
               ))}
@@ -176,7 +193,7 @@ const COLUMNS: Array<{ key: string; label: string; minW: number }> = [
 const QUALITY_KEYS = new Set(['raw_I', 'raw_G', 'raw_S', 'raw_N']);
 const COST_KEYS = new Set(['gold_needed', 'qi_needed']);
 
-export function ItemTable({ items }: ItemTableProps) {
+export function ItemTable({ items, scrollToItem }: ItemTableProps) {
   const { mode } = useColorScheme();
   const isDark = mode === 'dark';
   const [showItemIds, setShowItemIds] = React.useState<boolean>(Config.getShowItemIds());
@@ -206,6 +223,21 @@ export function ItemTable({ items }: ItemTableProps) {
     });
     return unsubscribe;
   }, []);
+
+  // Scroll to and briefly highlight a row selected via the search overlay
+  React.useEffect(() => {
+    if (!scrollToItem) return;
+    const rowEl = Array.from(document.querySelectorAll('tr[data-item-name]'))
+      .find(el => el.getAttribute('data-item-name') === scrollToItem.name);
+    if (!rowEl) return;
+    rowEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    rowEl.classList.add('row-flash');
+    const timer = window.setTimeout(() => rowEl.classList.remove('row-flash'), 2500);
+    return () => {
+      window.clearTimeout(timer);
+      rowEl.classList.remove('row-flash');
+    };
+  }, [scrollToItem]);
 
   React.useEffect(() => {
     if (!theadRef.current) return;
@@ -274,7 +306,7 @@ export function ItemTable({ items }: ItemTableProps) {
       const done = !isTotal && row.percentage >= 100;
       switch (column) {
         case 'checkbox':   return isTotal ? '—' : (done ? '☑' : '☐');
-        case 'image':      return isTotal ? '' : <ItemSprite name={row.name} />;
+        case 'image':      return isTotal ? '' : <ItemSprite name={row.name} itemId={(row as ItemRow).itemId} />;
         case 'percentage': return `${Math.floor(row.percentage)}%`;
         case 'name': {
           if (isTotal) return 'Total';
@@ -418,6 +450,7 @@ export function ItemTable({ items }: ItemTableProps) {
               return (
                 <tr
                   key={index}
+                  data-item-name={isTotal ? undefined : row.name}
                   style={{ backgroundColor: rowBg, fontWeight: isTotal ? 'bold' : 'normal', cursor: tooltipData ? 'help' : 'default' }}
                   onMouseEnter={tooltipData ? (e) => setHover({ name: row.name, data: tooltipData, x: e.clientX, y: e.clientY }) : undefined}
                   onMouseLeave={tooltipData ? () => setHover(null) : undefined}

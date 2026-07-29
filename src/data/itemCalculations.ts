@@ -1,4 +1,5 @@
 import { CustomDataStore, VariantResolver } from './CustomDataStore';
+import { calculateNeededCount } from '../types/Item';
 import notesData from './notes.json';
 import pricesData from './prices.json';
 import { Config } from '../config/Config';
@@ -135,6 +136,7 @@ export interface IngredientInfo {
   qty: number;
   available: number;
   done: boolean;
+  neededForTarget?: number; // how many of this ingredient the remaining crafts still consume
 }
 
 export interface UsedByInfo {
@@ -154,6 +156,7 @@ export interface ItemTooltipData {
   done: boolean;
   usedBy: UsedByInfo[];
   shops: ShopEntry[];
+  neededCount?: number; // how many of this item are still needed for the challenge
 }
 
 export interface ItemRow {
@@ -310,6 +313,7 @@ const wildcardReverseMap = new Map<string, string[]>();           // synthetic a
 
 // Global cache - computed once when data changes
 let globalCraftableCache = new Map<string, { count: number; limiting: string | null }>();
+let globalAnyIngredientAvailability = new Map<string, number>();
 let lastCompactedRef: any = null;
 let lastQuality: string | null = null;
 let globalInventoryMap = new Map<string, number>();
@@ -454,14 +458,18 @@ function computeAllItems(
   }
 
   const completionMap = new Map<string, boolean>();
+  const neededMap = new Map<string, number>();
   for (const item of CustomDataStore.getItemsData()) {
     const r = inventoryMap.get(item.name) ?? 0; // Use base name for inventory lookup
     const req = TARGET + (requiredFromParts.get(item.name) ?? 0);
     const tot = totalFromParts.get(item.name) ?? 0;
     // to be complete we need raw to be at least 999.
     completionMap.set(item.name, r + tot >= req && r >= TARGET);
+    const have = getProgressInventoryCount(item.name, inventoryMap, stacksMap, quality);
+    neededMap.set(item.name, Math.max(0, req - Math.min(req, have + tot)));
   }
   const anyIngredientAvailability = computeAnyIngredientAvailability(inventoryMap, stacksMap, quality, requiredFromParts, totalFromParts);
+  globalAnyIngredientAvailability = anyIngredientAvailability;
 
   // Helper to check if an item has wrong quality stacks
   const hasWrongQualityStacks = (itemName: string): boolean => {
@@ -579,7 +587,7 @@ function computeAllItems(
       raw, 
       rawStacks: stacksMap.get(lookupKey), // Use lookupKey to get actual stacks
       buyPrice: priceMap.get(item.name), 
-      tooltip: computeTooltipData(item.name, raw, inventoryMap, stacksMap, quality, completionMap, globalCraftableCache, anyIngredientAvailability),
+      tooltip: computeTooltipData(item.name, raw, inventoryMap, stacksMap, quality, completionMap, globalCraftableCache, anyIngredientAvailability, neededMap),
       hasWrongQuality: hasWrongQualityStacks(itemKey), // Use itemKey for variants
       hasUnfinishedDependents: hasUnfinishedDependents(item.name),
       correctQualityCount: getCorrectQualityCount(itemKey) // Use itemKey for variants
@@ -614,7 +622,7 @@ function computeAllItems(
         raw: excessRaw, // Only the excess
         rawStacks: undefined,
         buyPrice: priceMap.get(baseName),
-        tooltip: computeTooltipData(baseName, excessRaw, inventoryMap, stacksMap, quality, completionMap, globalCraftableCache, anyIngredientAvailability),
+        tooltip: computeTooltipData(baseName, excessRaw, inventoryMap, stacksMap, quality, completionMap, globalCraftableCache, anyIngredientAvailability, neededMap),
         hasWrongQuality: false,
         hasUnfinishedDependents: false,
         correctQualityCount: undefined
@@ -869,9 +877,18 @@ function computeTooltipData(
   quality: Quality,
   completionMap: Map<string, boolean>,
   craftableCache: Map<string, { count: number; limiting: string | null }>,
-  anyIngredientAvailability = new Map<string, number>()
+  anyIngredientAvailability = new Map<string, number>(),
+  neededMap = new Map<string, number>()
 ): ItemTooltipData {
   const note = (notesData as Record<string, string[]>)[itemName] ?? null;
+
+  // Ingredients consumed by the crafts still needed to finish craftedName
+  const ingredientNeed = (craftedName: string, qty: number): number => {
+    const needed = neededMap.get(craftedName) ?? 0;
+    if (needed <= 0) return 0;
+    const avgYield = yieldMap.get(craftedName) ?? 1;
+    return Math.ceil(needed / avgYield) * qty;
+  };
 
   const ownRecipe = recipeMap.get(itemName);
   const ownWildcardRecipe = wildcardRecipeMap.get(itemName);
@@ -898,12 +915,14 @@ function computeTooltipData(
         qty,
         available: anyIngredientAvailability.get(name) ?? 0,
         done: (anyIngredientAvailability.get(name) ?? 0) >= qty,
+        neededForTarget: ingredientNeed(itemName, qty),
       })),
       ...Array.from(ownRecipe?.entries() ?? []).map(([name, qty]) => ({
         name,
         qty,
         available: getRecipeIngredientAvailability(itemName, name, inventoryMap, stacksMap, quality),
         done: getRecipeIngredientAvailability(itemName, name, inventoryMap, stacksMap, quality) >= qty,
+        neededForTarget: ingredientNeed(itemName, qty),
       })),
     ];
   }
@@ -941,12 +960,14 @@ function computeTooltipData(
           qty,
           available: anyIngredientAvailability.get(name) ?? 0,
           done: (anyIngredientAvailability.get(name) ?? 0) >= qty,
+          neededForTarget: ingredientNeed(craftedName, qty),
         })),
       ...Array.from(depRecipe?.entries() ?? []).map(([name, qty]) => ({
           name,
           qty,
           available: getRecipeIngredientAvailability(craftedName, name, inventoryMap, stacksMap, quality),
           done: getRecipeIngredientAvailability(craftedName, name, inventoryMap, stacksMap, quality) >= qty,
+          neededForTarget: ingredientNeed(craftedName, qty),
         })),
     ];
     if (cookingItems?.has(craftedName)) {
@@ -962,7 +983,7 @@ function computeTooltipData(
 
   const done = completionMap.get(itemName) ?? false;
   const shops = shopEntriesMap.get(itemName) ?? [];
-  return { count, note, recipe, craftableCount: canCraft, limitingIngredient, done, usedBy, shops };
+  return { count, note, recipe, craftableCount: canCraft, limitingIngredient, done, usedBy, shops, neededCount: neededMap.get(itemName) ?? 0 };
 }
 
 function computeAnyIngredientTooltipData(
@@ -1260,6 +1281,102 @@ export function computeCategoryItems(
     const baseName = VariantResolver.getBaseName(row.name);
     return categoryItemIdentifiers.has(baseName) || categoryItemIdentifiers.has(row.name);
   });
+}
+
+export interface FinishableItem {
+  name: string;
+  itemId?: string;
+  category?: string;
+  needed: number;      // remaining after the aging credit for ageable crafts
+  producible: number;  // output craftable from surplus ingredients
+  limiting: string | null;
+  finishable: boolean;
+  viaAging: boolean;   // covered (partly) by existing lower-quality output that only needs aging
+}
+
+// Surplus of an ingredient available for crafting craftedName, keeping a full base
+// stack (in the counting quality tier) for the ingredient's own row.
+// - quality-preserving crafts (smoked fish) only get target-tier surplus
+// - target-tier surplus of ingredients that have a preserving consumer is reserved
+//   for that (iridium fish never go into cooked dishes)
+function surplusAvailableFor(craftedName: string, ingredientName: string, quality: Quality): number {
+  const total = globalInventoryMap.get(ingredientName) ?? 0;
+  const tier = quality === 'highest' ? getQualityTargetTier(ingredientName) : undefined;
+  const stacks = globalStacksMap.get(ingredientName);
+  if (tier === undefined || !stacks) {
+    return Math.max(0, total - TARGET);
+  }
+  const tierCount = stacks[tier] ?? 0;
+  const tierSurplus = Math.max(0, tierCount - TARGET);
+  if (isQualityPreservingCraft(craftedName)) {
+    return tierSurplus;
+  }
+  const nonTier = Math.max(0, total - tierCount);
+  const hasPreservingConsumer = (reverseMap.get(ingredientName) ?? []).some(isQualityPreservingCraft);
+  return nonTier + (hasPreservingConsumer ? 0 : tierSurplus);
+}
+
+// Which unfinished craftable items can be finished right now from surplus ingredients.
+// Deliberately simple: assumes 999 of every ingredient is kept, and does not let
+// competing recipes fight over the same surplus.
+export function computeFinishableItems(
+  compacted: Array<{ name: string; stack: number; quality?: number[] }>
+): FinishableItem[] {
+  computeCategoryItems('All', compacted); // ensure global caches are current
+  const quality = Config.getQuality();
+  const results: FinishableItem[] = [];
+
+  for (const row of allComputedRows) {
+    if (row.excludeFromTotals) continue;
+    if (!recipeMap.has(row.name) && !wildcardRecipeMap.has(row.name)) continue;
+    let needed = calculateNeededCount(row);
+    if (needed <= 0) continue;
+
+    // Ageable artisan goods: lower-quality output on hand only needs aging
+    let viaAging = false;
+    if (quality === 'highest' && isAgeableCraft(row.name)) {
+      const tier = getQualityTargetTier(row.name);
+      const total = globalInventoryMap.get(row.name) ?? 0;
+      const tierCount = tier !== undefined ? (globalStacksMap.get(row.name)?.[tier] ?? 0) : 0;
+      const agingCredit = Math.min(needed, Math.max(0, total - tierCount));
+      if (agingCredit > 0) {
+        needed -= agingCredit;
+        viaAging = true;
+      }
+    }
+
+    const avgYield = yieldMap.get(row.name) ?? 1;
+    let minCrafts = Infinity;
+    let limiting: string | null = null;
+    for (const [ingredientName, qty] of recipeMap.get(row.name) ?? []) {
+      const crafts = Math.floor(surplusAvailableFor(row.name, ingredientName, quality) / qty);
+      if (crafts < minCrafts) { minCrafts = crafts; limiting = ingredientName; }
+    }
+    for (const [ingredientName, qty] of wildcardRecipeMap.get(row.name) ?? []) {
+      const crafts = Math.floor((globalAnyIngredientAvailability.get(ingredientName) ?? 0) / qty);
+      if (crafts < minCrafts) { minCrafts = crafts; limiting = ingredientName; }
+    }
+    if (quality === 'highest' && !isQualityExemptGroup('Cooking') && getCookingItems().has(row.name)) {
+      const seasoningSurplus = Math.max(0, (globalInventoryMap.get('Qi Seasoning') ?? 0) - TARGET);
+      if (seasoningSurplus < minCrafts) { minCrafts = seasoningSurplus; limiting = 'Qi Seasoning'; }
+    }
+    if (!Number.isFinite(minCrafts)) continue;
+
+    const producible = Math.floor(minCrafts * avgYield);
+    results.push({
+      name: row.name,
+      itemId: row.itemId,
+      category: row.category,
+      needed,
+      producible,
+      limiting,
+      finishable: producible >= needed,
+      viaAging,
+    });
+  }
+
+  return results.sort((a, b) =>
+    (a.category ?? '').localeCompare(b.category ?? '') || a.name.localeCompare(b.name));
 }
 
 export function logDataIssues(

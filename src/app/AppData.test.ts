@@ -102,10 +102,67 @@ describe('AppData', () => {
     ]);
 
     const out: any[] = [];
-    (AppData as any).extractItems(root, out);
+    const locations: any[] = [];
+    (AppData as any).extractItems(root, out, locations, []);
 
     const names = out.map((item: { name: string }) => item.name);
     expect(names).not.toContain('Wood Chair');
     expect(names).toContain('Mushroom Tree Seed');
+
+    // The finder index does include furniture
+    expect(locations.map((item: { name: string }) => item.name)).toContain('Wood Chair');
+  });
+
+  it('tracks item locations through players, game locations, and chests', async () => {
+    installLocalStorageMock();
+
+    const { AppData } = await import(`./AppData.ts?item-locations-${Date.now()}`);
+
+    const field = (tagName: string, textContent: string) => ({
+      tagName,
+      children: [],
+      textContent,
+      getAttribute: () => null,
+      querySelector: () => null,
+    });
+    const el = (
+      tagName: string,
+      xsiType: string | null,
+      fields: Record<string, string>,
+      children: any[] = [],
+    ) => ({
+      tagName,
+      children: [...Object.entries(fields).map(([key, value]) => field(key, value)), ...children],
+      getAttribute: (name: string) => (name === 'xsi:type' ? xsiType : null),
+      querySelector: (selector: string) =>
+        fields[selector] === undefined ? null : { textContent: fields[selector] },
+    });
+
+    const weapon = el('Item', 'MeleeWeapon', {
+      name: 'Galaxy Sword', itemId: '4', category: '-98', stack: '1', quality: '0',
+    });
+    const shard = el('Item', 'Object', {
+      name: 'Prismatic Shard', itemId: '(O)74', category: '0', stack: '3', quality: '0',
+    });
+    const chest = el('Object', 'Chest', {
+      name: 'Chest', itemId: 'BigStoneChest', category: '-9', stack: '1', quality: '0',
+    }, [
+      el('tileLocation', null, { X: '4', Y: '8' }),
+      el('items', null, {}, [shard]),
+    ]);
+    const root = el('SaveGame', null, {}, [
+      el('player', null, { name: 'Martin' }, [el('items', null, {}, [weapon])]),
+      el('locations', null, {}, [el('GameLocation', 'Farm', { name: 'Farm' }, [chest])]),
+    ]);
+
+    const out: any[] = [];
+    const locations: any[] = [];
+    (AppData as any).extractItems(root, out, locations, []);
+
+    const byName = new Map(locations.map((item: any) => [item.name, item]));
+    expect(byName.get('Galaxy Sword')?.path).toEqual(['Farmer Martin']);
+    expect(byName.get('Chest')?.path).toEqual(['Farm']);
+    expect(byName.get('Prismatic Shard')?.path).toEqual(['Farm', 'Big Stone Chest (4, 8)']);
+    expect(byName.get('Prismatic Shard')?.stack).toBe(3);
   });
 });

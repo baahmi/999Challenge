@@ -26,10 +26,13 @@ export interface AppDataState {
   error: string | null;
   daysPlayed: number | null;
   qiGems: number | null;
+  money: number | null;
+  totalMoneyEarned: number | null; // as stored in the save: 32-bit, can be negative after overflow
   mysteryBoxesOpened: number | null;
   ticketPrizesClaimed: number | null;
   childrenTurnedToDoves: number | null;
   items: extractedItem[],
+  itemLocations: LocatedItem[],
   compacted: Record<string, extractedItem>,
   lastDiff: ImportDiff | null,
   rawStats: Record<string, string>;
@@ -43,6 +46,28 @@ export type extractedItem = {
   quality: number;
 }
 
+// One item occurrence in the save with the container path it was found in,
+// e.g. ["Farm", "Big Shed (52, 12)", "Big Stone Chest (4, 8)"].
+// Built fresh from the last loaded save file only; not persisted to the journal.
+export type LocatedItem = {
+  name: string;
+  itemId: string;
+  stack: number;
+  quality: number;
+  path: string[];
+}
+
+// Player equipment slots hold a single item's fields inline under these tags
+const EQUIPMENT_TAGS = new Set([
+  'hat',
+  'boots',
+  'leftRing',
+  'rightRing',
+  'shirtItem',
+  'pantsItem',
+  'trinketItem',
+]);
+
 class AppDataManager {
   private static instance: AppDataManager;
   private state: AppDataState = {
@@ -52,10 +77,13 @@ class AppDataManager {
     error: null,
     daysPlayed: null,
     qiGems: null,
+    money: null,
+    totalMoneyEarned: null,
     mysteryBoxesOpened: null,
     ticketPrizesClaimed: null,
     childrenTurnedToDoves: null,
     items: [],
+    itemLocations: [],
     compacted: {} as Record<string, extractedItem>,
     lastDiff: null,
     rawStats: {},
@@ -100,6 +128,14 @@ class AppDataManager {
 
   getQiGems(): number | null {
     return this.state.qiGems;
+  }
+
+  getMoney(): number | null {
+    return this.state.money;
+  }
+
+  getTotalMoneyEarned(): number | null {
+    return this.state.totalMoneyEarned;
   }
 
   getDaysPlayed(): number | null {
@@ -282,6 +318,7 @@ class AppDataManager {
 
   private processData(root: Element) {
     this.state.items = [];
+    this.state.itemLocations = [];
     this.state.rawStats = {};
     const items = root.querySelectorAll('SaveGame > player > stats > Values > item');
     for (const item of Array.from(items)) {
@@ -304,7 +341,17 @@ class AppDataManager {
     if (qiGemsEl) {
       this.state.qiGems = parseInt(qiGemsEl.textContent || '0', 10);
     }
-    this.extractItems(root, this.state.items);
+    const moneyEl = root.querySelector('SaveGame > player > money') ??
+      root.getElementsByTagName('money')[0];
+    if (moneyEl) {
+      this.state.money = parseInt(moneyEl.textContent || '0', 10);
+    }
+    const totalEarnedEl = root.querySelector('SaveGame > player > totalMoneyEarned') ??
+      root.getElementsByTagName('totalMoneyEarned')[0];
+    if (totalEarnedEl) {
+      this.state.totalMoneyEarned = parseInt(totalEarnedEl.textContent || '0', 10);
+    }
+    this.extractItems(root, this.state.items, this.state.itemLocations, []);
     
     // Add discovered variants to CustomDataStore items list
     CustomDataStore.addVariantsFromInventory(this.state.items);
@@ -351,6 +398,8 @@ class AppDataManager {
       this.state.childrenTurnedToDoves ?? 0,
       compacted,
       Object.keys(this.state.rawStats).length > 0 ? this.state.rawStats : undefined,
+      this.state.money ?? undefined,
+      this.state.totalMoneyEarned ?? undefined,
     );
     this.syncStateFromJournalMain();
     JournalStore.save(this.journal);
@@ -372,8 +421,11 @@ class AppDataManager {
     this.journal = null;
     JournalStore.clear();
     this.state.compacted = {} as Record<string, extractedItem>;
+    this.state.itemLocations = [];
     this.state.daysPlayed = null;
     this.state.qiGems = null;
+    this.state.money = null;
+    this.state.totalMoneyEarned = null;
     this.state.mysteryBoxesOpened = null;
     this.state.ticketPrizesClaimed = null;
     this.state.childrenTurnedToDoves = null;
@@ -391,6 +443,10 @@ class AppDataManager {
 
   getStats(): Record<string, string> {
     return this.state.rawStats;
+  }
+
+  getItemLocations(): LocatedItem[] {
+    return this.state.itemLocations;
   }
 
   hasJournal(): boolean {
@@ -417,6 +473,8 @@ class AppDataManager {
 
     this.state.daysPlayed = main.day;
     this.state.qiGems = main.qiGems;
+    this.state.money = main.money ?? null;
+    this.state.totalMoneyEarned = main.totalMoneyEarned ?? null;
     this.state.mysteryBoxesOpened = main.mysteryBoxesOpened;
     this.state.ticketPrizesClaimed = main.ticketPrizesClaimed;
     this.state.childrenTurnedToDoves = main.childrenTurnedToDoves ?? null;
@@ -476,7 +534,7 @@ private getItemId(node: ParentNode, itemIdText: string | undefined): string {
 
   if (this.getBool(node, "bigCraftable")) return `(BC)${itemIdText}`;
 
-  const element = node instanceof Element ? node : undefined;
+  const element = typeof (node as Element).getAttribute === 'function' ? node as Element : undefined;
   const type = element?.getAttribute("xsi:type");
   if (element?.tagName === "Object" || type === "Object" || type === "ColoredObject") {
     return `(O)${itemIdText}`;
@@ -485,21 +543,90 @@ private getItemId(node: ParentNode, itemIdText: string | undefined): string {
   return itemIdText;
 }
 
-private extractItems(node: Element, out: extractedItem[]): void {
+private directChildText(node: Element, tagName: string): string | undefined {
+  for (let i = 0; i < node.children.length; i++) {
+    const child = node.children[i]!;
+    if (child.tagName === tagName) return child.textContent?.trim() || undefined;
+  }
+  return undefined;
+}
+
+// "BigStoneChest" -> "Big Stone Chest"
+private prettifyIdentifier(id: string): string {
+  return id.replace(/([a-z0-9])([A-Z])/g, '$1 $2');
+}
+
+// Label for a container node whose children should show it in their location path
+private getContainerLabel(node: Element, displayName: string, itemIdText: string | undefined): string {
+  const base = itemIdText && !Number.isFinite(Number(itemIdText))
+    ? this.prettifyIdentifier(itemIdText.replace(/^\([A-Z]+\)/, ''))
+    : displayName;
+
+  for (let i = 0; i < node.children.length; i++) {
+    const child = node.children[i]!;
+    if (child.tagName !== 'tileLocation') continue;
+    const x = this.directChildText(child, 'X');
+    const y = this.directChildText(child, 'Y');
+    if (x !== undefined && y !== undefined && (x !== '0' || y !== '0')) {
+      return `${base} (${x}, ${y})`;
+    }
+    break;
+  }
+  return base;
+}
+
+// Label for structural save nodes that give items below them a place
+private getContextLabel(node: Element, tag: string): string | undefined {
+  if (tag === 'player' || tag === 'Farmer') {
+    const name = this.directChildText(node, 'name');
+    return name ? `Farmer ${name}` : 'Farmer';
+  }
+  if (tag === 'GameLocation') {
+    return this.directChildText(node, 'name') ?? node.getAttribute('xsi:type') ?? undefined;
+  }
+  if (tag === 'Building') {
+    const type = this.directChildText(node, 'buildingType');
+    if (!type) return undefined;
+    const x = this.directChildText(node, 'tileX');
+    const y = this.directChildText(node, 'tileY');
+    return x !== undefined && y !== undefined ? `${type} (${x}, ${y})` : type;
+  }
+  if (tag === 'fridge') {
+    // Only the real fridge container; chests carry a text-only <fridge>false</fridge> flag
+    return node.children.length > 0 ? 'Fridge' : undefined;
+  }
+  if (tag === 'itemsLostLastDeath') {
+    return node.children.length > 0 ? 'Lost on last death' : undefined;
+  }
+  if (tag === 'item') {
+    // Dictionary entries with a string key, e.g. team globalInventories -> "JunimoChests"
+    for (let i = 0; i < node.children.length; i++) {
+      const child = node.children[i]!;
+      if (child.tagName !== 'key') continue;
+      const key = this.directChildText(child, 'string');
+      return key ? this.prettifyIdentifier(key) : undefined;
+    }
+  }
+  return undefined;
+}
+
+private extractItems(node: Element, out: extractedItem[], locations: LocatedItem[], path: string[]): void {
   const tag = node.tagName;
   const xsiType = node.getAttribute("xsi:type");
+  let childPath = path;
 
-  if ((tag === "Object" || tag === "Item") && xsiType !== "Furniture") {
+  const isItemNode = tag === "Object" || tag === "Item" || tag === "Furniture" || EQUIPMENT_TAGS.has(tag);
+  if (isItemNode) {
     const name = this.getText(node, "name");
-    const category = this.getInt(node, "category");
-    if (name && !Config.getIgnoredCategories().includes(category)) {
+    if (name) {
+      const category = this.getInt(node, "category");
       const itemIdText = this.getText(node, "itemId");
       const itemId = this.getItemId(node, itemIdText);
       let stack = this.getInt(node, "stack");
       if (stack === 0) stack = 1;
 
       const quality = this.getInt(node, "quality");
-      
+
       // Extract color data for variant resolution (flowers)
       const colorNode = node.querySelector("color");
       let colorData: { R: number; G: number; B: number; A: number } | undefined;
@@ -512,7 +639,7 @@ private extractItems(node: Element, out: extractedItem[]): void {
           colorData = { R: r, G: g, B: b, A: a };
         }
       }
-      
+
       // Resolve variant display name
       const displayName = VariantResolver.resolveDisplayName(
         name,
@@ -520,12 +647,24 @@ private extractItems(node: Element, out: extractedItem[]): void {
         colorData
       );
 
-      out.push({ name: displayName, itemId, category, stack, quality });
+      // The finder index gets everything (weapons, tools, furniture, ignored categories)
+      locations.push({ name: displayName, itemId, stack, quality, path });
+
+      if ((tag === "Object" || tag === "Item") && xsiType !== "Furniture" &&
+          !Config.getIgnoredCategories().includes(category)) {
+        out.push({ name: displayName, itemId, category, stack, quality });
+      }
+
+      // Items nested below this one (chest contents, machine held items) are "inside" it
+      childPath = [...path, this.getContainerLabel(node, displayName, itemIdText)];
     }
+  } else {
+    const label = this.getContextLabel(node, tag);
+    if (label) childPath = [...path, label];
   }
 
   for (let i = 0; i < node.children.length; i++) {
-    this.extractItems(node.children[i] as Element, out);
+    this.extractItems(node.children[i] as Element, out, locations, childPath);
   }
 }
 }

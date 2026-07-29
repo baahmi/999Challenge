@@ -22,6 +22,8 @@ export interface DayEntry {
   ticketPrizesClaimed: number;
   changes: Record<string, JournalDelta>;
   stats?: Record<string, string>;
+  money?: number;
+  totalMoneyEarned?: number;
 }
 
 export interface JournalMain {
@@ -31,6 +33,8 @@ export interface JournalMain {
   ticketPrizesClaimed: number;
   childrenTurnedToDoves: number;
   items: Record<string, JournalItem>;
+  money?: number;
+  totalMoneyEarned?: number;
 }
 
 export interface Journal {
@@ -220,6 +224,8 @@ export class JournalStore {
     childrenTurnedToDoves: number,
     compacted: CompactedItem[],
     stats?: Record<string, string>,
+    money?: number,
+    totalMoneyEarned?: number,
   ): Journal {
     const currentItems = JournalStore.toJournalItems(compacted);
     const snapshotsByDay = new Map<number, Record<string, JournalItem>>();
@@ -232,7 +238,7 @@ export class JournalStore {
     }
 
     snapshotsByDay.set(day, currentItems);
-    dayEntries[String(day)] = { qiGems, mysteryBoxesOpened, ticketPrizesClaimed, changes: {}, stats };
+    dayEntries[String(day)] = { qiGems, mysteryBoxesOpened, ticketPrizesClaimed, changes: {}, stats, money, totalMoneyEarned };
 
     const sortedDays = [...snapshotsByDay.keys()].sort((a, b) => a - b);
     const rebuiltDays: Record<string, DayEntry> = {};
@@ -247,6 +253,8 @@ export class JournalStore {
         ticketPrizesClaimed: existingEntry?.ticketPrizesClaimed ?? 0,
         changes: JournalStore.computeDelta(previousItems, snapshot),
         stats: existingEntry?.stats,
+        money: existingEntry?.money,
+        totalMoneyEarned: existingEntry?.totalMoneyEarned,
       };
       previousItems = snapshot;
     }
@@ -258,6 +266,9 @@ export class JournalStore {
       latestDay === day
         ? childrenTurnedToDoves
         : (existing?.main.childrenTurnedToDoves ?? childrenTurnedToDoves);
+    const latestMoney = latestDay === day ? money : (existing?.main.money ?? money);
+    const latestTotalMoneyEarned =
+      latestDay === day ? totalMoneyEarned : (existing?.main.totalMoneyEarned ?? totalMoneyEarned);
 
     return {
       v: 2,
@@ -268,6 +279,8 @@ export class JournalStore {
         ticketPrizesClaimed: latestEntry?.ticketPrizesClaimed ?? ticketPrizesClaimed,
         childrenTurnedToDoves: latestChildrenTurnedToDoves,
         items: latestItems,
+        money: latestMoney,
+        totalMoneyEarned: latestTotalMoneyEarned,
       },
       days: rebuiltDays,
     };

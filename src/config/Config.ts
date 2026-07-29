@@ -35,6 +35,8 @@ export interface AppConfig {
   ui: UIConfig;
   quality: Quality;
   qualityExemptions: string[];
+  // How many times totalMoneyEarned passed the 32-bit integer limit in the save
+  moneyOverflowCount: number;
 }
 
 export class Config {
@@ -48,7 +50,8 @@ export class Config {
       showItemIds: false,
     },
     quality: 'highest',
-    qualityExemptions: []
+    qualityExemptions: [],
+    moneyOverflowCount: 0
   };
 
   private static instance: Config;
@@ -105,6 +108,10 @@ export class Config {
     return this.getInstance().config.qualityExemptions.includes(group);
   }
 
+  public static getMoneyOverflowCount(): number {
+    return this.getInstance().config.moneyOverflowCount;
+  }
+
   public static getCategoryNames(): string[] {
     return this.getInstance().getOrderedCategoryNames(CustomDataStore.getCategoryNames());
   }
@@ -140,6 +147,9 @@ export class Config {
               ? parsed.qualityExemptions.filter(group =>
                   (QUALITY_EXEMPTABLE_GROUPS as readonly string[]).includes(group))
               : [],
+            moneyOverflowCount: typeof parsed.moneyOverflowCount === 'number' && parsed.moneyOverflowCount >= 0
+              ? Math.floor(parsed.moneyOverflowCount)
+              : 0,
             ui: {
               ...Config.DEFAULT_CONFIG.ui,
               ...parsed.ui,
@@ -239,6 +249,14 @@ export class Config {
   public setQuality(quality: Quality): void {
     if (this.config.quality !== quality) {
       this.config.quality = quality;
+      this.saveConfig();
+    }
+  }
+
+  public setMoneyOverflowCount(count: number): void {
+    const normalized = Number.isFinite(count) && count >= 0 ? Math.floor(count) : 0;
+    if (this.config.moneyOverflowCount !== normalized) {
+      this.config.moneyOverflowCount = normalized;
       this.saveConfig();
     }
   }

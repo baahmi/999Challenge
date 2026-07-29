@@ -19,7 +19,7 @@ interface SearchOverlayProps {
   categoryNames: string[];
   categoryData: Map<string, ItemRow[]>;
   onClose: () => void;
-  onSelect: (category: string) => void;
+  onSelect: (category: string, itemName?: string) => void;
 }
 
 function normalize(value: string): string {
@@ -110,7 +110,7 @@ export function SearchOverlay({ open, categoryNames, categoryData, onClose, onSe
 
   const select = (result: SearchResult | undefined) => {
     if (!result) return;
-    onSelect(result.targetCategory);
+    onSelect(result.targetCategory, result.type === 'item' ? result.label : undefined);
     onClose();
   };
 

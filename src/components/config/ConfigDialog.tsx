@@ -17,6 +17,7 @@ import {
   ListItem,
   ListItemText,
   Paper,
+  TextField,
 } from '@mui/material';
 import { ArrowDownward, ArrowUpward, DragIndicator } from '@mui/icons-material';
 import { Config, QUALITY_EXEMPTABLE_GROUPS } from '../../config/Config';
@@ -32,6 +33,7 @@ interface ConfigDialogProps {
 export function ConfigDialog({ open, onClose }: ConfigDialogProps) {
   const [quality, setQuality] = useState<Quality>(Config.getQuality());
   const [qualityExemptions, setQualityExemptions] = useState<string[]>(Config.getQualityExemptions());
+  const [moneyOverflowCount, setMoneyOverflowCount] = useState<string>(String(Config.getMoneyOverflowCount()));
   const [tabOrder, setTabOrder] = useState<string[]>(Config.getCategoryNames());
   const [showItemIds, setShowItemIds] = useState<boolean>(Config.getShowItemIds());
   const [confirmClear, setConfirmClear] = useState(false);
@@ -41,6 +43,7 @@ export function ConfigDialog({ open, onClose }: ConfigDialogProps) {
     if (!open) return;
     setQuality(Config.getQuality());
     setQualityExemptions(Config.getQualityExemptions());
+    setMoneyOverflowCount(String(Config.getMoneyOverflowCount()));
     setTabOrder(Config.getCategoryNames());
     setShowItemIds(Config.getShowItemIds());
     setConfirmClear(false);
@@ -72,6 +75,7 @@ export function ConfigDialog({ open, onClose }: ConfigDialogProps) {
   const handleSave = () => {
     Config.getInstance().setQuality(quality);
     Config.getInstance().setQualityExemptions(qualityExemptions);
+    Config.getInstance().setMoneyOverflowCount(Number(moneyOverflowCount) || 0);
     Config.getInstance().setTabOrder(tabOrder);
     Config.getInstance().setShowItemIds(showItemIds);
     onClose();
@@ -131,6 +135,22 @@ export function ConfigDialog({ open, onClose }: ConfigDialogProps) {
             </Box>
           </Box>
         )}
+        <Divider sx={{ my: 2 }} />
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          <label style={{ fontSize: '1rem', fontWeight: 500 }}>Money limit reached:</label>
+          <TextField
+            size="small"
+            type="number"
+            value={moneyOverflowCount}
+            onChange={(event) => setMoneyOverflowCount(event.target.value)}
+            slotProps={{ htmlInput: { min: 0, max: 99, style: { width: '4em' } } }}
+          />
+          <Typography variant="caption" color="text.secondary" sx={{ flex: 1 }}>
+            The save stores total money earned as a 32-bit number, so past ~2.1 billion it overflows
+            (and can show negative). Set how many times you passed the limit; the shown total is
+            corrected accordingly.
+          </Typography>
+        </Box>
         <Divider sx={{ my: 2 }} />
         <Box>
           <FormControlLabel

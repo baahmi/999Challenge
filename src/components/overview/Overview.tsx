@@ -1,16 +1,17 @@
 import React, { useMemo } from 'react';
 import { Box, Typography, Divider, useColorScheme } from '@mui/material';
-import { computeCategoryItems } from '../../data/itemCalculations';
+import { computeCategoryItems, computeFinishableItems } from '../../data/itemCalculations';
 import type { ItemRow } from '../../data/itemCalculations';
 import { Config } from '../../config/Config';
 import { calculateObtainedCount, calculatePercentage } from '../../types/Item';
+import { ItemSprite } from '../table/ItemSprite';
 
 export const OVERVIEW_TAB = 'Overview';
 
 interface OverviewProps {
   compacted: Array<{ name: string; stack: number; quality?: number[] }>;
   categoryNames: string[];
-  onCategorySelect?: (category: string) => void;
+  onCategorySelect?: (category: string, itemName?: string) => void;
 }
 
 interface CategoryStat {
@@ -150,6 +151,11 @@ export function Overview({ compacted, categoryNames, onCategorySelect }: Overvie
       totalStat: buildCategoryStat('Total', all),
     };
   }, [validCategories, compacted, qualityKey]) ?? { categoryStatsData: [], allRows: [], totalStat: buildCategoryStat('Total', []) };
+
+  const finishableItems = useMemo(
+    () => (compacted.length === 0 ? [] : computeFinishableItems(compacted).filter(item => item.finishable)),
+    [compacted, qualityKey]
+  );
 
   const { goldTotal, goldCovered, qiTotal, qiCovered } = useMemo(() => ({
     goldTotal:   allRows.reduce((s, r) => s + (r.buyPrice?.gold  ? r.required * r.buyPrice.gold  : 0), 0),
@@ -317,6 +323,52 @@ export function Overview({ compacted, categoryNames, onCategorySelect }: Overvie
           />
         )}
       </Box>
+
+      {finishableItems.length > 0 && (
+        <>
+          <Divider sx={{ my: 2 }} />
+          <Typography variant="h6" fontWeight={700} sx={{ mb: 0.5 }}>
+            What can I finish? ({finishableItems.length})
+          </Typography>
+          <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 1.5 }}>
+            Craftable to completion from surplus ingredients — a full stack of every ingredient stays
+            reserved, iridium fish are kept for smoking, and competing recipes are not weighed against
+            each other.
+          </Typography>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+            {finishableItems.map(item => (
+              <Box
+                key={item.name}
+                role={onCategorySelect && item.category ? 'button' : undefined}
+                onClick={onCategorySelect && item.category
+                  ? () => onCategorySelect(item.category!, item.name)
+                  : undefined}
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 0.75,
+                  border: `1px solid ${borderColor}`,
+                  borderRadius: 1,
+                  px: 1,
+                  py: 0.5,
+                  fontSize: 13,
+                  cursor: onCategorySelect && item.category ? 'pointer' : undefined,
+                  '&:hover': { backgroundColor: isDark ? '#2c2c2c' : '#f4f4f4' },
+                }}
+                title={`${item.category ?? ''} — still need ${item.needed.toLocaleString()}${item.limiting ? `, limited by ${item.limiting}` : ''}`}
+              >
+                <ItemSprite name={item.name} itemId={item.itemId} />
+                <span>{item.name}</span>
+                <Typography component="span" variant="caption" color="text.secondary">
+                  {item.needed > 0
+                    ? `need ${item.needed.toLocaleString()} · can make ${item.producible.toLocaleString()}`
+                    : 'just needs aging'}
+                </Typography>
+              </Box>
+            ))}
+          </Box>
+        </>
+      )}
 
       {(goldTotal > 0 || qiTotal > 0) && (
         <>
