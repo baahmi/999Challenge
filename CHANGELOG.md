@@ -16,6 +16,7 @@
 - Flower color variants now show their sprite with the correct petal color, and smoked fish get their smoked (dark) look
 - Smoked fish whose name ends in "s" (Octopus, Blue Discus, Largemouth Bass, ...) now show their image too
 - Items whose name is ambiguous (Chicken Statue, Bait) now use the save file's item id for their image, and the Egg/Milk/Fish Extra rows show a representative image. Every row has an image now.
+- Repaired "Manage categories & items": the header button works again. Add/rename/delete categories, assign items to categories (including the unassigned "asdf" ones), search and filter items. Changes apply to the tables immediately and persist as deltas (item ids only, never names), so app data updates don't fight stale stored copies.
 - Header shows the exact in-game date (season, day, year — a year is 112 days), centered on the bar
 - Overview gets a "What can I finish?" section: unfinished craftables you can complete right now from surplus ingredients. It keeps a full stack of every ingredient reserved, only counts target-quality surplus for smoked fish, never feeds iridium fish into cooked dishes, credits wine/cheese that only needs aging, and counts the Qi Seasoning surplus for cooked dishes. Click an item to jump to its row.
 - The ⚠ in recipe tooltips now only appears when an ingredient is actually short of what is needed to finish the item. Before it marked the ingredient limiting further crafting, even on completed items (e.g. Gold Ore on a finished Bomb: Mega).

@@ -322,6 +322,11 @@ let globalStacksMap = new Map<string, number[]>();
 // All computed item rows - computed once, filtered by category in the view
 let allComputedRows: ItemRow[] = [];
 
+// Item/category edits (Manage Categories dialog, discovered variants) invalidate the cache
+CustomDataStore.subscribe(() => {
+  lastCompactedRef = null;
+});
+
 // Flag to prevent concurrent computations
 let isComputing = false;
 

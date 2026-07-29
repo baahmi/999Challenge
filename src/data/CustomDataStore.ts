@@ -24,8 +24,32 @@ export interface CustomData {
   items: ItemEntry[];
 }
 
+// v2 persists deltas only: the (possibly customized) category list and per-item
+// category overrides keyed by item identity. Item names/displayNames always come
+// from the bundled data, so app updates never fight stale stored copies.
+// Legacy entries (no v) are treated as tab order only, as before.
 interface StoredCustomData {
+  v?: 2;
   categoryNames?: string[];
+  itemCategoryOverrides?: Record<string, string>;
+}
+
+function itemKey(item: { name: string; displayName: string | null }): string {
+  return `${item.name}|${item.displayName ?? ''}`;
+}
+
+function sanitizeCategoryNames(names: unknown): string[] {
+  if (!Array.isArray(names)) return [];
+  const seen = new Set<string>();
+  const result: string[] = [];
+  for (const name of names) {
+    if (typeof name !== 'string') continue;
+    const trimmed = name.trim();
+    if (!trimmed || trimmed === 'asdf' || seen.has(trimmed)) continue;
+    seen.add(trimmed);
+    result.push(trimmed);
+  }
+  return result;
 }
 
 interface VariantData {
@@ -40,21 +64,50 @@ class CustomDataManager {
   private listeners: Set<Listener> = new Set();
   private partsData: PartsEntry[];
   private troveItems: string[];
+  private itemCategoryOverrides: Record<string, string> = {};
 
   private constructor() {
     const defaults = this.buildDefaults();
     const cached = this.loadFromStorage();
-    this.data = {
-      categoryNames: this.applyStoredCategoryOrder(defaults.categoryNames, cached?.categoryNames),
-      items: defaults.items,
-    };
+    if (cached?.v === 2) {
+      const storedNames = sanitizeCategoryNames(cached.categoryNames);
+      this.itemCategoryOverrides = this.sanitizeOverrides(cached.itemCategoryOverrides);
+      this.data = {
+        categoryNames: storedNames.length > 0 ? storedNames : defaults.categoryNames,
+        items: this.applyOverrides(defaults.items),
+      };
+    } else {
+      this.data = {
+        categoryNames: this.applyStoredCategoryOrder(defaults.categoryNames, cached?.categoryNames),
+        items: defaults.items,
+      };
+    }
     this.partsData = rawPartsData as PartsEntry[];
     this.troveItems = rawTroveItems as string[];
   }
 
+  private sanitizeOverrides(overrides: unknown): Record<string, string> {
+    if (typeof overrides !== 'object' || overrides === null) return {};
+    const result: Record<string, string> = {};
+    for (const [key, value] of Object.entries(overrides)) {
+      if (typeof value === 'string' && value.trim()) result[key] = value.trim();
+    }
+    return result;
+  }
+
+  private applyOverrides(items: ItemEntry[]): ItemEntry[] {
+    if (Object.keys(this.itemCategoryOverrides).length === 0) return items;
+    return items.map(item => {
+      const override = this.itemCategoryOverrides[itemKey(item)];
+      return override && override !== item.category ? { ...item, category: override } : item;
+    });
+  }
+
   private saveToStorage(): void {
     const stored: StoredCustomData = {
+      v: 2,
       categoryNames: this.data.categoryNames,
+      itemCategoryOverrides: this.itemCategoryOverrides,
     };
     try {
       if (typeof localStorage !== 'undefined') {
@@ -78,6 +131,9 @@ class CustomDataManager {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (!raw) return null;
       const parsed = JSON.parse(raw) as StoredCustomData;
+      if (parsed.v === 2) {
+        return parsed;
+      }
       if (Array.isArray(parsed.categoryNames)) {
         return { categoryNames: parsed.categoryNames };
       }
@@ -179,12 +235,15 @@ class CustomDataManager {
       const baseItem = this.data.items.find(item => item.name === baseName);
       
       if (baseItem) {
-        // This is a variant - add it
-        newVariants.push({
+        // This is a variant - add it (honoring a stored category override)
+        const variant = {
           category: baseItem.category,
           name: baseName,
           displayName: displayName
-        });
+        };
+        const override = this.itemCategoryOverrides[itemKey(variant)];
+        if (override) variant.category = override;
+        newVariants.push(variant);
         existingDisplayNames.add(displayName);
       }
     }
@@ -226,9 +285,35 @@ class CustomDataManager {
 
   setData(data: CustomData): void {
     const defaults = this.buildDefaults();
+
+    // Persist only the category deltas: item identity stays bundled data's business
+    const defaultCategoryByKey = new Map(defaults.items.map(item => [itemKey(item), item.category]));
+    const defaultBaseCategory = new Map(
+      defaults.items.filter(item => item.displayName === null).map(item => [item.name, item.category])
+    );
+    const overrides: Record<string, string> = {};
+    for (const item of data.items) {
+      const key = itemKey(item);
+      const defaultCategory = defaultCategoryByKey.get(key) ?? defaultBaseCategory.get(item.name);
+      if (defaultCategory !== undefined && item.category !== defaultCategory) {
+        overrides[key] = item.category;
+      }
+    }
+    this.itemCategoryOverrides = overrides;
+
+    const categoryNames = sanitizeCategoryNames(data.categoryNames);
+    // Runtime variants keep canonical identity; reset them to their base default
+    // category so removed overrides actually revert, then apply the overrides.
+    const rebuiltItems = this.withExistingVariants(defaults.items).map(item => {
+      if (defaultCategoryByKey.has(itemKey(item))) return item;
+      const baseCategory = defaultBaseCategory.get(item.name);
+      return baseCategory !== undefined && baseCategory !== item.category
+        ? { ...item, category: baseCategory }
+        : item;
+    });
     this.data = {
-      categoryNames: this.applyStoredCategoryOrder(defaults.categoryNames, data.categoryNames),
-      items: this.withExistingVariants(defaults.items),
+      categoryNames: categoryNames.length > 0 ? categoryNames : defaults.categoryNames,
+      items: this.applyOverrides(rebuiltItems),
     };
     this.saveToStorage();
     this.notify();
@@ -240,6 +325,7 @@ class CustomDataManager {
         localStorage.removeItem(STORAGE_KEY);
       }
     } catch {}
+    this.itemCategoryOverrides = {};
     this.data = this.buildDefaults();
     this.notify();
   }

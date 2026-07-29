@@ -48,27 +48,48 @@ describe('CustomDataStore', () => {
       .toBe('Mayonnaise: Duck');
   });
 
-  it('persists only category names when custom data is saved', async () => {
+  it('persists category deltas but keeps item identity from bundled data', async () => {
     const storage = installLocalStorageMock({});
     const { CustomDataStore } = await import(`../CustomDataStore.ts?save-shape-${Date.now()}`);
 
+    const edited = CustomDataStore.getItemsData().map(item =>
+      item.name === 'Stone' && item.displayName === null
+        ? { ...item, category: 'My Stuff' }
+        : item
+    );
     CustomDataStore.setData({
-      categoryNames: ['Fish', 'Artisan Goods'],
-      items: [
-        {
-          category: 'Old',
-          name: 'Duck Mayonnaise',
-          displayName: 'Mayanaise: Duck',
-        },
-      ],
+      categoryNames: [...CustomDataStore.getCategoryNames(), 'My Stuff'],
+      items: edited,
     });
 
     const stored = JSON.parse(storage['stardew-custom-data'] ?? '{}');
-    expect(stored.categoryNames.slice(0, 2)).toEqual(['Fish', 'Artisan Goods']);
-    expect(stored.categoryNames).toContain('Resources');
-    expect(stored.categoryNames).toContain('Artisan Goods (Dehydrator)');
-    expect(CustomDataStore.getItemsData().find(item => item.name === 'Duck Mayonnaise')?.displayName)
-      .toBe('Mayonnaise: Duck');
+    expect(stored.v).toBe(2);
+    expect(stored.categoryNames).toContain('My Stuff');
+    expect(stored.itemCategoryOverrides).toEqual({ 'Stone|': 'My Stuff' });
+    // no item names/displayNames in storage: bundled data stays canonical
+    expect(stored.items).toBeUndefined();
+    expect(CustomDataStore.getItemsData().find(item => item.name === 'Stone' && item.displayName === null)?.category)
+      .toBe('My Stuff');
+    expect(CustomDataStore.getCategoryNames()).toContain('My Stuff');
+  });
+
+  it('reapplies persisted category customizations on a fresh load', async () => {
+    installLocalStorageMock({
+      'stardew-custom-data': JSON.stringify({
+        v: 2,
+        categoryNames: ['Resources', 'My Stuff'],
+        itemCategoryOverrides: { 'Stone|': 'My Stuff' },
+      }),
+    });
+
+    const { CustomDataStore } = await import(`../CustomDataStore.ts?v2-roundtrip-${Date.now()}`);
+
+    expect(CustomDataStore.getCategoryNames()).toEqual(['Resources', 'My Stuff']);
+    expect(CustomDataStore.getItemsData().find(item => item.name === 'Stone' && item.displayName === null)?.category)
+      .toBe('My Stuff');
+    // untouched items keep their bundled category
+    expect(CustomDataStore.getItemsData().find(item => item.name === 'Wood' && item.displayName === null)?.category)
+      .toBe('Resources');
   });
 
   it('treats stored category names as tab order only', async () => {

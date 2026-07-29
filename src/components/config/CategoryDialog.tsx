@@ -7,11 +7,15 @@ import {
 import { Add, Search, Edit } from '@mui/icons-material';
 import { CustomDataStore } from '../../data/CustomDataStore';
 import type { CustomData, ItemEntry } from '../../data/CustomDataStore';
+import { ItemSprite } from '../table/ItemSprite';
 
 interface CategoryDialogProps {
   open: boolean;
   onClose: () => void;
 }
+
+const UNASSIGNED = 'asdf';
+const MAX_ROWS = 400;
 
 export function CategoryDialog({ open, onClose }: CategoryDialogProps) {
   const [categories, setCategories] = useState<string[]>([]);
@@ -36,30 +40,33 @@ export function CategoryDialog({ open, onClose }: CategoryDialogProps) {
   }, [open]);
 
   const visibleCategories = useMemo(
-    () => categories.filter(c => c !== 'asdf').sort((a, b) => a.localeCompare(b)),
+    () => categories.filter(c => c !== UNASSIGNED).sort((a, b) => a.localeCompare(b)),
     [categories]
   );
 
   const filteredItems = useMemo(() => {
+    const query = search.trim().toLowerCase();
     return items
       .map((entry, idx) => ({ entry, idx }))
-      // .filter(({ entry: [cat, name] }) => {
-      //   const catMatch = filterCat === 'All' || cat === filterCat;
-      //   const nameMatch = name.toLowerCase().includes(search.toLowerCase());
-      //   return catMatch && nameMatch;
-      // });
+      .filter(({ entry }) => {
+        if (filterCat !== 'All' && entry.category !== filterCat) return false;
+        if (!query) return true;
+        const label = entry.displayName ?? entry.name;
+        return label.toLowerCase().includes(query) || entry.name.toLowerCase().includes(query);
+      });
   }, [items, filterCat, search]);
 
   const addCategory = () => {
     const name = newCatName.trim();
-    if (!name || categories.includes(name)) return;
+    if (!name || name === UNASSIGNED || categories.includes(name)) return;
     setCategories(prev => [...prev, name]);
     setNewCatName('');
   };
 
   const deleteCategory = (cat: string) => {
     setCategories(prev => prev.filter(c => c !== cat));
-    // setItems(prev => prev.map(([c, n]) => c === cat ? ['asdf', n, n] : [c, n, n]));
+    // Items of a deleted category become unassigned
+    setItems(prev => prev.map(item => item.category === cat ? { ...item, category: UNASSIGNED } : item));
     if (filterCat === cat) setFilterCat('All');
   };
 
@@ -71,21 +78,20 @@ export function CategoryDialog({ open, onClose }: CategoryDialogProps) {
   const commitRename = () => {
     if (!editingCat) return;
     const newName = editingCatName.trim();
-    if (!newName || (newName !== editingCat && categories.includes(newName))) {
+    if (!newName || newName === UNASSIGNED || (newName !== editingCat && categories.includes(newName))) {
       setEditingCat(null);
       return;
     }
     if (newName !== editingCat) {
       setCategories(prev => prev.map(c => c === editingCat ? newName : c));
-      // setItems(prev => prev.map(([c, n]) => c === editingCat ? [newName, n, n] : [c, n, n]));
+      setItems(prev => prev.map(item => item.category === editingCat ? { ...item, category: newName } : item));
       if (filterCat === editingCat) setFilterCat(newName);
     }
     setEditingCat(null);
   };
 
-  // Disabled for now
   const changeItemCategory = (originalIdx: number, newCat: string) => {
-    // setItems(prev => prev.map((entry, i) => i === originalIdx ? ItemEntry(newCat, entry[1]!, entry[1]!) : entry));
+    setItems(prev => prev.map((entry, i) => i === originalIdx ? { ...entry, category: newCat } : entry));
   };
 
   const handleSave = () => {
@@ -101,8 +107,9 @@ export function CategoryDialog({ open, onClose }: CategoryDialogProps) {
     setConfirmReset(false);
   };
 
-  const selectCategories = ['All', ...visibleCategories, 'asdf'];
-  const itemSelectCategories = [...visibleCategories, 'asdf'];
+  const selectCategories = ['All', ...visibleCategories, UNASSIGNED];
+  const itemSelectCategories = [...visibleCategories, UNASSIGNED];
+  const shownItems = filteredItems.slice(0, MAX_ROWS);
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="lg" fullWidth>
@@ -129,7 +136,7 @@ export function CategoryDialog({ open, onClose }: CategoryDialogProps) {
                 sx={{ width: 160 }}
               />
             ) : (
-              <Tooltip key={cat} title="Click to rename">
+              <Tooltip key={cat} title="Click to rename, ✕ to delete (items become unassigned)">
                 <Chip
                   label={
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
@@ -172,7 +179,7 @@ export function CategoryDialog({ open, onClose }: CategoryDialogProps) {
             sx={{ minWidth: 180 }}
           >
             {selectCategories.map(c => (
-              <MenuItem key={c} value={c}>{c === 'asdf' ? '(unassigned)' : c}</MenuItem>
+              <MenuItem key={c} value={c}>{c === UNASSIGNED ? '(unassigned)' : c}</MenuItem>
             ))}
           </Select>
           <TextField
@@ -198,24 +205,39 @@ export function CategoryDialog({ open, onClose }: CategoryDialogProps) {
               </tr>
             </thead>
             <tbody>
-              {/*{filteredItems.map(({ entry: [cat, name], idx }) => (*/}
-              {/*  <tr key={idx} style={{ borderBottom: '1px solid rgba(128,128,128,0.12)' }}>*/}
-              {/*    <td style={{ padding: '3px 12px', fontSize: '0.875rem' }}>{name}</td>*/}
-              {/*    <td style={{ padding: '3px 12px' }}>*/}
-              {/*      <select*/}
-              {/*        value={cat}*/}
-              {/*        onChange={e => changeItemCategory(idx, e.target.value)}*/}
-              {/*        style={{ fontSize: '0.85rem', minWidth: 160, padding: '3px 6px' }}*/}
-              {/*      >*/}
-              {/*        {itemSelectCategories.map(c => (*/}
-              {/*          <option key={c} value={c}>*/}
-              {/*            {c === 'asdf' ? '(unassigned)' : c}*/}
-              {/*          </option>*/}
-              {/*        ))}*/}
-              {/*      </select>*/}
-              {/*    </td>*/}
-              {/*  </tr>*/}
-              {/*))}*/}
+              {shownItems.map(({ entry, idx }) => {
+                const label = entry.displayName ?? entry.name;
+                return (
+                  <tr key={idx} style={{ borderBottom: '1px solid rgba(128,128,128,0.12)' }}>
+                    <td style={{ padding: '3px 12px', fontSize: '0.875rem' }}>
+                      <ItemSprite name={label} /> {label}
+                    </td>
+                    <td style={{ padding: '3px 12px' }}>
+                      <select
+                        value={entry.category}
+                        onChange={e => changeItemCategory(idx, e.target.value)}
+                        style={{ fontSize: '0.85rem', minWidth: 160, padding: '3px 6px' }}
+                      >
+                        {!itemSelectCategories.includes(entry.category) && (
+                          <option value={entry.category}>{entry.category}</option>
+                        )}
+                        {itemSelectCategories.map(c => (
+                          <option key={c} value={c}>
+                            {c === UNASSIGNED ? '(unassigned)' : c}
+                          </option>
+                        ))}
+                      </select>
+                    </td>
+                  </tr>
+                );
+              })}
+              {filteredItems.length > MAX_ROWS && (
+                <tr>
+                  <td colSpan={2} style={{ padding: '8px 12px', opacity: 0.6, fontSize: '0.8rem' }}>
+                    Showing the first {MAX_ROWS} of {filteredItems.length} — filter or search to narrow down.
+                  </td>
+                </tr>
+              )}
               {filteredItems.length === 0 && (
                 <tr>
                   <td colSpan={2} style={{ padding: '16px', textAlign: 'center', opacity: 0.5 }}>
