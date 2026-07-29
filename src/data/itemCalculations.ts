@@ -438,7 +438,7 @@ function computeAllItems(
   }
 
   // Qi Seasoning: one per cooked dish when targeting highest quality
-  if (quality === 'highest') {
+  if (quality === 'highest' && !isQualityExemptGroup('Cooking')) {
     const seen = new Set<string>();
     for (const item of CustomDataStore.getItemsData()) {
       if (!getCookingItems().has(item.name) || seen.has(item.name)) continue;
@@ -666,15 +666,24 @@ function getCrabpotItems(): Set<string> {
   )
 }
 
+// User-configured groups where any quality counts (see Config.qualityExemptions)
+function isQualityExemptGroup(group: string): boolean {
+  return Config.isQualityExempt(group);
+}
+
 function getQualityTargetTier(itemName: string): number | undefined {
   if (NO_QUALITY_ITEMS.has(VariantResolver.getBaseName(itemName))) return undefined;
-  if (getCookingItems().has(itemName)) return 2;
-  if (getCrabpotItems().has(itemName)) return 1;
-  if (IRIDIUM_QUALITY_ITEMS.has(VariantResolver.getBaseName(itemName))) return 4;
+  if (getCookingItems().has(itemName)) return isQualityExemptGroup('Cooking') ? undefined : 2;
+  if (getCrabpotItems().has(itemName)) return isQualityExemptGroup('Fish') ? undefined : 1;
+  if (IRIDIUM_QUALITY_ITEMS.has(VariantResolver.getBaseName(itemName))) {
+    // Clam/Cockle/Mussel/Oyster are fish; Mayonnaise follows animal products
+    const group = VariantResolver.getBaseName(itemName) === 'Mayonnaise' ? 'Animal Products' : 'Fish';
+    return isQualityExemptGroup(group) ? undefined : 4;
+  }
   const preservingCraftTier = getQualityPreservingCraftTargetTier(itemName);
   if (preservingCraftTier !== undefined) return preservingCraftTier;
   const category = getItemCategory(itemName);
-  if (category && IRIDIUM_QUALITY_CATEGORIES.has(category)) return 4;
+  if (category && IRIDIUM_QUALITY_CATEGORIES.has(category)) return isQualityExemptGroup(category) ? undefined : 4;
   return undefined;
 }
 
@@ -682,7 +691,11 @@ function getQualityPreservingCraftTargetTier(craftedName: string): number | unde
   if (!isQualityPreservingCraft(craftedName)) return undefined;
   const recipe = recipeMap.get(craftedName);
   if (!recipe || recipe.size === 0) return 4;
-  const ingredientTiers = Array.from(recipe.keys()).map(ingredientName => getQualityTargetTier(ingredientName) ?? 4);
+  const ingredientTiers = Array.from(recipe.keys())
+    .map(ingredientName => getQualityTargetTier(ingredientName))
+    .filter((tier): tier is number => tier !== undefined);
+  // All quality-bearing ingredients are exempt (or none exist) -> the craft is exempt too
+  if (ingredientTiers.length === 0) return undefined;
   return Math.max(...ingredientTiers);
 }
 
@@ -895,7 +908,7 @@ function computeTooltipData(
     ];
   }
 
-  if (Config.getQuality() === 'highest' && getCookingItems().has(itemName)) {
+  if (Config.getQuality() === 'highest' && !isQualityExemptGroup('Cooking') && getCookingItems().has(itemName)) {
     if (recipe === null) recipe = [];
     recipe.push({
       name: 'Qi Seasoning',
@@ -905,7 +918,7 @@ function computeTooltipData(
     });
   }
 
-  const cookingItems = Config.getQuality() === 'highest' ? getCookingItems() : null;
+  const cookingItems = Config.getQuality() === 'highest' && !isQualityExemptGroup('Cooking') ? getCookingItems() : null;
   const usedBy: UsedByInfo[] = (reverseMap.get(itemName) ?? []).map(craftedName => {
     let cachedCrafted = craftableCache.get(craftedName);
     if (wildcardRecipeMap.has(craftedName) || isQualityPreservingCraft(craftedName)) {
@@ -1112,7 +1125,7 @@ export function computeCategoryItemsUncached(
     }
   }
 
-  if (quality === 'highest') {
+  if (quality === 'highest' && !isQualityExemptGroup('Cooking')) {
     const seen = new Set<string>();
     for (const item of CustomDataStore.getItemsData()) {
       if (!getCookingItems().has(item.name) || seen.has(item.name)) continue;
@@ -1204,12 +1217,13 @@ export function computeCategoryItems(
   compacted: Array<{ name: string; stack: number; quality?: number[] }>
 ): ItemRow[] {
   const quality = Config.getQuality();
-  
-  // Compute ALL items once when data or quality changes
-  if (compacted !== lastCompactedRef || quality !== lastQuality) {
+  const qualityKey = `${quality}|${Config.getQualityExemptions().join(',')}`;
+
+  // Compute ALL items once when data, quality, or quality exemptions change
+  if (compacted !== lastCompactedRef || qualityKey !== lastQuality) {
     // Set these FIRST so subsequent calls don't re-trigger
     lastCompactedRef = compacted;
-    lastQuality = quality;
+    lastQuality = qualityKey;
     
     // Only compute if not already computing (prevents concurrent calls)
     if (!isComputing) {

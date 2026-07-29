@@ -82,6 +82,10 @@ export function HelpPage() {
             <li>Fish, forage-capable shellfish, flowers, wine, animal products, and most preserved quality items count iridium quality.</li>
             <li>Smoked fish keeps the input fish quality, so its target follows the fish used to make it.</li>
             <li>Cooking/crafting ingredient rows such as Oil, Wheat Flour, Egg: Extra, and Milk: Extra do not require quality themselves.</li>
+            <li>
+              In Settings you can exclude groups (e.g. Wine, Food, Fish) from the quality requirement. Excluded groups
+              count at any quality, and excluding Food also drops the Qi Seasoning requirement.
+            </li>
           </ul>
         </Section>
 

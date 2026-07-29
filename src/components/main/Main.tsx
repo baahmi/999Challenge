@@ -19,6 +19,7 @@ export function Main() {
   const [selectedCategory, setSelectedCategory] = useState(Config.getSelectedTab());
   const [compacted, setCompacted] = useState<Array<{ name: string; stack: number; quality?: number[] }>>([]);
   const [quality, setQuality] = useState(Config.getQuality());
+  const [qualityExemptions, setQualityExemptions] = useState(() => Config.getQualityExemptions().join(','));
   const [allCategoryData, setAllCategoryData] = useState<Map<string, ItemRow[]>>(new Map());
   const [searchOpen, setSearchOpen] = useState(false);
 
@@ -26,6 +27,7 @@ export function Main() {
     const handleConfigChange = () => {
       setSelectedCategory(Config.getSelectedTab());
       setQuality(Config.getQuality());
+      setQualityExemptions(Config.getQualityExemptions().join(','));
     };
     const unsubscribe = Config.getInstance().subscribe(handleConfigChange);
     return unsubscribe;
@@ -85,7 +87,7 @@ export function Main() {
       map.set(cat, computeCategoryItems(cat, compacted));
     }
     setAllCategoryData(map);
-  }, [categoryNames, compacted, quality]);
+  }, [categoryNames, compacted, quality, qualityExemptions]);
 
   return (
     <main className="main">

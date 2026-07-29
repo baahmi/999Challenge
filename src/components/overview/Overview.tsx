@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { Box, Typography, Divider, useColorScheme } from '@mui/material';
 import { computeCategoryItems } from '../../data/itemCalculations';
 import type { ItemRow } from '../../data/itemCalculations';
+import { Config } from '../../config/Config';
 import { calculateObtainedCount, calculatePercentage } from '../../types/Item';
 
 export const OVERVIEW_TAB = 'Overview';
@@ -132,6 +133,9 @@ export function Overview({ compacted, categoryNames, onCategorySelect }: Overvie
     [categoryNames]
   );
 
+  // Main re-renders on config changes, so reading this per render keeps the memo fresh
+  const qualityKey = `${Config.getQuality()}|${Config.getQualityExemptions().join(',')}`;
+
   const { categoryStatsData, allRows, totalStat } = useMemo(() => {
     if (compacted.length === 0) return;
 
@@ -145,7 +149,7 @@ export function Overview({ compacted, categoryNames, onCategorySelect }: Overvie
       allRows: all,
       totalStat: buildCategoryStat('Total', all),
     };
-  }, [validCategories, compacted]) ?? { categoryStatsData: [], allRows: [], totalStat: buildCategoryStat('Total', []) };
+  }, [validCategories, compacted, qualityKey]) ?? { categoryStatsData: [], allRows: [], totalStat: buildCategoryStat('Total', []) };
 
   const { goldTotal, goldCovered, qiTotal, qiCovered } = useMemo(() => ({
     goldTotal:   allRows.reduce((s, r) => s + (r.buyPrice?.gold  ? r.required * r.buyPrice.gold  : 0), 0),

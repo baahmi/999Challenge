@@ -5,6 +5,19 @@ export type Theme = 'light' | 'dark';
 export type TabsPosition = 'top' | 'bottom' | 'both';
 export type Quality = 'highest' | 'any' | 'normal' | 'silver' | 'gold'| 'iridium' | 'all';
 
+// Groups that can be excluded from the highest-quality requirement so any quality counts.
+// 'Cooking' covers cooked dishes (and drops the Qi Seasoning requirement);
+// 'Fish' also covers crab pot catches, shellfish, and smoked fish.
+export const QUALITY_EXEMPTABLE_GROUPS = [
+  'Wine',
+  'Cooking',
+  'Fish',
+  'Animal Products',
+  'Flowers',
+  'Forage',
+  'Fruits',
+] as const;
+
 export interface UIConfig {
   tabsPosition: TabsPosition;
   selectedTab: string;
@@ -21,6 +34,7 @@ export interface CategoriesConfig {
 export interface AppConfig {
   ui: UIConfig;
   quality: Quality;
+  qualityExemptions: string[];
 }
 
 export class Config {
@@ -33,7 +47,8 @@ export class Config {
       tabOrder: [],
       showItemIds: false,
     },
-    quality: 'highest'
+    quality: 'highest',
+    qualityExemptions: []
   };
 
   private static instance: Config;
@@ -82,6 +97,14 @@ export class Config {
     return this.getInstance().getConfig().quality;
   }
 
+  public static getQualityExemptions(): string[] {
+    return [...this.getInstance().config.qualityExemptions];
+  }
+
+  public static isQualityExempt(group: string): boolean {
+    return this.getInstance().config.qualityExemptions.includes(group);
+  }
+
   public static getCategoryNames(): string[] {
     return this.getInstance().getOrderedCategoryNames(CustomDataStore.getCategoryNames());
   }
@@ -113,6 +136,10 @@ export class Config {
           return {
             ...Config.DEFAULT_CONFIG,
             ...parsed,
+            qualityExemptions: Array.isArray(parsed.qualityExemptions)
+              ? parsed.qualityExemptions.filter(group =>
+                  (QUALITY_EXEMPTABLE_GROUPS as readonly string[]).includes(group))
+              : [],
             ui: {
               ...Config.DEFAULT_CONFIG.ui,
               ...parsed.ui,
@@ -150,6 +177,7 @@ export class Config {
   public getConfig(): AppConfig {
     return {
       ...this.config,
+      qualityExemptions: [...this.config.qualityExemptions],
       ui: {
         ...this.config.ui,
         tabOrder: [...this.config.ui.tabOrder]
@@ -213,6 +241,16 @@ export class Config {
       this.config.quality = quality;
       this.saveConfig();
     }
+  }
+
+  public setQualityExemptions(groups: string[]): void {
+    const normalized = (QUALITY_EXEMPTABLE_GROUPS as readonly string[]).filter(group => groups.includes(group));
+    const current = this.config.qualityExemptions;
+    if (normalized.length === current.length && normalized.every((group, index) => group === current[index])) {
+      return;
+    }
+    this.config.qualityExemptions = normalized;
+    this.saveConfig();
   }
 
   public updateConfig(updates: Partial<AppConfig>): void {

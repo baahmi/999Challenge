@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach } from 'bun:test';
 import {CustomDataStore, type PartsEntry} from '../CustomDataStore';
 import {  computeCategoryItems,  __test } from '../itemCalculations';
+import { Config } from '../../config/Config';
 import {
     calculateCappedObtainedCount,
     calculateNeededCount,
@@ -452,6 +453,102 @@ describe('computeCategoryItems', () => {
         expect(wine.hasWrongQuality).toBe(true);
         expect(calculatePercentage(wine)).toBe(0);
         expect(calculateNeededCount(wine)).toBe(999);
+    });
+
+    it('counts any wine quality when the Wine group is quality-exempt', () => {
+        CustomDataStore.troveItems = ['Missing Artifact']
+        CustomDataStore.data.categoryNames = ['Wine']
+        CustomDataStore.data.items = [
+            { category: 'Wine', name: 'Ancient Fruit Wine', displayName: null },
+        ];
+        CustomDataStore.partsData = [] as PartsEntry[]
+
+        const compacted = [
+            { name: 'Ancient Fruit Wine', stack: 999, category: 'Wine', quality: [999,0,0,0,0] },
+        ];
+
+        const before = computeCategoryItems('Wine', compacted).find(item => item.name === 'Ancient Fruit Wine')!;
+        expect(calculatePercentage(before)).toBe(0);
+
+        try {
+            Config.getInstance().setQualityExemptions(['Wine']);
+            // Same compacted reference: the exemption change alone must invalidate the cache
+            const wine = computeCategoryItems('Wine', compacted).find(item => item.name === 'Ancient Fruit Wine')!;
+
+            expect(wine.correctQualityCount).toBeUndefined();
+            expect(wine.hasWrongQuality).toBe(false);
+            expect(calculatePercentage(wine)).toBe(100);
+            expect(calculateNeededCount(wine)).toBe(0);
+        } finally {
+            Config.getInstance().setQualityExemptions([]);
+        }
+    });
+
+    it('counts any cooking quality and drops Qi Seasoning when the Cooking group is quality-exempt', () => {
+        CustomDataStore.troveItems = ['Missing Artifact']
+        CustomDataStore.data.categoryNames = ['Cooking', 'Resources']
+        CustomDataStore.data.items = [
+            { category: 'Cooking', name: 'Salad', displayName: null },
+            { category: 'Resources', name: 'Qi Seasoning', displayName: null },
+        ];
+        CustomDataStore.partsData = [
+            ["Salad", { "20": ["Leek", 1] }, 1],
+        ] as PartsEntry[]
+
+        const compacted = [
+            { name: 'Salad', stack: 999, category: 'Cooking', quality: [999,0,0,0,0] },
+        ];
+
+        const beforeRows = computeCategoryItems('All', compacted);
+        expect(calculatePercentage(beforeRows.find(row => row.name === 'Salad')!)).toBe(0);
+        expect(beforeRows.find(row => row.name === 'Qi Seasoning')!.required).toBe(999 + 999);
+
+        try {
+            Config.getInstance().setQualityExemptions(['Cooking']);
+            const rows = computeCategoryItems('All', compacted);
+            const dish = rows.find(row => row.name === 'Salad')!;
+            const seasoning = rows.find(row => row.name === 'Qi Seasoning')!;
+
+            expect(dish.correctQualityCount).toBeUndefined();
+            expect(dish.hasWrongQuality).toBe(false);
+            expect(calculatePercentage(dish)).toBe(100);
+            expect(seasoning.required).toBe(999);
+            expect(dish.tooltip.recipe?.find(ing => ing.name === 'Qi Seasoning')).toBeUndefined();
+        } finally {
+            Config.getInstance().setQualityExemptions([]);
+        }
+    });
+
+    it('lets smoked fish follow a Fish quality exemption', () => {
+        CustomDataStore.troveItems = ['Missing Artifact']
+        CustomDataStore.data.categoryNames = ['Fish', 'Smoked Fish']
+        CustomDataStore.data.items = [
+            { category: 'Fish', name: 'Mussel', displayName: null },
+            { category: 'Smoked Fish', name: 'Smoked Mussel', displayName: null },
+        ];
+        CustomDataStore.partsData = [
+            ["Smoked Mussel", { "719": ["Mussel", 1] }, 1],
+        ] as PartsEntry[]
+
+        const compacted = [
+            { name: 'Mussel', stack: 7000, category: 'Fish', quality: [7000,0,0,0,0] },
+            { name: 'Smoked Mussel', stack: 999, category: 'Smoked Fish', quality: [999,0,0,0,0] },
+        ];
+
+        try {
+            Config.getInstance().setQualityExemptions(['Fish']);
+            const rows = computeCategoryItems('All', compacted);
+            const mussel = rows.find(item => item.name === 'Mussel')!;
+            const smoked = rows.find(item => item.name === 'Smoked Mussel')!;
+
+            expect(mussel.correctQualityCount).toBeUndefined();
+            expect(calculateNeededCount(mussel)).toBe(0);
+            expect(smoked.correctQualityCount).toBeUndefined();
+            expect(smoked.hasWrongQuality).toBe(false);
+            expect(calculatePercentage(smoked)).toBe(100);
+        } finally {
+            Config.getInstance().setQualityExemptions([]);
+        }
     });
 
     it('requires iridium input fish in smoked fish recipe tooltips', () => {

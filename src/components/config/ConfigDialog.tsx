@@ -19,7 +19,7 @@ import {
   Paper,
 } from '@mui/material';
 import { ArrowDownward, ArrowUpward, DragIndicator } from '@mui/icons-material';
-import { Config } from '../../config/Config';
+import { Config, QUALITY_EXEMPTABLE_GROUPS } from '../../config/Config';
 import type { Quality } from '../../config/Config';
 import { AppData } from '../../app/AppData';
 import { useEffect } from 'react';
@@ -31,6 +31,7 @@ interface ConfigDialogProps {
 
 export function ConfigDialog({ open, onClose }: ConfigDialogProps) {
   const [quality, setQuality] = useState<Quality>(Config.getQuality());
+  const [qualityExemptions, setQualityExemptions] = useState<string[]>(Config.getQualityExemptions());
   const [tabOrder, setTabOrder] = useState<string[]>(Config.getCategoryNames());
   const [showItemIds, setShowItemIds] = useState<boolean>(Config.getShowItemIds());
   const [confirmClear, setConfirmClear] = useState(false);
@@ -39,6 +40,7 @@ export function ConfigDialog({ open, onClose }: ConfigDialogProps) {
   useEffect(() => {
     if (!open) return;
     setQuality(Config.getQuality());
+    setQualityExemptions(Config.getQualityExemptions());
     setTabOrder(Config.getCategoryNames());
     setShowItemIds(Config.getShowItemIds());
     setConfirmClear(false);
@@ -69,6 +71,7 @@ export function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 
   const handleSave = () => {
     Config.getInstance().setQuality(quality);
+    Config.getInstance().setQualityExemptions(qualityExemptions);
     Config.getInstance().setTabOrder(tabOrder);
     Config.getInstance().setShowItemIds(showItemIds);
     onClose();
@@ -81,6 +84,11 @@ export function ConfigDialog({ open, onClose }: ConfigDialogProps) {
   };
 
   const qualityOptions: Quality[] = ['highest', 'any', 'normal', 'silver', 'gold', 'iridium', 'all'];
+  const exemptionLabels: Record<string, string> = { Cooking: 'Food (Cooking)' };
+
+  const toggleQualityExemption = (group: string, checked: boolean) => {
+    setQualityExemptions(prev => checked ? [...prev, group] : prev.filter(g => g !== group));
+  };
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
@@ -100,6 +108,29 @@ export function ConfigDialog({ open, onClose }: ConfigDialogProps) {
             ))}
           </Select>
         </Box>
+        {quality === 'highest' && (
+          <Box sx={{ mt: 1.5, ml: '96px' }}>
+            <Typography variant="body2" color="text.secondary">
+              Count any quality (skip the iridium/gold requirement) for:
+            </Typography>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', columnGap: 1 }}>
+              {QUALITY_EXEMPTABLE_GROUPS.map((group) => (
+                <FormControlLabel
+                  key={group}
+                  control={
+                    <Checkbox
+                      size="small"
+                      checked={qualityExemptions.includes(group)}
+                      onChange={(event) => toggleQualityExemption(group, event.target.checked)}
+                    />
+                  }
+                  label={exemptionLabels[group] ?? group}
+                  slotProps={{ typography: { variant: 'body2' } }}
+                />
+              ))}
+            </Box>
+          </Box>
+        )}
         <Divider sx={{ my: 2 }} />
         <Box>
           <FormControlLabel
