@@ -6,6 +6,7 @@ export interface Item {
   total: number;
   totalStrict?: number;
   totalFlexible?: number;
+  totalActual?: number; // crafting consumption without the challenge-target cap
   raw: number;
   rawStacks?: number[]; // [normal, silver, gold, unused, iridium]
   hasWrongQuality?: boolean; // Has stacks but not in the correct quality tier

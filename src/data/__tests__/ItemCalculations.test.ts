@@ -112,6 +112,8 @@ describe('computeCategoryItems', () => {
 
         expect(rows.find(row => row.name === 'Crafted')?.raw).toBe(10000);
         expect(rows.find(row => row.name === 'Raw')?.total).toBe(98901);
+        // the uncapped consumption stays available so the UI can show surplus
+        expect(rows.find(row => row.name === 'Raw')?.totalActual).toBe(990000);
     });
 
     it('uses the correct quality tier for cooking percentage before wrong-quality highlighting starts', () => {

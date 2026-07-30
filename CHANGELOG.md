@@ -10,6 +10,9 @@
 - You can use / to search for items and jump to the tab where it is.
 
 ### Changes
+#### 0.1.5
+- The Total column no longer clamps at the Required value once a row is complete: completed rows show real holdings (raw plus actual crafting consumption, uncapped) so the surplus is visible. Percentages and Needed are unchanged.
+
 #### 0.1.4
 - Lucky shorts now in overview. Forgot the "Lucky" part
 - Cranberries images shows now 

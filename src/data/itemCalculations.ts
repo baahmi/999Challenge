@@ -169,6 +169,7 @@ export interface ItemRow {
   total: number;
   totalStrict?: number;
   totalFlexible?: number;
+  totalActual?: number; // crafting consumption without the challenge-target cap
   raw: number;
   rawStacks?: number[]; // [normal, silver, gold, unused, iridium]
   buyPrice?: BuyPrice;
@@ -371,8 +372,10 @@ function computeAllItems(
   const totalFromPartsFlexible = new Map<string, number>();
   const requiredFromParts = new Map<string, number>();
   const totalFromParts = new Map<string, number>();
+  // Consumption without the challenge-target cap, to show surplus in the UI
+  const totalFromPartsActual = new Map<string, number>();
 
-  const addPartRequirement = (name: string, requiredCount: number, totalCount: number, strict: boolean) => {
+  const addPartRequirement = (name: string, requiredCount: number, totalCount: number, strict: boolean, actualTotalCount = totalCount) => {
     if (strict) {
       requiredFromPartsStrict.set(name, (requiredFromPartsStrict.get(name) ?? 0) + requiredCount);
       totalFromPartsStrict.set(name, (totalFromPartsStrict.get(name) ?? 0) + totalCount);
@@ -382,6 +385,7 @@ function computeAllItems(
     }
     requiredFromParts.set(name, (requiredFromParts.get(name) ?? 0) + requiredCount);
     totalFromParts.set(name, (totalFromParts.get(name) ?? 0) + totalCount);
+    totalFromPartsActual.set(name, (totalFromPartsActual.get(name) ?? 0) + actualTotalCount);
   };
 
   applyArtifactTroveRequirements(CustomDataStore.getTroveItems(), inventoryMap, addPartRequirement);
@@ -393,10 +397,11 @@ function computeAllItems(
     const targetAmount = TARGET + required;
     const totalCrafted = totalFromParts.get(craftedItemName) ?? 0;
     const strictIngredients = usesQualitySensitiveIngredients(craftedItemName);
-    
+
     // How many of this crafted item do we have (inventory + what we've made/opened)
     const totalHave = Math.min(craftedCount + totalCrafted, targetAmount);
-    
+    const totalHaveActual = craftedCount + (totalFromPartsActual.get(craftedItemName) ?? 0);
+
     for (const [ingredientId, ingredientEntry] of Object.entries(ingredients)) {
       const [ingredientName, qty] = ingredientEntry as [string | null, number];
       const anyIngredient = getAnyIngredientInfo(ingredientId);
@@ -404,16 +409,18 @@ function computeAllItems(
         if (!anyIngredient) continue;
         const requiredCount = Math.round((qty * targetAmount) / avgYield);
         const totalCount = Math.round((qty * totalHave) / avgYield);
-        addPartRequirement(anyIngredient.name, requiredCount, totalCount, strictIngredients);
+        const actualCount = Math.round((qty * totalHaveActual) / avgYield);
+        addPartRequirement(anyIngredient.name, requiredCount, totalCount, strictIngredients, actualCount);
         continue;
       }
       const name = ingredientName!;
-      
+
       // Calculate total ingredients required (for the full targetAmount)
       const requiredCount = Math.round((qty * targetAmount) / avgYield);
       // Calculate ingredients already used (for what we have)
       const totalCount = Math.round((qty * totalHave) / avgYield);
-      addPartRequirement(name, requiredCount, totalCount, strictIngredients);
+      const actualCount = Math.round((qty * totalHaveActual) / avgYield);
+      addPartRequirement(name, requiredCount, totalCount, strictIngredients, actualCount);
     }
   }
 
@@ -426,6 +433,7 @@ function computeAllItems(
     if (nextTroveTotal !== previousTroveTotal) {
       totalFromParts.set("Artifact Trove", nextTroveTotal);
       totalFromPartsFlexible.set("Artifact Trove", nextTroveTotal);
+      totalFromPartsActual.set("Artifact Trove", nextTroveTotal);
 
       const artifactTroveRecipe = recipeMap.get("Artifact Trove");
       const craftedCount = getDependencyInventoryCount("Artifact Trove", inventoryMap, stacksMap, quality);
@@ -442,6 +450,7 @@ function computeAllItems(
 
         totalFromParts.set(ingredientName, (totalFromParts.get(ingredientName) ?? 0) + delta);
         totalFromPartsFlexible.set(ingredientName, (totalFromPartsFlexible.get(ingredientName) ?? 0) + delta);
+        totalFromPartsActual.set(ingredientName, (totalFromPartsActual.get(ingredientName) ?? 0) + delta);
       }
     }
   }
@@ -452,11 +461,13 @@ function computeAllItems(
     for (const item of CustomDataStore.getItemsData()) {
       if (!getCookingItems().has(item.name) || seen.has(item.name)) continue;
       seen.add(item.name);
+      const dishProgress = getProgressInventoryCount(item.name, inventoryMap, stacksMap, quality);
       addPartRequirement(
         'Qi Seasoning',
         TARGET,
-        Math.min(getProgressInventoryCount(item.name, inventoryMap, stacksMap, quality), TARGET),
-        false
+        Math.min(dishProgress, TARGET),
+        false,
+        dishProgress
       );
       // Cap at TARGET per cooking item
     }
@@ -573,22 +584,25 @@ function computeAllItems(
     let raw = inventoryMap.get(lookupKey) ?? 0;
     let required = TARGET + (requiredFromParts.get(item.name) ?? 0);
     let total = totalFromParts.get(item.name) ?? 0;
-    
+    let totalActual = totalFromPartsActual.get(item.name) ?? 0;
+
     // For color variant items and Cart variants, required is always 999 (no recipe requirements)
     if ((item.displayName !== null && VariantResolver.hasColorVariants(item.name)) || itemKey.endsWith(' (Cart)')) {
       required = TARGET;
       total = 0; // Cart and color variants don't show crafted totals
+      totalActual = 0;
     }
-      allComputedRows.push({ 
-      name: itemKey, 
+      allComputedRows.push({
+      name: itemKey,
       itemId: compacted.find(entry => entry.name === lookupKey || entry.name === itemKey)?.itemId,
       category: item.category,
-      required, 
+      required,
       requiredStrict: requiredFromPartsStrict.get(item.name) ?? 0,
       requiredFlexible: requiredFromPartsFlexible.get(item.name) ?? 0,
-      total, 
+      total,
       totalStrict: totalFromPartsStrict.get(item.name) ?? 0,
       totalFlexible: totalFromPartsFlexible.get(item.name) ?? 0,
+      totalActual,
       raw, 
       rawStacks: stacksMap.get(lookupKey), // Use lookupKey to get actual stacks
       buyPrice: priceMap.get(item.name), 

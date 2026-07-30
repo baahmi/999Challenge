@@ -316,7 +316,16 @@ export function ItemTable({ items, scrollToItem }: ItemTableProps) {
         }
         case 'required':   return fmtNumber(row.required);
         case 'needed':     return fmtNumber(isTotal ? totalNeeded : calculateNeededCount(row));
-        case 'total':      return fmtNumber(isTotal ? cappedHave : calculateObtainedCount(row));
+        case 'total': {
+          if (isTotal) return fmtNumber(cappedHave);
+          const obtained = calculateObtainedCount(row);
+          // Completed rows show real holdings (raw + uncapped crafting consumption)
+          // so the surplus stays visible instead of clamping at Required
+          if (obtained >= row.required) {
+            return fmtNumber(row.raw + (row.totalActual ?? row.total));
+          }
+          return fmtNumber(obtained);
+        }
         case 'raw':        return fmtNumber(row.raw);
         case 'raw_N':      return fmtNumber(isTotal ? '' : (row.rawStacks?.[0] ?? 0));
         case 'raw_S':      return fmtNumber(isTotal ? '' : (row.rawStacks?.[1] ?? 0));

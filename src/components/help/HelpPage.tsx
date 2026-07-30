@@ -50,7 +50,11 @@ export function HelpPage() {
             <dt>Raw</dt>
             <dd>What is currently in your save inventory/chests for that item.</dd>
             <dt>Total</dt>
-            <dd>Progress that counts toward the requirement: raw count plus items already consumed into dependents.</dd>
+            <dd>
+              Progress that counts toward the requirement: raw count plus items already consumed into
+              dependents. Once a row is complete it shows your real holdings instead (raw plus actual
+              consumption, uncapped), so surplus stays visible.
+            </dd>
             <dt>Needed</dt>
             <dd>How many more countable items are needed. In highest-quality mode, wrong-quality stacks do not reduce this.</dd>
             <dt>Gold / Qi</dt>
