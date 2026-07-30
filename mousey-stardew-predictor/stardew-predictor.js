@@ -9096,55 +9096,58 @@ Object.keys(test).forEach(function(key, index) { if (test[key].s > 0 && test[key
 		if (prev) { $sel.val(prev); } // keep the current selection across a rebuild
 	}
 
+	// The skill books (and Book Of Stars) sold by the bookseller; the Calendar tab treats these as
+	// acquired elsewhere and does not count them as a reason to visit.
+	var BOOKSELLER_SKILL_BOOKS = ["Stardew Valley Almanac", "Bait And Bobber", "Woodcutter's Weekly", "Mining Monthly", "Combat Quarterly"];
+
+	// Returns the books offered on the bookseller day `day` of the month starting at `offset`,
+	// as an array of {name, price}. Mirrors predictBookseller's per-day roll logic exactly.
+	function booksellerBooksForDay(offset, day, year) {
+		var randBookList = ["The Alleyway Buffet", "The Art O' Crabbing", "Dwarvish Safety Manual", "Jewels Of The Sea", "Raccoon Journal", "Woody's Secret", "Jack Be Nimble, Jack Be Thick", "Friendship 101", "Monster Compendium", "Mapping Cave Systems", "Treasure Appraisal Guide"];
+		var books = [];
+		var daysPlayed = offset + day + save.dayAdjust;
+		var rng = new CSRandom(getRandomSeed(daysPlayed, save.gameID / 2));
+		var picked;
+		var rngSynced = new CSRandom(getRandomSeed(getHashFromString("purplebookSale"), save.gameID, daysPlayed));
+		if (rngSynced.NextDouble() < 0.25) {
+			books.push({ name: "Book Of Stars", price: "15,000g" });
+		}
+		var booksLeft = BOOKSELLER_SKILL_BOOKS.slice();
+		rngSynced = new CSRandom(getRandomSeed(getHashFromString("thirdBookSale"), save.gameID, daysPlayed));
+		if (rngSynced.NextDouble() < 0.6) {
+			picked = booksLeft.splice(rng.Next(booksLeft.length), 1);
+			books.push({ name: picked[0], price: "10,000g" });
+		}
+		rngSynced = new CSRandom(getRandomSeed(getHashFromString("secondBookSale"), save.gameID, daysPlayed));
+		if (rngSynced.NextDouble() < 0.8) {
+			picked = booksLeft.splice(rng.Next(booksLeft.length), 1);
+			books.push({ name: picked[0], price: "8,000g" });
+		}
+		picked = booksLeft.splice(rng.Next(booksLeft.length), 1);
+		books.push({ name: picked[0], price: "5,000g" });
+		if (year >= 3) {
+			picked = randBookList[rng.Next(randBookList.length)];
+			books.push({ name: picked, price: "20,000g" });
+		}
+		rngSynced = new CSRandom(getRandomSeed(getHashFromString("bookExtraForaging"), save.gameID, daysPlayed));
+		if (rngSynced.NextDouble() < 0.33) {
+			books.push({ name: "Woodcutter's Weekly", price: "8,000g" });
+		}
+		return books;
+	}
+
 	function predictBookAll() {
 		// "999 Challenge" helper for the Bookseller tab. Scans seasons forward from a chosen day and
 		// collects every date the selected book is offered, until we have `target - occurrences` of
 		// them. Values come from the controls next to the bookseller search bar. A book that appears
 		// twice on the same day (e.g. Woodcutter's Weekly as both a skill slot and the extra book)
 		// counts as two separate copies, since both can be purchased.
-		var skillBookList = ["Stardew Valley Almanac", "Bait And Bobber", "Woodcutter's Weekly", "Mining Monthly", "Combat Quarterly"],
-			randBookList = ["The Alleyway Buffet", "The Art O' Crabbing", "Dwarvish Safety Manual", "Jewels Of The Sea", "Raccoon Journal", "Woody's Secret", "Jack Be Nimble, Jack Be Thick", "Friendship 101", "Monster Compendium", "Mapping Cave Systems", "Treasure Appraisal Guide"];
 		var book = $('#book-overview-book').val();                          // book name to search for
 		var startVal = $('#book-overview-offset').val();
 		var startDay = (startVal === '' || isNaN(Number(startVal))) ? save.daysPlayed : Number(startVal); // start day (defaults to current in-game day)
 		var occurrences = Number($('#book-overview-occurrences').val()) || 0; // how many have already been bought
 		var target = Number($('#book-overview-target').val()) || 999;      // total we ultimately want
 		var maxScanMonths = 200000;     // safety cap so an impossible request can't loop forever
-
-		// Returns the books offered on the bookseller day `day` of the month starting at `offset`,
-		// as an array of {name, price}. Mirrors predictBookseller's per-day roll logic exactly.
-		function getBooksForDay(offset, day, year) {
-			var books = [];
-			var daysPlayed = offset + day + save.dayAdjust;
-			var rng = new CSRandom(getRandomSeed(daysPlayed, save.gameID / 2));
-			var picked;
-			var rngSynced = new CSRandom(getRandomSeed(getHashFromString("purplebookSale"), save.gameID, daysPlayed));
-			if (rngSynced.NextDouble() < 0.25) {
-				books.push({ name: "Book Of Stars", price: "15,000g" });
-			}
-			var booksLeft = skillBookList.slice();
-			rngSynced = new CSRandom(getRandomSeed(getHashFromString("thirdBookSale"), save.gameID, daysPlayed));
-			if (rngSynced.NextDouble() < 0.6) {
-				picked = booksLeft.splice(rng.Next(booksLeft.length), 1);
-				books.push({ name: picked[0], price: "10,000g" });
-			}
-			rngSynced = new CSRandom(getRandomSeed(getHashFromString("secondBookSale"), save.gameID, daysPlayed));
-			if (rngSynced.NextDouble() < 0.8) {
-				picked = booksLeft.splice(rng.Next(booksLeft.length), 1);
-				books.push({ name: picked[0], price: "8,000g" });
-			}
-			picked = booksLeft.splice(rng.Next(booksLeft.length), 1);
-			books.push({ name: picked[0], price: "5,000g" });
-			if (year >= 3) {
-				picked = randBookList[rng.Next(randBookList.length)];
-				books.push({ name: picked, price: "20,000g" });
-			}
-			rngSynced = new CSRandom(getRandomSeed(getHashFromString("bookExtraForaging"), save.gameID, daysPlayed));
-			if (rngSynced.NextDouble() < 0.33) {
-				books.push({ name: "Woodcutter's Weekly", price: "8,000g" });
-			}
-			return books;
-		}
 
 		var need = target - occurrences;
 		var results = [];
@@ -9170,7 +9173,7 @@ Object.keys(test).forEach(function(key, index) { if (test[key].s > 0 && test[key
 			for (var d = 0; d < days.length; d++) {
 				var absDay = monthOffset + days[d];
 				if (absDay < startDay) { continue; } // skip bookseller days before the start day
-				var sold = getBooksForDay(monthOffset, days[d], year);
+				var sold = booksellerBooksForDay(monthOffset, days[d], year);
 				for (var s = 0; s < sold.length; s++) {
 					if (sold[s].name === book) {
 						results.push({ year: year, season: monthName, day: days[d],
@@ -9625,9 +9628,15 @@ Object.keys(test).forEach(function(key, index) { if (test[key].s > 0 && test[key
 		output += '<p class="note">Assuming Island, Resort and Sewing Machine access. Boards refresh each week; ' +
 			'orders you have completed (non-repeatable) or currently have active are filtered out. ' +
 			'A "&mdash;" slot means no other eligible order was available. Use the 999 Challenge buttons above for ' +
-			'prize-ticket and Qi-gem timelines.</p>';
+			'prize-ticket and Qi-gem timelines. Qi board highlighting: <span class="sp-gem">selected gem quests</span> and ' +
+			'<span class="sp-extfam">Extended Family</span>.</p>';
 
+		var gemUsed = specialGemUsedSelection();
 		function slot(list, n) { return (list && list[n]) ? list[n].desc : '&mdash;'; }
+		function qiCell(list, n) {
+			var pick = (list && list[n]) ? list[n] : null;
+			return '<td' + specialOrderHighlightClass(pick, gemUsed) + '>' + (pick ? pick.desc : '&mdash;') + '</td>';
+		}
 
 		output += '<table class="calendar"><thead><tr>' +
 			'<th>Year</th><th>Season</th><th>Day</th><th colspan="2">Mr. Qi\'s Board</th><th colspan="2">Town Board</th></tr></thead><tbody>';
@@ -9638,7 +9647,7 @@ Object.keys(test).forEach(function(key, index) { if (test[key].s > 0 && test[key
 			var isCurrentWeek = (save.daysPlayed >= weekDay && save.daysPlayed < weekDay + 7);
 			output += '<tr' + (isCurrentWeek ? ' class="current"' : '') + '>' +
 				'<td>' + p.year + '</td><td>' + p.season + '</td><td>' + p.day + '</td>' +
-				'<td>' + slot(picks.qi, 0) + '</td><td>' + slot(picks.qi, 1) + '</td>' +
+				qiCell(picks.qi, 0) + qiCell(picks.qi, 1) +
 				'<td>' + slot(picks.town, 0) + '</td><td>' + slot(picks.town, 1) + '</td></tr>\n';
 		}
 		output += '</tbody></table>';
@@ -9659,6 +9668,42 @@ Object.keys(test).forEach(function(key, index) { if (test[key].s > 0 && test[key
 
 	// The three Qi board orders that reward the gem amounts we track for 999 planning.
 	var SPECIAL_GEM_QUESTS = { 'QiChallenge4': 40, 'QiChallenge12': 35, 'QiChallenge6': 25 };
+
+	// The "Ticket sources" checkboxes as a {key, variant} list, shared by the prize-ticket 999 scan
+	// and the Calendar tab. Checkbox values are "Key" or "Key:Variant" (e.g. Robin2:Stone).
+	function specialTicketSourceSelection() {
+		var sources = [];
+		$('.special-ticket-source:checked').each(function () {
+			var parts = $(this).val().split(':');
+			sources.push({ key: parts[0], variant: parts.length > 1 ? parts[1] : null });
+		});
+		return sources;
+	}
+
+	// Whether a town-board pick matches one of the selected ticket sources.
+	function specialTicketSourceMatch(pick, sources) {
+		for (var i = 0; i < sources.length; i++) {
+			if (pick.key !== sources[i].key) { continue; }
+			if (sources[i].variant === null) { return true; }
+			if (pick.items && pick.items.indexOf(sources[i].variant) !== -1) { return true; }
+		}
+		return false;
+	}
+
+	// The "Gem quests used" checkboxes as a lookup, shared by the board list and the Calendar tab.
+	function specialGemUsedSelection() {
+		var used = {};
+		$('.special-gem-source:checked').each(function () { used[$(this).val()] = true; });
+		return used;
+	}
+
+	// Highlight class for a Qi-board pick: green for selected gem quests, blue for Extended Family.
+	function specialOrderHighlightClass(pick, gemUsed) {
+		if (!pick) { return ''; }
+		if (pick.key === 'QiChallenge8') { return ' class="sp-extfam"'; }
+		if (SPECIAL_GEM_QUESTS.hasOwnProperty(pick.key) && gemUsed[pick.key]) { return ' class="sp-gem"'; }
+		return '';
+	}
 
 	// Week-aligned days-played of the current week, used as the scan start for the timelines.
 	function specialCurrentWeekStart() {
@@ -9683,21 +9728,7 @@ Object.keys(test).forEach(function(key, index) { if (test[key].s > 0 && test[key
 			return;
 		}
 		var ticketTarget = Number($('#special-ticket-target').val()) || 999;
-
-		// Selected town-order ticket sources. Checkbox values are "Key" or "Key:Variant" (e.g. Robin2:Stone).
-		var sources = [];
-		$('.special-ticket-source:checked').each(function () {
-			var parts = $(this).val().split(':');
-			sources.push({ key: parts[0], variant: parts.length > 1 ? parts[1] : null });
-		});
-		function matchesSource(pick) {
-			for (var i = 0; i < sources.length; i++) {
-				if (pick.key !== sources[i].key) { continue; }
-				if (sources[i].variant === null) { return true; }
-				if (pick.items && pick.items.indexOf(sources[i].variant) !== -1) { return true; }
-			}
-			return false;
-		}
+		var sources = specialTicketSourceSelection();
 
 		var ctx = specialOrderContext();
 		var curWeekStart = specialCurrentWeekStart();
@@ -9707,7 +9738,7 @@ Object.keys(test).forEach(function(key, index) { if (test[key].s > 0 && test[key
 			var weekDay = curWeekStart + w * 7;
 			var picks = pickSpecialOrders(weekDay, ctx);
 			for (var t = 0; t < picks.town.length; t++) {
-				if (matchesSource(picks.town[t])) {
+				if (specialTicketSourceMatch(picks.town[t], sources)) {
 					tickets++;
 					rows.push({ day: weekDay, quest: picks.town[t].desc, count: tickets });
 					if (tickets >= ticketTarget) { break; }
@@ -9818,6 +9849,184 @@ Object.keys(test).forEach(function(key, index) { if (test[key].s > 0 && test[key
 		}
 		$('#special-gem-modal-body').html(html);
 		$('#special-gem-modal-body').scrollTop(0);
+	}
+
+	// Festival days shown on the combined Calendar tab, keyed by day-of-year (1-112).
+	var CALENDAR_FESTIVALS = {
+		15: "Desert Festival", 16: "Desert Festival", 17: "Desert Festival",
+		24: "Flower Dance",
+		48: "Trout Derby", 49: "Trout Derby",
+		72: "Stardew Valley Fair",
+		83: "Spirit's Eve",
+		96: "Squid Fest", 97: "Squid Fest",
+		99: "Night Market", 100: "Night Market", 101: "Night Market"
+	};
+	// Of those, the ones which only exist from Stardew 1.6 on.
+	var CALENDAR_FESTIVALS_1_6 = { 15: true, 16: true, 17: true, 48: true, 49: true, 96: true, 97: true };
+
+	// The two bookseller days of the month starting at `offset` (multiple of 28), sorted.
+	// Same roll as predictBookseller / Utility.getDaysOfBooksellerThisSeason().
+	function booksellerDaysForMonth(offset) {
+		var seasonIndex = Math.floor(offset / 28) % 4;
+		var year = 1 + Math.floor(offset / 112);
+		var rng = new CSRandom(getRandomSeed(year * 11, save.gameID, seasonIndex));
+		var possibleDays = [];
+		switch (seasonIndex) {
+			case 0: possibleDays = [11, 12, 21, 22, 25]; break;
+			case 1: possibleDays = [9, 12, 18, 25, 27]; break;
+			case 2: possibleDays = [4, 7, 8, 9, 12, 19, 22, 25]; break;
+			case 3: possibleDays = [5, 11, 12, 19, 22, 24]; break;
+		}
+		var i = rng.Next(possibleDays.length);
+		var days = [ possibleDays[i], possibleDays[Math.floor((i + possibleDays.length / 2) % possibleDays.length)] ];
+		days.sort(function (a, b) { return a - b; });
+		return days;
+	}
+
+	// The overnight farm event following `day`, or name === null when nothing predictable happens.
+	// Same rolls as predictNight (see that function for sourcing), including the earthquake and the
+	// possible-windstorm flag on 1.6 saves.
+	function nightEventForDay(day) {
+		var month = Math.floor((day - 1) / 28);
+		var year = 1 + Math.floor((day - 1) / 112);
+		var evt = null, windstorm = false, rng;
+		if (day + save.dayAdjust === 30) {
+			return { name: 'Earthquake', windstorm: false };
+		}
+		if (compareSemVer(save.version, "1.6") >= 0) {
+			rng = new CSRandom(getRandomSeed(day + 1 + save.dayAdjust, save.gameID / 2));
+			for (var i = 0; i < 10; i++) { rng.NextDouble(); }
+			if (save.greenhouseUnlocked) { windstorm = rng.NextDouble() < 0.1; }
+			var nextRoll = rng.NextDouble();
+			if (!save.greenhouseUnlocked) { windstorm = nextRoll < 0.1; }
+			if (nextRoll < 0.01 && (month % 4) < 3) { evt = 'Fairy'; }
+			else if (rng.NextDouble() < 0.01 && (day + 1 + save.dayAdjust) > 20) { evt = 'Witch'; }
+			else if (rng.NextDouble() < 0.01 && (day + 1 + save.dayAdjust) > 5) { evt = 'Meteor'; }
+			else if (rng.NextDouble() < 0.005) { evt = 'Stone Owl'; }
+			else if (rng.NextDouble() < 0.008 && year > 1) { evt = 'Strange Capsule'; }
+		} else {
+			rng = new CSRandom(save.gameID / 2 + day + 1 + save.dayAdjust);
+			if (compareSemVer(save.version, "1.3") < 0 && save.canHaveChildren && rng.NextDouble() < 0.05) { evt = '"Want a Baby?"'; }
+			else if (rng.NextDouble() < 0.01 && (month % 4) < 3) { evt = 'Fairy'; }
+			else if (rng.NextDouble() < 0.01) { evt = 'Witch'; }
+			else if (rng.NextDouble() < 0.01) { evt = 'Meteor'; }
+			else if (compareSemVer(save.version, "1.5") < 0) {
+				if (rng.NextDouble() < 0.01 && year > 1) { evt = 'Strange Capsule'; }
+				else if (rng.NextDouble() < 0.01) { evt = 'Stone Owl'; }
+			} else if (compareSemVer(save.version, "1.5.3") < 0) {
+				if (rng.NextDouble() < 0.008 && year > 1) { evt = 'Strange Capsule'; }
+				else if (rng.NextDouble() < 0.008) { evt = 'Stone Owl'; }
+			} else {
+				if (rng.NextDouble() < 0.005) { evt = 'Stone Owl'; }
+				else if (rng.NextDouble() < 0.008 && year > 1) { evt = 'Strange Capsule'; }
+			}
+		}
+		return { name: evt, windstorm: windstorm };
+	}
+
+	function predictCalendar(isSearch, offset) {
+		// Combined per-month event calendar: bookseller visits, night events, the weekly Special
+		// Order boards (on the Monday they refresh) and the tracked festivals. Every prediction
+		// reuses the logic of its dedicated tab.
+		var output = '';
+		if (save.gameID === null || typeof save.gameID === 'undefined') {
+			return '<p class="note">Load a save file to see the calendar.</p>';
+		}
+		if (typeof(offset) === 'undefined') {
+			offset = 28 * Math.floor(save.daysPlayed / 28);
+		}
+		if (offset < 112) {
+			$('#calendar-prev-year').prop("disabled", true);
+		} else {
+			$('#calendar-prev-year').val(offset - 112).prop("disabled", false);
+		}
+		if (offset < 28) {
+			$('#calendar-prev-month').prop("disabled", true);
+		} else {
+			$('#calendar-prev-month').val(offset - 28).prop("disabled", false);
+		}
+		$('#calendar-reset').val('reset');
+		$('#calendar-next-month').val(offset + 28);
+		$('#calendar-next-year').val(offset + 112);
+
+		var monthName = save.seasonNames[Math.floor(offset / 28) % 4];
+		var year = 1 + Math.floor(offset / 112);
+		var is16 = compareSemVer(save.version, "1.6") >= 0;
+		var bookDays = is16 ? booksellerDaysForMonth(offset) : [];
+		var ctx = specialOrderContext();
+		var gemUsed = specialGemUsedSelection();
+		var ticketSources = specialTicketSourceSelection();
+
+		function orderSpan(pick) {
+			if (!pick) { return '&mdash;'; }
+			return '<span' + specialOrderHighlightClass(pick, gemUsed) + '>' + pick.desc + '</span>';
+		}
+
+		// Books worth a bookseller trip for the 999 challenge: skip the skill books and Book Of
+		// Stars (both acquired elsewhere) and anything the player already has 999 of.
+		function booksellerWantedBooks(dayOfMonth) {
+			var books = booksellerBooksForDay(offset, dayOfMonth, year);
+			var wanted = [];
+			for (var i = 0; i < books.length; i++) {
+				var name = books[i].name;
+				if (name === "Book Of Stars" || BOOKSELLER_SKILL_BOOKS.indexOf(name) !== -1) { continue; }
+				if (getItemCount(getItemIdByName(name)) >= 999) { continue; }
+				wanted.push(name);
+			}
+			return wanted;
+		}
+
+		output += '<table class="calendar"><thead><tr><th colspan="7">' + monthName + ' Year ' + year + '</th></tr>\n';
+		output += '<tr><th>M</th><th>T</th><th>W</th><th>Th</th><th>F</th><th>Sa</th><th>Su</th></tr></thead>\n<tbody>';
+		for (var week = 0; week < 4; week++) {
+			output += '<tr>';
+			for (var weekDay = 1; weekDay < 8; weekDay++) {
+				var day = 7 * week + weekDay + offset;
+				var dayOfYear = ((day - 1) % 112) + 1;
+				var lines = '';
+				if (CALENDAR_FESTIVALS.hasOwnProperty(dayOfYear) && (is16 || !CALENDAR_FESTIVALS_1_6[dayOfYear])) {
+					lines += '<div class="cal-line cal-fest">' + CALENDAR_FESTIVALS[dayOfYear] + '</div>';
+				}
+				if (bookDays.indexOf(day - offset) !== -1) {
+					var wanted = booksellerWantedBooks(day - offset);
+					if (wanted.length > 0) {
+						lines += '<div class="cal-line cal-book">Bookseller: ' + wanted.join(', ') + '</div>';
+					}
+				}
+				if ((day - 1) % 7 === 0) {
+					var picks = pickSpecialOrders(day, ctx);
+					lines += '<div class="cal-line cal-so"><span class="cal-so-board">Qi:</span> ' +
+						orderSpan(picks.qi[0]) + '<br/>' + orderSpan(picks.qi[1]) + '</div>';
+					// Only show town orders that match the selected ticket sources, e.g. with the
+					// defaults a Resource Rush (Wood) week just shows Gus' Famous Omelet.
+					var townPicks = [];
+					for (var t = 0; t < picks.town.length; t++) {
+						if (specialTicketSourceMatch(picks.town[t], ticketSources)) { townPicks.push(picks.town[t]); }
+					}
+					if (townPicks.length > 0) {
+						lines += '<div class="cal-line cal-so"><span class="cal-so-board">Town:</span> ' +
+							townPicks.map(orderSpan).join('<br/>') + '</div>';
+					}
+				}
+				var night = nightEventForDay(day);
+				if (night.name !== null) {
+					lines += '<div class="cal-line cal-night">' + night.name + '</div>';
+				}
+				var tclass = (day < save.daysPlayed) ? 'past' : ((day === save.daysPlayed) ? 'current' : 'future');
+				output += '<td class="' + tclass + '"><span class="date"> ' + (day - offset) + '</span>' + lines + '</td>';
+			}
+			output += '</tr>\n';
+		}
+		output += '<tr><td colspan="7" class="legend">' +
+			'<span class="cal-line cal-fest">Festival</span>' +
+			'<span class="cal-line cal-book">Bookseller selling a still-needed 999 book</span>' +
+			'<span class="cal-line cal-so">Special Order boards (Mondays; Town shows only selected ticket sources)</span>' +
+			'<span class="cal-line cal-night">Night event (the following night)</span>' +
+			'<span class="cal-line sp-gem">Selected Qi gem quest</span>' +
+			'<span class="cal-line sp-extfam">Extended Family</span>' +
+			'</td></tr>';
+		output += '</tbody></table>\n';
+		return output;
 	}
 
 	function predictStatueAll() {
@@ -10962,6 +11171,8 @@ Object.keys(test).forEach(function(key, index) { if (test[key].s > 0 && test[key
 			output = predictRaccoon(isSearch, offset);
 		} else if (tabID === 'special') {
 			output = predictSpecialOrders(isSearch, offset);
+		} else if (tabID === 'calendar') {
+			output = predictCalendar(isSearch, offset);
 		} else {
 			console.log("Unknown tabID: " + tabID);
 		}
@@ -11028,6 +11239,17 @@ Object.keys(test).forEach(function(key, index) { if (test[key].s > 0 && test[key
 		$("#special-ticket-bottom").click(function () {
 			var b = document.getElementById('special-ticket-modal-body');
 			b.scrollTop = b.scrollHeight;
+		});
+		// Rerender the board list and the Calendar (both highlight the selected gem quests) in place.
+		$(".special-gem-source").change(function () {
+			if (save.gameID === null || typeof save.gameID === 'undefined') { return; }
+			updateTab('special', false, Number($('#special-next-month').val()) - 28);
+			updateTab('calendar', false, Number($('#calendar-next-month').val()) - 28);
+		});
+		// The Calendar's Town lines only show the selected ticket sources, so rerender on change.
+		$(".special-ticket-source").change(function () {
+			if (save.gameID === null || typeof save.gameID === 'undefined') { return; }
+			updateTab('calendar', false, Number($('#calendar-next-month').val()) - 28);
 		});
 		$("#special-gem-generate").click(function () { predictSpecialGemAll(); });
 		$("#special-gem-modal-close").click(function () { $('#special-gem-modal').css('display', 'none'); });

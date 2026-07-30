@@ -199,7 +199,8 @@ h3 {
 .tabset > input:nth-child(39):checked ~ .tab-panels > .tab-panel:nth-child(20),
 .tabset > input:nth-child(41):checked ~ .tab-panels > .tab-panel:nth-child(21),
 .tabset > input:nth-child(43):checked ~ .tab-panels > .tab-panel:nth-child(22),
-.tabset > input:nth-child(45):checked ~ .tab-panels > .tab-panel:nth-child(23)
+.tabset > input:nth-child(45):checked ~ .tab-panels > .tab-panel:nth-child(23),
+.tabset > input:nth-child(47):checked ~ .tab-panels > .tab-panel:nth-child(24)
 {
     display: block;
 }
@@ -694,4 +695,43 @@ img#sea_3 {
 .overview-col {
 	flex: 1 1 14em;
 	min-width: 12em;
+}
+/* Special Orders highlighting: green for selected Qi gem quests, blue for Extended Family */
+td.sp-gem, span.sp-gem {
+	background-color: #c9e8c0;
+}
+td.sp-extfam, span.sp-extfam {
+	background-color: #c9e2f5;
+}
+/* Combined Calendar tab */
+#out-calendar .calendar td {
+	white-space: normal;
+	max-width: 12em;
+}
+.cal-line {
+	display: block;
+	font-size: 85%;
+	margin: 2px 3px;
+	padding: 1px 3px;
+	border-radius: 3px;
+}
+td.legend .cal-line {
+	display: inline-block;
+	margin: 1px 6px;
+}
+.cal-fest {
+	background-color: #e7d4f5;
+	font-weight: bold;
+}
+.cal-book {
+	background-color: #e2c391;
+}
+.cal-night {
+	background-color: #fdf3bd;
+}
+.cal-so {
+	background-color: #f0f0f0;
+}
+.cal-so-board {
+	font-weight: bold;
 }

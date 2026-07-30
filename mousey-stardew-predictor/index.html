@@ -112,11 +112,13 @@ Please report any bugs, suggestions, or other feedback to <a href="https://forum
 <p class="note" id="results-note"></p>
 <output id="out-summary"> </output>
 <div id="tabset-div" class="tabset">
-<input type="radio" name="tabset" id="tab-book" checked>
+<input type="radio" name="tabset" id="tab-calendar" checked>
+<label for="tab-calendar">Calendar<br/>&nbsp;</label>
+<input type="radio" name="tabset" id="tab-book">
 <label for="tab-book">Bookseller<br/>&nbsp;</label>
-<input type="radio" name="tabset" id="tab-cj" checked>
+<input type="radio" name="tabset" id="tab-cj">
 <label for="tab-cj">Calico<br/>Jack</label>
-<input type="radio" name="tabset" id="tab-crane" checked>
+<input type="radio" name="tabset" id="tab-crane">
 <label for="tab-crane">Crane<br/>Game</label>
 <input type="radio" name="tabset" id="tab-makeover" >
 <label for="tab-makeover">Desert<br/>Festival</label>
@@ -161,6 +163,25 @@ Please report any bugs, suggestions, or other feedback to <a href="https://forum
 <input type="radio" name="tabset" id="tab-winterstar" >
 <label for="tab-winterstar">Winter<br/>Star</label>
 <div class="tab-panels">
+<section id="sec-calendar" class="tab-panel">
+<h3>Calendar</h3>
+<p class="intro" id="calendar-intro">A combined monthly calendar of the predictable events: Bookseller visits, night events, the weekly
+Special Order boards (shown on the Monday they refresh), and the major festivals (Desert Festival, Flower Dance, Trout Derby,
+Stardew Valley Fair, Spirit's Eve, Squid Fest, and the Night Market). Night events are shown on the day whose following night they occur,
+matching the Night Events tab.</p>
+<p class="note" id="calendar-note">Special Orders highlighted in green are the gem quests selected under &quot;Gem quests used&quot; on the
+Special Orders tab; Extended Family is highlighted in blue. The Town board line only lists orders matching the &quot;Ticket sources&quot;
+selected there (so a Resource Rush (Wood) week just shows Gus' Famous Omelet with the defaults). The Bookseller only appears when he
+sells a book you still need for 999 &mdash; skill books and Book Of Stars are ignored since those are acquired elsewhere.</p>
+<fieldset id="calendar-buttons"><div class="buttons">
+<button id="calendar-prev-year" type="button" class="browse">&lt;&lt; Previous Year</button>
+<button id="calendar-prev-month" type="button" class="browse">&lt; Previous Month</button>
+<button id="calendar-reset" type="button" class="browse">Reset Calendar</button>
+<button id="calendar-next-month" type="button" class="browse">Next Month &gt;</button>
+<button id="calendar-next-year" type="button" class="browse">Next Year &gt;&gt;</button>
+</div></fieldset>
+<output id="out-calendar"> </output>
+</section>
 <section id="sec-book" class="tab-panel">
 <h3>Bookseller</h3>
 <p class="intro" id="book-intro">This tab predicts two things: which two days the Bookseller will appear each month, and some of the items available for purchase on those days. Results will only show those books which are randomly chosen. Other items in the shop are either always present (e.g. <span class="book">Price Catalogue</span>) or have a non-random trigger (e.g. <span class="book">Queen of Sauce Cookbook</span> which appears after 100 walnuts have been found) and are not included.</p>
@@ -592,10 +613,10 @@ Search Range: <select id="raccoon-search-range">
 <input type="number" id="special-ticket-target" min="1" value="999"></label>
 <span class="overview-sources">Ticket sources (town board):
 <label><input type="checkbox" class="special-ticket-source" value="Robin2:Stone" checked> Resource Rush (Stone)</label>
+<label><input type="checkbox" class="special-ticket-source" value="Gus" checked> Gus' Famous Omelet</label>
 <label><input type="checkbox" class="special-ticket-source" value="Robin2:Wood"> Resource Rush (Wood)</label>
 <label><input type="checkbox" class="special-ticket-source" value="Demetrius"> Aquatic Overpopulation</label>
 <label><input type="checkbox" class="special-ticket-source" value="Demetrius2"> Biome Balance</label>
-<label><input type="checkbox" class="special-ticket-source" value="Gus"> Gus' Famous Omelet</label>
 <label><input type="checkbox" class="special-ticket-source" value="Lewis"> Crop Order</label>
 <label><input type="checkbox" class="special-ticket-source" value="Clint"> Cave Patrol</label>
 <label><input type="checkbox" class="special-ticket-source" value="Caroline"> Island Ingredients</label>
