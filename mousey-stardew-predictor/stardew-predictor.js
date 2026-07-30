@@ -9853,6 +9853,7 @@ Object.keys(test).forEach(function(key, index) { if (test[key].s > 0 && test[key
 
 	// Festival days shown on the combined Calendar tab, keyed by day-of-year (1-112).
 	var CALENDAR_FESTIVALS = {
+		13: "Egg Festival",
 		15: "Desert Festival", 16: "Desert Festival", 17: "Desert Festival",
 		24: "Flower Dance",
 		48: "Trout Derby", 49: "Trout Derby",
