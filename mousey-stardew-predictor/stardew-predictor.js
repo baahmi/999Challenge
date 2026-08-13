@@ -4775,6 +4775,50 @@ window.onload = function () {
 		return theItem;
 	}
 
+	// Traveling Cart items tracked for the 999 challenge - the slow-to-gather preserves and flowers.
+	var CART_999_ITEMS = ["Jelly", "Juice", "Pickles", "Blue Jazz", "Fairy Rose", "Poppy", "Summer Spangle", "Tulip"];
+	var CART_999_FLOWERS = { "Blue Jazz": true, "Fairy Rose": true, "Poppy": true, "Summer Spangle": true, "Tulip": true };
+
+	// How many the player already has that count toward the cart challenge. For flowers, only the
+	// cart's flower counts: grown flowers carry a <color> (palette colours), while the cart sells
+	// the plain flower with NO <color> element. So the cart count is the total minus every coloured
+	// one. Preserves have no colour, so use the plain name count directly.
+	function cart999OwnedCount(name) {
+		if (!CART_999_FLOWERS[name]) { return getItemCountByName(name); }
+		var held = save.itemColorCounts[name] || {};
+		var colored = 0;
+		for (var rgb in held) { colored += held[rgb]; }
+		return getItemCountByName(name) - colored; // plain (no <color>) = the cart's flower
+	}
+
+	// The tracked cart items in the cart's 10 object slots on absolute day `absDay`, as
+	// [{name, qty}]. `isNeeded(name)` filters which items count. 1.6 selection logic, matching
+	// predictCart_1_6's rolls (price roll consumes rng even though we ignore the price).
+	function cart999StockForDay(absDay, isNeeded) {
+		var rng = new CSRandom(getRandomSeed(absDay + save.dayAdjust, save.gameID / 2));
+		var pick = getRandomItems(rng, "objects", 2, 789, true, true, true, 10);
+		var found = [];
+		for (var slot = 0; slot < 10; slot++) {
+			Math.max(rng.Next(1, 11) * 100, rng.Next(3, 6) * save.objects[pick[slot]].price); // price roll (consumes rng)
+			var qty = (rng.NextDouble() < 0.1) ? 5 : 1;
+			var nm = save.objects[pick[slot]].name;
+			if (isNeeded(nm)) { found.push({ name: nm, qty: qty }); }
+		}
+		return found;
+	}
+
+	// Days of the month (1-28) the cart is open for the month starting at `offset`: Fridays and
+	// Sundays, plus the Night Market and Desert Festival days (same rule as the 999 cart scan).
+	function cartDaysForMonth(offset) {
+		var days = {};
+		for (var w = 0; w < 4; w++) {
+			var dayOfYear = (offset + 7 * w) % 112;
+			var open = (dayOfYear === 98 || dayOfYear === 14) ? [1, 2, 3, 5, 7] : [5, 7];
+			for (var d = 0; d < open.length; d++) { days[7 * w + open[d]] = true; }
+		}
+		return days;
+	}
+
 	function predictCartAll() {
 		// Show a loading message, then defer the heavy scan so the message actually paints (JS blocks
 		// the UI while computing). predictCartAllCompute() does the work and replaces the body.
@@ -4793,39 +4837,19 @@ window.onload = function () {
 		// needed, years to reach target), per-flower colour breakdowns, then per-item cart-date lists.
 		var target = Number($('#cart-overview-target').val()) || 999;
 		var maxWeeks = 500000; // backstop against a runaway loop; item names always resolve so it stops well before this
-
-		// Colour (R,G,B) -> variant label for the flowers, per the game's colour palette.
-		var FLOWER_COLORS = {
-			"Blue Jazz": { "35,127,255": "Bright Blue", "40,150,255": "Sky Blue", "94,121,255": "Cornflower Blue", "109,131,255": "Periwinkle", "112,207,255": "Robin's Egg Blue", "191,228,255": "Powder Blue" },
-			"Tulip": { "223,191,255": "Pale Lavender", "255,80,0": "Vermilion", "255,158,193": "Rose Pink", "255,186,255": "Blush Pink", "255,246,0": "Lemon Yellow" },
-			"Summer Spangle": { "0,208,255": "Turquoise", "99,255,210": "Seafoam", "206,91,255": "Orchid", "255,0,238": "Fuchsia", "255,144,122": "Salmon", "255,212,0": "Golden Yellow" },
-			"Fairy Rose": { "71,227,255": "Aqua", "119,137,255": "Bluebell", "140,119,255": "Lavender", "187,0,255": "Violet", "205,178,255": "Lilac", "255,127,144": "Coral Pink" },
-			"Poppy": { "255,0,0": "Scarlet", "255,170,0": "Orange" }
-		};
-		var items = ["Jelly", "Juice", "Pickles", "Blue Jazz", "Fairy Rose", "Poppy", "Summer Spangle", "Tulip"];
-
-		// How many the player already has that count toward the cart challenge. For flowers, only the
-		// cart's flower counts: grown flowers carry a <color> (palette colours), while the cart sells
-		// the plain flower with NO <color> element. So the cart count is the total minus every coloured
-		// one. Preserves have no colour, so use the plain name count directly.
-		function cartOwnedCount(name) {
-			if (!FLOWER_COLORS.hasOwnProperty(name)) { return getItemCountByName(name); }
-			var held = save.itemColorCounts[name] || {};
-			var colored = 0;
-			for (var rgb in held) { colored += held[rgb]; }
-			return getItemCountByName(name) - colored; // plain (no <color>) = the cart's flower
-		}
+		var items = CART_999_ITEMS;
 
 		var startDay = save.daysPlayed || 1;
 		var currentYear = 1 + Math.floor((startDay - 1) / 112);
 		var state = {};
 		var remaining = 0;
 		for (var ii = 0; ii < items.length; ii++) {
-			var owned0 = cartOwnedCount(items[ii]);
+			var owned0 = cart999OwnedCount(items[ii]);
 			var need0 = target - owned0;
 			state[items[ii]] = { owned: owned0, need: need0, gained: 0, yearReached: null, done: (need0 <= 0) };
 			if (need0 > 0) { remaining++; }
 		}
+		function stillNeeded(nm) { return state.hasOwnProperty(nm) && !state[nm].done; }
 
 		var allDates = []; // merged chronological list: {dateStr, item, qty}
 		var startWeek = 7 * Math.floor((startDay - 1) / 7);
@@ -4836,27 +4860,22 @@ window.onload = function () {
 			for (var di = 0; di < days.length; di++) {
 				var absDay = offset + days[di];
 				if (absDay < startDay) { continue; } // today forward only
-				var rng = new CSRandom(getRandomSeed(absDay + save.dayAdjust, save.gameID / 2));
-				var pick = getRandomItems(rng, "objects", 2, 789, true, true, true, 10);
-				for (var slot = 0; slot < 10; slot++) {
-					Math.max(rng.Next(1, 11) * 100, rng.Next(3, 6) * save.objects[pick[slot]].price); // price roll (consumes rng)
-					var qty = (rng.NextDouble() < 0.1) ? 5 : 1;
-					var nm = save.objects[pick[slot]].name;
-					var st = state[nm];
-					if (st && !st.done) {
-						var year = 1 + Math.floor((absDay - 1) / 112);
-						st.gained += qty;
-						allDates.push({
-							dateStr: save.dayNames[days[di] - 1] + ' ' + save.seasonNames[Math.floor((absDay - 1) / 28) % 4] +
-								' ' + (((absDay - 1) % 28) + 1) + ', Year ' + year,
-							item: nm,
-							qty: qty
-						});
-						if (st.gained >= st.need) {
-							st.done = true;
-							st.yearReached = year;
-							remaining--;
-						}
+				var found = cart999StockForDay(absDay, stillNeeded);
+				for (var f = 0; f < found.length; f++) {
+					var st = state[found[f].name];
+					if (st.done) { continue; } // completed by an earlier slot on this same day
+					var year = 1 + Math.floor((absDay - 1) / 112);
+					st.gained += found[f].qty;
+					allDates.push({
+						dateStr: save.dayNames[days[di] - 1] + ' ' + save.seasonNames[Math.floor((absDay - 1) / 28) % 4] +
+							' ' + (((absDay - 1) % 28) + 1) + ', Year ' + year,
+						item: found[f].name,
+						qty: found[f].qty
+					});
+					if (st.gained >= st.need) {
+						st.done = true;
+						st.yearReached = year;
+						remaining--;
 					}
 				}
 			}
@@ -9958,6 +9977,21 @@ Object.keys(test).forEach(function(key, index) { if (test[key].s > 0 && test[key
 		var gemUsed = specialGemUsedSelection();
 		var ticketSources = specialTicketSourceSelection();
 
+		// Cart 999 items still short of 999; cart days only get a line when one of these is in
+		// stock, so no line means the cart can be skipped that day. 1.6 cart logic only.
+		var cartNeeded = {};
+		var anyCartNeeded = false;
+		if (is16) {
+			for (var ci = 0; ci < CART_999_ITEMS.length; ci++) {
+				if (cart999OwnedCount(CART_999_ITEMS[ci]) < 999) {
+					cartNeeded[CART_999_ITEMS[ci]] = true;
+					anyCartNeeded = true;
+				}
+			}
+		}
+		var cartDays = anyCartNeeded ? cartDaysForMonth(offset) : {};
+		function cartNeededCheck(nm) { return !!cartNeeded[nm]; }
+
 		function orderSpan(pick) {
 			if (!pick) { return '&mdash;'; }
 			return '<span' + specialOrderHighlightClass(pick, gemUsed) + '>' + pick.desc + '</span>';
@@ -9994,6 +10028,14 @@ Object.keys(test).forEach(function(key, index) { if (test[key].s > 0 && test[key
 						lines += '<div class="cal-line cal-book">Bookseller: ' + wanted.join(', ') + '</div>';
 					}
 				}
+				if (cartDays[day - offset]) {
+					var cartFound = cart999StockForDay(day, cartNeededCheck);
+					if (cartFound.length > 0) {
+						lines += '<div class="cal-line cal-cart">Cart: ' + cartFound.map(function (f) {
+							return f.name + (f.qty > 1 ? ' (x' + f.qty + ')' : '');
+						}).join(', ') + '</div>';
+					}
+				}
 				if ((day - 1) % 7 === 0) {
 					var picks = pickSpecialOrders(day, ctx);
 					lines += '<div class="cal-line cal-so"><span class="cal-so-board">Qi:</span> ' +
@@ -10021,6 +10063,7 @@ Object.keys(test).forEach(function(key, index) { if (test[key].s > 0 && test[key
 		output += '<tr><td colspan="7" class="legend">' +
 			'<span class="cal-line cal-fest">Festival</span>' +
 			'<span class="cal-line cal-book">Bookseller selling a still-needed 999 book</span>' +
+			'<span class="cal-line cal-cart">Traveling Cart selling still-needed 999 items (no line = skip the cart)</span>' +
 			'<span class="cal-line cal-so">Special Order boards (Mondays; Town shows only selected ticket sources)</span>' +
 			'<span class="cal-line cal-night">Night event (the following night)</span>' +
 			'<span class="cal-line sp-gem">Selected Qi gem quest</span>' +
