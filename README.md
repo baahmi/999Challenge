@@ -12,8 +12,6 @@ The files in src/assets/stardew are (c) ConcernedApe and permission to use them 
 
 So if you fork this project and host it publicly, you need to get permisison to use these images yourself.  
 
-# bun-react-tailwind-shadcn-template
-
 To install dependencies:
 
 ```bash
@@ -31,5 +29,3 @@ To run for production:
 ```bash
 bun start
 ```
-
-This project was created using `bun init` in bun v1.3.10. [Bun](https://bun.com) is a fast all-in-one JavaScript runtime.
