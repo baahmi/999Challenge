@@ -9,6 +9,9 @@
 - You can use / to search for items and jump to the tab where it is.
 
 ### Changes
+#### 0.1.7
+- Add 10 Diamond requirement for "The Diamond Hunter"
+
 #### 0.1.6
 - Removed temporary Qi Bean and raw Qi Fruit collection targets. Qi Fruit Wine, Qi Fruit Jelly, and Dried Qi Fruits remain available. (#8)
 - Fixed flower color progress so each color's collection stack is separate from recipe requirements and crafting credit. Flower Extra rows track surplus and crafting progress without counting the same inventory twice. (#2)
