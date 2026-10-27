@@ -117,4 +117,43 @@ describe('CustomDataStore', () => {
     expect(rottenPlantItems).toContain('Rotten Plant 1');
     expect(rottenPlantItems).toContain('Rotten Plant 2');
   });
+
+  it('keeps known flower colors visible without owning them and avoids duplicates on import', async () => {
+    installLocalStorageMock({});
+    const { CustomDataStore } = await import(`../CustomDataStore.ts?seeded-flowers-${Date.now()}`);
+    const poppyColors = () => CustomDataStore.getItemsData()
+      .filter(item => item.name === 'Poppy' && item.displayName !== null)
+      .map(item => item.displayName)
+      .sort();
+
+    expect(poppyColors()).toEqual(['Poppy (Orange)', 'Poppy (Scarlet)', 'Poppy (White)']);
+    CustomDataStore.addVariantsFromInventory([{ name: 'Poppy (Orange)', category: -80 }]);
+    expect(poppyColors()).toContain('Poppy (White)');
+
+    CustomDataStore.addVariantsFromInventory([
+      { name: 'Poppy (254,254,254)', category: -80 },
+      { name: 'Poppy (White)', category: -80 },
+      { name: 'Poppy (1,2,3)', category: -80 },
+    ]);
+    expect(poppyColors().filter(name => name === 'Poppy (White)')).toHaveLength(1);
+    expect(poppyColors()).not.toContain('Poppy (254,254,254)');
+    expect(poppyColors()).toContain('Poppy (1,2,3)');
+
+    CustomDataStore.resetToDefaults();
+    expect(poppyColors()).toEqual(['Poppy (Orange)', 'Poppy (Scarlet)', 'Poppy (White)']);
+  });
+
+  it('applies saved category customizations to unowned flower colors', async () => {
+    installLocalStorageMock({
+      'stardew-custom-data': JSON.stringify({
+        v: 2,
+        categoryNames: ['Flowers', 'My Flowers'],
+        itemCategoryOverrides: { 'Poppy|Poppy (White)': 'My Flowers' },
+      }),
+    });
+    const { CustomDataStore } = await import(`../CustomDataStore.ts?flower-category-${Date.now()}`);
+
+    expect(CustomDataStore.getItemsData().find(item => item.displayName === 'Poppy (White)'))
+      .toEqual({ category: 'My Flowers', name: 'Poppy', displayName: 'Poppy (White)' });
+  });
 });

@@ -41,6 +41,10 @@ describe('VariantResolver flower colors', () => {
     expect(
       VariantResolver.resolveDisplayName('Poppy', '376', { R: 255, G: 170, B: 0, A: 255 })
     ).toBe('Poppy (Orange)');
+
+    expect(
+      VariantResolver.resolveDisplayName('Poppy', '376', { R: 254, G: 254, B: 254, A: 255 })
+    ).toBe('Poppy (White)');
   });
 
   it('falls back to RGB names for unmapped flower colors', () => {
@@ -59,6 +63,7 @@ describe('VariantResolver flower colors', () => {
   it('normalizes legacy RGB flower names to readable names', () => {
     expect(VariantResolver.normalizeDisplayName('Blue Jazz (109,131,255)')).toBe('Blue Jazz (Periwinkle)');
     expect(VariantResolver.normalizeDisplayName('Poppy (255,170,0)')).toBe('Poppy (Orange)');
+    expect(VariantResolver.normalizeDisplayName('Poppy (254,254,254)')).toBe('Poppy (White)');
     expect(VariantResolver.normalizeDisplayName('Blue Jazz (1,2,3)')).toBe('Blue Jazz (1,2,3)');
   });
 

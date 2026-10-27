@@ -3,6 +3,7 @@ import defaultCategoriesData from './categories.json';
 import rawTroveItems from './trove.json';
 import rawPartsData from './parts.json';
 import variantDefinitions from './itemVariants.json' assert { type: 'json' };
+import flowerColorNames from './flowerColorNames.json';
 import { VariantResolver } from './VariantResolver';
 
 const STORAGE_KEY = 'stardew-custom-data';
@@ -160,7 +161,11 @@ class CustomDataManager {
     }
 
     const seededVariants: ItemEntry[] = [];
-    for (const displayName of Object.values(variantData.itemIdNames)) {
+    const variantDisplayNames = [
+      ...Object.values(variantData.itemIdNames),
+      ...Object.values(flowerColorNames).flatMap(colors => Object.values(colors)),
+    ];
+    for (const displayName of variantDisplayNames) {
       const baseName = VariantResolver.getBaseName(displayName);
       if (displayName === baseName) continue;
 

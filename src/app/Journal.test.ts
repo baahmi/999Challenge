@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'bun:test';
-import { JournalStore, type CompactedItem } from './Journal';
+import { JournalStore, type CompactedItem, type Journal } from './Journal';
 
 function makeItem(name: string, count: number): CompactedItem {
   return {
@@ -12,6 +12,48 @@ function makeItem(name: string, count: number): CompactedItem {
 }
 
 describe('JournalStore', () => {
+  it('restores legacy white Poppy names with their quality stacks intact', () => {
+    const compacted = JournalStore.toCompactedItems({
+      'Poppy (254,254,254)': { itemId: '(O)376', cat: -80, q: [10, 20, 30, 0, 40] },
+    });
+
+    expect(compacted).toEqual([{
+      name: 'Poppy (White)',
+      itemId: '(O)376',
+      category: -80,
+      stack: 100,
+      quality: [10, 20, 30, 0, 40],
+    }]);
+  });
+
+  it('reads all 100 legacy save snapshots without reimporting or rewriting the journal', () => {
+    let journal: Journal | null = null;
+    for (let day = 1; day <= 100; day++) {
+      journal = JournalStore.upsertJournal(journal, day, 0, 0, 0, 0, [{
+        name: 'Poppy (254,254,254)',
+        itemId: '(O)376',
+        category: -80,
+        stack: day * 2,
+        quality: [day, 0, 0, 0, day],
+      }]);
+    }
+    const storedJournal = JSON.stringify(journal);
+    const restored = JSON.parse(storedJournal) as Journal;
+
+    for (let day = 1; day <= 100; day++) {
+      const items = JournalStore.reconstructItemsAtDay(restored, day);
+      expect(JournalStore.toCompactedItems(items)).toEqual([{
+        name: 'Poppy (White)',
+        itemId: '(O)376',
+        category: -80,
+        stack: day * 2,
+        quality: [day, 0, 0, 0, day],
+      }]);
+    }
+    expect(Object.keys(restored.days)).toHaveLength(100);
+    expect(JSON.stringify(restored)).toBe(storedJournal);
+  });
+
   it('reconstructs correct history when an earlier day is imported after a later day', () => {
     const day2672 = [
       makeItem('Mushroom Tree Seed', 20),
