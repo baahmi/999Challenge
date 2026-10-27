@@ -9,6 +9,8 @@ export interface Item {
   totalActual?: number; // crafting consumption without the challenge-target cap
   raw: number;
   rawStacks?: number[]; // [normal, silver, gold, unused, iridium]
+  qualityTargets?: number[]; // Collection and quality-preserving recipe targets per tier
+  qualityConsumed?: number[]; // Items of each tier already used in quality-preserving recipes
   hasWrongQuality?: boolean; // Has stacks but not in the correct quality tier
   correctQualityCount?: number; // Count of items in the correct quality tier
   excludeFromTotals?: boolean; // Synthetic availability rows; raw is already counted by source items
@@ -19,6 +21,23 @@ export interface ItemWithCalculations extends Item {
 }
 
 export function calculateObtainedCount(item: Item): number {
+  if (item.qualityTargets) {
+    const stacks = item.rawStacks ?? [item.raw, 0, 0, 0, 0];
+    let requiredByQuality = 0;
+    let coveredByQuality = 0;
+    let reservedRaw = 0;
+    for (const [tier, required] of item.qualityTargets.entries()) {
+      const consumed = item.qualityConsumed?.[tier] ?? 0;
+      const raw = stacks[tier] ?? 0;
+      requiredByQuality += required;
+      coveredByQuality += Math.min(required, raw + consumed);
+      reservedRaw += Math.min(raw, Math.max(0, required - consumed));
+    }
+    const flexibleRequired = Math.max(0, item.required - requiredByQuality);
+    const flexibleConsumed = item.totalFlexible ?? Math.max(0,
+      item.total - (item.qualityConsumed?.reduce((sum, count) => sum + count, 0) ?? 0));
+    return coveredByQuality + Math.min(flexibleRequired, flexibleConsumed + Math.max(0, item.raw - reservedRaw));
+  }
   if (item.correctQualityCount !== undefined) {
     if (item.requiredStrict !== undefined || item.requiredFlexible !== undefined) {
       const requiredStrict = item.requiredStrict ?? 0;

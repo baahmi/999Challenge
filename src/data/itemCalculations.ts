@@ -1,7 +1,8 @@
 import { CustomDataStore, VariantResolver } from './CustomDataStore';
-import { calculateNeededCount } from '../types/Item';
+import { calculateNeededCount, calculateObtainedCount } from '../types/Item';
 import notesData from './notes.json';
 import pricesData from './prices.json';
+import bundledItems from './items.json';
 import { Config } from '../config/Config';
 import type { Quality } from '../config/Config';
 import type { ItemEntry, PartsEntry, YieldSpec } from "./CustomDataStore";
@@ -161,6 +162,11 @@ export interface ItemTooltipData {
 
 export interface ItemRow {
   name: string;
+  sourceName?: string; // Canonical item identity when the table uses a display name
+  namePercentage?: number; // Sapling collection progress, independent of quality upgrades
+  qualityTiers?: number[]; // Quality columns needed for the collection target
+  qualityTargets?: number[];
+  qualityConsumed?: number[];
   itemId?: string;
   category?: string;
   required: number;
@@ -215,10 +221,37 @@ const IRIDIUM_QUALITY_ITEMS = new Set([
   'Mayonnaise'
 ]);
 
+const FRUIT_SAPLINGS = new Set([
+  'Apple Sapling',
+  'Apricot Sapling',
+  'Banana Sapling',
+  'Cherry Sapling',
+  'Mango Sapling',
+  'Orange Sapling',
+  'Peach Sapling',
+  'Pomegranate Sapling',
+]);
+
 const NO_QUALITY_ITEMS = new Set([
   'Cave Carrot',
   'Ginger',
 ]);
+
+const NORMAL_ONLY_ITEMS = new Set(['Tea Leaves']);
+const QUALITY_TIER_IDS: Partial<Record<Quality, number>> = { normal: 0, silver: 1, gold: 2, iridium: 4 };
+const availableQualityTiersCache = new Map<string, number[]>();
+let qualityItemsRef: ItemEntry[] | undefined;
+let qualityPartsRef: PartsEntry[] | undefined;
+let cookingItemsRef: ItemEntry[] | undefined;
+let cookingPartsRef: PartsEntry[] | undefined;
+let allCookingItems = new Set<string>();
+let finalCookingItems = new Set<string>();
+const bundledCategories = new Map<string, string>();
+for (const [category, name, displayName] of bundledItems) {
+  if (!category || !name) continue;
+  bundledCategories.set(name, category);
+  if (displayName) bundledCategories.set(displayName, category);
+}
 
 // not sure I want golden eggs in there. maybe make it configurable ?
 const ANY_INGREDIENTS: Record<string, { name: string; category: string; candidates: string[] }> = {
@@ -331,41 +364,19 @@ CustomDataStore.subscribe(() => {
 // Flag to prevent concurrent computations
 let isComputing = false;
 
-// Compute all items once - called when data changes
-function computeAllItems(
-  compacted: Array<{ name: string; stack: number; quality?: number[] }>,
-  quality: Quality
-): void {
-  console.log(`[CACHE] Computing all items from scratch`);
-  
-  // Build inventory and stacks maps
-  globalInventoryMap.clear();
-  globalStacksMap.clear();
+function buildInventoryMaps(compacted: Array<{ name: string; stack: number; quality?: number[] }>) {
+  const inventoryMap = new Map<string, number>();
+  const stacksMap = new Map<string, number[]>();
   for (const item of compacted) {
-    let  maxTier = (quality === 'highest' && getCookingItems().has(item.name)) ? 2 : 4;
-    maxTier = (quality === 'highest' && getCrabpotItems().has(item.name)) ? 1 : maxTier;
-    const count = item.quality
-      ? getQualityFilteredCount(item.quality, quality, maxTier)
-      : item.stack;
-    globalInventoryMap.set(item.name, (globalInventoryMap.get(item.name) ?? 0) + count);
-    if (item.quality) {
-      const prev = globalStacksMap.get(item.name) ?? [0, 0, 0, 0, 0];
-      globalStacksMap.set(item.name, item.quality.map((v, i) => (prev[i] ?? 0) + v));
-    }
+    const stacks = item.quality ?? [item.stack, 0, 0, 0, 0];
+    inventoryMap.set(item.name, (inventoryMap.get(item.name) ?? 0) + stacks.reduce((sum, count) => sum + count, 0));
+    const previous = stacksMap.get(item.name) ?? [0, 0, 0, 0, 0];
+    stacksMap.set(item.name, previous.map((count, tier) => count + (stacks[tier] ?? 0)));
   }
-  
-  // Pre-compute ALL craftable counts upfront
-  console.log(`[CACHE] Pre-computing all craftable counts`);
-  globalCraftableCache.clear();
-  for (const craftedName of recipeMap.keys()) {
-    const cached = craftableCount(craftedName, globalInventoryMap);
-    globalCraftableCache.set(craftedName, cached);
-  }
-  console.log(`[CACHE] Pre-computed ${globalCraftableCache.size} craftable counts`);
-  
-  const inventoryMap = globalInventoryMap;
-  const stacksMap = globalStacksMap;
+  return { inventoryMap, stacksMap };
+}
 
+function computeRequirements(inventoryMap: Map<string, number>, stacksMap: Map<string, number[]>, quality: Quality) {
   const requiredFromPartsStrict = new Map<string, number>();
   const requiredFromPartsFlexible = new Map<string, number>();
   const totalFromPartsStrict = new Map<string, number>();
@@ -374,6 +385,8 @@ function computeAllItems(
   const totalFromParts = new Map<string, number>();
   // Consumption without the challenge-target cap, to show surplus in the UI
   const totalFromPartsActual = new Map<string, number>();
+  const requiredFromPartsQuality = new Map<string, number[]>();
+  const totalFromPartsQuality = new Map<string, number[]>();
 
   const addPartRequirement = (name: string, requiredCount: number, totalCount: number, strict: boolean, actualTotalCount = totalCount) => {
     if (strict) {
@@ -391,16 +404,17 @@ function computeAllItems(
   applyArtifactTroveRequirements(CustomDataStore.getTroveItems(), inventoryMap, addPartRequirement);
 
   for (const [craftedItemName, ingredients] of getPartsDataConsumersFirst()) {
-    const craftedCount = getDependencyInventoryCount(craftedItemName, inventoryMap, stacksMap, quality);
     const avgYield = yieldMap.get(craftedItemName) ?? 1;
     const required = requiredFromParts.get(craftedItemName) ?? 0;
-    const targetAmount = TARGET + required;
+    const craftedCount = getDependencyInventoryCount(craftedItemName, inventoryMap, stacksMap, quality, required);
+    const targetAmount = collectionTarget(craftedItemName, stacksMap, quality) + required;
     const totalCrafted = totalFromParts.get(craftedItemName) ?? 0;
     const strictIngredients = usesQualitySensitiveIngredients(craftedItemName);
 
     // How many of this crafted item do we have (inventory + what we've made/opened)
     const totalHave = Math.min(craftedCount + totalCrafted, targetAmount);
-    const totalHaveActual = craftedCount + (totalFromPartsActual.get(craftedItemName) ?? 0);
+    const totalHaveActual = (quality === 'highest' ? craftedCount : (inventoryMap.get(craftedItemName) ?? 0))
+      + (totalFromPartsActual.get(craftedItemName) ?? 0);
 
     for (const [ingredientId, ingredientEntry] of Object.entries(ingredients)) {
       const [ingredientName, qty] = ingredientEntry as [string | null, number];
@@ -420,7 +434,22 @@ function computeAllItems(
       // Calculate ingredients already used (for what we have)
       const totalCount = Math.round((qty * totalHave) / avgYield);
       const actualCount = Math.round((qty * totalHaveActual) / avgYield);
-      addPartRequirement(name, requiredCount, totalCount, strictIngredients, actualCount);
+      const qualitySensitivePart = strictIngredients && (quality === 'highest' || getAvailableQualityTiers(name).length > 1);
+      if (qualitySensitivePart && quality !== 'highest') {
+        const outputTargets = collectionQualityTargets(craftedItemName, stacksMap, quality)
+          .map((count, tier) => count + (requiredFromPartsQuality.get(craftedItemName)?.[tier] ?? 0));
+        const requiredByTier = outputTargets.map(count => Math.round(qty * count / avgYield));
+        const consumedByTier = outputTargets.map((count, tier) => Math.round(qty * Math.min(count,
+          (stacksMap.get(craftedItemName)?.[tier] ?? 0) + (totalFromPartsQuality.get(craftedItemName)?.[tier] ?? 0)) / avgYield));
+        requiredFromPartsQuality.set(name, requiredByTier.map((count, tier) => count + (requiredFromPartsQuality.get(name)?.[tier] ?? 0)));
+        totalFromPartsQuality.set(name, consumedByTier.map((count, tier) => count + (totalFromPartsQuality.get(name)?.[tier] ?? 0)));
+        const strictRequired = requiredByTier.reduce((sum, count) => sum + count, 0);
+        const strictTotal = consumedByTier.reduce((sum, count) => sum + count, 0);
+        addPartRequirement(name, strictRequired, strictTotal, true, actualCount);
+        addPartRequirement(name, requiredCount - strictRequired, Math.max(0, totalCount - strictTotal), false, 0);
+      } else {
+        addPartRequirement(name, requiredCount, totalCount, qualitySensitivePart, actualCount);
+      }
     }
   }
 
@@ -455,13 +484,13 @@ function computeAllItems(
     }
   }
 
-  // Qi Seasoning: one per cooked dish when targeting highest quality
-  if (quality === 'highest' && !isQualityExemptGroup('Cooking')) {
+  // Only the gold cooking collection target needs Qi Seasoning.
+  if (quality !== 'any') {
     const seen = new Set<string>();
     for (const item of CustomDataStore.getItemsData()) {
-      if (!getCookingItems().has(item.name) || seen.has(item.name)) continue;
+      if (!requiresSeasoning(item.name, quality) || seen.has(item.name)) continue;
       seen.add(item.name);
-      const dishProgress = getProgressInventoryCount(item.name, inventoryMap, stacksMap, quality);
+      const dishProgress = stacksMap.get(item.name)?.[2] ?? 0;
       addPartRequirement(
         'Qi Seasoning',
         TARGET,
@@ -473,76 +502,66 @@ function computeAllItems(
     }
   }
 
+  return { requiredFromPartsStrict, requiredFromPartsFlexible, totalFromPartsStrict, totalFromPartsFlexible, requiredFromParts, totalFromParts, totalFromPartsActual, requiredFromPartsQuality, totalFromPartsQuality };
+}
+
+// Compute all items once - called when data changes
+function computeAllItems(
+  compacted: Array<{ name: string; stack: number; quality?: number[] }>,
+  quality: Quality
+): void {
+  console.log(`[CACHE] Computing all items from scratch`);
+
+  const { inventoryMap, stacksMap } = buildInventoryMaps(compacted);
+  globalInventoryMap = inventoryMap;
+  globalStacksMap = stacksMap;
+
+  // Pre-compute ALL craftable counts upfront
+  console.log(`[CACHE] Pre-computing all craftable counts`);
+  globalCraftableCache.clear();
+  for (const craftedName of recipeMap.keys()) {
+    const cached = craftableCount(craftedName, globalInventoryMap, undefined, globalStacksMap, quality);
+    globalCraftableCache.set(craftedName, cached);
+  }
+  console.log(`[CACHE] Pre-computed ${globalCraftableCache.size} craftable counts`);
+
+  const { requiredFromPartsStrict, requiredFromPartsFlexible, totalFromPartsStrict, totalFromPartsFlexible, requiredFromParts, totalFromParts, totalFromPartsActual, requiredFromPartsQuality, totalFromPartsQuality } = computeRequirements(inventoryMap, stacksMap, quality);
+
   const completionMap = new Map<string, boolean>();
   const neededMap = new Map<string, number>();
   for (const item of CustomDataStore.getItemsData()) {
-    const r = inventoryMap.get(item.name) ?? 0; // Use base name for inventory lookup
-    const req = TARGET + (requiredFromParts.get(item.name) ?? 0);
-    const tot = totalFromParts.get(item.name) ?? 0;
-    // to be complete we need raw to be at least 999.
-    completionMap.set(item.name, r + tot >= req && r >= TARGET);
-    const have = getProgressInventoryCount(item.name, inventoryMap, stacksMap, quality);
-    neededMap.set(item.name, Math.max(0, req - Math.min(req, have + tot)));
+    const row: ItemRow = {
+      name: item.name,
+      required: collectionTarget(item.name, stacksMap, quality) + (requiredFromParts.get(item.name) ?? 0),
+      requiredStrict: requiredFromPartsStrict.get(item.name) ?? 0,
+      requiredFlexible: requiredFromPartsFlexible.get(item.name) ?? 0,
+      total: totalFromParts.get(item.name) ?? 0,
+      totalStrict: totalFromPartsStrict.get(item.name) ?? 0,
+      totalFlexible: totalFromPartsFlexible.get(item.name) ?? 0,
+      raw: inventoryMap.get(item.name) ?? 0,
+      tooltip: undefined as any,
+    };
+    Object.assign(row, qualityProgressFields(row, item.name, stacksMap, quality, requiredFromPartsQuality, totalFromPartsQuality));
+    const needed = calculateNeededCount(row);
+    completionMap.set(item.name, needed === 0);
+    neededMap.set(item.name, needed);
   }
-  const anyIngredientAvailability = computeAnyIngredientAvailability(inventoryMap, stacksMap, quality, requiredFromParts, totalFromParts);
+  const anyIngredientAvailability = computeAnyIngredientAvailability(inventoryMap, stacksMap, quality, requiredFromParts, totalFromParts,
+    requiredFromPartsQuality, totalFromPartsQuality);
   globalAnyIngredientAvailability = anyIngredientAvailability;
-
-  // Helper to check if an item has wrong quality stacks
-  const hasWrongQualityStacks = (itemName: string): boolean => {
-    if (quality !== 'highest') return false;
-    const stacks = stacksMap.get(itemName);
-    if (!stacks) return false;
-    
-    const correctTier = getQualityTargetTier(itemName);
-    if (correctTier === undefined) return false;
-    
-    // Check if this item type can have quality at all
-    // Most items don't have quality tiers (like Hay, Stone, Wood, etc.)
-    const correctQualityCount = stacks[correctTier] ?? 0;
-    
-    // Get requirements
-    const req = TARGET + (requiredFromParts.get(itemName) ?? 0);
-    const tot = totalFromParts.get(itemName) ?? 0;
-    
-    // Only show blue (wrong quality) if:
-    // 1. At least one quality tier has 999+ items (a complete stack exists)
-    // 2. BUT the correct quality tier doesn't have 999
-    // Example: 1000 iridium eggs but need silver -> blue
-    // Counter-example: 953 normal + 302 silver + 130 gold (no complete stack) -> white, not blue
-    const hasCompleteStack = stacks.some(count => count >= TARGET);
-    return hasCompleteStack && correctQualityCount < TARGET;
-  };
 
   // Helper to check if an item has unfinished dependents
   const hasUnfinishedDependents = (itemName: string): boolean => {
     const dependents = reverseMap.get(itemName) ?? [];
     if (dependents.length === 0) return false;
     
-    // Check if this item is complete
-    const r = inventoryMap.get(itemName) ?? 0;
-    const req = TARGET + (requiredFromParts.get(itemName) ?? 0);
-    const tot = totalFromParts.get(itemName) ?? 0;
-    const isComplete = r + tot >= req && r >= TARGET;
-    
-    if (!isComplete) return false;
-    
+    if (!(completionMap.get(itemName) ?? false)) return false;
+
     // Check if any dependent is not complete
     return dependents.some(depName => {
       const depComplete = completionMap.get(depName) ?? false;
       return !depComplete;
     });
-  };
-
-  // Helper to get count in the correct quality tier
-  const getCorrectQualityCount = (itemName: string): number | undefined => {
-    if (quality !== 'highest') return undefined;
-    const stacks = stacksMap.get(itemName);
-    if (!stacks) return undefined;
-    
-    const correctTier = getQualityTargetTier(itemName);
-    if (correctTier === undefined) return undefined;
-    
-    return stacks[correctTier] ?? 0;
   };
 
   const source = CustomDataStore.getItemsData();
@@ -584,9 +603,10 @@ function computeAllItems(
     const isFlower = VariantResolver.hasColorVariants(item.name);
     const row: ItemRow = {
       name: itemKey,
+      sourceName: item.name,
       itemId: compacted.find(entry => entry.name === lookupKey || entry.name === itemKey)?.itemId,
       category: item.category,
-      required: TARGET + (requiredFromParts.get(item.name) ?? 0),
+      required: collectionTarget(lookupKey, stacksMap, quality) + (requiredFromParts.get(item.name) ?? 0),
       requiredStrict: requiredFromPartsStrict.get(item.name) ?? 0,
       requiredFlexible: requiredFromPartsFlexible.get(item.name) ?? 0,
       total: totalFromParts.get(item.name) ?? 0,
@@ -597,12 +617,13 @@ function computeAllItems(
       rawStacks: stacksMap.get(lookupKey), // Use lookupKey to get actual stacks
       buyPrice: priceMap.get(item.name), 
       tooltip: computeTooltipData(item.name, raw, inventoryMap, stacksMap, quality, completionMap, globalCraftableCache, anyIngredientAvailability, neededMap),
-      hasWrongQuality: hasWrongQualityStacks(itemKey), // Use itemKey for variants
       hasUnfinishedDependents: hasUnfinishedDependents(item.name),
-      correctQualityCount: getCorrectQualityCount(itemKey), // Use itemKey for variants
       ...(isFlower ? flowerCollectionFields(lookupKey, stacksMap, quality) : {}),
     };
-    if (isFlower) {
+    Object.assign(row, qualityProgressFields(row, lookupKey, stacksMap, quality,
+      VariantResolver.hasColorVariants(item.name) ? undefined : requiredFromPartsQuality,
+      VariantResolver.hasColorVariants(item.name) ? undefined : totalFromPartsQuality));
+    if (isFlower || row.qualityTargets || FRUIT_SAPLINGS.has(item.name)) {
       row.tooltip.neededCount = calculateNeededCount(row);
       row.tooltip.done = row.tooltip.neededCount === 0;
     }
@@ -646,13 +667,17 @@ function computeAllItems(
 
 // Cooked outputs cap at gold quality naturally (Qi Seasoning provides iridium).
 // Cooking-category ingredients like Oil, Vinegar, and Wheat Flour are not cooked dishes.
-function getCookingItems(): Set<string> {
-  const craftedNames = new Set(CustomDataStore.getPartsData().map(([craftedName]) => craftedName));
-  return new Set<string>(
-    CustomDataStore.getItemsData()
-      .filter((item) => item.category === 'Cooking' && craftedNames.has(item.name) && !reverseMap.has(item.name))
-      .map((item) => item.name)
-  );
+function getCookingItems(includeIngredients = false): Set<string> {
+  const items = CustomDataStore.getItemsData();
+  const parts = CustomDataStore.getPartsData();
+  if (items !== cookingItemsRef || parts !== cookingPartsRef) {
+    const craftedNames = new Set(parts.map(([name]) => name));
+    allCookingItems = new Set(items.filter(item => getPhysicalCategory(item.name) === 'Cooking' && craftedNames.has(item.name)).map(item => item.name));
+    finalCookingItems = new Set([...allCookingItems].filter(name => !reverseMap.has(name)));
+    cookingItemsRef = items;
+    cookingPartsRef = parts;
+  }
+  return includeIngredients ? allCookingItems : finalCookingItems;
 }
 
 function getCrabpotItems(): Set<string> {
@@ -667,6 +692,7 @@ function isQualityExemptGroup(group: string): boolean {
 }
 
 function getQualityTargetTier(itemName: string): number | undefined {
+  if (FRUIT_SAPLINGS.has(VariantResolver.getBaseName(itemName))) return 4;
   if (NO_QUALITY_ITEMS.has(VariantResolver.getBaseName(itemName))) return undefined;
   if (getCookingItems().has(itemName)) return isQualityExemptGroup('Cooking') ? undefined : 2;
   if (getCrabpotItems().has(itemName)) return isQualityExemptGroup('Fish') ? undefined : 1;
@@ -704,8 +730,129 @@ function getItemCategory(itemName: string): string | undefined {
   )?.category;
 }
 
+function getPhysicalCategory(itemName: string): string | undefined {
+  return bundledCategories.get(VariantResolver.getBaseName(itemName)) ?? getItemCategory(itemName);
+}
+
+function getAvailableQualityTiers(itemName: string): number[] {
+  const items = CustomDataStore.getItemsData();
+  const parts = CustomDataStore.getPartsData();
+  if (items !== qualityItemsRef || parts !== qualityPartsRef) {
+    availableQualityTiersCache.clear();
+    qualityItemsRef = items;
+    qualityPartsRef = parts;
+  }
+  const cached = availableQualityTiersCache.get(itemName);
+  if (cached) return cached;
+  const tiers = computeAvailableQualityTiers(itemName);
+  availableQualityTiersCache.set(itemName, tiers);
+  return tiers;
+}
+
+function computeAvailableQualityTiers(itemName: string): number[] {
+  const baseName = VariantResolver.getBaseName(itemName);
+  if (NO_QUALITY_ITEMS.has(baseName) || NORMAL_ONLY_ITEMS.has(baseName)) return [0];
+  if (getCookingItems(true).has(baseName)) return [0, 2];
+  if (getCrabpotItems().has(baseName)) return [0, 1];
+  if (isQualityPreservingCraft(itemName)) {
+    const ingredients = recipeMap.get(itemName);
+    const qualityIngredient = [...(ingredients?.keys() ?? [])].find(name => getAvailableQualityTiers(name).length > 1);
+    return qualityIngredient ? getAvailableQualityTiers(qualityIngredient) : [0];
+  }
+  const category = getPhysicalCategory(itemName);
+  if (FRUIT_SAPLINGS.has(baseName) || baseName === 'Coffee Bean' || AGEABLE_CRAFT_ITEMS.has(baseName)
+    || IRIDIUM_QUALITY_ITEMS.has(baseName) || (category && IRIDIUM_QUALITY_CATEGORIES.has(category))
+    || category === 'Vegetables') return [0, 1, 2, 4];
+  return [0];
+}
+
+function getCollectionQualityTiers(itemName: string, stacksMap: Map<string, number[]>, quality: Quality): number[] {
+  if (quality === 'highest') {
+    const tier = getQualityTargetTier(itemName);
+    if (tier !== undefined) return [tier];
+  }
+  const available = getAvailableQualityTiers(itemName);
+  if (quality === 'all') return available;
+  const requested = QUALITY_TIER_IDS[quality];
+  if (requested !== undefined) return [available.filter(tier => tier <= requested).at(-1) ?? 0];
+  const stacks = stacksMap.get(itemName) ?? [];
+  // Any means one stack of a single quality, rather than a sum of mixed stacks.
+  let best = available.reduce((best, tier) => (stacks[tier] ?? 0) > (stacks[best] ?? 0) ? tier : best, available[0]!);
+  // Before any output has been collected, choose a preserving recipe's quality
+  // from its surplus inputs instead of arbitrarily requiring normal output.
+  if ((stacks[best] ?? 0) === 0 && isQualityPreservingCraft(itemName)) {
+    let bestCrafts = -1;
+    for (const tier of available) {
+      let crafts = Infinity;
+      for (const [name, qty] of recipeMap.get(itemName) ?? []) {
+        const inputTier = getAvailableQualityTiers(name).length === 1 ? 0 : tier;
+        const have = stacksMap.get(name)?.[inputTier] ?? 0;
+        const reserve = getItemCategory(name) !== undefined && getCollectionQualityTiers(name, stacksMap, quality).includes(inputTier) ? TARGET : 0;
+        crafts = Math.min(crafts, Math.floor(Math.max(0, have - reserve) / qty));
+      }
+      if (Number.isFinite(crafts) && crafts > bestCrafts) {
+        best = tier;
+        bestCrafts = crafts;
+      }
+    }
+  }
+  return [best];
+}
+
+function usesTierTargets(itemName: string, quality: Quality): boolean {
+  return quality !== 'highest' || (getQualityTargetTier(itemName) === undefined && getAvailableQualityTiers(itemName).length > 1);
+}
+
+function collectionTarget(itemName: string, stacksMap: Map<string, number[]>, quality: Quality): number {
+  return TARGET * getCollectionQualityTiers(itemName, stacksMap, quality).length;
+}
+
+function collectionQualityTargets(itemName: string, stacksMap: Map<string, number[]>, quality: Quality): number[] {
+  const targets = [0, 0, 0, 0, 0];
+  for (const tier of getCollectionQualityTiers(itemName, stacksMap, quality)) targets[tier] = TARGET;
+  return targets;
+}
+
+function qualityProgressFields(
+  row: ItemRow,
+  lookupKey: string,
+  stacksMap: Map<string, number[]>,
+  quality: Quality,
+  requiredByQuality = new Map<string, number[]>(),
+  consumedByQuality = new Map<string, number[]>(),
+) {
+  if (!usesTierTargets(lookupKey, quality)) {
+    const tier = getQualityTargetTier(lookupKey);
+    const stacks = stacksMap.get(lookupKey);
+    const count = tier === undefined ? undefined : (stacks?.[tier]
+      ?? (VariantResolver.hasColorVariants(VariantResolver.getBaseName(lookupKey)) ? 0 : undefined));
+    return {
+      correctQualityCount: count,
+      qualityTiers: tier === undefined ? undefined : [tier],
+      hasWrongQuality: count !== undefined && count < TARGET && (stacks?.some(n => n >= TARGET) ?? false),
+      ...saplingQualityFields(row, stacksMap, quality),
+    };
+  }
+  const targets = collectionQualityTargets(lookupKey, stacksMap, quality)
+    .map((count, tier) => count + (requiredByQuality.get(lookupKey)?.[tier] ?? 0));
+  const stacks = stacksMap.get(lookupKey) ?? [row.raw, 0, 0, 0, 0];
+  const tiers = getCollectionQualityTiers(lookupKey, stacksMap, quality);
+  const baseCovered = tiers.reduce((sum, tier) => sum + Math.min(TARGET, stacks[tier] ?? 0), 0);
+  return {
+    qualityTargets: targets,
+    qualityConsumed: consumedByQuality.get(lookupKey) ?? [0, 0, 0, 0, 0],
+    qualityTiers: targets.flatMap((count, tier) => count > 0 ? [tier] : []),
+    rawStacks: stacks,
+    correctQualityCount: quality !== 'highest' && tiers.length === 1 ? (stacks[tiers[0]!] ?? 0) : undefined,
+    hasWrongQuality: row.raw >= tiers.length * TARGET && baseCovered < tiers.length * TARGET,
+    ...(FRUIT_SAPLINGS.has(row.name) ? {
+      namePercentage: Math.min(100, (quality === 'all' ? row.raw / (tiers.length * TARGET) : Math.max(...stacks) / TARGET) * 100),
+    } : {}),
+  };
+}
+
 function isQualityPreservingCraft(craftedName: string): boolean {
-  const category = getItemCategory(craftedName);
+  const category = getPhysicalCategory(craftedName);
   return category !== undefined && QUALITY_PRESERVING_CRAFT_CATEGORIES.has(category);
 }
 
@@ -714,16 +861,27 @@ function getProgressInventoryCount(
   inventoryMap: Map<string, number>,
   stacksMap: Map<string, number[]>,
   quality: Quality,
+  extraTarget = 0,
 ): number {
-  if (quality !== 'highest') return inventoryMap.get(itemName) ?? 0;
+  if (quality !== 'highest') {
+    const stacks = stacksMap.get(itemName) ?? [];
+    const covered = getCollectionQualityTiers(itemName, stacksMap, quality)
+      .reduce((sum, tier) => sum + Math.min(TARGET, stacks[tier] ?? 0), 0);
+    return covered + Math.min(extraTarget, Math.max(0, (inventoryMap.get(itemName) ?? 0) - covered));
+  }
   const correctTier = getQualityTargetTier(itemName);
-  if (correctTier === undefined) return inventoryMap.get(itemName) ?? 0;
+  if (correctTier === undefined) {
+    if (getAvailableQualityTiers(itemName).length > 1) {
+      return Math.max(...(stacksMap.get(itemName) ?? [0]));
+    }
+    return inventoryMap.get(itemName) ?? 0;
+  }
   return stacksMap.get(itemName)?.[correctTier] ?? 0;
 }
 
 function isAgeableCraft(itemName: string): boolean {
   if (AGEABLE_CRAFT_ITEMS.has(itemName)) return true;
-  return getItemCategory(itemName) === 'Wine';
+  return getPhysicalCategory(itemName) === 'Wine';
 }
 
 function getDependencyInventoryCount(
@@ -731,11 +889,32 @@ function getDependencyInventoryCount(
   inventoryMap: Map<string, number>,
   stacksMap: Map<string, number[]>,
   quality: Quality,
+  extraTarget = 0,
 ): number {
-  if (quality === 'highest' && isAgeableCraft(itemName)) {
-    return inventoryMap.get(itemName) ?? 0;
+  if (isAgeableCraft(itemName)) {
+    if (quality === 'highest' || quality === 'any') return inventoryMap.get(itemName) ?? 0;
+    // Lower-quality products can be aged into a missing higher-quality stack.
+    // Surplus iridium products cannot stand in for missing lower qualities.
+    const remaining = [...(stacksMap.get(itemName) ?? [0, 0, 0, 0, 0])];
+    let covered = 0;
+    for (const targetTier of getCollectionQualityTiers(itemName, stacksMap, quality)) {
+      let needed = TARGET;
+      for (const tier of [4, 2, 1, 0].filter(tier => tier <= targetTier)) {
+        const used = Math.min(needed, remaining[tier] ?? 0);
+        remaining[tier] = (remaining[tier] ?? 0) - used;
+        needed -= used;
+        covered += used;
+      }
+    }
+    return covered + Math.min(extraTarget, remaining.reduce((sum, count) => sum + count, 0));
   }
-  return getProgressInventoryCount(itemName, inventoryMap, stacksMap, quality);
+  return getProgressInventoryCount(itemName, inventoryMap, stacksMap, quality, extraTarget);
+}
+
+function requiresSeasoning(itemName: string, quality: Quality): boolean {
+  if (!getCookingItems(quality !== 'highest').has(itemName)) return false;
+  if (quality === 'highest') return !isQualityExemptGroup('Cooking');
+  return quality === 'all' || quality === 'gold' || quality === 'iridium';
 }
 
 function usesQualitySensitiveIngredients(craftedItemName: string): boolean {
@@ -749,12 +928,30 @@ function getRecipeIngredientAvailability(
   stacksMap: Map<string, number[]>,
   quality: Quality,
 ): number {
-  if (quality !== 'highest' || !isQualityPreservingCraft(craftedName)) {
+  if (VariantResolver.hasColorVariants(ingredientName)) {
+    return flowerSurplus(ingredientName, inventoryMap, stacksMap, quality);
+  }
+  if (!isQualityPreservingCraft(craftedName) || getAvailableQualityTiers(ingredientName).length === 1) {
     return inventoryMap.get(ingredientName) ?? 0;
+  }
+  if (quality !== 'highest') {
+    return getCollectionQualityTiers(craftedName, stacksMap, quality)
+      .reduce((sum, tier) => sum + (stacksMap.get(ingredientName)?.[tier] ?? 0), 0);
   }
   const targetTier = getQualityTargetTier(craftedName);
   if (targetTier === undefined) return inventoryMap.get(ingredientName) ?? 0;
   return stacksMap.get(ingredientName)?.[targetTier] ?? 0;
+}
+
+function flowerSurplus(baseName: string, inventoryMap: Map<string, number>, stacksMap: Map<string, number[]>, quality: Quality): number {
+  let total = 0;
+  for (const [name, count] of inventoryMap) {
+    if (VariantResolver.getBaseName(name) !== baseName) continue;
+    const reserved = getCollectionQualityTiers(name, stacksMap, quality)
+      .reduce((sum, tier) => sum + Math.min(TARGET, stacksMap.get(name)?.[tier] ?? 0), 0);
+    total += Math.max(0, count - reserved);
+  }
+  return total;
 }
 
 function computeAnyIngredientAvailability(
@@ -763,6 +960,8 @@ function computeAnyIngredientAvailability(
   quality: Quality,
   requiredFromParts: Map<string, number>,
   totalFromParts: Map<string, number>,
+  requiredByQuality = new Map<string, number[]>(),
+  consumedByQuality = new Map<string, number[]>(),
 ): Map<string, number> {
   const availability = new Map<string, number>();
   for (const [wildcardId, anyIngredient] of Object.entries(ANY_INGREDIENTS)) {
@@ -771,6 +970,18 @@ function computeAnyIngredientAvailability(
     for (const candidateName of info.candidates) {
       const candidateRaw = inventoryMap.get(candidateName) ?? 0;
       if (candidateRaw === 0) continue;
+      if (usesTierTargets(candidateName, quality)) {
+        const row: ItemRow = {
+          name: candidateName,
+          required: collectionTarget(candidateName, stacksMap, quality) + (requiredFromParts.get(candidateName) ?? 0),
+          total: totalFromParts.get(candidateName) ?? 0,
+          raw: candidateRaw,
+          tooltip: undefined as any,
+        };
+        Object.assign(row, qualityProgressFields(row, candidateName, stacksMap, quality, requiredByQuality, consumedByQuality));
+        if (calculateNeededCount(row) === 0) raw += Math.max(0, candidateRaw - rawNeededForCompletion(row));
+        continue;
+      }
       const required = TARGET + (requiredFromParts.get(candidateName) ?? 0);
       const total = totalFromParts.get(candidateName) ?? 0;
       const neededForCompletion = Math.max(TARGET, required - total);
@@ -787,23 +998,50 @@ function computeAnyIngredientAvailability(
 }
 
 function rawNeededForCompletion(row: ItemRow): number {
+  if (row.qualityTargets) {
+    const flexibleRequired = row.required - row.qualityTargets.reduce((sum, count) => sum + count, 0);
+    const flexibleConsumed = row.totalFlexible ?? row.total - (row.qualityConsumed?.reduce((sum, count) => sum + count, 0) ?? 0);
+    return reservedQualityRaw(row) + Math.max(0, flexibleRequired - flexibleConsumed);
+  }
   return Math.max(TARGET, row.required - row.total);
+}
+
+function reservedQualityRaw(row: ItemRow): number {
+  if (row.qualityTargets) return row.qualityTargets.reduce((sum, target, tier) => sum
+    + Math.min(row.rawStacks?.[tier] ?? 0, Math.max(0, target - (row.qualityConsumed?.[tier] ?? 0))), 0);
+  return Math.min(TARGET, row.correctQualityCount ?? row.raw);
 }
 
 function extraRawForAnyIngredient(candidateNames: string[], rows: ItemRow[]): number {
   let total = 0;
-  const seenCandidates = new Set<string>();
-  for (const candidateName of candidateNames) {
-    if (seenCandidates.has(candidateName)) continue;
-    seenCandidates.add(candidateName);
-    const row = rows.find(r => r.name === candidateName || VariantResolver.getBaseName(r.name) === candidateName);
-    if (!row) continue;
+  const candidates = new Set(candidateNames);
+  for (const row of rows) {
+    if (!candidates.has(row.name) && !candidates.has(row.sourceName ?? '')
+      && !candidates.has(VariantResolver.getBaseName(row.name))) continue;
     const availableForCompletion = row.correctQualityCount ?? row.raw;
-    const complete = availableForCompletion >= rawNeededForCompletion(row);
+    const complete = row.qualityTargets ? calculateNeededCount(row) === 0 : availableForCompletion >= rawNeededForCompletion(row);
     if (!complete) continue;
     total += Math.max(0, row.raw - rawNeededForCompletion(row));
   }
   return total;
+}
+
+function saplingQualityFields(row: ItemRow, stacksMap: Map<string, number[]>, quality: Quality) {
+  if (!FRUIT_SAPLINGS.has(row.name)) return {};
+  const tiers: Partial<Record<Quality, number>> = { highest: 4, normal: 0, silver: 1, gold: 2, iridium: 4 };
+  const tier = tiers[quality];
+  if (tier === undefined) return {};
+  const stacks = stacksMap.get(row.name) ?? [0, 0, 0, 0, 0];
+  const raw = stacks.reduce((sum, count) => sum + count, 0);
+  const correctQualityCount = stacks[tier] ?? 0;
+  return {
+    raw,
+    rawStacks: stacks,
+    correctQualityCount,
+    qualityTiers: [tier],
+    hasWrongQuality: raw >= TARGET && correctQualityCount < TARGET,
+    namePercentage: Math.min(100, Math.max(...stacks) / TARGET * 100),
+  };
 }
 
 // Each flower color (including Cart) has its own collection target. Recipe
@@ -813,7 +1051,7 @@ function flowerCollectionFields(lookupKey: string, stacksMap: Map<string, number
   const tier = quality === 'highest' ? getQualityTargetTier(lookupKey) : undefined;
   const correctQualityCount = tier === undefined ? undefined : (stacks?.[tier] ?? 0);
   return {
-    required: TARGET,
+    required: collectionTarget(lookupKey, stacksMap, quality),
     requiredStrict: 0,
     requiredFlexible: 0,
     total: 0,
@@ -843,7 +1081,7 @@ function flowerExtraRows(
     // Other qualities can be used in recipes even while that variant is unfinished.
     const raw = collectionRows
       .filter(row => VariantResolver.getBaseName(row.name) === baseName)
-      .reduce((sum, row) => sum + Math.max(0, row.raw - Math.min(TARGET, row.correctQualityCount ?? row.raw)), 0);
+      .reduce((sum, row) => sum + Math.max(0, row.raw - reservedQualityRaw(row)), 0);
     const total = Math.min(totalFromParts.get(baseName) ?? 0, required);
     rows.push({
       name: `${baseName} Extra`,
@@ -944,7 +1182,7 @@ function computeTooltipData(
     if (ownWildcardRecipe || isQualityPreservingCraft(itemName)) {
       cached = craftableCount(itemName, inventoryMap, anyIngredientAvailability, stacksMap, quality);
     } else if (!cached) {
-      cached = craftableCount(itemName, inventoryMap);
+      cached = craftableCount(itemName, inventoryMap, anyIngredientAvailability, stacksMap, quality);
       craftableCache.set(itemName, cached);
     }
     const { count, limiting } = cached;
@@ -970,7 +1208,7 @@ function computeTooltipData(
     ];
   }
 
-  if (Config.getQuality() === 'highest' && !isQualityExemptGroup('Cooking') && getCookingItems().has(itemName)) {
+  if (requiresSeasoning(itemName, quality)) {
     if (recipe === null) recipe = [];
     recipe.push({
       name: 'Qi Seasoning',
@@ -980,13 +1218,13 @@ function computeTooltipData(
     });
   }
 
-  const cookingItems = Config.getQuality() === 'highest' && !isQualityExemptGroup('Cooking') ? getCookingItems() : null;
+  const cookingItems = new Set([...getCookingItems(true)].filter(name => requiresSeasoning(name, quality)));
   const usedBy: UsedByInfo[] = (reverseMap.get(itemName) ?? []).map(craftedName => {
     let cachedCrafted = craftableCache.get(craftedName);
     if (wildcardRecipeMap.has(craftedName) || isQualityPreservingCraft(craftedName)) {
       cachedCrafted = craftableCount(craftedName, inventoryMap, anyIngredientAvailability, stacksMap, quality);
     } else if (!cachedCrafted) {
-      cachedCrafted = craftableCount(craftedName, inventoryMap);
+      cachedCrafted = craftableCount(craftedName, inventoryMap, anyIngredientAvailability, stacksMap, quality);
       craftableCache.set(craftedName, cachedCrafted);
     }
     const { count } = cachedCrafted;
@@ -1077,22 +1315,6 @@ export function hasTooltipContent(t: ItemTooltipData): boolean {
   return !!t.note || !!t.recipe || t.usedBy.length > 0 || t.shops.length > 0;
 }
 
-function getQualityFilteredCount(stacks: number[] | undefined, quality: Quality, maxTierIndex = 4): number {
-  if (!stacks) return 0;
-  switch (quality) {
-    case 'normal':  return stacks[0] ?? 0;
-    case 'silver':  return stacks[1] ?? 0;
-    case 'gold':    return stacks[2] ?? 0;
-    case 'iridium': return stacks[4] ?? 0;
-    case 'highest': {
-      // For "highest" quality, return total across all tiers so user can see how many they have
-      // The completion check uses rawStacks to verify correct quality tier
-      return stacks.reduce((s, v) => s + v, 0);
-    }
-    default: return stacks.reduce((s, v) => s + v, 0);
-  }
-}
-
 // Lightweight computation for historical/one-off data that doesn't use global cache
 // Used by History dialog to compute past game states without polluting the main cache
 export function computeCategoryItemsUncached(
@@ -1101,107 +1323,9 @@ export function computeCategoryItemsUncached(
 ): ItemRow[] {
   const quality = Config.getQuality();
   
-  // Build local inventory map (doesn't touch global cache)
-  const inventoryMap = new Map<string, number>();
-  const stacksMap = new Map<string, number[]>();
-  
-  for (const item of compacted) {
-    let maxTier = (quality === 'highest' && getCookingItems().has(item.name)) ? 2 : 4;
-    maxTier = (quality === 'highest' && getCrabpotItems().has(item.name)) ? 1 : maxTier;
-    const count = item.quality
-      ? getQualityFilteredCount(item.quality, quality, maxTier)
-      : item.stack;
-    inventoryMap.set(item.name, (inventoryMap.get(item.name) ?? 0) + count);
-    if (item.quality) {
-      const prev = stacksMap.get(item.name) ?? [0, 0, 0, 0, 0];
-      stacksMap.set(item.name, item.quality.map((v, i) => (prev[i] ?? 0) + v));
-    }
-  }
-  
-  const requiredFromParts = new Map<string, number>();
-  const totalFromParts = new Map<string, number>();
+  const { inventoryMap, stacksMap } = buildInventoryMaps(compacted);
 
-  applyArtifactTroveRequirements(
-    CustomDataStore.getTroveItems(),
-    inventoryMap,
-    (name, requiredCount, totalCount) => {
-      requiredFromParts.set(name, (requiredFromParts.get(name) ?? 0) + requiredCount);
-      totalFromParts.set(name, (totalFromParts.get(name) ?? 0) + totalCount);
-    }
-  );
-
-  for (const [craftedItemName, ingredients] of getPartsDataConsumersFirst()) {
-    const craftedCount = getProgressInventoryCount(craftedItemName, inventoryMap, stacksMap, quality);
-    const avgYield = yieldMap.get(craftedItemName) ?? 1;
-    const required = requiredFromParts.get(craftedItemName) ?? 0;
-    const targetAmount = TARGET + required;
-    const totalCrafted = totalFromParts.get(craftedItemName) ?? 0;
-    
-    // How many of this crafted item do we have (inventory + what we've made/opened)
-    const totalHave = Math.min(craftedCount + totalCrafted, targetAmount);
-    
-    for (const [ingredientId, ingredientEntry] of Object.entries(ingredients)) {
-      const [ingredientName, qty] = ingredientEntry as [string | null, number];
-      const anyIngredient = getAnyIngredientInfo(ingredientId);
-      if (isWildcard(ingredientId, ingredientName)) {
-        if (!anyIngredient) continue;
-        const requiredCount = Math.round((qty * targetAmount) / avgYield);
-        const totalCount = Math.round((qty * totalHave) / avgYield);
-        requiredFromParts.set(anyIngredient.name, (requiredFromParts.get(anyIngredient.name) ?? 0) + requiredCount);
-        totalFromParts.set(anyIngredient.name, (totalFromParts.get(anyIngredient.name) ?? 0) + totalCount);
-        continue;
-      }
-      const name = ingredientName!;
-      
-      // Calculate total ingredients required (for the full targetAmount)
-      const requiredCount = Math.round((qty * targetAmount) / avgYield);
-      // Calculate ingredients already used (for what we have)
-      const totalCount = Math.round((qty * totalHave) / avgYield);
-      requiredFromParts.set(name, (requiredFromParts.get(name) ?? 0) + requiredCount);
-      totalFromParts.set(name, (totalFromParts.get(name) ?? 0) + totalCount);
-    }
-  }
-
-  const troveItems = CustomDataStore.getTroveItems();
-  if (troveItems.length > 0) {
-    const previousTroveTotal = totalFromParts.get("Artifact Trove") ?? 0;
-    const troveOpenedCount = getArtifactTroveOpenedCount(troveItems, inventoryMap, totalFromParts);
-    const nextTroveTotal = troveOpenedCount * troveItems.length;
-
-    if (nextTroveTotal !== previousTroveTotal) {
-      totalFromParts.set("Artifact Trove", nextTroveTotal);
-
-      const artifactTroveRecipe = recipeMap.get("Artifact Trove");
-      const craftedCount = getProgressInventoryCount("Artifact Trove", inventoryMap, stacksMap, quality);
-      const targetAmount = TARGET + (requiredFromParts.get("Artifact Trove") ?? 0);
-      const avgYield = yieldMap.get("Artifact Trove") ?? 1;
-      const previousTotalHave = Math.min(craftedCount + previousTroveTotal, targetAmount);
-      const nextTotalHave = Math.min(craftedCount + nextTroveTotal, targetAmount);
-
-      for (const [ingredientName, qty] of artifactTroveRecipe ?? []) {
-        const previousIngredientTotal = Math.round((qty * previousTotalHave) / avgYield);
-        const nextIngredientTotal = Math.round((qty * nextTotalHave) / avgYield);
-        const delta = nextIngredientTotal - previousIngredientTotal;
-        if (delta === 0) continue;
-
-        totalFromParts.set(ingredientName, (totalFromParts.get(ingredientName) ?? 0) + delta);
-      }
-    }
-  }
-
-  if (quality === 'highest' && !isQualityExemptGroup('Cooking')) {
-    const seen = new Set<string>();
-    for (const item of CustomDataStore.getItemsData()) {
-      if (!getCookingItems().has(item.name) || seen.has(item.name)) continue;
-      seen.add(item.name);
-      requiredFromParts.set('Qi Seasoning', (requiredFromParts.get('Qi Seasoning') ?? 0) + TARGET);
-      // Cap at TARGET per cooking item
-      totalFromParts.set(
-        'Qi Seasoning',
-        (totalFromParts.get('Qi Seasoning') ?? 0) + Math.min(getProgressInventoryCount(item.name, inventoryMap, stacksMap, quality), TARGET)
-      );
-    }
-  }
+  const { requiredFromPartsStrict, requiredFromPartsFlexible, totalFromPartsStrict, totalFromPartsFlexible, requiredFromParts, totalFromParts, totalFromPartsActual, requiredFromPartsQuality, totalFromPartsQuality } = computeRequirements(inventoryMap, stacksMap, quality);
 
   const source = CustomDataStore.getItemsData();
   const entries = categoryName === 'All' ? source : source.filter((item) => item.category === categoryName);
@@ -1212,6 +1336,10 @@ export function computeCategoryItemsUncached(
   for (const item of entries) {
     let itemKey = item.displayName || item.name;
     let lookupKey = itemKey;
+
+    if (item.displayName !== null && !VariantResolver.hasColorVariants(item.name) && !VariantResolver.hasItemIdVariants(item.name)) {
+      lookupKey = item.name;
+    }
     
     // For base items with variants, check if base name exists in inventory
     if (item.displayName === null && VariantResolver.hasColorVariants(item.name)) {
@@ -1234,20 +1362,29 @@ export function computeCategoryItemsUncached(
     seen.add(itemKey);
     
     const raw = inventoryMap.get(lookupKey) ?? 0;
-    const required = TARGET + (requiredFromParts.get(item.name) ?? 0);
+    const required = collectionTarget(lookupKey, stacksMap, quality) + (requiredFromParts.get(item.name) ?? 0);
     const total = totalFromParts.get(item.name) ?? 0;
-    rows.push({ 
+    const row: ItemRow = {
       name: itemKey, 
+      sourceName: item.name,
       itemId: compacted.find(entry => entry.name === lookupKey || entry.name === itemKey)?.itemId,
       category: item.category,
-      required, 
-      total, 
-      raw, 
+      required,
+      requiredStrict: requiredFromPartsStrict.get(item.name) ?? 0,
+      requiredFlexible: requiredFromPartsFlexible.get(item.name) ?? 0,
+      total,
+      totalStrict: totalFromPartsStrict.get(item.name) ?? 0,
+      totalFlexible: totalFromPartsFlexible.get(item.name) ?? 0,
+      raw,
       rawStacks: stacksMap.get(lookupKey), // Use lookupKey to get actual stacks
       buyPrice: priceMap.get(item.name),
       tooltip: undefined as any, // History doesn't need tooltips
       ...(VariantResolver.hasColorVariants(item.name) ? flowerCollectionFields(lookupKey, stacksMap, quality) : {}),
-    });
+    };
+    Object.assign(row, qualityProgressFields(row, lookupKey, stacksMap, quality,
+      VariantResolver.hasColorVariants(item.name) ? undefined : requiredFromPartsQuality,
+      VariantResolver.hasColorVariants(item.name) ? undefined : totalFromPartsQuality));
+    rows.push(row);
   }
 
   rows.push(...flowerExtraRows(entries, rows, requiredFromParts, totalFromParts));
@@ -1346,7 +1483,16 @@ export interface FinishableItem {
 // - target-tier surplus of ingredients that have a preserving consumer is reserved
 //   for that (iridium fish never go into cooked dishes)
 function surplusAvailableFor(craftedName: string, ingredientName: string, quality: Quality): number {
+  if (VariantResolver.hasColorVariants(ingredientName)) {
+    return flowerSurplus(ingredientName, globalInventoryMap, globalStacksMap, quality);
+  }
   const total = globalInventoryMap.get(ingredientName) ?? 0;
+  if (quality !== 'highest') {
+    const reserved = getItemCategory(ingredientName) === undefined ? 0
+      : getCollectionQualityTiers(ingredientName, globalStacksMap, quality)
+        .reduce((sum, tier) => sum + Math.min(TARGET, globalStacksMap.get(ingredientName)?.[tier] ?? 0), 0);
+    return Math.max(0, total - reserved);
+  }
   const tier = quality === 'highest' ? getQualityTargetTier(ingredientName) : undefined;
   const stacks = globalStacksMap.get(ingredientName);
   if (tier === undefined || !stacks) {
@@ -1360,6 +1506,14 @@ function surplusAvailableFor(craftedName: string, ingredientName: string, qualit
   const nonTier = Math.max(0, total - tierCount);
   const hasPreservingConsumer = (reverseMap.get(ingredientName) ?? []).some(isQualityPreservingCraft);
   return nonTier + (hasPreservingConsumer ? 0 : tierSurplus);
+}
+
+function surplusAtTier(ingredientName: string, tier: number, quality: Quality): number {
+  if (getAvailableQualityTiers(ingredientName).length === 1) tier = 0;
+  const have = globalStacksMap.get(ingredientName)?.[tier] ?? 0;
+  const reserved = getItemCategory(ingredientName) !== undefined
+    && getCollectionQualityTiers(ingredientName, globalStacksMap, quality).includes(tier) ? TARGET : 0;
+  return Math.max(0, have - reserved);
 }
 
 // Which unfinished craftable items can be finished right now from surplus ingredients.
@@ -1380,11 +1534,10 @@ export function computeFinishableItems(
 
     // Ageable artisan goods: lower-quality output on hand only needs aging
     let viaAging = false;
-    if (quality === 'highest' && isAgeableCraft(row.name)) {
-      const tier = getQualityTargetTier(row.name);
-      const total = globalInventoryMap.get(row.name) ?? 0;
-      const tierCount = tier !== undefined ? (globalStacksMap.get(row.name)?.[tier] ?? 0) : 0;
-      const agingCredit = Math.min(needed, Math.max(0, total - tierCount));
+    if (isAgeableCraft(row.name)) {
+      const projected = getDependencyInventoryCount(row.name, globalInventoryMap, globalStacksMap, quality,
+        row.required - collectionTarget(row.name, globalStacksMap, quality));
+      const agingCredit = Math.min(needed, Math.max(0, projected - calculateObtainedCount(row)));
       if (agingCredit > 0) {
         needed -= agingCredit;
         viaAging = true;
@@ -1392,6 +1545,35 @@ export function computeFinishableItems(
     }
 
     const avgYield = yieldMap.get(row.name) ?? 1;
+    if (row.qualityTargets && isQualityPreservingCraft(row.name)) {
+      let producible = 0;
+      let limiting: string | null = null;
+      const sharedInputsUsed = new Map<string, number>();
+      for (const [tier, target] of row.qualityTargets.entries()) {
+        const missing = Math.max(0, target - (row.rawStacks?.[tier] ?? 0) - (row.qualityConsumed?.[tier] ?? 0));
+        if (missing === 0) continue;
+        let crafts = Infinity;
+        for (const [name, qty] of recipeMap.get(row.name) ?? []) {
+          const available = Math.floor(Math.max(0, surplusAtTier(name, tier, quality) - (sharedInputsUsed.get(name) ?? 0)) / qty);
+          if (available < crafts) {
+            crafts = available;
+            if (available * avgYield < missing) limiting = name;
+          }
+        }
+        if (Number.isFinite(crafts)) {
+          const produced = Math.min(missing, Math.floor(crafts * avgYield));
+          producible += produced;
+          for (const [name, qty] of recipeMap.get(row.name) ?? []) {
+            if (getAvailableQualityTiers(name).length === 1) {
+              sharedInputsUsed.set(name, (sharedInputsUsed.get(name) ?? 0) + Math.ceil(produced / avgYield) * qty);
+            }
+          }
+        }
+      }
+      results.push({ name: row.name, itemId: row.itemId, category: row.category, needed, producible, limiting,
+        finishable: producible >= needed, viaAging: false });
+      continue;
+    }
     let minCrafts = Infinity;
     let limiting: string | null = null;
     for (const [ingredientName, qty] of recipeMap.get(row.name) ?? []) {
@@ -1402,7 +1584,7 @@ export function computeFinishableItems(
       const crafts = Math.floor((globalAnyIngredientAvailability.get(ingredientName) ?? 0) / qty);
       if (crafts < minCrafts) { minCrafts = crafts; limiting = ingredientName; }
     }
-    if (quality === 'highest' && !isQualityExemptGroup('Cooking') && getCookingItems().has(row.name)) {
+    if (requiresSeasoning(row.name, quality)) {
       const seasoningSurplus = Math.max(0, (globalInventoryMap.get('Qi Seasoning') ?? 0) - TARGET);
       if (seasoningSurplus < minCrafts) { minCrafts = seasoningSurplus; limiting = 'Qi Seasoning'; }
     }

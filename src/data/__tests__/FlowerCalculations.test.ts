@@ -96,11 +96,11 @@ describe('flower collection and crafting progress', () => {
             for (const [quality, expectedNeeded, expectedExtra] of [
                 ['highest', 989, 1500],
                 ['any', 0, 511],
-                ['all', 0, 511],
-                ['normal', 0, 1],
-                ['silver', 799, 0],
-                ['gold', 699, 0],
-                ['iridium', 989, 0],
+                ['all', 2487, 1],
+                ['normal', 0, 511],
+                ['silver', 799, 1310],
+                ['gold', 699, 1210],
+                ['iridium', 989, 1500],
             ] as const) {
                 Config.getInstance().setQuality(quality);
                 const rows = compute('Flowers', inventory);

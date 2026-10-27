@@ -28,14 +28,7 @@ interface CategoryStat {
 }
 
 function rowPct(row: ItemRow): number {
-  return calculatePercentage({
-    name: row.name,
-    required: row.required,
-    total: row.total,
-    raw: row.raw,
-    hasWrongQuality: row.hasWrongQuality,
-    correctQualityCount: row.correctQualityCount,
-  });
+  return calculatePercentage(row);
 }
 
 function effectiveRowTotal(row: ItemRow): number {

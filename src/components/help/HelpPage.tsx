@@ -77,12 +77,22 @@ export function HelpPage() {
 
         <Section title="Quality Rules">
           <p>
+            A collection stack contains 999 items of the same quality. Any accepts one such stack per item, with the
+            quality chosen separately for each item. All requires a stack at every quality available for that item.
+            Surplus at one quality never fills another quality's collection target.
+          </p>
+          <p>
+            Normal, Silver, Gold, and Iridium select that quality. If an item cannot have the selected quality, it uses
+            its highest available quality below that level. Items with no quality levels count normally.
+          </p>
+          <p>
             The default quality mode is highest. Items that cannot have useful quality are counted normally. Items with a
             known highest-quality target only count the relevant tier for progress.
           </p>
           <ul>
             <li>Cooking outputs count gold quality.</li>
             <li>Crabpot-only fish count silver quality.</li>
+            <li>Fruit tree saplings count iridium quality; Tea Sapling counts normally. A fruit sapling's name fill shows total collected, while its percentage and checkbox track the required quality.</li>
             <li>Fish, forage-capable shellfish, flowers, wine, animal products, and most preserved quality items count iridium quality.</li>
             <li>Smoked fish keeps the input fish quality, so its target follows the fish used to make it.</li>
             <li>Cooking/crafting ingredient rows such as Oil, Wheat Flour, Egg: Extra, and Milk: Extra do not require quality themselves.</li>

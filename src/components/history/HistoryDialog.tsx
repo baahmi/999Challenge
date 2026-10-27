@@ -12,6 +12,7 @@ import { CustomDataStore } from '../../data/CustomDataStore';
 import { computeCategoryItemsUncached } from '../../data/itemCalculations';
 import { VariantResolver } from '../../data/CustomDataStore';
 import { Config } from '../../config/Config';
+import { calculateObtainedCount, calculateCappedObtainedCount } from '../../types/Item';
 
 export interface HistoryDialogProps {
   open: boolean;
@@ -35,7 +36,7 @@ function getHistoricalItemCount(
 
   const exactRow = rows.find(r => r.name === selectedItem);
   if (exactRow) {
-    return exactRow.raw + exactRow.total;
+    return calculateObtainedCount(exactRow);
   }
 
   const selectedBaseName = VariantResolver.getBaseName(selectedItem);
@@ -44,7 +45,7 @@ function getHistoricalItemCount(
     VariantResolver.getBaseName(r.name) === selectedBaseName
   );
   if (matchingRows.length > 0) {
-    return matchingRows.reduce((sum, row) => sum + row.raw + row.total, 0);
+    return matchingRows.reduce((sum, row) => sum + calculateObtainedCount(row), 0);
   }
 
   const directCount = compacted
@@ -263,16 +264,16 @@ export function HistoryDialog({ open, onClose, journal }: HistoryDialogProps) {
       return;
     }
     const cats = Config.getCategoryNames();
+    const categorySet = new Set(cats);
     const ignored = Config.getIgnoredCategories();
     const data = days.map(day => {
       const items = JournalStore.reconstructItemsAtDay(journal, day);
       const compacted = JournalStore.toCompactedItems(items, ignored);
       let totalHave = 0, totalRequired = 0;
-      for (const cat of cats) {
-        for (const row of computeCategoryItemsUncached(cat, compacted)) {
-          totalRequired += row.required;
-          totalHave += Math.min(row.raw + row.total, row.required);
-        }
+      for (const row of computeCategoryItemsUncached('All', compacted)) {
+        if (!row.category || !categorySet.has(row.category)) continue;
+        totalRequired += row.required;
+        totalHave += calculateCappedObtainedCount(row);
       }
       return { x: day, y: totalRequired > 0 ? Math.round((totalHave / totalRequired) * 10000) / 100 : 0 };
     });

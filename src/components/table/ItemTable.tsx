@@ -357,11 +357,12 @@ export function ItemTable({ items, scrollToItem }: ItemTableProps) {
       [0, 1, 2, 4].forEach(tier => {
         if ((item.rawStacks![tier] ?? 0) > 0) usedTiers.add(tier);
       });
+      (item as unknown as ItemRow).qualityTiers?.forEach(tier => usedTiers.add(tier));
     }
     
     // If any item with quality has wrong quality, show both the tier they have and the tier they need
     // For cooking: if they have normal (0) but need gold (2), show both
-    const hasWrongQualityItems = itemsWithQuality.some(item => (item as unknown as ItemRow).hasWrongQuality);
+    const hasWrongQualityItems = itemsWithQuality.some(item => (item as unknown as ItemRow).hasWrongQuality && !(item as unknown as ItemRow).qualityTiers);
     if (hasWrongQualityItems) {
       if (usedTiers.has(0)) usedTiers.add(2); // If has normal, also show gold
       if (usedTiers.has(1)) usedTiers.add(4); // If has silver, also show iridium
@@ -471,7 +472,7 @@ export function ItemTable({ items, scrollToItem }: ItemTableProps) {
                       overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
                       textAlign: col.key === 'checkbox' || col.key === 'image' ? 'center' : COST_KEYS.has(col.key) ? 'right' : undefined,
                       color: col.key === 'gold_needed' ? (isDark ? '#ffd54f' : '#9a7000') : col.key === 'qi_needed' ? (isDark ? '#ce93d8' : '#8b44ac') : undefined,
-                      ...(col.key === 'name' ? getNameCellProgressStyle(row.percentage, isDark, rowBg, showNameProgress) : { backgroundColor: rowBg }),
+                      ...(col.key === 'name' ? getNameCellProgressStyle(itemRow?.namePercentage ?? row.percentage, isDark, rowBg, showNameProgress) : { backgroundColor: rowBg }),
                       ...stickyStyle,
                     }}>
                       {renderCell(row, index, col.key)}

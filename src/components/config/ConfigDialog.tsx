@@ -112,6 +112,13 @@ export function ConfigDialog({ open, onClose }: ConfigDialogProps) {
             ))}
           </Select>
         </Box>
+        {(quality === 'any' || quality === 'all') && (
+          <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+            {quality === 'any'
+              ? 'Collect 999 at one quality for each item. Different qualities do not combine into a stack.'
+              : 'Collect 999 at every quality available for each item. Surplus at one quality does not cover another.'}
+          </Typography>
+        )}
         {quality === 'highest' && (
           <Box sx={{ mt: 1.5, ml: '96px' }}>
             <Typography variant="body2" color="text.secondary">
