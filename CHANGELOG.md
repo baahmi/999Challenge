@@ -9,7 +9,7 @@
 - You can use / to search for items and jump to the tab where it is.
 
 ### Changes
-#### Unreleased
+#### 0.1.6
 - Removed temporary Qi Bean and raw Qi Fruit collection targets. Qi Fruit Wine, Qi Fruit Jelly, and Dried Qi Fruits remain available. (#8)
 - Fixed flower color progress so each color's collection stack is separate from recipe requirements and crafting credit. Flower Extra rows track surplus and crafting progress without counting the same inventory twice. (#2)
 - Named White Poppy correctly and added all known flower colors to the collection list, including colors not yet owned. Existing saved flower names and history remain readable. (#1)
