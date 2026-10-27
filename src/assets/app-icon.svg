@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <title>999 Challenge</title>
+  <rect width="64" height="64" rx="12" fill="#184b38"/>
+  <rect x="4" y="4" width="56" height="56" rx="8" fill="#347247"/>
+  <g fill="#ffe39a" fill-rule="evenodd" shape-rendering="crispEdges">
+    <path d="M10 22h12v20H10v-4h8v-4h-8Zm4 4v4h4v-4Z"/>
+    <path d="M26 22h12v20H26v-4h8v-4h-8Zm4 4v4h4v-4Z"/>
+    <path d="M42 22h12v20H42v-4h8v-4h-8Zm4 4v4h4v-4Z"/>
+  </g>
+</svg>
