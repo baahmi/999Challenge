@@ -727,137 +727,203 @@
 },1],["Moss Soup",{
 "Moss": ["Moss",20]
 },1],["Smoked Pufferfish",{
-"128": ["Pufferfish",1]
+"128": ["Pufferfish",1],
+"382": ["Coal",1]
 },1],["Smoked Anchovy",{
-"129": ["Anchovy",1]
+"129": ["Anchovy",1],
+"382": ["Coal",1]
 },1],["Smoked Tuna",{
-"130": ["Tuna",1]
+"130": ["Tuna",1],
+"382": ["Coal",1]
 },1],["Smoked Sardine",{
-"131": ["Sardine",1]
+"131": ["Sardine",1],
+"382": ["Coal",1]
 },1],["Smoked Bream",{
-"132": ["Bream",1]
+"132": ["Bream",1],
+"382": ["Coal",1]
 },1],["Smoked Largemouth Bass",{
-"136": ["Largemouth Bass",1]
+"136": ["Largemouth Bass",1],
+"382": ["Coal",1]
 },1],["Smoked Smallmouth Bass",{
-"137": ["Smallmouth Bass",1]
+"137": ["Smallmouth Bass",1],
+"382": ["Coal",1]
 },1],["Smoked Rainbow Trout",{
-"138": ["Rainbow Trout",1]
+"138": ["Rainbow Trout",1],
+"382": ["Coal",1]
 },1],["Smoked Salmon",{
-"139": ["Salmon",1]
+"139": ["Salmon",1],
+"382": ["Coal",1]
 },1],["Smoked Walleye",{
-"140": ["Walleye",1]
+"140": ["Walleye",1],
+"382": ["Coal",1]
 },1],["Smoked Perch",{
-"141": ["Perch",1]
+"141": ["Perch",1],
+"382": ["Coal",1]
 },1],["Smoked Carp",{
-"142": ["Carp",1]
+"142": ["Carp",1],
+"382": ["Coal",1]
 },1],["Smoked Catfish",{
-"143": ["Catfish",1]
+"143": ["Catfish",1],
+"382": ["Coal",1]
 },1],["Smoked Pike",{
-"144": ["Pike",1]
+"144": ["Pike",1],
+"382": ["Coal",1]
 },1],["Smoked Sunfish",{
-"145": ["Sunfish",1]
+"145": ["Sunfish",1],
+"382": ["Coal",1]
 },1],["Smoked Red Mullet",{
-"146": ["Red Mullet",1]
+"146": ["Red Mullet",1],
+"382": ["Coal",1]
 },1],["Smoked Herring",{
-"147": ["Herring",1]
+"147": ["Herring",1],
+"382": ["Coal",1]
 },1],["Smoked Eel",{
-"148": ["Eel",1]
+"148": ["Eel",1],
+"382": ["Coal",1]
 },1],["Smoked Octopus",{
-"149": ["Octopus",1]
+"149": ["Octopus",1],
+"382": ["Coal",1]
 },1],["Smoked Red Snapper",{
-"150": ["Red Snapper",1]
+"150": ["Red Snapper",1],
+"382": ["Coal",1]
 },1],["Smoked Squid",{
-"151": ["Squid",1]
+"151": ["Squid",1],
+"382": ["Coal",1]
 },1],["Smoked Sea Cucumber",{
-"154": ["Sea Cucumber",1]
+"154": ["Sea Cucumber",1],
+"382": ["Coal",1]
 },1],["Smoked Super Cucumber",{
-"155": ["Super Cucumber",1]
+"155": ["Super Cucumber",1],
+"382": ["Coal",1]
 },1],["Smoked Ghostfish",{
-"156": ["Ghostfish",1]
+"156": ["Ghostfish",1],
+"382": ["Coal",1]
 },1],["Smoked Stonefish",{
-"158": ["Stonefish",1]
+"158": ["Stonefish",1],
+"382": ["Coal",1]
 },1],["Smoked Ice Pip",{
-"161": ["Ice Pip",1]
+"161": ["Ice Pip",1],
+"382": ["Coal",1]
 },1],["Smoked Lava Eel",{
-"162": ["Lava Eel",1]
+"162": ["Lava Eel",1],
+"382": ["Coal",1]
 },1],["Smoked Sandfish",{
-"164": ["Sandfish",1]
+"164": ["Sandfish",1],
+"382": ["Coal",1]
 },1],["Smoked Scorpion Carp",{
-"165": ["Scorpion Carp",1]
+"165": ["Scorpion Carp",1],
+"382": ["Coal",1]
 },1],["Smoked Clam",{
-"372": ["Clam",1]
+"372": ["Clam",1],
+"382": ["Coal",1]
 },1],["Smoked Sturgeon",{
-"698": ["Sturgeon",1]
+"698": ["Sturgeon",1],
+"382": ["Coal",1]
 },1],["Smoked Tiger Trout",{
-"699": ["Tiger Trout",1]
+"699": ["Tiger Trout",1],
+"382": ["Coal",1]
 },1],["Smoked Bullhead",{
-"700": ["Bullhead",1]
+"700": ["Bullhead",1],
+"382": ["Coal",1]
 },1],["Smoked Tilapia",{
-"701": ["Tilapia",1]
+"701": ["Tilapia",1],
+"382": ["Coal",1]
 },1],["Smoked Chub",{
-"702": ["Chub",1]
+"702": ["Chub",1],
+"382": ["Coal",1]
 },1],["Smoked Dorado",{
-"704": ["Dorado",1]
+"704": ["Dorado",1],
+"382": ["Coal",1]
 },1],["Smoked Albacore",{
-"705": ["Albacore",1]
+"705": ["Albacore",1],
+"382": ["Coal",1]
 },1],["Smoked Shad",{
-"706": ["Shad",1]
+"706": ["Shad",1],
+"382": ["Coal",1]
 },1],["Smoked Lingcod",{
-"707": ["Lingcod",1]
+"707": ["Lingcod",1],
+"382": ["Coal",1]
 },1],["Smoked Halibut",{
-"708": ["Halibut",1]
+"708": ["Halibut",1],
+"382": ["Coal",1]
 },1],["Smoked Lobster",{
-"715": ["Lobster",1]
+"715": ["Lobster",1],
+"382": ["Coal",1]
 },1],["Smoked Crayfish",{
-"716": ["Crayfish",1]
+"716": ["Crayfish",1],
+"382": ["Coal",1]
 },1],["Smoked Crab",{
-"717": ["Crab",1]
+"717": ["Crab",1],
+"382": ["Coal",1]
 },1],["Smoked Cockle",{
-"718": ["Cockle",1]
+"718": ["Cockle",1],
+"382": ["Coal",1]
 },1],["Smoked Mussel",{
-"719": ["Mussel",1]
+"719": ["Mussel",1],
+"382": ["Coal",1]
 },1],["Smoked Shrimp",{
-"720": ["Shrimp",1]
+"720": ["Shrimp",1],
+"382": ["Coal",1]
 },1],["Smoked Snail",{
-"721": ["Snail",1]
+"721": ["Snail",1],
+"382": ["Coal",1]
 },1],["Smoked Periwinkle",{
-"722": ["Periwinkle",1]
+"722": ["Periwinkle",1],
+"382": ["Coal",1]
 },1],["Smoked Oyster",{
-"723": ["Oyster",1]
+"723": ["Oyster",1],
+"382": ["Coal",1]
 },1],["Smoked Woodskip",{
-"734": ["Woodskip",1]
+"734": ["Woodskip",1],
+"382": ["Coal",1]
 },1],["Smoked Void Salmon",{
-"795": ["Void Salmon",1]
+"795": ["Void Salmon",1],
+"382": ["Coal",1]
 },1],["Smoked Slimejack",{
-"796": ["Slimejack",1]
+"796": ["Slimejack",1],
+"382": ["Coal",1]
 },1],["Smoked Midnight Squid",{
-"798": ["Midnight Squid",1]
+"798": ["Midnight Squid",1],
+"382": ["Coal",1]
 },1],["Smoked Spook Fish",{
-"799": ["Spook Fish",1]
+"799": ["Spook Fish",1],
+"382": ["Coal",1]
 },1],["Smoked Blobfish",{
-"800": ["Blobfish",1]
+"800": ["Blobfish",1],
+"382": ["Coal",1]
 },1],["Smoked Flounder",{
-"267": ["Flounder",1]
+"267": ["Flounder",1],
+"382": ["Coal",1]
 },1],["Smoked Midnight Carp",{
-"269": ["Midnight Carp",1]
+"269": ["Midnight Carp",1],
+"382": ["Coal",1]
 },1],["Smoked Stingray",{
-"836": ["Stingray",1]
+"836": ["Stingray",1],
+"382": ["Coal",1]
 },1],["Smoked Lionfish",{
-"837": ["Lionfish",1]
+"837": ["Lionfish",1],
+"382": ["Coal",1]
 },1],["Smoked Blue Discus",{
-"838": ["Blue Discus",1]
+"838": ["Blue Discus",1],
+"382": ["Coal",1]
 },1],["Smoked Son of Crimsonfish",{
-"898": ["Son of Crimsonfish",1]
+"898": ["Son of Crimsonfish",1],
+"382": ["Coal",1]
 },1],["Smoked Ms. Angler",{
-"899": ["Ms. Angler",1]
+"899": ["Ms. Angler",1],
+"382": ["Coal",1]
 },1],["Smoked Legend II",{
-"900": ["Legend II",1]
+"900": ["Legend II",1],
+"382": ["Coal",1]
 },1],["Smoked Radioactive Carp",{
-"901": ["Radioactive Carp",1]
+"901": ["Radioactive Carp",1],
+"382": ["Coal",1]
 },1],["Smoked Glacierfish Jr.",{
-"902": ["Glacierfish Jr.",1]
+"902": ["Glacierfish Jr.",1],
+"382": ["Coal",1]
 },1],["Smoked Goby",{
-"Goby": ["Goby",1]
+"Goby": ["Goby",1],
+"382": ["Coal",1]
 },1],["Aged Pufferfish Roe",{
 "": ["Pufferfish Roe",1]
 },1],["Aged Anchovy Roe",{
@@ -1457,17 +1523,23 @@
 },1],["Dried Purple Mushrooms",{
 "422": ["Purple Mushroom",5]
 },1],["Copper Bar",{
-"378": ["Copper Ore",5]
+"378": ["Copper Ore",5],
+"382": ["Coal",1]
 },1],["Iron Bar",{
-"380": ["Iron Ore",5]
+"380": ["Iron Ore",5],
+"382": ["Coal",1]
 },1],["Gold Bar",{
-"384": ["Gold Ore",5]
+"384": ["Gold Ore",5],
+"382": ["Coal",1]
 },1],["Iridium Bar",{
-"386": ["Iridium Ore",5]
+"386": ["Iridium Ore",5],
+"382": ["Coal",1]
 },1],["Radioactive Bar",{
-"909": ["Radioactive Ore",5]
+"909": ["Radioactive Ore",5],
+"382": ["Coal",1]
 },1],["Wilted Bouquet",{
-"458": ["Bouquet",1]
+"458": ["Bouquet",1],
+"382": ["Coal",1]
 },1],["Void Ghost Pendant",{
 "769": ["Void Essence",200]
 },1],["Artifact Trove",{
@@ -1479,7 +1551,8 @@
 },1],["Fossilized Skull",{
 "791": ["Golden Coconut",7]
 },1],["Refined Quartz",{
-"82": ["Fire Quartz",5]
+"82": ["Fire Quartz",5],
+"382": ["Coal",3]
 },[15,20]],["??Foroguemon??",{
 "203": ["Strange Bun",1]
 },1],["??HMTGF??",{

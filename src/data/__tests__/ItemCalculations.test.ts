@@ -465,13 +465,14 @@ describe('computeCategoryItems', () => {
             { category: 'Fish', name: 'Carp', displayName: null },
             { category: 'Smoked Fish', name: 'Smoked Carp', displayName: null },
             { category: 'Cooking', name: 'Carp Surprise', displayName: null },
+            { category: 'Resources', name: 'Coal', displayName: null },
             { category: 'Resources', name: 'Qi Seasoning', displayName: null },
             { category: 'Fruits', name: 'Cherry', displayName: null },
             { category: 'Wine', name: 'Cherry Wine', displayName: null },
         ];
         // recipeMap is built once from the real parts.json, so use the real recipes here
         CustomDataStore.partsData = [
-            ["Smoked Carp", { "142": ["Carp", 1] }, 1],
+            ["Smoked Carp", { "142": ["Carp", 1], "382": ["Coal", 1] }, 1],
             ["Carp Surprise", { "142": ["Carp", 4] }, 1],
             ["Cherry Wine", { "638": ["Cherry", 1] }, 1],
         ] as PartsEntry[]
@@ -481,6 +482,7 @@ describe('computeCategoryItems', () => {
         const results = computeFinishableItems([
             { name: 'Carp', stack: 1025, category: 'Fish', quality: [0,0,0,0,1025] },
             { name: 'Qi Seasoning', stack: 2000, category: 'Resources', quality: [2000,0,0,0,0] },
+            { name: 'Coal', stack: 5000, quality: [5000,0,0,0,0] },
             { name: 'Cherry', stack: 999, category: 'Fruits', quality: [0,0,0,0,999] },
             { name: 'Cherry Wine', stack: 999, category: 'Wine', quality: [999,0,0,0,0] },
         ]);
@@ -501,6 +503,7 @@ describe('computeCategoryItems', () => {
         const results2 = computeFinishableItems([
             { name: 'Carp', stack: 5998, category: 'Fish', quality: [4000,0,0,0,1998] },
             { name: 'Qi Seasoning', stack: 1500, category: 'Resources', quality: [1500,0,0,0,0] },
+            { name: 'Coal', stack: 5000, quality: [5000,0,0,0,0] },
         ]);
         const smoked2 = results2.find(r => r.name === 'Smoked Carp')!;
         expect(smoked2.finishable).toBe(true);

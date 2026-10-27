@@ -210,9 +210,11 @@ describe('quality mode collection stacks', () => {
     }
 
     it('does not mark all smoked fish tiers finishable from surplus of only one input quality', () => {
-        items([['Fish', 'Carp'], ['Smoked Fish', 'Smoked Carp']], [['Smoked Carp', { '142': ['Carp', 1] }, 1]]);
+        items([['Fish', 'Carp'], ['Smoked Fish', 'Smoked Carp'], ['Resources', 'Coal']],
+            [['Smoked Carp', { '142': ['Carp', 1], '382': ['Coal', 1] }, 1]]);
         const smoked = computeFinishableItems([
             { name: 'Carp', stack: 8000, quality: [8000, 0, 0, 0, 0] },
+            { name: 'Coal', stack: 5000, quality: [5000, 0, 0, 0, 0] },
         ]).find(row => row.name === 'Smoked Carp')!;
         expect(smoked.finishable).toBe(false);
         expect(smoked.producible).toBe(999);
@@ -220,9 +222,11 @@ describe('quality mode collection stacks', () => {
 
     it('can finish an uncollected any-quality smoked stack from iridium input surplus', () => {
         Config.getInstance().setQuality('any');
-        items([['Fish', 'Carp'], ['Smoked Fish', 'Smoked Carp']], [['Smoked Carp', { '142': ['Carp', 1] }, 1]]);
+        items([['Fish', 'Carp'], ['Smoked Fish', 'Smoked Carp'], ['Resources', 'Coal']],
+            [['Smoked Carp', { '142': ['Carp', 1], '382': ['Coal', 1] }, 1]]);
         const smoked = computeFinishableItems([
             { name: 'Carp', stack: 1998, quality: [0, 0, 0, 0, 1998] },
+            { name: 'Coal', stack: 1998, quality: [1998, 0, 0, 0, 0] },
         ]).find(row => row.name === 'Smoked Carp')!;
         expect(smoked.finishable).toBe(true);
         expect(smoked.producible).toBe(999);

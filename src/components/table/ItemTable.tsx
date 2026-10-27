@@ -19,7 +19,7 @@ interface ItemTableProps {
   items: ItemRow[];
 }
 
-function TooltipPanel({ name, data }: { name: string; data: ItemTooltipData }) {
+export function TooltipPanel({ name, data }: { name: string; data: ItemTooltipData }) {
   const canCraftColor = data.done ? '#6f6' : data.craftableCount > 0 ? '#6f6' : '#f66';
   const usedBySorted = data.usedBy?.sort((a, b) => (a.done ? 1 : 0) - (b.done ? 1 : 0));
   const formatShopPrice = (shop: string, price: number, qty: number, currency?: string) => {
@@ -110,7 +110,7 @@ function TooltipPanel({ name, data }: { name: string; data: ItemTooltipData }) {
           {data.usedBy.map(dep => (
             <div key={dep.craftedName} style={{ paddingLeft: 10, marginBottom: 4 }}>
               <div style={{ display: 'flex', gap: 6, alignItems: 'baseline' }}>
-                <span>• {dep.craftedName}</span>
+                <span>• {dep.craftedName}{dep.groupedRecipes ? ` (${dep.groupedRecipes} types)` : ''}</span>
                 <span style={{ marginLeft: 'auto', whiteSpace: 'nowrap', display: 'flex', gap: 8 }}>
                   <span style={{ color: '#aaa' }}>have {dep.alreadyHave}</span>
                   <span style={{ color: dep.done ? '#6f6' : dep.craftableCount > 0 ? '#6f6' : '#f66' }}>

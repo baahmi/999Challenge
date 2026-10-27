@@ -142,6 +142,7 @@ export interface IngredientInfo {
 
 export interface UsedByInfo {
   craftedName: string;
+  groupedRecipes?: number;
   craftableCount: number;
   alreadyHave: number;
   done: boolean;
@@ -434,7 +435,7 @@ function computeRequirements(inventoryMap: Map<string, number>, stacksMap: Map<s
       // Calculate ingredients already used (for what we have)
       const totalCount = Math.round((qty * totalHave) / avgYield);
       const actualCount = Math.round((qty * totalHaveActual) / avgYield);
-      const qualitySensitivePart = strictIngredients && (quality === 'highest' || getAvailableQualityTiers(name).length > 1);
+      const qualitySensitivePart = strictIngredients && getAvailableQualityTiers(name).length > 1;
       if (qualitySensitivePart && quality !== 'highest') {
         const outputTargets = collectionQualityTargets(craftedItemName, stacksMap, quality)
           .map((count, tier) => count + (requiredFromPartsQuality.get(craftedItemName)?.[tier] ?? 0));
@@ -1264,7 +1265,29 @@ function computeTooltipData(
 
   const done = completionMap.get(itemName) ?? false;
   const shops = shopEntriesMap.get(itemName) ?? [];
-  return { count, note, recipe, craftableCount: canCraft, limitingIngredient, done, usedBy, shops, neededCount: neededMap.get(itemName) ?? 0 };
+  return { count, note, recipe, craftableCount: canCraft, limitingIngredient, done,
+    usedBy: groupSmokedFishUses(itemName, usedBy), shops, neededCount: neededMap.get(itemName) ?? 0 };
+}
+
+function groupSmokedFishUses(itemName: string, uses: UsedByInfo[]): UsedByInfo[] {
+  if (itemName !== 'Coal') return uses;
+  const smoking = uses.filter(use => getPhysicalCategory(use.craftedName) === 'Smoked Fish');
+  if (smoking.length < 2) return uses;
+  const fuel = smoking[0]!.recipe.find(ingredient => ingredient.name === 'Coal');
+  if (!fuel) return uses;
+  const needed = smoking.reduce((sum, use) => sum
+    + (use.recipe.find(ingredient => ingredient.name === 'Coal')?.neededForTarget ?? 0), 0);
+  return [
+    ...uses.filter(use => getPhysicalCategory(use.craftedName) !== 'Smoked Fish'),
+    {
+      craftedName: 'Smoked Fish',
+      groupedRecipes: smoking.length,
+      alreadyHave: smoking.reduce((sum, use) => sum + use.alreadyHave, 0),
+      craftableCount: Math.min(Math.floor(fuel.available / fuel.qty), smoking.reduce((sum, use) => sum + use.craftableCount, 0)),
+      done: smoking.every(use => use.done),
+      recipe: [{ ...fuel, neededForTarget: needed, done: fuel.available >= needed }],
+    },
+  ];
 }
 
 function computeAnyIngredientTooltipData(
