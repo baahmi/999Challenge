@@ -45,7 +45,10 @@ export function TooltipPanel({ name, data }: { name: string; data: ItemTooltipDa
       lineHeight: 1.5,
       overflowY: 'auto',
     }}>
-      <div style={{ fontWeight: 700, marginBottom: 4, fontSize: 14 }}>{name} ({data.count})</div>
+      <div style={{ fontWeight: 700, marginBottom: 4, fontSize: 14 }}>
+        {name} (raw: {data.count.toLocaleString()}
+        {(data.spareCount ?? 0) > 0 && <>, spare: {data.spareCount!.toLocaleString()}</>})
+      </div>
 
       {data.note && (
         <div style={{ fontStyle: 'italic', color: '#bbb', marginBottom: 6 }}>{data.note}</div>
@@ -136,7 +139,7 @@ export function TooltipPanel({ name, data }: { name: string; data: ItemTooltipDa
         </div>
       )}
 
-      {!data.recipe && data.usedBy.length === 0 && !data.note && data.shops.length === 0 && (
+      {!data.recipe && data.usedBy.length === 0 && !data.note && data.shops.length === 0 && (data.spareCount ?? 0) === 0 && (
         <div style={{ color: '#888' }}>No recipe or dependency info.</div>
       )}
     </div>

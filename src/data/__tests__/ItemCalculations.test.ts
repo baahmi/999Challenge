@@ -6,10 +6,45 @@ import {
     calculateCappedObtainedCount,
     calculateNeededCount,
     calculatePercentage,
+    calculateSpareCount,
     calculateTotalNeededCount
 } from '../../types/Item';
 
 describe('computeCategoryItems', () => {
+    it('reserves remaining collection and recipe requirements before counting raw spare', () => {
+        const slime = { name: 'Slime', required: 1998, total: 500, raw: 1600 };
+        expect(calculateSpareCount(slime)).toBe(102);
+        expect(calculateSpareCount({ ...slime, raw: 1498 })).toBe(0);
+        expect(calculateSpareCount({ ...slime, raw: 200 })).toBe(0);
+        expect(calculateSpareCount({ ...slime, total: 999, totalActual: 10000, raw: 1200 })).toBe(201);
+        expect(calculateSpareCount({ ...slime, total: 999, totalActual: 10000, raw: 0 })).toBe(0);
+    });
+
+    it('reserves each required quality separately when counting spare', () => {
+        const sapling = {
+            name: 'Peach Sapling', required: 3996, total: 0, raw: 4497,
+            rawStacks: [1500, 999, 999, 0, 999], qualityTargets: [999, 999, 999, 0, 999],
+        };
+        expect(calculateSpareCount(sapling)).toBe(501);
+        // Surplus normal saplings cannot fill the missing silver stack.
+        expect(calculateSpareCount({ ...sapling, raw: 4497, rawStacks: [2499, 0, 999, 0, 999] })).toBe(1500);
+        // Any keeps one stack of a single quality, leaving the other tiers spare.
+        expect(calculateSpareCount({ ...sapling, required: 999, qualityTargets: [999, 0, 0, 0, 0] })).toBe(3498);
+    });
+
+    it('reserves quality-sensitive and flexible ingredients after crediting consumed copies', () => {
+        const carp = {
+            name: 'Carp', required: 2997, requiredStrict: 999, requiredFlexible: 999,
+            total: 1200, totalStrict: 500, totalFlexible: 700,
+            raw: 2500, correctQualityCount: 1600,
+        };
+        expect(calculateSpareCount(carp)).toBe(703);
+        expect(calculateSpareCount({
+            ...carp, qualityTargets: [0, 0, 0, 0, 1998], qualityConsumed: [0, 0, 0, 0, 500],
+            rawStacks: [900, 0, 0, 0, 1600],
+        })).toBe(703);
+    });
+
     it('does not let surplus on one row offset needed on another row in totals', () => {
         const rows = [
             { name: 'Over', required: 999, raw: 0, total: 1200 },
@@ -114,6 +149,8 @@ describe('computeCategoryItems', () => {
         expect(rows.find(row => row.name === 'Raw')?.total).toBe(98901);
         // the uncapped consumption stays available so the UI can show surplus
         expect(rows.find(row => row.name === 'Raw')?.totalActual).toBe(990000);
+        expect(rows.find(row => row.name === 'Raw')?.tooltip.spareCount).toBe(0);
+        expect(rows.find(row => row.name === 'Crafted')?.tooltip.spareCount).toBe(9001);
     });
 
     it('uses the correct quality tier for cooking percentage before wrong-quality highlighting starts', () => {

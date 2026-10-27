@@ -48,7 +48,10 @@ export function HelpPage() {
             <dt>Required</dt>
             <dd>The challenge target for the item, including extra copies needed as ingredients.</dd>
             <dt>Raw</dt>
-            <dd>What is currently in your save inventory/chests for that item.</dd>
+            <dd>
+              What is currently in your save inventory/chests for that item. The hover tooltip also shows spare copies
+              left after reserving those needed for the collection and recipes, using your selected quality rules.
+            </dd>
             <dt>Total</dt>
             <dd>
               Progress that counts toward the requirement: raw count plus items already consumed into

@@ -1,5 +1,5 @@
 import { CustomDataStore, VariantResolver } from './CustomDataStore';
-import { calculateNeededCount, calculateObtainedCount } from '../types/Item';
+import { calculateNeededCount, calculateObtainedCount, calculateSpareCount } from '../types/Item';
 import notesData from './notes.json';
 import pricesData from './prices.json';
 import bundledItems from './items.json';
@@ -159,6 +159,7 @@ export interface ItemTooltipData {
   usedBy: UsedByInfo[];
   shops: ShopEntry[];
   neededCount?: number; // how many of this item are still needed for the challenge
+  spareCount?: number; // raw copies left after reserving those needed for the challenge
 }
 
 export interface ItemRow {
@@ -662,6 +663,9 @@ function computeAllItems(
     });
   }
 
+  for (const row of allComputedRows) {
+    row.tooltip.spareCount = calculateSpareCount(row);
+  }
   allComputedRows.sort((a, b) => a.name.localeCompare(b.name));
   console.log(`[CACHE] Computed ${allComputedRows.length} items`);
 }
@@ -1335,7 +1339,7 @@ function computeAnyIngredientTooltipData(
 }
 
 export function hasTooltipContent(t: ItemTooltipData): boolean {
-  return !!t.note || !!t.recipe || t.usedBy.length > 0 || t.shops.length > 0;
+  return (t.spareCount ?? 0) > 0 || !!t.note || !!t.recipe || t.usedBy.length > 0 || t.shops.length > 0;
 }
 
 // Lightweight computation for historical/one-off data that doesn't use global cache

@@ -67,6 +67,19 @@ export function calculateNeededCount(item: Item): number {
   return Math.max(0, item.required - calculateCappedObtainedCount(item));
 }
 
+export function calculateSpareCount(item: Item): number {
+  // Reserve the raw copies contributing to progress, with the same quality rules.
+  // Consumption remains credited, but cannot itself become spare inventory.
+  const consumed = calculateCappedObtainedCount({
+    ...item,
+    raw: 0,
+    rawStacks: [0, 0, 0, 0, 0],
+    correctQualityCount: item.correctQualityCount === undefined ? undefined : 0,
+  });
+  const reserved = calculateCappedObtainedCount(item) - consumed;
+  return Math.max(0, item.raw - reserved);
+}
+
 export function calculateTotalNeededCount(items: Item[]): number {
   return items.reduce((sum, item) => sum + calculateNeededCount(item), 0);
 }
