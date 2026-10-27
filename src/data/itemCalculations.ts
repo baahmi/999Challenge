@@ -4,7 +4,7 @@ import notesData from './notes.json';
 import pricesData from './prices.json';
 import { Config } from '../config/Config';
 import type { Quality } from '../config/Config';
-import type { PartsEntry, YieldSpec } from "./CustomDataStore";
+import type { ItemEntry, PartsEntry, YieldSpec } from "./CustomDataStore";
 
 const TARGET = 999;
 
@@ -554,7 +554,6 @@ function computeAllItems(
   for (const item of source) {
     let itemKey = item.displayName || item.name;
     let lookupKey = itemKey;
-    let isExtraVariant = false;
     
     // For items with displayName that are NOT variants (like "Bouquet: Wilted"), use base name for lookup
     if (item.displayName !== null && !VariantResolver.hasColorVariants(item.name) && !VariantResolver.hasItemIdVariants(item.name)) {
@@ -581,72 +580,41 @@ function computeAllItems(
     if (seen.has(itemKey)) continue;
     seen.add(itemKey);
     
-    let raw = inventoryMap.get(lookupKey) ?? 0;
-    let required = TARGET + (requiredFromParts.get(item.name) ?? 0);
-    let total = totalFromParts.get(item.name) ?? 0;
-    let totalActual = totalFromPartsActual.get(item.name) ?? 0;
-
-    // For color variant items and Cart variants, required is always 999 (no recipe requirements)
-    if ((item.displayName !== null && VariantResolver.hasColorVariants(item.name)) || itemKey.endsWith(' (Cart)')) {
-      required = TARGET;
-      total = 0; // Cart and color variants don't show crafted totals
-      totalActual = 0;
-    }
-      allComputedRows.push({
+    const raw = inventoryMap.get(lookupKey) ?? 0;
+    const isFlower = VariantResolver.hasColorVariants(item.name);
+    const row: ItemRow = {
       name: itemKey,
       itemId: compacted.find(entry => entry.name === lookupKey || entry.name === itemKey)?.itemId,
       category: item.category,
-      required,
+      required: TARGET + (requiredFromParts.get(item.name) ?? 0),
       requiredStrict: requiredFromPartsStrict.get(item.name) ?? 0,
       requiredFlexible: requiredFromPartsFlexible.get(item.name) ?? 0,
-      total,
+      total: totalFromParts.get(item.name) ?? 0,
       totalStrict: totalFromPartsStrict.get(item.name) ?? 0,
       totalFlexible: totalFromPartsFlexible.get(item.name) ?? 0,
-      totalActual,
+      totalActual: totalFromPartsActual.get(item.name) ?? 0,
       raw, 
       rawStacks: stacksMap.get(lookupKey), // Use lookupKey to get actual stacks
       buyPrice: priceMap.get(item.name), 
       tooltip: computeTooltipData(item.name, raw, inventoryMap, stacksMap, quality, completionMap, globalCraftableCache, anyIngredientAvailability, neededMap),
       hasWrongQuality: hasWrongQualityStacks(itemKey), // Use itemKey for variants
       hasUnfinishedDependents: hasUnfinishedDependents(item.name),
-      correctQualityCount: getCorrectQualityCount(itemKey) // Use itemKey for variants
-    });
-  }
-  
-  // Add "Extra" variants for flowers used in recipes
-  // These show excess items (total raw across all variants - 999 per variant) available for crafting
-  const flowerBaseNames = new Set(
-    source
-      .filter(item => item.displayName === null && VariantResolver.hasColorVariants(item.name))
-      .map(item => item.name)
-  );
-  
-  for (const baseName of flowerBaseNames) {
-    const recipeReq = requiredFromParts.get(baseName) ?? 0;
-    if (recipeReq === 0) continue; // Skip if not used in recipes
-    
-    // Calculate total raw across all variants of this flower
-    const variantRows = allComputedRows.filter(r => VariantResolver.getBaseName(r.name) === baseName);
-    const totalRawAllVariants = variantRows.reduce((sum, r) => sum + r.raw, 0);
-    const numVariants = variantRows.length;
-    const excessRaw = Math.max(0, totalRawAllVariants - (TARGET * numVariants));
-    
-    if (excessRaw > 0 || recipeReq > 0) {
-      allComputedRows.push({
-        name: `${baseName} Extra`,
-        itemId: undefined,
-        category: source.find(item => item.name === baseName)?.category,
-        required: recipeReq, // Only recipe requirements, no 999
-        total: Math.min(totalFromParts.get(baseName) ?? 0, recipeReq), // Cap at recipe requirement
-        raw: excessRaw, // Only the excess
-        rawStacks: undefined,
-        buyPrice: priceMap.get(baseName),
-        tooltip: computeTooltipData(baseName, excessRaw, inventoryMap, stacksMap, quality, completionMap, globalCraftableCache, anyIngredientAvailability, neededMap),
-        hasWrongQuality: false,
-        hasUnfinishedDependents: false,
-        correctQualityCount: undefined
-      });
+      correctQualityCount: getCorrectQualityCount(itemKey), // Use itemKey for variants
+      ...(isFlower ? flowerCollectionFields(lookupKey, stacksMap, quality) : {}),
+    };
+    if (isFlower) {
+      row.tooltip.neededCount = calculateNeededCount(row);
+      row.tooltip.done = row.tooltip.neededCount === 0;
     }
+    allComputedRows.push(row);
+  }
+
+  for (const row of flowerExtraRows(source, allComputedRows, requiredFromParts, totalFromParts, totalFromPartsActual)) {
+    const baseName = VariantResolver.getBaseName(row.name);
+    row.tooltip = computeTooltipData(baseName, row.raw, inventoryMap, stacksMap, quality, completionMap, globalCraftableCache, anyIngredientAvailability, neededMap);
+    row.tooltip.neededCount = calculateNeededCount(row);
+    row.tooltip.done = row.tooltip.neededCount === 0;
+    allComputedRows.push(row);
   }
 
   for (const [wildcardId, anyIngredient] of Object.entries(ANY_INGREDIENTS)) {
@@ -836,6 +804,62 @@ function extraRawForAnyIngredient(candidateNames: string[], rows: ItemRow[]): nu
     total += Math.max(0, row.raw - rawNeededForCompletion(row));
   }
   return total;
+}
+
+// Each flower color (including Cart) has its own collection target. Recipe
+// requirements and consumed flowers belong exclusively to the shared Extra row.
+function flowerCollectionFields(lookupKey: string, stacksMap: Map<string, number[]>, quality: Quality) {
+  const stacks = stacksMap.get(lookupKey);
+  const tier = quality === 'highest' ? getQualityTargetTier(lookupKey) : undefined;
+  const correctQualityCount = tier === undefined ? undefined : (stacks?.[tier] ?? 0);
+  return {
+    required: TARGET,
+    requiredStrict: 0,
+    requiredFlexible: 0,
+    total: 0,
+    totalStrict: 0,
+    totalFlexible: 0,
+    totalActual: 0,
+    correctQualityCount,
+    hasWrongQuality: correctQualityCount !== undefined && correctQualityCount < TARGET
+      && (stacks?.some(count => count >= TARGET) ?? false),
+    hasUnfinishedDependents: false,
+  };
+}
+
+function flowerExtraRows(
+  source: ItemEntry[],
+  collectionRows: ItemRow[],
+  requiredFromParts: Map<string, number>,
+  totalFromParts: Map<string, number>,
+  totalFromPartsActual = totalFromParts,
+): ItemRow[] {
+  const baseNames = new Set(source.filter(item => VariantResolver.hasColorVariants(item.name)).map(item => item.name));
+  const rows: ItemRow[] = [];
+  for (const baseName of baseNames) {
+    const required = requiredFromParts.get(baseName) ?? 0;
+    if (required === 0) continue;
+    // Reserve up to 999 of the counting quality for each variant independently.
+    // Other qualities can be used in recipes even while that variant is unfinished.
+    const raw = collectionRows
+      .filter(row => VariantResolver.getBaseName(row.name) === baseName)
+      .reduce((sum, row) => sum + Math.max(0, row.raw - Math.min(TARGET, row.correctQualityCount ?? row.raw)), 0);
+    const total = Math.min(totalFromParts.get(baseName) ?? 0, required);
+    rows.push({
+      name: `${baseName} Extra`,
+      category: source.find(item => item.name === baseName)?.category,
+      required,
+      total,
+      totalActual: totalFromPartsActual.get(baseName) ?? 0,
+      raw,
+      buyPrice: priceMap.get(baseName),
+      tooltip: undefined as any,
+      hasWrongQuality: false,
+      hasUnfinishedDependents: raw + total >= required && total < required,
+      excludeFromTotals: true,
+    });
+  }
+  return rows;
 }
 
 (function buildMaps() {
@@ -1221,9 +1245,12 @@ export function computeCategoryItemsUncached(
       raw, 
       rawStacks: stacksMap.get(lookupKey), // Use lookupKey to get actual stacks
       buyPrice: priceMap.get(item.name),
-      tooltip: undefined as any // History doesn't need tooltips
+      tooltip: undefined as any, // History doesn't need tooltips
+      ...(VariantResolver.hasColorVariants(item.name) ? flowerCollectionFields(lookupKey, stacksMap, quality) : {}),
     });
   }
+
+  rows.push(...flowerExtraRows(entries, rows, requiredFromParts, totalFromParts));
 
   for (const [wildcardId, anyIngredient] of Object.entries(ANY_INGREDIENTS)) {
     const info = getAnyIngredientInfo(wildcardId)!;
