@@ -53,7 +53,13 @@ describe('flower collection and crafting progress', () => {
                 { name: 'Fairy Dust', stack: 1701, quality: [1701, 0, 0, 0, 0] },
             ]);
 
-            for (const name of ['Fairy Rose (Cart)', 'Fairy Rose (Coral Pink)', 'Fairy Rose (Violet)']) {
+            const cart = rows.find(row => row.name === 'Fairy Rose (Cart)')!;
+            expect(cart.required).toBe(999);
+            expect(cart.total).toBe(0);
+            expect(cart.correctQualityCount).toBe(37);
+            expect(calculatePercentage(cart)).toBeCloseTo(37 / 999 * 100);
+            expect(calculateNeededCount(cart)).toBe(962);
+            for (const name of ['Fairy Rose (Coral Pink)', 'Fairy Rose (Violet)']) {
                 const flower = rows.find(row => row.name === name)!;
                 expect(flower.required).toBe(999);
                 expect(flower.total).toBe(0);
@@ -64,14 +70,14 @@ describe('flower collection and crafting progress', () => {
             const extra = rows.find(row => row.name === 'Fairy Rose Extra')!;
             expect(extra.required).toBe(999);
             expect(extra.total).toBe(999);
-            expect(extra.raw).toBe(206);
+            expect(extra.raw).toBe(169);
             expect(calculatePercentage(extra)).toBe(100);
             expect(extra.excludeFromTotals).toBe(true);
         });
 
         it(`${label}: reserves the selected quality separately for each color and Cart`, () => {
             const rows = compute('Flowers', [
-                { name: 'Fairy Rose', stack: 50, quality: [30, 0, 0, 0, 20] },
+                { name: 'Fairy Rose', stack: 50, quality: [50, 0, 0, 0, 0] },
                 { name: 'Fairy Rose (Coral Pink)', stack: 1300, quality: [100, 0, 0, 0, 1200] },
                 { name: 'Fairy Rose (Violet)', stack: 150, quality: [50, 0, 0, 0, 100] },
             ]);
@@ -80,12 +86,55 @@ describe('flower collection and crafting progress', () => {
             const violet = rows.find(row => row.name === 'Fairy Rose (Violet)')!;
             expect(calculateNeededCount(violet)).toBe(899);
             const cart = rows.find(row => row.name === 'Fairy Rose (Cart)')!;
-            expect(cart.correctQualityCount).toBe(20);
-            expect(calculateNeededCount(cart)).toBe(979);
+            expect(cart.correctQualityCount).toBe(50);
+            expect(calculateNeededCount(cart)).toBe(949);
             const extra = rows.find(row => row.name === 'Fairy Rose Extra')!;
-            expect(extra.raw).toBe(381);
-            expect(calculateNeededCount(extra)).toBe(618);
+            expect(extra.raw).toBe(351);
+            expect(calculateNeededCount(extra)).toBe(648);
             expect(rows.reduce((sum, row) => sum + (row.excludeFromTotals ? 0 : row.raw), 0)).toBe(1500);
+        });
+
+        for (const quality of ['highest', 'any', 'normal', 'silver', 'gold', 'iridium', 'all'] as const) {
+            it(`${label}: counts normal Cart flowers in ${quality} mode`, () => {
+                Config.getInstance().setQuality(quality);
+                const flowers = [
+                    ['Blue Jazz', 37],
+                    ['Tulip', 500],
+                    ['Summer Spangle', 998],
+                    ['Fairy Rose', 1200],
+                    ['Poppy', 999],
+                ] as const;
+                store.data.items = flowers.map(([name]) => ({ category: 'Flowers', name, displayName: null }));
+                const rows = compute('Flowers', flowers.map(([name, stack]) => ({
+                    name, stack, quality: [stack, 0, 0, 0, 0],
+                })));
+                for (const [name, stack] of flowers) {
+                    const cart = rows.find(row => row.name === `${name} (Cart)`)!;
+                    expect(cart.raw).toBe(stack);
+                    expect(cart.required).toBe(999);
+                    expect(cart.total).toBe(0);
+                    expect(cart.qualityTiers).toEqual([0]);
+                    expect(cart.correctQualityCount).toBe(stack);
+                    expect(cart.hasWrongQuality).toBe(false);
+                    expect(calculatePercentage(cart)).toBeCloseTo(Math.min(100, stack / 999 * 100));
+                    expect(calculateNeededCount(cart)).toBe(Math.max(0, 999 - stack));
+                }
+                expect(rows.find(row => row.name === 'Fairy Rose Extra')?.raw).toBe(201);
+            });
+        }
+
+        it(`${label}: only offers Cart surplus to Fairy Dust recipes`, () => {
+            const rows = compute('All', [
+                { name: 'Fairy Rose', stack: 1200, quality: [1200, 0, 0, 0, 0] },
+                { name: 'Fairy Rose (Coral Pink)', stack: 999, quality: [0, 0, 0, 0, 999] },
+                { name: 'Diamond', stack: 201, quality: [201, 0, 0, 0, 0] },
+            ]);
+            expect(rows.find(row => row.name === 'Fairy Rose Extra')?.raw).toBe(201);
+            if (label === 'current') {
+                const dust = rows.find(row => row.name === 'Fairy Dust')!;
+                expect(dust.tooltip.craftableCount).toBe(201);
+                expect(dust.tooltip.recipe?.find(part => part.name === 'Fairy Rose')?.available).toBe(201);
+            }
         });
 
         it(`${label}: keeps crafting progress separate when quality selection changes`, () => {

@@ -697,6 +697,8 @@ function isQualityExemptGroup(group: string): boolean {
 }
 
 function getQualityTargetTier(itemName: string): number | undefined {
+  // Bare flower names are colorless Cart purchases, which only have normal quality.
+  if (VariantResolver.hasColorVariants(itemName)) return 0;
   if (FRUIT_SAPLINGS.has(VariantResolver.getBaseName(itemName))) return 4;
   if (NO_QUALITY_ITEMS.has(VariantResolver.getBaseName(itemName))) return undefined;
   if (getCookingItems().has(itemName)) return isQualityExemptGroup('Cooking') ? undefined : 2;
@@ -755,6 +757,7 @@ function getAvailableQualityTiers(itemName: string): number[] {
 }
 
 function computeAvailableQualityTiers(itemName: string): number[] {
+  if (VariantResolver.hasColorVariants(itemName)) return [0];
   const baseName = VariantResolver.getBaseName(itemName);
   if (NO_QUALITY_ITEMS.has(baseName) || NORMAL_ONLY_ITEMS.has(baseName)) return [0];
   if (getCookingItems(true).has(baseName)) return [0, 2];
